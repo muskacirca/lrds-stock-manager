@@ -1,3 +1,5 @@
+import React from 'react'
+
 var Table = ReactBootstrap.Table;
 
 var ProductBox = React.createClass({
@@ -8,7 +10,6 @@ var ProductBox = React.createClass({
             dataType: 'json',
             cache: false,
             success: function(data) {
-
                 this.setState({data: data})
             }.bind(this),
             error: function(xhr, status, err) {
@@ -18,30 +19,48 @@ var ProductBox = React.createClass({
     },
 
     getInitialState: function() {
-        return {data: []};
+        return {
+          data: []
+        };
     },
 
     componentDidMount: function () {
         this.loadCommentsFromServer();
     },
-    
+
     render: function () {
         return (
             <div className="productBox">
-                <div className="productsTable">
-                    <ProductTable data={this.state.data}/>
-                </div>
+              <nav>
+                <ProductNavBar />
+              </nav>
+              <div className="productsTable">
+                <ProductTable data={this.state.data}/>
+              </div>
             </div>
         );
     }
 });
+
+class ProductNavBar extends React.Component {
+
+  render() {
+      return (<ul className="nav nav-pills">
+              <li role="presentation" className="active"><a href="#">Add item</a></li>
+              <li role="presentation"><a href="#">Edit item</a></li>
+              <li role="presentation"><a href="#">Delete Item</a></li>
+             </ul>);
+  }
+}
+
+
 
 var ProductTable = React.createClass({
 
     render: function() {
         var productsRows = this.props.data.map(function (product) {
             return (
-                <ProductTableRow product={product}/>
+                <ProductTableRow key={product.id} product={product}/>
             );
         });
         return (
@@ -61,6 +80,8 @@ var ProductTableHeader = React.createClass({
         return (
             <thead>
                 <tr>
+
+                    <th>Id</th>
                     <th>Nom</th>
                     <th>En stock</th>
                 </tr>
@@ -73,6 +94,7 @@ var ProductTableRow = React.createClass({
     render: function() {
             return (
                 <tr>
+                    <td>{this.props.product.id}</td>
                     <td>{this.props.product.name}</td>
                     <td>{this.props.product.isInStock}</td>
                 </tr>
@@ -82,7 +104,4 @@ var ProductTableRow = React.createClass({
 
 
 
-React.render(
-    <ProductBox url="products.json"/>,
-    document.getElementById('content')
-)
+export default ProductBox

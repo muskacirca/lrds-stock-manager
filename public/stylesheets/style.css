@@ -1,0 +1,37 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#productsTable {
+  overflow: auto;
+}
+
+#searchInput {
+  margin: auto;
+}
+
+.link-active {
+  color: darkred;
+  text-decoration: none;
+}
+
+/*
+#input-form-navbar {
+  display:block;
+  float:left;
+  width:150px;
+}
+
+#button-form-navbar  {
+  float: left;
+}
+
+
+.nav td div{
+  text-align: center;
+  vertical-align: middle
+}*/

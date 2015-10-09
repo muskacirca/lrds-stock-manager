@@ -2,7 +2,7 @@ import React from 'react'
 import { Router, Route } from 'react-router'
 
 var Login = require('./login');
-var Products = require('./products');
+var Products = require('./stock');
 
 class StockManagerRouter extends React.component {
 
