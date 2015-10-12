@@ -4,8 +4,11 @@
   "description": "`LRDS Stock Manager",
   "main": "./app/index.html",
   "scripts": {
-    "start": "node ./app/App.js",
+    "start": "node ./app/App.js --harmony",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "0.11.x"
   },
   "author": "Vincent Truchot",
   "license": "ISC",
