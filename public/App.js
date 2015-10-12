@@ -1,12 +1,15 @@
 import React from 'react'
 import Router from 'react-router'
-import { Lifecycle } from 'react-router'
+import {Lifecycle} from 'react-router'
 import {Route, Link, RouteHandler, IndexRoute} from 'react-router'
+import createMemoryHistory from 'history/lib/createMemoryHistory'
 
 import LoginBox from './components/login.js'
 import StockComponent from './components/stock.js'
 import Profile from './components/profile.js'
 import Event from './components/event.js'
+
+import authService from './components/auth.js'
 
 class App extends React.Component{
 
@@ -52,13 +55,16 @@ class App extends React.Component{
                 </li>
               </ul>
 
-              <form className="navbar-form navbar-left" role="search">
+              <form className="navbar-form navbar-right" role="search">
                 <div className="form-group">
                   <input type="text" className="form-control" placeholder="Search" />
                 </div>
                 <button type="submit" className="btn btn-default">Submit</button>
               </form>
             </div>
+          </div>
+          <div>
+
           </div>
         </nav>
         <div className="container">
@@ -69,22 +75,34 @@ class App extends React.Component{
   }
 }
 
+
 var Stock = React.createClass({
   render: function() {
     return ( <StockComponent url="products.json" />);
   }
 });
 
+function requireAuth(nextState, replaceState) {
+  if(!authService.loggedIn()) {
+    replaceState({ nextPathname: nextState.location.pathname }, '/login')
+  }
+}
+
+function logout(nextState, replaceState) {
+    authService.logout()
+    replaceState({ nextPathname: nextState.location.pathname }, '/')
+}
+
 
 let routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={LoginBox} />
-    <Route path="profile" component={Profile}/>
-    <Route path="stock" component={Stock}/>
-    <Route path="event" component={Event}/>
-    <Route path="logout" component={LoginBox}/>
+    <Route path="profile" component={Profile} onEnter={requireAuth}/>
+    <Route path="stock" component={Stock} onEnter={requireAuth}/>
+    <Route path="event" component={Event} onEnter={requireAuth}/>
+    <Route path="login" component={LoginBox}/>
+    <Route path="logout" component={LoginBox} onEnter={logout} />
   </Route>
 )
 
-React.render(<Router>{routes}</Router>,  document.getElementById('app'))
+React.render(<Router history={createMemoryHistory()}>{routes}</Router>,  document.getElementById('app'))
 
