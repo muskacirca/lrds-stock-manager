@@ -1,7 +1,5 @@
 import React from 'react'
 
-var Table = ReactBootstrap.Table;
-
 class ProductBox extends React.Component {
 
     constructor(props) {
@@ -31,16 +29,16 @@ class ProductBox extends React.Component {
 
     render() {
         return (
-                <row>
-                    <div className="sidebar col-lg-2 no-float">
+                <div className="row">
+                    <div className="sidebar col-lg-2">
                         Side bar Event
                     </div>
-                    <div className="app col-lg-10 no-float">
+                    <div className="app col-lg-10">
                         <div className="productsTable">
                             <ProductTable data={this.state.data}/>
                         </div>
                     </div>
-                </row>
+                </div>
         )
     }
 }
@@ -65,12 +63,12 @@ class ProductTable extends React.Component {
             );
         });
         return (
-            <Table>
+            <table>
                 <ProductTableHeader />
                 <tbody>
                     {productsRows}
                 </tbody>
-            </Table>
+            </table>
         );
     }
 }

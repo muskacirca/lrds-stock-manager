@@ -1,7 +1,5 @@
 import React from 'react'
 import Router from 'react-router'
-var Button = ReactBootstrap.Button;
-var PageHeader = ReactBootstrap.PageHeader;
 import auth from './auth.js'
 
 const wellStyles = {maxWidth: 400, margin: '0 auto 10px'};
@@ -26,7 +24,7 @@ class LoginBox extends React.Component {
 class Header extends React.Component {
 
     render() {
-        return <PageHeader>{this.props.label}</PageHeader>
+        return <div>{this.props.label}</div>
     }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
-import {Router, Route} from 'react-router'
+import {Router, IndexRoute, Route} from 'react-router'
 import createMemoryHistory from 'history/lib/createMemoryHistory'
 
 import LoginBox from './components/login.js'
@@ -52,6 +53,7 @@ function logout(nextState, replaceState) {
 
 let routes = (
   <Route path="/" component={App}>
+    <IndexRoute component={Stock} />
     <Route path="profile" component={Profile} onEnter={requireAuth}/>
     <Route path="stock" component={Stock} onEnter={requireAuth}/>
     <Route path="event" component={Event} onEnter={requireAuth}/>
@@ -60,5 +62,5 @@ let routes = (
   </Route>
 )
 
-React.render(<Router history={createMemoryHistory()}>{routes}</Router>,  document.getElementById('content'))
+ReactDOM.render(<Router history={createMemoryHistory()}>{routes}</Router>,  document.getElementById('content'))
 

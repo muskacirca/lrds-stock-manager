@@ -1,5 +1,10 @@
+html {
+  height: 100%;
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
 }
 
 a {
@@ -23,7 +28,22 @@ a {
 
   background-color: #ffcdd2;
   color: #212121;
-  height: auto;
+  height: 100%;
+  float: left;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.row {
+  display: table;
+}
+
+[class*="col-"] {
+  float: none;
+  display: table-cell;
+  vertical-align: top;
 }
 
 div.app {
@@ -32,6 +52,18 @@ div.app {
 
 div.no-float {
   float: none;
+}
+
+.container-fluid > .navbar-header {
+  margin-right: 0px;
+  margin-left: 15px;
+}
+
+.container-fluid {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 
