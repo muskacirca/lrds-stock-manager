@@ -98,8 +98,6 @@
 
 	var _reactRouter = __webpack_require__(157);
 
-	var _reactRouter2 = _interopRequireDefault(_reactRouter);
-
 	var _historyLibCreateMemoryHistory = __webpack_require__(203);
 
 	var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
@@ -120,6 +118,10 @@
 
 	var _componentsEventJs2 = _interopRequireDefault(_componentsEventJs);
 
+	var _componentsNavbarJs = __webpack_require__(216);
+
+	var _componentsNavbarJs2 = _interopRequireDefault(_componentsNavbarJs);
+
 	var _componentsAuthJs = __webpack_require__(212);
 
 	var _componentsAuthJs2 = _interopRequireDefault(_componentsAuthJs);
@@ -139,7 +141,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement('div', { className: 'mainContainer' }, _react2['default'].createElement('nav', { className: 'navbar navbar-default' }, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'navbar-header' }, _react2['default'].createElement('button', { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' }, _react2['default'].createElement('span', { className: 'sr-only' }, 'Toggle navigation'), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' })), _react2['default'].createElement('a', { className: 'navbar-brand', href: '#' }, 'LRDS')), _react2['default'].createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' }, _react2['default'].createElement('ul', { className: 'nav navbar-nav' }, _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/', activeClassName: 'link-active' }, 'Home')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/profile', activeClassName: 'link-active' }, 'Profile')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/stock', activeClassName: 'link-active' }, 'Stock')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/event', activeClassName: 'link-active' }, 'Events')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/logout', activeClassName: 'link-active' }, 'Log out'))), _react2['default'].createElement('form', { className: 'navbar-form navbar-right', role: 'search' }, _react2['default'].createElement('div', { className: 'form-group' }, _react2['default'].createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search' })), _react2['default'].createElement('button', { type: 'submit', className: 'btn btn-default' }, 'Submit')))), _react2['default'].createElement('div', null)), _react2['default'].createElement('div', { className: 'container' }, this.props.children));
+	      return _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement(_componentsNavbarJs2['default'], null), this.props.children);
 	    }
 	  }]);
 
@@ -167,7 +169,7 @@
 
 	var routes = _react2['default'].createElement(_reactRouter.Route, { path: '/', component: App }, _react2['default'].createElement(_reactRouter.Route, { path: 'profile', component: _componentsProfileJs2['default'], onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'stock', component: Stock, onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'event', component: _componentsEventJs2['default'], onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'login', component: _componentsLoginJs2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'logout', component: _componentsLoginJs2['default'], onEnter: logout }));
 
-	_react2['default'].render(_react2['default'].createElement(_reactRouter2['default'], { history: (0, _historyLibCreateMemoryHistory2['default'])() }, routes), document.getElementById('app'));
+	_react2['default'].render(_react2['default'].createElement(_reactRouter.Router, { history: (0, _historyLibCreateMemoryHistory2['default'])() }, routes), document.getElementById('content'));
 
 /***/ },
 /* 1 */
@@ -25855,40 +25857,50 @@
 
 	var Table = ReactBootstrap.Table;
 
-	var ProductBox = _react2['default'].createClass({
-	    displayName: 'ProductBox',
+	var ProductBox = (function (_React$Component) {
+	    _inherits(ProductBox, _React$Component);
 
-	    loadCommentsFromServer: function loadCommentsFromServer() {
-	        $.ajax({
-	            url: this.props.url,
-	            dataType: 'json',
-	            cache: false,
-	            success: (function (data) {
-	                this.setState({ data: data });
-	            }).bind(this),
-	            error: (function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }).bind(this)
-	        });
-	    },
+	    function ProductBox(props) {
+	        _classCallCheck(this, ProductBox);
 
-	    getInitialState: function getInitialState() {
-	        return {
+	        _get(Object.getPrototypeOf(ProductBox.prototype), 'constructor', this).call(this, props);
+	        this.state = {
 	            data: []
 	        };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        this.loadCommentsFromServer();
-	    },
-
-	    render: function render() {
-	        return _react2['default'].createElement('div', { className: 'productBox' }, _react2['default'].createElement('nav', null, _react2['default'].createElement(ProductNavBar, null)), _react2['default'].createElement('div', { className: 'productsTable' }, _react2['default'].createElement(ProductTable, { data: this.state.data })));
 	    }
-	});
 
-	var ProductNavBar = (function (_React$Component) {
-	    _inherits(ProductNavBar, _React$Component);
+	    _createClass(ProductBox, [{
+	        key: 'loadCommentsFromServer',
+	        value: function loadCommentsFromServer() {
+	            $.ajax({
+	                url: this.props.url,
+	                dataType: 'json',
+	                cache: false,
+	                success: (function (data) {
+	                    this.setState({ data: data });
+	                }).bind(this),
+	                error: (function (xhr, status, err) {
+	                    console.error(this.props.url, status, err.toString());
+	                }).bind(this)
+	            });
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.loadCommentsFromServer();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement('row', null, _react2['default'].createElement('div', { className: 'sidebar col-lg-2 no-float' }, 'Side bar Event'), _react2['default'].createElement('div', { className: 'app col-lg-10 no-float' }, _react2['default'].createElement('div', { className: 'productsTable' }, _react2['default'].createElement(ProductTable, { data: this.state.data }))));
+	        }
+	    }]);
+
+	    return ProductBox;
+	})(_react2['default'].Component);
+
+	var ProductNavBar = (function (_React$Component2) {
+	    _inherits(ProductNavBar, _React$Component2);
 
 	    function ProductNavBar() {
 	        _classCallCheck(this, ProductNavBar);
@@ -25906,32 +25918,65 @@
 	    return ProductNavBar;
 	})(_react2['default'].Component);
 
-	var ProductTable = _react2['default'].createClass({
-	    displayName: 'ProductTable',
+	var ProductTable = (function (_React$Component3) {
+	    _inherits(ProductTable, _React$Component3);
 
-	    render: function render() {
-	        var productsRows = this.props.data.map(function (product) {
-	            return _react2['default'].createElement(ProductTableRow, { key: product.id, product: product });
-	        });
-	        return _react2['default'].createElement(Table, null, _react2['default'].createElement(ProductTableHeader, null), _react2['default'].createElement('tbody', null, productsRows));
+	    function ProductTable() {
+	        _classCallCheck(this, ProductTable);
+
+	        _get(Object.getPrototypeOf(ProductTable.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
 
-	var ProductTableHeader = _react2['default'].createClass({
-	    displayName: 'ProductTableHeader',
+	    _createClass(ProductTable, [{
+	        key: 'render',
+	        value: function render() {
+	            var productsRows = this.props.data.map(function (product) {
+	                return _react2['default'].createElement(ProductTableRow, { key: product.id, product: product });
+	            });
+	            return _react2['default'].createElement(Table, null, _react2['default'].createElement(ProductTableHeader, null), _react2['default'].createElement('tbody', null, productsRows));
+	        }
+	    }]);
 
-	    render: function render() {
-	        return _react2['default'].createElement('thead', null, _react2['default'].createElement('tr', null, _react2['default'].createElement('th', null, 'Id'), _react2['default'].createElement('th', null, 'Nom'), _react2['default'].createElement('th', null, 'En stock')));
+	    return ProductTable;
+	})(_react2['default'].Component);
+
+	var ProductTableHeader = (function (_React$Component4) {
+	    _inherits(ProductTableHeader, _React$Component4);
+
+	    function ProductTableHeader() {
+	        _classCallCheck(this, ProductTableHeader);
+
+	        _get(Object.getPrototypeOf(ProductTableHeader.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
 
-	var ProductTableRow = _react2['default'].createClass({
-	    displayName: 'ProductTableRow',
+	    _createClass(ProductTableHeader, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement('thead', null, _react2['default'].createElement('tr', null, _react2['default'].createElement('th', null, 'Id'), _react2['default'].createElement('th', null, 'Nom'), _react2['default'].createElement('th', null, 'En stock')));
+	        }
+	    }]);
 
-	    render: function render() {
-	        return _react2['default'].createElement('tr', null, _react2['default'].createElement('td', null, this.props.product.id), _react2['default'].createElement('td', null, this.props.product.name), _react2['default'].createElement('td', null, this.props.product.isInStock));
+	    return ProductTableHeader;
+	})(_react2['default'].Component);
+
+	var ProductTableRow = (function (_React$Component5) {
+	    _inherits(ProductTableRow, _React$Component5);
+
+	    function ProductTableRow() {
+	        _classCallCheck(this, ProductTableRow);
+
+	        _get(Object.getPrototypeOf(ProductTableRow.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	});
+
+	    _createClass(ProductTableRow, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement('tr', null, _react2['default'].createElement('td', null, this.props.product.id), _react2['default'].createElement('td', null, this.props.product.name), _react2['default'].createElement('td', null, this.props.product.isInStock));
+	        }
+	    }]);
+
+	    return ProductTableRow;
+	})(_react2['default'].Component);
 
 	exports['default'] = ProductBox;
 	module.exports = exports['default'];
@@ -26030,24 +26075,160 @@
 	  value: true
 	});
 
+	var _createClass = (function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
+	})();
+
+	var _get = function get(_x, _x2, _x3) {
+	  var _again = true;_function: while (_again) {
+	    var object = _x,
+	        property = _x2,
+	        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	      var parent = Object.getPrototypeOf(object);if (parent === null) {
+	        return undefined;
+	      } else {
+	        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	      }
+	    } else if ('value' in desc) {
+	      return desc.value;
+	    } else {
+	      var getter = desc.get;if (getter === undefined) {
+	        return undefined;
+	      }return getter.call(receiver);
+	    }
+	  }
+	};
+
 	function _interopRequireDefault(obj) {
 	  return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError('Cannot call a class as a function');
+	  }
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== 'function' && superClass !== null) {
+	    throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 	}
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var EventBox = _react2['default'].createClass({
-	  displayName: 'EventBox',
+	var EventBox = (function (_React$Component) {
+	  _inherits(EventBox, _React$Component);
 
-	  render: function render() {
-	    return _react2['default'].createElement('div', null, 'Event');
+	  function EventBox() {
+	    _classCallCheck(this, EventBox);
+
+	    _get(Object.getPrototypeOf(EventBox.prototype), 'constructor', this).apply(this, arguments);
 	  }
 
-	});
+	  _createClass(EventBox, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement('div', null, 'Event');
+	    }
+	  }]);
+
+	  return EventBox;
+	})(_react2['default'].Component);
 
 	exports['default'] = EventBox;
+	module.exports = exports['default'];
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
+	})();
+
+	var _get = function get(_x, _x2, _x3) {
+	  var _again = true;_function: while (_again) {
+	    var object = _x,
+	        property = _x2,
+	        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	      var parent = Object.getPrototypeOf(object);if (parent === null) {
+	        return undefined;
+	      } else {
+	        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	      }
+	    } else if ('value' in desc) {
+	      return desc.value;
+	    } else {
+	      var getter = desc.get;if (getter === undefined) {
+	        return undefined;
+	      }return getter.call(receiver);
+	    }
+	  }
+	};
+
+	function _interopRequireDefault(obj) {
+	  return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError('Cannot call a class as a function');
+	  }
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== 'function' && superClass !== null) {
+	    throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(157);
+
+	var NavBarBox = (function (_React$Component) {
+	  _inherits(NavBarBox, _React$Component);
+
+	  function NavBarBox() {
+	    _classCallCheck(this, NavBarBox);
+
+	    _get(Object.getPrototypeOf(NavBarBox.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(NavBarBox, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement('nav', { className: 'navbar navbar-default' }, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'navbar-header' }, _react2['default'].createElement('button', { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' }, _react2['default'].createElement('span', { className: 'sr-only' }, 'Toggle navigation'), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' })), _react2['default'].createElement('a', { className: 'navbar-brand', href: '#' }, 'LRDS')), _react2['default'].createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' }, _react2['default'].createElement('ul', { className: 'nav navbar-nav' }, _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/', activeClassName: 'link-active' }, 'Home')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/profile', activeClassName: 'link-active' }, 'Profile')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/stock', activeClassName: 'link-active' }, 'Stock')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/event', activeClassName: 'link-active' }, 'Events')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/logout', activeClassName: 'link-active' }, 'Log out'))), _react2['default'].createElement('form', { className: 'navbar-form navbar-right', role: 'search' }, _react2['default'].createElement('div', { className: 'form-group' }, _react2['default'].createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search' })), _react2['default'].createElement('button', { type: 'submit', className: 'btn btn-default' }, 'Submit')))));
+	    }
+	  }]);
+
+	  return NavBarBox;
+	})(_react2['default'].Component);
+
+	exports['default'] = NavBarBox;
 	module.exports = exports['default'];
 
 /***/ }

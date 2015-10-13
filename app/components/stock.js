@@ -2,9 +2,16 @@ import React from 'react'
 
 var Table = ReactBootstrap.Table;
 
-var ProductBox = React.createClass({
+class ProductBox extends React.Component {
 
-    loadCommentsFromServer: function() {
+    constructor(props) {
+        super(props)
+        this.state = {
+            data: []
+        }
+    }
+
+    loadCommentsFromServer() {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -15,32 +22,28 @@ var ProductBox = React.createClass({
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
-        });
-    },
-
-    getInitialState: function() {
-        return {
-          data: []
-        };
-    },
-
-    componentDidMount: function () {
-        this.loadCommentsFromServer();
-    },
-
-    render: function () {
-        return (
-            <div className="productBox">
-              <nav>
-                <ProductNavBar />
-              </nav>
-              <div className="productsTable">
-                <ProductTable data={this.state.data}/>
-              </div>
-            </div>
-        );
+        })
     }
-});
+
+    componentDidMount() {
+        this.loadCommentsFromServer();
+    }
+
+    render() {
+        return (
+                <row>
+                    <div className="sidebar col-lg-2 no-float">
+                        Side bar Event
+                    </div>
+                    <div className="app col-lg-10 no-float">
+                        <div className="productsTable">
+                            <ProductTable data={this.state.data}/>
+                        </div>
+                    </div>
+                </row>
+        )
+    }
+}
 
 class ProductNavBar extends React.Component {
 
@@ -49,15 +52,13 @@ class ProductNavBar extends React.Component {
               <li role="presentation" className="active"><a href="#">Add item</a></li>
               <li role="presentation"><a href="#">Edit item</a></li>
               <li role="presentation"><a href="#">Delete Item</a></li>
-             </ul>);
+             </ul>)
   }
 }
 
+class ProductTable extends React.Component {
 
-
-var ProductTable = React.createClass({
-
-    render: function() {
+    render() {
         var productsRows = this.props.data.map(function (product) {
             return (
                 <ProductTableRow key={product.id} product={product}/>
@@ -72,11 +73,11 @@ var ProductTable = React.createClass({
             </Table>
         );
     }
-});
+}
 
-var ProductTableHeader = React.createClass({
+class ProductTableHeader extends React.Component {
 
-    render: function() {
+    render() {
         return (
             <thead>
                 <tr>
@@ -86,22 +87,20 @@ var ProductTableHeader = React.createClass({
                     <th>En stock</th>
                 </tr>
             </thead>
-        );
+        )
     }
-});
+}
 
-var ProductTableRow = React.createClass({
-    render: function() {
+class ProductTableRow extends React.Component {
+    render() {
             return (
                 <tr>
                     <td>{this.props.product.id}</td>
                     <td>{this.props.product.name}</td>
                     <td>{this.props.product.isInStock}</td>
                 </tr>
-        );
+        )
     }
-});
-
-
+}
 
 export default ProductBox

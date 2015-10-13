@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router'
 
 class NavBarBox extends React.Component{
 
@@ -35,7 +36,7 @@ class NavBarBox extends React.Component{
                   </li>
                 </ul>
 
-                <form className="navbar-form navbar-left" role="search">
+                <form className="navbar-form navbar-right" role="search">
                   <div className="form-group">
                     <input type="text" className="form-control" placeholder="Search" />
                   </div>
@@ -44,11 +45,8 @@ class NavBarBox extends React.Component{
               </div>
             </div>
           </nav>
-        );
+        )
     }
 }
 
-React.render(
-    <NavBarBox/>,
-    document.getElementById('navbar')
-)
+export default NavBarBox

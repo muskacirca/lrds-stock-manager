@@ -1,14 +1,16 @@
 import React from 'react'
 
-var EventBox = React.createClass({
+class EventBox extends React.Component {
 
-  render: function() {
+  render() {
     return (
-      <div>Event</div>
-    );
+      <div>
+        Event
+      </div>
+    )
   }
 
 
-});
+}
 
 export default EventBox
