@@ -10,7 +10,7 @@ import Profile from './components/profile.js'
 import Event from './components/event.js'
 import NavBarBox from './components/navbar.js'
 
-import authService from './components/auth.js'
+import authService from './components/controllers/auth.js'
 
 class App extends React.Component{
 
@@ -24,9 +24,11 @@ class App extends React.Component{
 
   render() {
     return (
-      <div className="container-fluid">
+      <div>
         <NavBarBox />
-          {this.props.children}
+        <div>
+            {this.props.children}
+        </div>
       </div>
     );
   }
@@ -50,10 +52,9 @@ function logout(nextState, replaceState) {
     replaceState({ nextPathname: nextState.location.pathname }, '/')
 }
 
-
 let routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={Stock} />
+    <IndexRoute component={App} />
     <Route path="profile" component={Profile} onEnter={requireAuth}/>
     <Route path="stock" component={Stock} onEnter={requireAuth}/>
     <Route path="event" component={Event} onEnter={requireAuth}/>

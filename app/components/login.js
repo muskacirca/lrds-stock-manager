@@ -1,8 +1,6 @@
 import React from 'react'
 import Router from 'react-router'
-import auth from './auth.js'
-
-const wellStyles = {maxWidth: 400, margin: '0 auto 10px'};
+import auth from './controllers/auth.js'
 
 class LoginBox extends React.Component {
 
@@ -14,7 +12,7 @@ class LoginBox extends React.Component {
 
     render() {
         return (
-            <div style={wellStyles}>
+            <div className="col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main">
                 <Header label="Please login"/>
                 <LoginForm history={this.history}/>
             </div>);

@@ -29,16 +29,18 @@ class ProductBox extends React.Component {
 
     render() {
         return (
-                <div className="row">
-                    <div className="sidebar col-lg-2">
-                        Side bar Event
-                    </div>
-                    <div className="app col-lg-10">
-                        <div className="productsTable">
-                            <ProductTable data={this.state.data}/>
+            <div>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-3 col-md-2 sidebar">
+                            Side bar STOCK
                         </div>
                     </div>
                 </div>
+                <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <ProductTable data={this.state.data}/>
+                </div>
+            </div>
         )
     }
 }
@@ -63,7 +65,7 @@ class ProductTable extends React.Component {
             );
         });
         return (
-            <table>
+            <table className="table">
                 <ProductTableHeader />
                 <tbody>
                     {productsRows}
@@ -79,7 +81,6 @@ class ProductTableHeader extends React.Component {
         return (
             <thead>
                 <tr>
-
                     <th>Id</th>
                     <th>Nom</th>
                     <th>En stock</th>
