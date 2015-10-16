@@ -2,10 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import {Router, IndexRoute, Route} from 'react-router'
-import createMemoryHistory from 'history/lib/createMemoryHistory'
+import createBrowserHistory from 'history/lib/createBrowserHistory'
 
 import LoginBox from './components/login.js'
 import StockComponent from './components/stock.js'
+import Product from './components/product.js'
 import Profile from './components/profile.js'
 import Event from './components/event.js'
 import NavBarBox from './components/navbar.js'
@@ -56,12 +57,14 @@ let routes = (
   <Route path="/" component={App}>
     <IndexRoute component={App} />
     <Route path="profile" component={Profile} onEnter={requireAuth}/>
-    <Route path="stock" component={Stock} onEnter={requireAuth}/>
+    <Route path="stock" component={Stock} onEnter={requireAuth}>
+      <Route path="product/:id" component={Product} onEnter={requireAuth} />
+    </Route>
     <Route path="event" component={Event} onEnter={requireAuth}/>
     <Route path="login" component={LoginBox}/>
     <Route path="logout" component={LoginBox} onEnter={logout} />
   </Route>
 )
 
-ReactDOM.render(<Router history={createMemoryHistory()}>{routes}</Router>,  document.getElementById('content'))
+ReactDOM.render(<Router history={createBrowserHistory()}>{routes}</Router>,  document.getElementById('content'))
 

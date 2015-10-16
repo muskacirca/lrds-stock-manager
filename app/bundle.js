@@ -102,9 +102,9 @@
 
 	var _reactRouter = __webpack_require__(158);
 
-	var _historyLibCreateMemoryHistory = __webpack_require__(204);
+	var _historyLibCreateBrowserHistory = __webpack_require__(221);
 
-	var _historyLibCreateMemoryHistory2 = _interopRequireDefault(_historyLibCreateMemoryHistory);
+	var _historyLibCreateBrowserHistory2 = _interopRequireDefault(_historyLibCreateBrowserHistory);
 
 	var _componentsLoginJs = __webpack_require__(212);
 
@@ -113,6 +113,10 @@
 	var _componentsStockJs = __webpack_require__(214);
 
 	var _componentsStockJs2 = _interopRequireDefault(_componentsStockJs);
+
+	var _componentsProductJs = __webpack_require__(220);
+
+	var _componentsProductJs2 = _interopRequireDefault(_componentsProductJs);
 
 	var _componentsProfileJs = __webpack_require__(215);
 
@@ -171,9 +175,9 @@
 	  replaceState({ nextPathname: nextState.location.pathname }, '/');
 	}
 
-	var routes = _react2['default'].createElement(_reactRouter.Route, { path: '/', component: App }, _react2['default'].createElement(_reactRouter.IndexRoute, { component: App }), _react2['default'].createElement(_reactRouter.Route, { path: 'profile', component: _componentsProfileJs2['default'], onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'stock', component: Stock, onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'event', component: _componentsEventJs2['default'], onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'login', component: _componentsLoginJs2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'logout', component: _componentsLoginJs2['default'], onEnter: logout }));
+	var routes = _react2['default'].createElement(_reactRouter.Route, { path: '/', component: App }, _react2['default'].createElement(_reactRouter.IndexRoute, { component: App }), _react2['default'].createElement(_reactRouter.Route, { path: 'profile', component: _componentsProfileJs2['default'], onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'stock', component: Stock, onEnter: requireAuth }, _react2['default'].createElement(_reactRouter.Route, { path: 'product/:id', component: _componentsProductJs2['default'], onEnter: requireAuth })), _react2['default'].createElement(_reactRouter.Route, { path: 'event', component: _componentsEventJs2['default'], onEnter: requireAuth }), _react2['default'].createElement(_reactRouter.Route, { path: 'login', component: _componentsLoginJs2['default'] }), _react2['default'].createElement(_reactRouter.Route, { path: 'logout', component: _componentsLoginJs2['default'], onEnter: logout }));
 
-	_reactDom2['default'].render(_react2['default'].createElement(_reactRouter.Router, { history: (0, _historyLibCreateMemoryHistory2['default'])() }, routes), document.getElementById('content'));
+	_reactDom2['default'].render(_react2['default'].createElement(_reactRouter.Router, { history: (0, _historyLibCreateBrowserHistory2['default'])() }, routes), document.getElementById('content'));
 
 /***/ },
 /* 1 */
@@ -24054,153 +24058,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _invariant = __webpack_require__(205);
-
-	var _invariant2 = _interopRequireDefault(_invariant);
-
-	var _Actions = __webpack_require__(206);
-
-	var _createHistory = __webpack_require__(207);
-
-	var _createHistory2 = _interopRequireDefault(_createHistory);
-
-	function createStateStorage(entries) {
-	  return entries.filter(function (entry) {
-	    return entry.state;
-	  }).reduce(function (memo, entry) {
-	    memo[entry.key] = entry.state;
-	    return memo;
-	  }, {});
-	}
-
-	function createMemoryHistory() {
-	  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	  if (Array.isArray(options)) {
-	    options = { entries: options };
-	  } else if (typeof options === 'string') {
-	    options = { entries: [options] };
-	  }
-
-	  var history = _createHistory2['default'](_extends({}, options, {
-	    getCurrentLocation: getCurrentLocation,
-	    finishTransition: finishTransition,
-	    saveState: saveState,
-	    go: go
-	  }));
-
-	  var _options = options;
-	  var entries = _options.entries;
-	  var current = _options.current;
-
-	  if (typeof entries === 'string') {
-	    entries = [entries];
-	  } else if (!Array.isArray(entries)) {
-	    entries = ['/'];
-	  }
-
-	  entries = entries.map(function (entry) {
-	    var key = history.createKey();
-
-	    if (typeof entry === 'string') return { pathname: entry, key: key };
-
-	    if (typeof entry === 'object' && entry) return _extends({}, entry, { key: key });
-
-	    _invariant2['default'](false, 'Unable to create history entry from %s', entry);
-	  });
-
-	  if (current == null) {
-	    current = entries.length - 1;
-	  } else {
-	    _invariant2['default'](current >= 0 && current < entries.length, 'Current index must be >= 0 and < %s, was %s', entries.length, current);
-	  }
-
-	  var storage = createStateStorage(entries);
-
-	  function saveState(key, state) {
-	    storage[key] = state;
-	  }
-
-	  function readState(key) {
-	    return storage[key];
-	  }
-
-	  function getCurrentLocation() {
-	    var entry = entries[current];
-	    var key = entry.key;
-	    var basename = entry.basename;
-	    var pathname = entry.pathname;
-	    var search = entry.search;
-
-	    var path = (basename || '') + pathname + (search || '');
-
-	    var state = undefined;
-	    if (key) {
-	      state = readState(key);
-	    } else {
-	      state = null;
-	      key = history.createKey();
-	      entry.key = key;
-	    }
-
-	    return history.createLocation(path, state, undefined, key);
-	  }
-
-	  function canGo(n) {
-	    var index = current + n;
-	    return index >= 0 && index < entries.length;
-	  }
-
-	  function go(n) {
-	    if (n) {
-	      _invariant2['default'](canGo(n), 'Cannot go(%s) there is not enough history', n);
-
-	      current += n;
-
-	      var currentLocation = getCurrentLocation();
-
-	      // change action to POP
-	      history.transitionTo(_extends({}, currentLocation, { action: _Actions.POP }));
-	    }
-	  }
-
-	  function finishTransition(location) {
-	    switch (location.action) {
-	      case _Actions.PUSH:
-	        current += 1;
-
-	        // if we are not on the top of stack
-	        // remove rest and push new
-	        if (current < entries.length) entries.splice(current);
-
-	        entries.push(location);
-	        saveState(location.key, location.state);
-	        break;
-	      case _Actions.REPLACE:
-	        entries[current] = location;
-	        saveState(location.key, location.state);
-	        break;
-	    }
-	  }
-
-	  return history;
-	}
-
-	exports['default'] = createMemoryHistory;
-	module.exports = exports['default'];
-
-/***/ },
+/* 204 */,
 /* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -24968,20 +24826,25 @@
 
 	var _sidebarsSearchInputJs2 = _interopRequireDefault(_sidebarsSearchInputJs);
 
-	var ProductBox = (function (_React$Component) {
-	    _inherits(ProductBox, _React$Component);
+	var _reactRouter = __webpack_require__(158);
 
-	    function ProductBox(props) {
-	        _classCallCheck(this, ProductBox);
+	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	        _get(Object.getPrototypeOf(ProductBox.prototype), 'constructor', this).call(this, props);
+	var StockComponent = (function (_React$Component) {
+	    _inherits(StockComponent, _React$Component);
+
+	    function StockComponent(props) {
+	        _classCallCheck(this, StockComponent);
+
+	        _get(Object.getPrototypeOf(StockComponent.prototype), 'constructor', this).call(this, props);
 	        this.state = {
 	            data: [],
-	            searchedText: ""
+	            searchedText: "",
+	            tags: []
 	        };
 	    }
 
-	    _createClass(ProductBox, [{
+	    _createClass(StockComponent, [{
 	        key: 'loadCommentsFromServer',
 	        value: function loadCommentsFromServer() {
 	            $.ajax({
@@ -25007,34 +24870,35 @@
 	            this.setState({ searchedText: searchedText });
 	        }
 	    }, {
+	        key: 'onKeyDownSearch',
+	        value: function onKeyDownSearch(searchedText) {
+	            var tags = this.state.tags.push(searchedText);
+	            this.setState({ tags: tags });
+	        }
+	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps() {}
 	    }, {
 	        key: 'componentWillUpdate',
-	        value: function componentWillUpdate() {
-
-	            /*        var people = this.state.data.map(function(product, key) {
-	            
-	                        console.log("searched text: " + this.state.searchedText)
-	                        if (product.name.toLowerCase().contains(this.state.searchedText)) {
-	                            return;
-	                        } else {
-	                            return <li className={person.sex} key={key}>{person.name}</li>;
-	                        }
-	                    });*/
-
-	        }
+	        value: function componentWillUpdate() {}
 	    }, {
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate() {}
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2['default'].createElement('div', null, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'row' }, _react2['default'].createElement('div', { className: 'col-sm-3 col-md-2 sidebar' }, _react2['default'].createElement(_sidebarsSearchInputJs2['default'], { from: 'stock', onChange: this.onSearchInputChange.bind(this) })))), _react2['default'].createElement('div', { className: 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main' }, _react2['default'].createElement(ProductTable, { data: this.state.data, filterText: this.state.searchedText })));
+
+	            var tagRow = this.state.tags.map(function (tag) {
+	                return _react2['default'].createElement('div', null, 'tag');
+	            });
+
+	            return _react2['default'].createElement('div', null, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'row' }, _react2['default'].createElement('div', { className: 'col-sm-3 col-md-2 sidebar' }, _react2['default'].createElement(_sidebarsSearchInputJs2['default'], { from: 'stock',
+	                onChange: this.onSearchInputChange.bind(this),
+	                onKeyDown: this.onKeyDownSearch.bind(this) }), _react2['default'].createElement('br', null), _react2['default'].createElement('div', { className: 'col-sm-3 col-md-2' }), _react2['default'].createElement('div', { className: 'list-group' }, _react2['default'].createElement('a', { className: 'list-group-item', href: '#' }, _react2['default'].createElement('i', { className: 'fa fa-plus-circle fa-fw' }), '  Add item'), _react2['default'].createElement('a', { className: 'list-group-item', href: '#' }, _react2['default'].createElement('i', { className: 'fa fa-bookmark fa-fw' }), '  Book item'), _react2['default'].createElement('a', { className: 'list-group-item', href: '#' }, _react2['default'].createElement('i', { className: 'fa fa-pencil fa-fw' }), '  Applications'), _react2['default'].createElement('a', { className: 'list-group-item', href: '#' }, _react2['default'].createElement('i', { className: 'fa fa-cog fa-fw' }), '  Settings'))))), _react2['default'].createElement('div', { className: 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main' }, _react2['default'].createElement(ProductTable, { data: this.state.data, filterText: this.state.searchedText, tags: this.state.tags })));
 	        }
 	    }]);
 
-	    return ProductBox;
+	    return StockComponent;
 	})(_react2['default'].Component);
 
 	var ProductNavBar = (function (_React$Component2) {
@@ -25063,40 +24927,25 @@
 	        _classCallCheck(this, ProductTable);
 
 	        _get(Object.getPrototypeOf(ProductTable.prototype), 'constructor', this).call(this, props);
-	        this.state = { productsRows: [] };
 	    }
 
 	    _createClass(ProductTable, [{
-	        key: 'componentWillReceiveProps',
-	        value: function componentWillReceiveProps() {
-
-	            console.log("componentWillReceiveProps");
-	        }
-	    }, {
-	        key: 'componentWillUpdate',
-	        value: function componentWillUpdate() {
-	            console.log("componentWillUpdate");
-	        }
-	    }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {
-	            console.log("componentDidUpdate");
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var counter = 0;
+
 	            var filterText = this.props.filterText.toLowerCase();
+	            var filterTags = this.props.tags.toLowerCase();
 
 	            var rows = this.props.data.map(function (product, key) {
 
-	                if (filterText === "" || filterText.length <= 2) {
-	                    if (counter < 250) {
+	                if ((filterText === "" || filterText.length <= 2) && (filterTags === "" || product.name.toLowerCase().contains(filterTags))) {
+	                    if (counter < 35) {
 	                        counter += 1;
 	                        return _react2['default'].createElement(ProductTableRow, { key: key, product: product });
 	                    }
-	                } else if (filterText.length > 2 && product.name.toLowerCase().contains(filterText)) if (counter < 250) {
+	                } else if (filterText.length > 2 && (product.name.toLowerCase().contains(filterText) || (filterTags === "" || product.name.toLowerCase().contains(filterTags)))) if (counter < 35) {
 	                    counter += 1;
 	                    return _react2['default'].createElement(ProductTableRow, { key: key, product: product });
 	                }
@@ -25123,7 +24972,7 @@
 	    _createClass(ProductTableHeader, [{
 	        key: 'render',
 	        value: function render() {
-	            return _react2['default'].createElement('thead', null, _react2['default'].createElement('tr', null, _react2['default'].createElement('th', null, 'Id'), _react2['default'].createElement('th', null, 'Nom'), _react2['default'].createElement('th', null, 'En stock')));
+	            return _react2['default'].createElement('thead', null, _react2['default'].createElement('tr', null, _react2['default'].createElement('th', null), _react2['default'].createElement('th', null, 'Nom'), _react2['default'].createElement('th', null, 'En stock')));
 	        }
 	    }]);
 
@@ -25142,14 +24991,34 @@
 	    _createClass(ProductTableRow, [{
 	        key: 'render',
 	        value: function render() {
-	            return _react2['default'].createElement('tr', null, _react2['default'].createElement('td', null, this.props.product.id), _react2['default'].createElement('td', null, this.props.product.name), _react2['default'].createElement('td', null, this.props.product.isInStock));
+	            return _react2['default'].createElement('tr', { onCLick: '' }, _react2['default'].createElement('td', null, this.props.product.name), _react2['default'].createElement('td', null, this.props.product.isInStock));
 	        }
 	    }]);
 
 	    return ProductTableRow;
 	})(_react2['default'].Component);
 
-	exports['default'] = ProductBox;
+	var TagBox = (function (_React$Component6) {
+	    _inherits(TagBox, _React$Component6);
+
+	    function TagBox(props) {
+	        _classCallCheck(this, TagBox);
+
+	        _get(Object.getPrototypeOf(TagBox.prototype), 'constructor', this).call(this, props);
+	    }
+
+	    _createClass(TagBox, [{
+	        key: 'render',
+	        value: function render() {
+
+	            return _react2['default'].createElement('div', { className: 'row' }, _react2['default'].createElement('div', { className: 'col-sm-1' }, _react2['default'].createElement('button', { className: 'btn btn-default' }, _react2['default'].createElement('i', { className: 'fa fa-pencil pointer' }))));
+	        }
+	    }]);
+
+	    return TagBox;
+	})(_react2['default'].Component);
+
+	exports['default'] = StockComponent;
 	module.exports = exports['default'];
 
 /***/ },
@@ -25534,6 +25403,7 @@
 	        _classCallCheck(this, SearchComponent);
 
 	        _get(Object.getPrototypeOf(SearchComponent.prototype), 'constructor', this).call(this, props);
+	        this.state = { searchedText: "" };
 	    }
 
 	    _createClass(SearchComponent, [{
@@ -25548,13 +25418,35 @@
 	    }, {
 	        key: 'handleSearch',
 	        value: function handleSearch() {
+	            var _this = this;
+
 	            var searchedText = _reactDom2['default'].findDOMNode(this.refs.searchInput).value;
-	            this.props.onChange(searchedText);
+	            this.setState({ searchedText: searchedText }, function (e) {
+	                _this.props.onChange(searchedText);
+	            });
+	        }
+	    }, {
+	        key: 'handlePressEnter',
+	        value: function handlePressEnter(e) {
+	            if (e.keyCode === 13) {
+	                this.props.onKeyDown(this.state.searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return false;
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2['default'].createElement('div', { className: 'input-group' }, _react2['default'].createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }), _react2['default'].createElement('input', { ref: 'searchInput', type: 'text', className: 'form-control', placeholder: 'Search', 'aria-describedby': 'basic-addon1', onChange: this.handleSearch.bind(this) }));
+	            return _react2['default'].createElement('div', { className: 'input-group' }, _react2['default'].createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }), _react2['default'].createElement('input', { ref: 'searchInput',
+	                type: 'text',
+	                className: 'form-control',
+	                placeholder: 'Search',
+	                'aria-describedby': 'basic-addon1',
+	                onChange: this.handleSearch.bind(this),
+	                onKeyDown: this.handlePressEnter.bind(this) }));
 	        }
 	    }]);
 
@@ -25562,6 +25454,457 @@
 	})(_react2['default'].Component);
 
 	exports['default'] = SearchComponent;
+	module.exports = exports['default'];
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () {
+	    function defineProperties(target, props) {
+	        for (var i = 0; i < props.length; i++) {
+	            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	        }
+	    }return function (Constructor, protoProps, staticProps) {
+	        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	    };
+	})();
+
+	var _get = function get(_x, _x2, _x3) {
+	    var _again = true;_function: while (_again) {
+	        var object = _x,
+	            property = _x2,
+	            receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	            var parent = Object.getPrototypeOf(object);if (parent === null) {
+	                return undefined;
+	            } else {
+	                _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	            }
+	        } else if ('value' in desc) {
+	            return desc.value;
+	        } else {
+	            var getter = desc.get;if (getter === undefined) {
+	                return undefined;
+	            }return getter.call(receiver);
+	        }
+	    }
+	};
+
+	function _interopRequireDefault(obj) {
+	    return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	    if (!(instance instanceof Constructor)) {
+	        throw new TypeError('Cannot call a class as a function');
+	    }
+	}
+
+	function _inherits(subClass, superClass) {
+	    if (typeof superClass !== 'function' && superClass !== null) {
+	        throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _sidebarsSearchInputJs = __webpack_require__(219);
+
+	var _sidebarsSearchInputJs2 = _interopRequireDefault(_sidebarsSearchInputJs);
+
+	var ProductComponent = (function (_React$Component) {
+	    _inherits(ProductComponent, _React$Component);
+
+	    function ProductComponent(props) {
+	        _classCallCheck(this, ProductComponent);
+
+	        _get(Object.getPrototypeOf(ProductComponent.prototype), 'constructor', this).call(this, props);
+	        this.state = {
+	            data: [],
+	            productId: props.params.id
+	        };
+	        console.log(props.params.id);
+	    }
+
+	    _createClass(ProductComponent, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement('div', null, 'product numero ', this.state.productId);
+	        }
+	    }]);
+
+	    return ProductComponent;
+	})(_react2['default'].Component);
+
+	exports['default'] = ProductComponent;
+	module.exports = exports['default'];
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _invariant = __webpack_require__(205);
+
+	var _invariant2 = _interopRequireDefault(_invariant);
+
+	var _Actions = __webpack_require__(206);
+
+	var _ExecutionEnvironment = __webpack_require__(222);
+
+	var _DOMUtils = __webpack_require__(223);
+
+	var _DOMStateStorage = __webpack_require__(224);
+
+	var _createDOMHistory = __webpack_require__(225);
+
+	var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
+
+	/**
+	 * Creates and returns a history object that uses HTML5's history API
+	 * (pushState, replaceState, and the popstate event) to manage history.
+	 * This is the recommended method of managing history in browsers because
+	 * it provides the cleanest URLs.
+	 *
+	 * Note: In browsers that do not support the HTML5 history API full
+	 * page reloads will be used to preserve URLs.
+	 */
+	function createBrowserHistory(options) {
+	  _invariant2['default'](_ExecutionEnvironment.canUseDOM, 'Browser history needs a DOM');
+
+	  var isSupported = _DOMUtils.supportsHistory();
+
+	  function getCurrentLocation(historyState) {
+	    historyState = historyState || window.history.state || {};
+
+	    var path = _DOMUtils.getWindowPath();
+	    var _historyState = historyState;
+	    var key = _historyState.key;
+
+	    var state = undefined;
+	    if (key) {
+	      state = _DOMStateStorage.readState(key);
+	    } else {
+	      state = null;
+	      key = history.createKey();
+
+	      if (isSupported) window.history.replaceState(_extends({}, historyState, { key: key }), null, path);
+	    }
+
+	    return history.createLocation(path, state, undefined, key);
+	  }
+
+	  function startPopStateListener(_ref) {
+	    var transitionTo = _ref.transitionTo;
+
+	    function popStateListener(event) {
+	      if (event.state === undefined) return; // Ignore extraneous popstate events in WebKit.
+
+	      transitionTo(getCurrentLocation(event.state));
+	    }
+
+	    _DOMUtils.addEventListener(window, 'popstate', popStateListener);
+
+	    return function () {
+	      _DOMUtils.removeEventListener(window, 'popstate', popStateListener);
+	    };
+	  }
+
+	  function finishTransition(location) {
+	    var basename = location.basename;
+	    var pathname = location.pathname;
+	    var search = location.search;
+	    var hash = location.hash;
+	    var state = location.state;
+	    var action = location.action;
+	    var key = location.key;
+
+	    if (action === _Actions.POP) return; // Nothing to do.
+
+	    _DOMStateStorage.saveState(key, state);
+
+	    var path = (basename || '') + pathname + search + hash;
+	    var historyState = {
+	      key: key
+	    };
+
+	    if (action === _Actions.PUSH) {
+	      if (isSupported) {
+	        window.history.pushState(historyState, null, path);
+	      } else {
+	        // Use a full-page reload to preserve the URL.
+	        window.location.href = path;
+	      }
+	    } else {
+	      // REPLACE
+	      if (isSupported) {
+	        window.history.replaceState(historyState, null, path);
+	      } else {
+	        // Use a full-page reload to preserve the URL.
+	        window.location.replace(path);
+	      }
+	    }
+	  }
+
+	  var history = _createDOMHistory2['default'](_extends({}, options, {
+	    getCurrentLocation: getCurrentLocation,
+	    finishTransition: finishTransition,
+	    saveState: _DOMStateStorage.saveState
+	  }));
+
+	  var listenerCount = 0,
+	      stopPopStateListener = undefined;
+
+	  function listenBefore(listener) {
+	    if (++listenerCount === 1) stopPopStateListener = startPopStateListener(history);
+
+	    var unlisten = history.listenBefore(listener);
+
+	    return function () {
+	      unlisten();
+
+	      if (--listenerCount === 0) stopPopStateListener();
+	    };
+	  }
+
+	  function listen(listener) {
+	    if (++listenerCount === 1) stopPopStateListener = startPopStateListener(history);
+
+	    var unlisten = history.listen(listener);
+
+	    return function () {
+	      unlisten();
+
+	      if (--listenerCount === 0) stopPopStateListener();
+	    };
+	  }
+
+	  // deprecated
+	  function registerTransitionHook(hook) {
+	    if (++listenerCount === 1) stopPopStateListener = startPopStateListener(history);
+
+	    history.registerTransitionHook(hook);
+	  }
+
+	  // deprecated
+	  function unregisterTransitionHook(hook) {
+	    history.unregisterTransitionHook(hook);
+
+	    if (--listenerCount === 0) stopPopStateListener();
+	  }
+
+	  return _extends({}, history, {
+	    listenBefore: listenBefore,
+	    listen: listen,
+	    registerTransitionHook: registerTransitionHook,
+	    unregisterTransitionHook: unregisterTransitionHook
+	  });
+	}
+
+	exports['default'] = createBrowserHistory;
+	module.exports = exports['default'];
+
+/***/ },
+/* 222 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+	exports.canUseDOM = canUseDOM;
+
+/***/ },
+/* 223 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports.addEventListener = addEventListener;
+	exports.removeEventListener = removeEventListener;
+	exports.getHashPath = getHashPath;
+	exports.replaceHashPath = replaceHashPath;
+	exports.getWindowPath = getWindowPath;
+	exports.go = go;
+	exports.getUserConfirmation = getUserConfirmation;
+	exports.supportsHistory = supportsHistory;
+	exports.supportsGoWithoutReloadUsingHash = supportsGoWithoutReloadUsingHash;
+
+	function addEventListener(node, event, listener) {
+	  if (node.addEventListener) {
+	    node.addEventListener(event, listener, false);
+	  } else {
+	    node.attachEvent('on' + event, listener);
+	  }
+	}
+
+	function removeEventListener(node, event, listener) {
+	  if (node.removeEventListener) {
+	    node.removeEventListener(event, listener, false);
+	  } else {
+	    node.detachEvent('on' + event, listener);
+	  }
+	}
+
+	function getHashPath() {
+	  // We can't use window.location.hash here because it's not
+	  // consistent across browsers - Firefox will pre-decode it!
+	  return window.location.href.split('#')[1] || '';
+	}
+
+	function replaceHashPath(path) {
+	  window.location.replace(window.location.pathname + window.location.search + '#' + path);
+	}
+
+	function getWindowPath() {
+	  return window.location.pathname + window.location.search + window.location.hash;
+	}
+
+	function go(n) {
+	  if (n) window.history.go(n);
+	}
+
+	function getUserConfirmation(message, callback) {
+	  callback(window.confirm(message));
+	}
+
+	/**
+	 * Returns true if the HTML5 history API is supported. Taken from modernizr.
+	 *
+	 * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
+	 * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/history.js
+	 * changed to avoid false negatives for Windows Phones: https://github.com/rackt/react-router/issues/586
+	 */
+
+	function supportsHistory() {
+	  var ua = navigator.userAgent;
+	  if ((ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) && ua.indexOf('Mobile Safari') !== -1 && ua.indexOf('Chrome') === -1 && ua.indexOf('Windows Phone') === -1) {
+	    return false;
+	  }
+	  return window.history && 'pushState' in window.history;
+	}
+
+	/**
+	 * Returns false if using go(n) with hash history causes a full page reload.
+	 */
+
+	function supportsGoWithoutReloadUsingHash() {
+	  var ua = navigator.userAgent;
+	  return ua.indexOf('Firefox') === -1;
+	}
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*eslint-disable no-empty */
+	'use strict';
+
+	exports.__esModule = true;
+	exports.saveState = saveState;
+	exports.readState = readState;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _warning = __webpack_require__(208);
+
+	var _warning2 = _interopRequireDefault(_warning);
+
+	var KeyPrefix = '@@History/';
+	var QuotaExceededError = 'QuotaExceededError';
+
+	function createKey(key) {
+	  return KeyPrefix + key;
+	}
+
+	function saveState(key, state) {
+	  try {
+	    window.sessionStorage.setItem(createKey(key), JSON.stringify(state));
+	  } catch (error) {
+	    if (error.name === QuotaExceededError || window.sessionStorage.length === 0) {
+	      // Probably in Safari "private mode" where sessionStorage quota is 0. #42
+	      _warning2['default'](false, '[history] Unable to save state; sessionStorage is not available in Safari private mode');
+
+	      return;
+	    }
+
+	    throw error;
+	  }
+	}
+
+	function readState(key) {
+	  var json = window.sessionStorage.getItem(createKey(key));
+
+	  if (json) {
+	    try {
+	      return JSON.parse(json);
+	    } catch (error) {
+	      // Ignore invalid JSON.
+	    }
+	  }
+
+	  return null;
+	}
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _invariant = __webpack_require__(205);
+
+	var _invariant2 = _interopRequireDefault(_invariant);
+
+	var _ExecutionEnvironment = __webpack_require__(222);
+
+	var _DOMUtils = __webpack_require__(223);
+
+	var _createHistory = __webpack_require__(207);
+
+	var _createHistory2 = _interopRequireDefault(_createHistory);
+
+	function createDOMHistory(options) {
+	  var history = _createHistory2['default'](_extends({
+	    getUserConfirmation: _DOMUtils.getUserConfirmation
+	  }, options, {
+	    go: _DOMUtils.go
+	  }));
+
+	  function listen(listener) {
+	    _invariant2['default'](_ExecutionEnvironment.canUseDOM, 'DOM history needs a DOM');
+
+	    return history.listen(listener);
+	  }
+
+	  return _extends({}, history, {
+	    listen: listen
+	  });
+	}
+
+	exports['default'] = createDOMHistory;
 	module.exports = exports['default'];
 
 /***/ }

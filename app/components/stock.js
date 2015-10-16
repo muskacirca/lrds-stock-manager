@@ -1,13 +1,15 @@
 import React from 'react'
 import SearchComponent from './sidebars/searchInput.js'
+import Link from 'react-router'
 
-class ProductBox extends React.Component {
+class StockComponent extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
             data: [],
-            searchedText: ""
+            searchedText: "",
+            tags: []
         }
     }
 
@@ -33,20 +35,15 @@ class ProductBox extends React.Component {
         this.setState({searchedText: searchedText})
     }
 
+    onKeyDownSearch(searchedText) {
+        var tags =   this.state.tags.push(searchedText)
+        this.setState({tags: tags})
+    }
+
     componentWillReceiveProps() {
     }
 
     componentWillUpdate() {
-
-/*        var people = this.state.data.map(function(product, key) {
-
-            console.log("searched text: " + this.state.searchedText)
-            if (product.name.toLowerCase().contains(this.state.searchedText)) {
-                return;
-            } else {
-                return <li className={person.sex} key={key}>{person.name}</li>;
-            }
-        });*/
 
     }
 
@@ -54,17 +51,35 @@ class ProductBox extends React.Component {
     }
 
     render() {
+
+        var tagRow = this.state.tags.map(function(tag) {
+            return <div>tag</div>
+        })
+
         return (
             <div>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-3 col-md-2 sidebar">
-                            <SearchComponent from="stock" onChange={this.onSearchInputChange.bind(this)}/>
+                            <SearchComponent from="stock"
+                                             onChange={this.onSearchInputChange.bind(this)}
+                                             onKeyDown={this.onKeyDownSearch.bind(this)} />
+                            <br />
+                            <div className="col-sm-3 col-md-2">
+
+                            </div>
+                            <div className="list-group">
+                                <a className="list-group-item" href="#"><i className="fa fa-plus-circle fa-fw"></i>&nbsp; Add item</a>
+                                <a className="list-group-item" href="#"><i className="fa fa-bookmark fa-fw"></i>&nbsp; Book item</a>
+                                <a className="list-group-item" href="#"><i className="fa fa-pencil fa-fw"></i>&nbsp; Applications</a>
+                                <a className="list-group-item" href="#"><i className="fa fa-cog fa-fw"></i>&nbsp; Settings</a>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <ProductTable data={this.state.data} filterText={this.state.searchedText} />
+                    <ProductTable data={this.state.data} filterText={this.state.searchedText} tags={this.state.tags} />
                 </div>
             </div>
         )
@@ -86,38 +101,28 @@ class ProductTable extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {productsRows: []}
-
-    }
-
-    componentWillReceiveProps() {
-
-        console.log("componentWillReceiveProps")
-    }
-
-    componentWillUpdate() {
-        console.log("componentWillUpdate")
-    }
-
-    componentDidUpdate() {
-        console.log("componentDidUpdate")
     }
 
     render() {
 
         var counter = 0
+
         var filterText = this.props.filterText.toLowerCase()
+        var filterTags = this.props.tags.toLowerCase()
 
         var rows = this.props.data.map(function (product, key) {
 
-            if(filterText === "" ||  filterText.length <= 2 ) {
-                if(counter < 250) {
+            if((filterText === "" || filterText.length <= 2 ) && (filterTags === "" || product.name.toLowerCase().contains(filterTags)) ) {
+                if(counter < 35) {
                     counter += 1
                     return <ProductTableRow key={key} product={product} />
                 }
 
-            } else if(filterText.length > 2 && product.name.toLowerCase().contains(filterText))
-                if(counter < 250) {
+            } else if(filterText.length > 2
+                && (product.name.toLowerCase().contains(filterText)
+                || (filterTags === "" || product.name.toLowerCase().contains(filterTags))))
+
+                if(counter < 35) {
                     counter += 1
                     return <ProductTableRow key={key} product={product} />
                 }
@@ -142,7 +147,7 @@ class ProductTableHeader extends React.Component {
         return (
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th></th>
                     <th>Nom</th>
                     <th>En stock</th>
                 </tr>
@@ -154,8 +159,7 @@ class ProductTableHeader extends React.Component {
 class ProductTableRow extends React.Component {
     render() {
             return (
-                <tr>
-                    <td>{this.props.product.id}</td>
+                <tr onCLick="">
                     <td>{this.props.product.name}</td>
                     <td>{this.props.product.isInStock}</td>
                 </tr>
@@ -163,4 +167,21 @@ class ProductTableRow extends React.Component {
     }
 }
 
-export default ProductBox
+class TagBox extends React.Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+
+        return (<div className="row">
+                    <div className="col-sm-1">
+                        <button className="btn btn-default"><i className="fa fa-pencil pointer"></i></button>
+                    </div>
+                </div>)
+    }
+
+}
+
+export default StockComponent
