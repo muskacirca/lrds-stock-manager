@@ -35,13 +35,6 @@ class NavBarBox extends React.Component{
                     <Link to="/logout" activeClassName="link-active">Log out</Link>
                   </li>
                 </ul>
-
-                <form className="navbar-form navbar-right" role="search">
-                  <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Search" />
-                  </div>
-                  <button type="submit" className="btn btn-default">Submit</button>
-                </form>
               </div>
             </div>
           </nav>

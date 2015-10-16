@@ -31,7 +31,6 @@ class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.history = props.history,
-            console.log("history in LoginForm: " + props.history);
         this.state = {error: false}
     }
 

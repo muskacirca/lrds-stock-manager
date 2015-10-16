@@ -24841,8 +24841,7 @@
 	        _classCallCheck(this, LoginForm);
 
 	        _get(Object.getPrototypeOf(LoginForm.prototype), 'constructor', this).call(this, props);
-	        this.history = props.history, console.log("history in LoginForm: " + props.history);
-	        this.state = { error: false };
+	        this.history = props.history, this.state = { error: false };
 	    }
 
 	    _createClass(LoginForm, [{
@@ -24965,6 +24964,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _sidebarsSearchInputJs = __webpack_require__(219);
+
+	var _sidebarsSearchInputJs2 = _interopRequireDefault(_sidebarsSearchInputJs);
+
 	var ProductBox = (function (_React$Component) {
 	    _inherits(ProductBox, _React$Component);
 
@@ -24973,7 +24976,8 @@
 
 	        _get(Object.getPrototypeOf(ProductBox.prototype), 'constructor', this).call(this, props);
 	        this.state = {
-	            data: []
+	            data: [],
+	            searchedText: ""
 	        };
 	    }
 
@@ -24998,9 +25002,35 @@
 	            this.loadCommentsFromServer();
 	        }
 	    }, {
+	        key: 'onSearchInputChange',
+	        value: function onSearchInputChange(searchedText) {
+	            this.setState({ searchedText: searchedText });
+	        }
+	    }, {
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps() {}
+	    }, {
+	        key: 'componentWillUpdate',
+	        value: function componentWillUpdate() {
+
+	            /*        var people = this.state.data.map(function(product, key) {
+	            
+	                        console.log("searched text: " + this.state.searchedText)
+	                        if (product.name.toLowerCase().contains(this.state.searchedText)) {
+	                            return;
+	                        } else {
+	                            return <li className={person.sex} key={key}>{person.name}</li>;
+	                        }
+	                    });*/
+
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {}
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2['default'].createElement('div', null, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'row' }, _react2['default'].createElement('div', { className: 'col-sm-3 col-md-2 sidebar' }, 'Side bar STOCK'))), _react2['default'].createElement('div', { className: 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main' }, _react2['default'].createElement(ProductTable, { data: this.state.data })));
+	            return _react2['default'].createElement('div', null, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'row' }, _react2['default'].createElement('div', { className: 'col-sm-3 col-md-2 sidebar' }, _react2['default'].createElement(_sidebarsSearchInputJs2['default'], { from: 'stock', onChange: this.onSearchInputChange.bind(this) })))), _react2['default'].createElement('div', { className: 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main' }, _react2['default'].createElement(ProductTable, { data: this.state.data, filterText: this.state.searchedText })));
 	        }
 	    }]);
 
@@ -25029,19 +25059,52 @@
 	var ProductTable = (function (_React$Component3) {
 	    _inherits(ProductTable, _React$Component3);
 
-	    function ProductTable() {
+	    function ProductTable(props) {
 	        _classCallCheck(this, ProductTable);
 
-	        _get(Object.getPrototypeOf(ProductTable.prototype), 'constructor', this).apply(this, arguments);
+	        _get(Object.getPrototypeOf(ProductTable.prototype), 'constructor', this).call(this, props);
+	        this.state = { productsRows: [] };
 	    }
 
 	    _createClass(ProductTable, [{
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps() {
+
+	            console.log("componentWillReceiveProps");
+	        }
+	    }, {
+	        key: 'componentWillUpdate',
+	        value: function componentWillUpdate() {
+	            console.log("componentWillUpdate");
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            console.log("componentDidUpdate");
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var productsRows = this.props.data.map(function (product) {
-	                return _react2['default'].createElement(ProductTableRow, { key: product.id, product: product });
+
+	            var counter = 0;
+	            var filterText = this.props.filterText.toLowerCase();
+
+	            var rows = this.props.data.map(function (product, key) {
+
+	                if (filterText === "" || filterText.length <= 2) {
+	                    if (counter < 250) {
+	                        counter += 1;
+	                        return _react2['default'].createElement(ProductTableRow, { key: key, product: product });
+	                    }
+	                } else if (filterText.length > 2 && product.name.toLowerCase().contains(filterText)) if (counter < 250) {
+	                    counter += 1;
+	                    return _react2['default'].createElement(ProductTableRow, { key: key, product: product });
+	                }
 	            });
-	            return _react2['default'].createElement('table', { className: 'table' }, _react2['default'].createElement(ProductTableHeader, null), _react2['default'].createElement('tbody', null, productsRows));
+
+	            console.log("render, productsRows length: " + rows.length);
+
+	            return _react2['default'].createElement('table', { className: 'table' }, _react2['default'].createElement(ProductTableHeader, null), _react2['default'].createElement('tbody', null, rows));
 	        }
 	    }]);
 
@@ -25329,7 +25392,7 @@
 	  _createClass(NavBarBox, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2['default'].createElement('nav', { className: 'navbar navbar-inverse navbar-fixed-top' }, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'navbar-header' }, _react2['default'].createElement('button', { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' }, _react2['default'].createElement('span', { className: 'sr-only' }, 'Toggle navigation'), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' })), _react2['default'].createElement('a', { className: 'navbar-brand', href: '#' }, 'LRDS')), _react2['default'].createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' }, _react2['default'].createElement('ul', { className: 'nav navbar-nav' }, _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/', activeClassName: 'link-active' }, 'Home')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/profile', activeClassName: 'link-active' }, 'Profile')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/stock', activeClassName: 'link-active' }, 'Stock')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/event', activeClassName: 'link-active' }, 'Events')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/logout', activeClassName: 'link-active' }, 'Log out'))), _react2['default'].createElement('form', { className: 'navbar-form navbar-right', role: 'search' }, _react2['default'].createElement('div', { className: 'form-group' }, _react2['default'].createElement('input', { type: 'text', className: 'form-control', placeholder: 'Search' })), _react2['default'].createElement('button', { type: 'submit', className: 'btn btn-default' }, 'Submit')))));
+	      return _react2['default'].createElement('nav', { className: 'navbar navbar-inverse navbar-fixed-top' }, _react2['default'].createElement('div', { className: 'container-fluid' }, _react2['default'].createElement('div', { className: 'navbar-header' }, _react2['default'].createElement('button', { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' }, _react2['default'].createElement('span', { className: 'sr-only' }, 'Toggle navigation'), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' }), _react2['default'].createElement('span', { className: 'icon-bar' })), _react2['default'].createElement('a', { className: 'navbar-brand', href: '#' }, 'LRDS')), _react2['default'].createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' }, _react2['default'].createElement('ul', { className: 'nav navbar-nav' }, _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/', activeClassName: 'link-active' }, 'Home')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/profile', activeClassName: 'link-active' }, 'Profile')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/stock', activeClassName: 'link-active' }, 'Stock')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/event', activeClassName: 'link-active' }, 'Events')), _react2['default'].createElement('li', { role: 'presentation' }, _react2['default'].createElement(_reactRouter.Link, { to: '/logout', activeClassName: 'link-active' }, 'Log out'))))));
 	    }
 	  }]);
 
@@ -25399,6 +25462,107 @@
 	    }
 	  }, 0);
 	}
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () {
+	    function defineProperties(target, props) {
+	        for (var i = 0; i < props.length; i++) {
+	            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ('value' in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	        }
+	    }return function (Constructor, protoProps, staticProps) {
+	        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	    };
+	})();
+
+	var _get = function get(_x, _x2, _x3) {
+	    var _again = true;_function: while (_again) {
+	        var object = _x,
+	            property = _x2,
+	            receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+	            var parent = Object.getPrototypeOf(object);if (parent === null) {
+	                return undefined;
+	            } else {
+	                _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+	            }
+	        } else if ('value' in desc) {
+	            return desc.value;
+	        } else {
+	            var getter = desc.get;if (getter === undefined) {
+	                return undefined;
+	            }return getter.call(receiver);
+	        }
+	    }
+	};
+
+	function _interopRequireDefault(obj) {
+	    return obj && obj.__esModule ? obj : { 'default': obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	    if (!(instance instanceof Constructor)) {
+	        throw new TypeError('Cannot call a class as a function');
+	    }
+	}
+
+	function _inherits(subClass, superClass) {
+	    if (typeof superClass !== 'function' && superClass !== null) {
+	        throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(157);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var SearchComponent = (function (_React$Component) {
+	    _inherits(SearchComponent, _React$Component);
+
+	    function SearchComponent(props) {
+	        _classCallCheck(this, SearchComponent);
+
+	        _get(Object.getPrototypeOf(SearchComponent.prototype), 'constructor', this).call(this, props);
+	    }
+
+	    _createClass(SearchComponent, [{
+	        key: 'getSearch',
+	        value: function getSearch(cb) {
+	            cb = arguments[arguments.length - 1];
+	            var searchedText = this.state.searchedText;
+	            if (cb) {
+	                if (searchedText.length > 3) cb(searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'handleSearch',
+	        value: function handleSearch() {
+	            var searchedText = _reactDom2['default'].findDOMNode(this.refs.searchInput).value;
+	            this.props.onChange(searchedText);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement('div', { className: 'input-group' }, _react2['default'].createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }), _react2['default'].createElement('input', { ref: 'searchInput', type: 'text', className: 'form-control', placeholder: 'Search', 'aria-describedby': 'basic-addon1', onChange: this.handleSearch.bind(this) }));
+	        }
+	    }]);
+
+	    return SearchComponent;
+	})(_react2['default'].Component);
+
+	exports['default'] = SearchComponent;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);
