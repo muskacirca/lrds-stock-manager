@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import {Router, IndexRoute, Route} from 'react-router'
-import createBrowserHistory from 'history/lib/createBrowserHistory'
+import createMemoryHistory from 'history/lib/createMemoryHistory'
 
 import LoginBox from './components/login.js'
 import StockComponent from './components/stock.js'
@@ -66,5 +66,5 @@ let routes = (
   </Route>
 )
 
-ReactDOM.render(<Router history={createBrowserHistory()}>{routes}</Router>,  document.getElementById('content'))
+ReactDOM.render(<Router history={createMemoryHistory()}>{routes}</Router>,  document.getElementById('content'))
 

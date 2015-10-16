@@ -36,8 +36,11 @@ class StockComponent extends React.Component {
     }
 
     onKeyDownSearch(searchedText) {
-        var tags =   this.state.tags.push(searchedText)
-        this.setState({tags: tags})
+        var t = this.state.tags.slice()
+        t.push(searchedText)
+        this.setState({ tags: t }, e => {
+            console.log("tags: " + this.state.tags.toString())
+        })
     }
 
     componentWillReceiveProps() {
@@ -52,9 +55,12 @@ class StockComponent extends React.Component {
 
     render() {
 
-        var tagRow = this.state.tags.map(function(tag) {
-            return <div>tag</div>
+        var tagRow = this.state.tags.map(function(element, key) {
+
+            return <li key={key} className="tag">{element}</li>
         })
+
+        console.log("tagRow: " + tagRow)
 
         return (
             <div>
@@ -65,9 +71,9 @@ class StockComponent extends React.Component {
                                              onChange={this.onSearchInputChange.bind(this)}
                                              onKeyDown={this.onKeyDownSearch.bind(this)} />
                             <br />
-                            <div className="col-sm-3 col-md-2">
-
-                            </div>
+                            <ul>
+                                {tagRow}
+                            </ul>
                             <div className="list-group">
                                 <a className="list-group-item" href="#"><i className="fa fa-plus-circle fa-fw"></i>&nbsp; Add item</a>
                                 <a className="list-group-item" href="#"><i className="fa fa-bookmark fa-fw"></i>&nbsp; Book item</a>
@@ -108,27 +114,39 @@ class ProductTable extends React.Component {
         var counter = 0
 
         var filterText = this.props.filterText.toLowerCase()
-        var filterTags = this.props.tags.toString().toLowerCase()
+        var filterTags = this.props.tags
 
-        var rows = this.props.data.map(function (product, key) {
+        var taggedFilteredRows = this.props.data.map(function (product, key) {
 
-            if((filterText === "" || filterText.length <= 2 ) && (filterTags === "" || product.name.toLowerCase().contains(filterTags)) ) {
-                if(counter < 35) {
+            if(counter < 35) {
+                if (filterTags.length === 0 || product.name.toLowerCase().contains(filterTags.toString().toLowerCase())) {
                     counter += 1
-                    return <ProductTableRow key={key} product={product} />
+                    return product
                 }
-
-            } else if(filterText.length > 2
-                && (product.name.toLowerCase().contains(filterText)
-                || (filterTags === "" || product.name.toLowerCase().contains(filterTags))))
-
-                if(counter < 35) {
-                    counter += 1
-                    return <ProductTableRow key={key} product={product} />
-                }
+            }
         })
 
-        console.log("render, productsRows length: " + rows.length)
+        var t = taggedFilteredRows.filter(function (element) {
+            return element !== undefined;
+        })
+
+        counter = 0
+        var rows = t.map(function (product, key) {
+
+            if(counter < 35 ) {
+                if (filterText === "" || filterText.length <= 2 ) {
+                    counter += 1
+
+                    return <ProductTableRow key={key} product={product}/>
+
+                } else if (filterText.length > 2 && product.name.toLowerCase().contains(filterText)) {
+                    counter += 1
+                    return <ProductTableRow key={key} product={product}/>
+                }
+            }
+        })
+
+        //  && ()
 
         return (
             <table className="table">
@@ -147,7 +165,6 @@ class ProductTableHeader extends React.Component {
         return (
             <thead>
                 <tr>
-                    <th></th>
                     <th>Nom</th>
                     <th>En stock</th>
                 </tr>
@@ -157,6 +174,11 @@ class ProductTableHeader extends React.Component {
 }
 
 class ProductTableRow extends React.Component {
+
+    constructor(props) {
+        super(props)
+    }
+
     render() {
             return (
                 <tr onCLick="">
