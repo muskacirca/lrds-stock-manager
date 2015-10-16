@@ -108,7 +108,7 @@ class ProductTable extends React.Component {
         var counter = 0
 
         var filterText = this.props.filterText.toLowerCase()
-        var filterTags = this.props.tags.toLowerCase()
+        var filterTags = this.props.tags.toString().toLowerCase()
 
         var rows = this.props.data.map(function (product, key) {
 
