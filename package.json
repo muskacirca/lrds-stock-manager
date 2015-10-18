@@ -4,7 +4,7 @@
   "description": "`LRDS Stock Manager",
   "main": "./app/index.html",
   "scripts": {
-    "start": "node --harmony ./app/App.js",
+    "start": "node --harmony --use_strict --harmony_generators ./app/App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
