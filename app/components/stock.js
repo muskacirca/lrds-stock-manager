@@ -38,9 +38,14 @@ class StockComponent extends React.Component {
     onKeyDownSearch(searchedText) {
         var t = this.state.tags.slice()
         t.push(searchedText)
-        this.setState({ tags: t }, e => {
-            console.log("tags: " + this.state.tags.toString())
-        })
+        this.setState({ tags: t }, e => {})
+    }
+
+    onCLickTag(tagToremove) {
+        var tmpTag = this.state.tags
+        var i = tmpTag.indexOf(tagToremove)
+        if(i !== -1) tmpTag.splice(i, 1);
+        this.setState({ tags: tmpTag }, e => {})
     }
 
     componentWillReceiveProps() {
@@ -57,10 +62,8 @@ class StockComponent extends React.Component {
 
         var tagRow = this.state.tags.map(function(element, key) {
 
-            return <li key={key} className="tag">{element}</li>
-        })
-
-        console.log("tagRow: " + tagRow)
+            return <li key={key} className="tag" onClick={this.onCLickTag.bind(this, element)}>{element}</li>
+        }.bind(this))
 
         return (
             <div>
@@ -111,27 +114,42 @@ class ProductTable extends React.Component {
 
     render() {
 
-        var counter = 0
-
         var filterText = this.props.filterText.toLowerCase()
         var filterTags = this.props.tags
+        //console.log("filterTags: " + filterTags )
 
-        var taggedFilteredRows = this.props.data.map(function (product, key) {
+        var counter = 0
 
-            if(counter < 35) {
-                if (filterTags.length === 0 || product.name.toLowerCase().contains(filterTags.toString().toLowerCase())) {
-                    counter += 1
-                    return product
+        var taggedFilteredRows = []
+        if (filterTags.length !== 0) {
+            //console.log("filterTags.length !== 0")
+            taggedFilteredRows = this.props.data.map(function (product) {
+
+                if (counter < 35) {
+                    var hasTags = false
+                    for(var i = 0; i < filterTags.length; i++) {
+                        //console.log("for(var i = 0; i < taggedFilteredRows.length; i++)")
+                        if (product.name.toLowerCase().contains(filterTags[i].toLowerCase())) {
+                            //console.log("hasTags = true")
+                            counter += 1
+                            hasTags = true
+                        }
+                    }
+
+                    return hasTags ? product : undefined
                 }
-            }
-        })
+            })
+        }
 
         var t = taggedFilteredRows.filter(function (element) {
             return element !== undefined;
         })
 
         counter = 0
-        var rows = t.map(function (product, key) {
+
+        //console.log("t.length: " + t.length)
+        var rowsToShow = t.length === 0 ? this.props.data : t
+        var rows = rowsToShow.map(function (product, key) {
 
             if(counter < 35 ) {
                 if (filterText === "" || filterText.length <= 2 ) {
