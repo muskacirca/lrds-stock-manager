@@ -13,20 +13,11 @@ import NavBarBox from './components/navbar.js'
 
 import authService from './components/controllers/auth.js'
 
-function* argumentsGenerator() {
-  for (let i = 0; i < arguments.length; i += 1) {
-    yield arguments[i];
-  }
-}
-
 class App extends React.Component{
 
   constructor(props) {
     super(props);
   }
-
-
-
 
   componentWillMount() {
   }

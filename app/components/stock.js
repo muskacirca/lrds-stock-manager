@@ -38,7 +38,9 @@ class StockComponent extends React.Component {
     onKeyDownSearch(searchedText) {
         var t = this.state.tags.slice()
         t.push(searchedText)
-        this.setState({ tags: t }, e => {})
+        this.setState({
+            tags: t,
+            searchedText: ''}, e => {})
     }
 
     onCLickTag(tagToremove) {
@@ -116,21 +118,17 @@ class ProductTable extends React.Component {
 
         var filterText = this.props.filterText.toLowerCase()
         var filterTags = this.props.tags
-        //console.log("filterTags: " + filterTags )
 
         var counter = 0
 
         var taggedFilteredRows = []
         if (filterTags.length !== 0) {
-            //console.log("filterTags.length !== 0")
             taggedFilteredRows = this.props.data.map(function (product) {
 
                 if (counter < 35) {
                     var hasTags = false
                     for(var i = 0; i < filterTags.length; i++) {
-                        //console.log("for(var i = 0; i < taggedFilteredRows.length; i++)")
                         if (product.name.toLowerCase().contains(filterTags[i].toLowerCase())) {
-                            //console.log("hasTags = true")
                             counter += 1
                             hasTags = true
                         }
@@ -147,7 +145,6 @@ class ProductTable extends React.Component {
 
         counter = 0
 
-        //console.log("t.length: " + t.length)
         var rowsToShow = t.length === 0 ? this.props.data : t
         var rows = rowsToShow.map(function (product, key) {
 

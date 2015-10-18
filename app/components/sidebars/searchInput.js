@@ -25,6 +25,7 @@ class SearchComponent extends React.Component {
 
     handlePressEnter(e) {
         if(e.keyCode === 13){
+            ReactDOM.findDOMNode(this.refs.searchInput).value = ''
             this.props.onKeyDown(this.state.searchedText);
         }
     }
