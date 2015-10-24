@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import {Router, IndexRoute, Route} from 'react-router'
-import createMemoryHistory from 'history/lib/createMemoryHistory'
+import createBrowserHistory from 'history/lib/createBrowserHistory'
 
 import LoginBox from './components/login.js'
 import StockComponent from './components/stock.js'
@@ -43,7 +43,7 @@ var Stock = React.createClass({
 
 function requireAuth(nextState, replaceState) {
   if(!authService.loggedIn()) {
-    replaceState({ nextPathname: nextState.location.pathname }, '/login')
+    replaceState({ nextPathname: nextState.location.pathname }, '/jeestock/login')
   }
 }
 
@@ -53,7 +53,7 @@ function logout(nextState, replaceState) {
 }
 
 let routes = (
-  <Route path="/" component={App}>
+  <Route path="/jeestock" component={App}>
     <IndexRoute component={App} />
     <Route path="profile" component={Profile} onEnter={requireAuth}/>
     <Route path="stock" component={Stock} onEnter={requireAuth}>
@@ -65,5 +65,5 @@ let routes = (
   </Route>
 )
 
-ReactDOM.render(<Router history={createMemoryHistory()}>{routes}</Router>,  document.getElementById('content'))
+ReactDOM.render(<Router history={createBrowserHistory()}>{routes}</Router>,  document.getElementById('content'))
 

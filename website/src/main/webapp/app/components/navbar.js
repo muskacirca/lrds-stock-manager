@@ -20,19 +20,19 @@ class NavBarBox extends React.Component{
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
                   <li role="presentation">
-                    <Link to="/" activeClassName="link-active">Home</Link>
+                    <Link to="/jeestock" activeClassName="link-active">Home</Link>
                   </li>
                   <li role="presentation">
-                    <Link to="/profile" activeClassName="link-active">Profile</Link>
+                    <Link to="/jeestock/profile" activeClassName="link-active">Profile</Link>
                   </li>
                   <li role="presentation">
-                    <Link to="/stock" activeClassName="link-active">Stock</Link>
+                    <Link to="/jeestock/stock" activeClassName="link-active">Stock</Link>
                   </li>
                   <li role="presentation">
-                    <Link to="/event" activeClassName="link-active">Events</Link>
+                    <Link to="/jeestock/event" activeClassName="link-active">Events</Link>
                   </li>
                   <li role="presentation">
-                    <Link to="/logout" activeClassName="link-active">Log out</Link>
+                    <Link to="/jeestock/logout" activeClassName="link-active">Log out</Link>
                   </li>
                 </ul>
               </div>

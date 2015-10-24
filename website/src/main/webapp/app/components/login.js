@@ -50,7 +50,7 @@ class LoginForm extends React.Component {
             }
 
             console.log("authenticated, redirecting to profile");
-            this.history.replaceState(null, '/profile')
+            this.history.replaceState(null, '/jeestock/profile')
         })
 
         return;
