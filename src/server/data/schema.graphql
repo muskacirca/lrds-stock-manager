@@ -1,0 +1,38 @@
+type ItemType implements Node {
+  id: ID!
+  name: String
+  reference: String
+  description: String
+  isInStock: Boolean
+}
+
+type ItemTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ItemTypeEdge]
+}
+
+type ItemTypeEdge {
+  node: ItemType
+  cursor: String!
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Root {
+  viewer: Viewer
+  node(id: ID!): Node
+}
+
+type Viewer implements Node {
+  id: ID!
+  items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
+}

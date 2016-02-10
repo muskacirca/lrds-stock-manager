@@ -1,0 +1,216 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding-top: 50px;
+}
+
+a {
+    color: #00B7FF;
+}
+
+.link-active {
+    color: darkred;
+    text-decoration: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 51px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 20px;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: #f5f5f5;
+        border-right: 1px solid #eee;
+    }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 20px;
+    margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.nav-sidebar > .active > a, .nav-sidebar > .active > a:focus {
+    color: #fff;
+    background-color: #428bca;
+}
+
+/*
+ * Main content
+ */
+
+/*.main {
+    padding: 20px;
+}*/
+/*
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+
+.main .page-header {
+    margin-top: 0;
+}
+*/
+
+li.tag {
+    list-style: none;
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    margin: 2px;
+    border-radius: 3px;
+    background: #a0cfee;
+    color: #16527a;
+}
+
+li.tag:hover {
+    cursor: pointer;
+    background: #8bc4ea;
+}
+
+/*.sidebar {
+
+  background-color: #ffcdd2;
+  color: #212121;
+  height: 100%;
+  float: left;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.row {
+  display: table;
+}
+
+[class*="col-"] {
+  float: none;
+  display: table-cell;
+  vertical-align: top;
+}
+
+div.app {
+  height: auto;
+}
+
+div.no-float {
+  float: none;
+}*/
+
+/*
+.container-fluid > .navbar-header {
+    margin-right: 0px;
+    margin-left: 15px;
+}
+
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+*/
+
+/*
+#input-form-navbar {
+  display:block;
+  float:left;
+  width:150px;
+}
+
+#button-form-navbar  {
+  float: left;
+}
+
+
+.nav td div{
+  text-align: center;
+  vertical-align: middle
+}*/
+
+/* *************
+  Map
+************* */
+
+html,
+body,
+#main {
+     height: 100%;
+     width: 100%;
+ }
+
+#wrapper {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+#navbar-main {
+    border-bottom: 1em black;
+}
+
+#data-container {
+    margin-top: 2.5em;
+}
+
+
+#map-container {
+    height: 50%;
+    width: 100%;
+}
+
+.map-toolbox {
+    position: absolute;
+    top: 4.5em;
+    right: 1.5em;
+}
+
+/* *************
+  Presentation
+************* */
+
+.presentation-body {
+    padding: 5px;
+}
