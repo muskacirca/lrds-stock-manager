@@ -102,18 +102,30 @@ item.belongsToMany(domain, { through: 'itemDomain', timestamps: false });
 //Wreck.hasMany(Media)
 //Media.belongsTo(Wreck)
 
-connection.sync({ force: true }).then(function () {
-    domain.create({ name: 'STUDIO' });
-    domain.create({ name: 'SCENE' });
-    category.create({ name: "MICRO" }).then(function (category) {
-        return category.createSubCategory({ name: "DYNAMIQUE" }).then(function (subCategory) {
-            return subCategory.createItem({ name: "Fireface UC",
-                reference: 'RMEUC01',
-                description: "une carte son 8 piste" });
-        });
-    });
-
-    //item.create({name: "Fireface UC", reference:'RMEUC01', description:"une carte son 8 piste"})
-});
+connection.sync({ force: false });
+//    .then(() => {
+//    var studio = domain.create({name: 'STUDIO'})
+//    var scene = domain.create({name: 'SCENE'})
+//
+//    category.create({name: "MICRO"})
+//        .then(category => {
+//            return category.createSubCategory({name: "DYNAMIQUE"})
+//                .then(subCategory => {
+//                    return subCategory.createItem({name: "Fireface UC",
+//                                                   reference:'RMEUC01',
+//                                                   description:"une carte son 8 piste",
+//                                                   isInStock: true
+//                    })
+//                })
+//        })
+//
+//        //item.find({ where: {reference: 'RMEUC01'} }).on('success', function(item) {
+//        //    domain.find({where: {name: 'STUDIO'}}).on('success', function(domain){
+//        //        item.setDomains([domain]);
+//        //    });
+//        //});
+//
+//    //item.create({name: "Fireface UC", reference:'RMEUC01', description:"une carte son 8 piste"})
+//})
 
 exports.default = connection;

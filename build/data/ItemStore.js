@@ -3,10 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Viewer = exports.Item = undefined;
+exports.SubCategory = exports.Category = exports.Domain = exports.Viewer = exports.Item = undefined;
 exports.initState = initState;
 exports.getById = getById;
+exports.getSubCategoryById = getSubCategoryById;
 exports.getViewer = getViewer;
+exports.getSubcategory = getSubcategory;
 exports.isInitialized = isInitialized;
 exports.getItems = getItems;
 exports.pushItem = pushItem;
@@ -49,6 +51,42 @@ var Viewer = exports.Viewer = function (_Object2) {
     return Viewer;
 }(Object);
 
+var Domain = exports.Domain = function (_Object3) {
+    _inherits(Domain, _Object3);
+
+    function Domain() {
+        _classCallCheck(this, Domain);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(Domain).apply(this, arguments));
+    }
+
+    return Domain;
+}(Object);
+
+var Category = exports.Category = function (_Object4) {
+    _inherits(Category, _Object4);
+
+    function Category() {
+        _classCallCheck(this, Category);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(Category).apply(this, arguments));
+    }
+
+    return Category;
+}(Object);
+
+var SubCategory = exports.SubCategory = function (_Object5) {
+    _inherits(SubCategory, _Object5);
+
+    function SubCategory() {
+        _classCallCheck(this, SubCategory);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(SubCategory).apply(this, arguments));
+    }
+
+    return SubCategory;
+}(Object);
+
 var VIEWER_ID = 'me';
 
 var viewer = new Viewer();
@@ -81,7 +119,18 @@ function getById(id) {
     return item[0];
 }
 
+function getSubCategoryById(id) {
+
+    return { name: "SUB_CATEGORY" };
+}
+
 function getViewer() {
+
+    console.log("getting viewer : " + JSON.stringify(usersById[VIEWER_ID]));
+    return usersById[VIEWER_ID];
+}
+
+function getSubcategory() {
 
     console.log("getting viewer : " + JSON.stringify(usersById[VIEWER_ID]));
     return usersById[VIEWER_ID];
@@ -97,7 +146,7 @@ function isInitialized() {
 
 function getItems() {
 
-    console.log("wrecksStore: " + itemsStore.length);
+    console.log("itemsStore: " + itemsStore.length);
 
     return itemsStore;
 }

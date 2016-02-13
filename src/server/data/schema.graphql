@@ -1,9 +1,23 @@
+type CategoryType implements Node {
+  id: ID!
+  name: String
+  description: String
+}
+
+type DomainType implements Node {
+  id: ID!
+  name: String
+  description: String
+}
+
 type ItemType implements Node {
   id: ID!
   name: String
   reference: String
   description: String
   isInStock: Boolean
+  domains: [DomainType]
+  subCategories: [SubCategoryType]
 }
 
 type ItemTypeConnection {
@@ -30,6 +44,13 @@ type PageInfo {
 type Root {
   viewer: Viewer
   node(id: ID!): Node
+}
+
+type SubCategoryType implements Node {
+  id: ID!
+  name: String
+  description: String
+  category: CategoryType
 }
 
 type Viewer implements Node {

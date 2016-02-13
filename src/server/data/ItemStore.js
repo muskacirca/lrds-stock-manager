@@ -2,6 +2,9 @@ import _ from 'lodash'
 
 export class Item extends Object {}
 export class Viewer extends Object {}
+export class Domain extends Object {}
+export class Category extends Object {}
+export class SubCategory extends Object {}
 
 const VIEWER_ID = 'me';
 
@@ -37,10 +40,21 @@ export function getById(id) {
     return item[0]
 }
 
+export function getSubCategoryById(id) {
+
+    return {name: "SUB_CATEGORY"}
+}
+
 export function getViewer() {
 
     console.log("getting viewer : " + JSON.stringify(usersById[VIEWER_ID]))
    return usersById[VIEWER_ID]
+}
+
+export function getSubcategory() {
+
+    console.log("getting viewer : " + JSON.stringify(usersById[VIEWER_ID]))
+    return usersById[VIEWER_ID]
 }
 
 export function isInitialized() {
@@ -53,7 +67,7 @@ export function isInitialized() {
 
 export function getItems() {
 
-    console.log("wrecksStore: " + itemsStore.length)
+    console.log("itemsStore: " + itemsStore.length)
 
     return itemsStore
 }
