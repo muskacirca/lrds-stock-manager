@@ -113,6 +113,9 @@ connection.sync({force: false})
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})
 //
+//
+//
+//
 //    category.create({name: "MICRO"})
 //        .then(category => {
 //            return category.createSubCategory({name: "DYNAMIQUE"})
@@ -120,13 +123,12 @@ connection.sync({force: false})
 //                    return subCategory.createItem({name: "SM58",
 //                                                   reference:'SM5801',
 //                                                   description:"un micro tout terrain",
-//                                                   isInStock: true,
-//                                                    domains: [studio, scene]
+//                                                   isInStock: true
 //                    })
 //                })
 //        })
 //
-//        //item.find({ where: {reference: 'RMEUC01'} }).on('success', function(item) {
+//        //item.find({ where: {reference: 'SM5801'} }).on('success', function(item) {
 //        //    domain.find({where: {name: 'STUDIO'}}).on('success', function(domain){
 //        //        item.setDomains([domain]);
 //        //    });
