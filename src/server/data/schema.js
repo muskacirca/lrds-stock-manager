@@ -49,7 +49,7 @@ var { nodeInterface, nodeField } = nodeDefinitions(
             console.log("Im here getting SubCategoryType")
             return getViewer(id);
         } else if (type === "DomainType") {
-                console.log("Im here getting Domainype")
+                console.log("Im here getting Domain")
                 return getViewer(id);
         } else if (type === "Viewer") {
             console.log("Im here getting viewer")
@@ -73,6 +73,32 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         }
     }
 );
+
+var GraphQLBrandType = new GraphQLObjectType({
+    name: 'BrandType',
+    fields: {
+        id: globalIdField('BrandType'),
+        name: { type: GraphQLString, resolve: (obj) => obj.name},
+        description: { type: GraphQLString, resolve: (obj) => obj.description }
+    },
+    interfaces: [nodeInterface]
+});
+
+var GraphQLModelType = new GraphQLObjectType({
+    name: 'ModelType',
+    fields: {
+        id: globalIdField('ModelType'),
+        name: { type: GraphQLString, resolve: (obj) => obj.name},
+        description: { type: GraphQLString, resolve: (obj) => obj.description },
+        brand: {
+            type: GraphQLBrandType,
+            resolve: (obj) => {
+                return Database.models.brand.findById(obj.brandId)
+            }
+        }
+    },
+    interfaces: [nodeInterface]
+});
 
 var GraphQLDomainType = new GraphQLObjectType({
     name: 'DomainType',
@@ -101,6 +127,26 @@ var GraphQLCategoryType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var GraphQLItemCommentType = new GraphQLObjectType({
+    name: 'ItemCommentType',
+    fields: {
+        id: globalIdField('ItemCommentType'),
+        text: { type: GraphQLString, resolve: (obj) => obj.text},
+        createdAt: { type: GraphQLString, resolve: (obj) => obj.createdAt},
+        updatedAt: { type: GraphQLString, resolve: (obj) => obj.updatedAt}
+    },
+    interfaces: [nodeInterface]
+});
+
+var {
+    connectionType: ItemCommentConnection
+    // ,edgeType: GraphQLSimTypesEdge,
+    } = connectionDefinitions({
+    name: 'ItemCommentType',
+    nodeType: GraphQLItemCommentType
+});
+
+
 var GraphQLSubCategoryType = new GraphQLObjectType({
     name: 'SubCategoryType',
     fields: {
@@ -118,33 +164,32 @@ var GraphQLSubCategoryType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var {
-    connectionType: SubCategoryConnection
-    // ,edgeType: GraphQLSimTypesEdge,
-    } = connectionDefinitions({
-    name: 'SubCategoryType',
-    nodeType: GraphQLSubCategoryType
-});
-
 var GraphQLItemType = new GraphQLObjectType({
     name: 'ItemType',
     fields: {
         id: globalIdField('ItemType'),
-        name: {
-            type: GraphQLString,
-            resolve: (obj) => obj.name
+        model: {
+            type: GraphQLModelType,
+            resolve: (obj) => {
+                console.log("get model in item : " + JSON.stringify(obj))
+                return Database.models.model.findById(obj.modelId)
+            }
         },
         reference: {
             type: GraphQLString,
             resolve: (obj) => obj.reference
         },
-        description: {
-            type: GraphQLString,
-            resolve: (obj) => obj.description
-        },
         isInStock: {
             type: GraphQLBoolean,
             resolve: (obj) => obj.isInStock
+        },
+        comments: {
+            type: ItemCommentConnection,
+            args: {...connectionArgs},
+            resolve: (obj, {...args}) => {
+                console.log("comments in item : " + obj.getComments())
+                return connectionFromPromisedArray(obj.getComments(), args)
+            }
         },
         domains: {
             type: new GraphQLList(GraphQLDomainType),
@@ -157,7 +202,6 @@ var GraphQLItemType = new GraphQLObjectType({
         subCategories: {
             type: new GraphQLList(GraphQLSubCategoryType),
             resolve: (obj) => {
-                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAA subcategories: " + JSON.stringify(obj.getSubCategories()))
                 return obj.getSubCategories()
             }
         },

@@ -39,7 +39,7 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
         console.log("Im here getting SubCategoryType");
         return (0, _ItemStore.getViewer)(id);
     } else if (type === "DomainType") {
-        console.log("Im here getting Domainype");
+        console.log("Im here getting Domain");
         return (0, _ItemStore.getViewer)(id);
     } else if (type === "Viewer") {
         console.log("Im here getting viewer");
@@ -65,6 +65,40 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
 var nodeInterface = _nodeDefinitions.nodeInterface;
 var nodeField = _nodeDefinitions.nodeField;
 
+
+var GraphQLBrandType = new _graphql.GraphQLObjectType({
+    name: 'BrandType',
+    fields: {
+        id: (0, _graphqlRelay.globalIdField)('BrandType'),
+        name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.name;
+            } },
+        description: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.description;
+            } }
+    },
+    interfaces: [nodeInterface]
+});
+
+var GraphQLModelType = new _graphql.GraphQLObjectType({
+    name: 'ModelType',
+    fields: {
+        id: (0, _graphqlRelay.globalIdField)('ModelType'),
+        name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.name;
+            } },
+        description: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.description;
+            } },
+        brand: {
+            type: GraphQLBrandType,
+            resolve: function resolve(obj) {
+                return _database2.default.models.brand.findById(obj.brandId);
+            }
+        }
+    },
+    interfaces: [nodeInterface]
+});
 
 var GraphQLDomainType = new _graphql.GraphQLObjectType({
     name: 'DomainType',
@@ -98,6 +132,33 @@ var GraphQLCategoryType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var GraphQLItemCommentType = new _graphql.GraphQLObjectType({
+    name: 'ItemCommentType',
+    fields: {
+        id: (0, _graphqlRelay.globalIdField)('ItemCommentType'),
+        text: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.text;
+            } },
+        createdAt: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.createdAt;
+            } },
+        updatedAt: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.updatedAt;
+            } }
+    },
+    interfaces: [nodeInterface]
+});
+
+var _connectionDefinition =
+// ,edgeType: GraphQLSimTypesEdge,
+(0, _graphqlRelay.connectionDefinitions)({
+    name: 'ItemCommentType',
+    nodeType: GraphQLItemCommentType
+});
+
+var ItemCommentConnection = _connectionDefinition.connectionType;
+
+
 var GraphQLSubCategoryType = new _graphql.GraphQLObjectType({
     name: 'SubCategoryType',
     fields: {
@@ -119,24 +180,15 @@ var GraphQLSubCategoryType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var _connectionDefinition =
-// ,edgeType: GraphQLSimTypesEdge,
-(0, _graphqlRelay.connectionDefinitions)({
-    name: 'SubCategoryType',
-    nodeType: GraphQLSubCategoryType
-});
-
-var SubCategoryConnection = _connectionDefinition.connectionType;
-
-
 var GraphQLItemType = new _graphql.GraphQLObjectType({
     name: 'ItemType',
     fields: {
         id: (0, _graphqlRelay.globalIdField)('ItemType'),
-        name: {
-            type: _graphql.GraphQLString,
+        model: {
+            type: GraphQLModelType,
             resolve: function resolve(obj) {
-                return obj.name;
+                console.log("get model in item : " + JSON.stringify(obj));
+                return _database2.default.models.model.findById(obj.modelId);
             }
         },
         reference: {
@@ -145,16 +197,20 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
                 return obj.reference;
             }
         },
-        description: {
-            type: _graphql.GraphQLString,
-            resolve: function resolve(obj) {
-                return obj.description;
-            }
-        },
         isInStock: {
             type: _graphql.GraphQLBoolean,
             resolve: function resolve(obj) {
                 return obj.isInStock;
+            }
+        },
+        comments: {
+            type: ItemCommentConnection,
+            args: _extends({}, _graphqlRelay.connectionArgs),
+            resolve: function resolve(obj, _ref) {
+                var args = _objectWithoutProperties(_ref, []);
+
+                console.log("comments in item : " + obj.getComments());
+                return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getComments(), args);
             }
         },
         domains: {
@@ -168,7 +224,6 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
         subCategories: {
             type: new _graphql.GraphQLList(GraphQLSubCategoryType),
             resolve: function resolve(obj) {
-                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAA subcategories: " + JSON.stringify(obj.getSubCategories()));
                 return obj.getSubCategories();
             }
         }
@@ -194,8 +249,8 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
             items: {
                 type: ItemsConnection,
                 args: _extends({}, _graphqlRelay.connectionArgs),
-                resolve: function resolve(obj, _ref) {
-                    var args = _objectWithoutProperties(_ref, []);
+                resolve: function resolve(obj, _ref2) {
+                    var args = _objectWithoutProperties(_ref2, []);
 
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(), args);
                 }

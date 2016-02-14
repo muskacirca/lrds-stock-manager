@@ -1,3 +1,9 @@
+type BrandType implements Node {
+  id: ID!
+  name: String
+  description: String
+}
+
 type CategoryType implements Node {
   id: ID!
   name: String
@@ -10,12 +16,29 @@ type DomainType implements Node {
   description: String
 }
 
+type ItemCommentType implements Node {
+  id: ID!
+  text: String
+  createdAt: String
+  updatedAt: String
+}
+
+type ItemCommentTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ItemCommentTypeEdge]
+}
+
+type ItemCommentTypeEdge {
+  node: ItemCommentType
+  cursor: String!
+}
+
 type ItemType implements Node {
   id: ID!
-  name: String
+  model: ModelType
   reference: String
-  description: String
   isInStock: Boolean
+  comments(after: String, first: Int, before: String, last: Int): ItemCommentTypeConnection
   domains: [DomainType]
   subCategories: [SubCategoryType]
 }
@@ -28,6 +51,13 @@ type ItemTypeConnection {
 type ItemTypeEdge {
   node: ItemType
   cursor: String!
+}
+
+type ModelType implements Node {
+  id: ID!
+  name: String
+  description: String
+  brand: BrandType
 }
 
 interface Node {

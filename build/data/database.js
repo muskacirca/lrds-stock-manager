@@ -16,17 +16,34 @@ var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
 
 var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: "localhost" });
 
-var item = connection.define('item', {
+var brand = connection.define('brand', {
 
     name: {
         type: _sequelize2.default.STRING,
         allowNull: false
     },
-    reference: {
+    description: {
+        type: _sequelize2.default.STRING
+    }
+});
+
+var model = connection.define('model', {
+
+    name: {
         type: _sequelize2.default.STRING,
         allowNull: false
     },
     description: {
+        type: _sequelize2.default.STRING,
+        allowNull: false
+    }
+});
+
+brand.hasMany(model);
+
+var item = connection.define('item', {
+
+    reference: {
         type: _sequelize2.default.STRING,
         allowNull: false
     },
@@ -37,6 +54,8 @@ var item = connection.define('item', {
         defaultValue: true
     }
 });
+
+model.hasMany(item);
 
 item.belongsToMany(item, { as: 'linkedItem', through: 'linkedItems', timestamps: false });
 var itemComment = connection.define('itemComment', {
@@ -107,16 +126,17 @@ connection.sync({ force: false });
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})
 //
-//
+//    brand.create({name: "Shure"})
+//        .then((brand) => {
+//            brand.createModel({name: "SM58", description: "Un micro tout terrain"})
+//        })
 //
 //
 //    category.create({name: "MICRO"})
 //        .then(category => {
 //            return category.createSubCategory({name: "DYNAMIQUE"})
 //                .then(subCategory => {
-//                    return subCategory.createItem({name: "SM58",
-//                                                   reference:'SM5801',
-//                                                   description:"un micro tout terrain",
+//                    return subCategory.createItem({reference:'SM5801',
 //                                                   isInStock: true
 //                    })
 //                })

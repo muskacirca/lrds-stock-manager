@@ -8,17 +8,35 @@ var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test"
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL)
     :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: "localhost"})
 
+
+const brand = connection.define('brand', {
+
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.STRING
+    }
+})
+
+const model = connection.define('model', {
+
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
+
+brand.hasMany(model)
+
 const item = connection.define('item',  {
 
-        name: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         reference: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        description: {
             type: Sequelize.STRING,
             allowNull: false
         },
@@ -30,6 +48,8 @@ const item = connection.define('item',  {
         }
     }
 )
+
+model.hasMany(item)
 
 item.belongsToMany(item, {as: 'linkedItem', through: 'linkedItems', timestamps: false})
 const itemComment = connection.define('itemComment',  {
@@ -113,16 +133,17 @@ connection.sync({force: false})
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})
 //
-//
+//    brand.create({name: "Shure"})
+//        .then((brand) => {
+//            brand.createModel({name: "SM58", description: "Un micro tout terrain"})
+//        })
 //
 //
 //    category.create({name: "MICRO"})
 //        .then(category => {
 //            return category.createSubCategory({name: "DYNAMIQUE"})
 //                .then(subCategory => {
-//                    return subCategory.createItem({name: "SM58",
-//                                                   reference:'SM5801',
-//                                                   description:"un micro tout terrain",
+//                    return subCategory.createItem({reference:'SM5801',
 //                                                   isInStock: true
 //                    })
 //                })
