@@ -124,7 +124,6 @@ const domain = connection.define('domain', {
 domain.belongsToMany(model, {through: 'modelDomain', timestamps: false})
 model.belongsToMany(domain, {through: 'modelDomain', timestamps: false})
 
-
 connection.sync({force: true})
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})
