@@ -1,32 +1,33 @@
-INSERT INTO domains (name) VALUES('SCENE');
-INSERT INTO domains (name) VALUES('STUDIO');
+CALL add_domain('SCENE', 'tout ce qui attrait a la scene');
+CALL add_domain('STUDIO', 'tout ce qui attrait au studio');
 
-INSERT INTO categories (name) VALUES('MICRO');
-INSERT INTO subCategories (name, categoryId) VALUES('DYNAMIQUE', 1);
-INSERT INTO subCategories (name, categoryId) VALUES('BASS', 1);
+CALL add_category('MICRO', 'pour enregggistrer des trucs');
+CALL add_subCategory('DYNAMIQUE', 'pas besoin de 48V', 'MICRO');
+CALL add_subCategory('BASS', 'pour la grosse caisse ou la basse', 'MICRO');
+
+CALL add_brand('Shure', 'A microphone company');
+CALL add_model('SM 58', 'Un micro tout terrain', 'Shure');
+CALL bind_model_to_domain('SM 58', 'SCENE');
+CALL bind_model_to_domain('SM 58', 'STUDIO');
+CALL bind_model_to_subCategory('SM 58', 'DYNAMIQUE');
+
+CALL add_item('SHUSM58-1', true, 'SM 58');
+
+CALL add_item_comment('SHUSM58-1', 'first comment');
+CALL add_item_comment('SHUSM58-1', 'second comment');
+CALL add_item_comment('SHUSM58-1', 'third comment');
+
+CALL add_model('PG 52', 'Un micro pour les fréquences basse', 'Shure');
+CALL bind_model_to_subCategory('SM 58', 'BASS');
+CALL add_item('SHUPG52-1', true, 'PG 52');
+
+CALL add_item_comment('SHUPG52-1', 'first comment');
+CALL add_item_comment('SHUPG52-1', 'second comment');
+CALL add_item_comment('SHUPG52-1', 'third comment');
 
 
-INSERT INTO models (name, description, brandId) VALUES('SM58', 'Un micro tout terrain', 1);
-INSERT INTO brands (name, description) VALUES('Shure', 'A microphone company');
-INSERT INTO modelDomain (domainId, modelId) VALUES(1, 1);
-INSERT INTO modelDomain (domainId, modelId) VALUES(2, 1);
-INSERT INTO modelCategory (subCategoryId, modelId) VALUES(1, 1);
-INSERT INTO items (reference, isInStock, modelId) VALUES('SHUSM58-1', true, 1);
-INSERT INTO itemComments (text, createdAt, updatedAt, itemId) VALUES('first comment', now(), now(), 1);
-INSERT INTO itemComments (text, createdAt, updatedAt, itemId) VALUES('second comment', now(), now(), 1);
-INSERT INTO itemComments (text, createdAt, updatedAt, itemId) VALUES('third comment', now(), now(), 1);
 
 
-
-INSERT INTO models (name, description, brandId) VALUES('PGG52', 'Un micro basse fréquence', 1);
-INSERT INTO modelDomain (domainId, modelId) VALUES(1, 2);
-INSERT INTO modelDomain (domainId, modelId) VALUES(2, 2);
-INSERT INTO modelCategory (subCategoryId, modelId) VALUES(1, 2);
-INSERT INTO modelCategory (subCategoryId, modelId) VALUES(2, 2);
-INSERT INTO items (reference, isInStock, modelId) VALUES('SHUPG52-1', true, 2);
-INSERT INTO itemComments (text, createdAt, updatedAt, itemId) VALUES('first comment', now(), now(), 2);
-INSERT INTO itemComments (text, createdAt, updatedAt, itemId) VALUES('second comment', now(), now(), 2);
-INSERT INTO itemComments (text, createdAt, updatedAt, itemId) VALUES('third comment', now(), now(), 2);
 
 
 
