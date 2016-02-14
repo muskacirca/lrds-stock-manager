@@ -20,12 +20,14 @@ var brand = connection.define('brand', {
 
     name: {
         type: _sequelize2.default.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     description: {
         type: _sequelize2.default.STRING
     }
-});
+
+}, { timestamps: false });
 
 var model = connection.define('model', {
 
@@ -37,7 +39,8 @@ var model = connection.define('model', {
         type: _sequelize2.default.STRING,
         allowNull: false
     }
-});
+
+}, { timestamps: false });
 
 brand.hasMany(model);
 
@@ -53,7 +56,7 @@ var item = connection.define('item', {
         allowNull: false,
         defaultValue: true
     }
-});
+}, { timestamps: false });
 
 model.hasMany(item);
 
@@ -101,8 +104,8 @@ var subCategory = connection.define('subCategory', {
     timestamps: false
 });
 
-subCategory.belongsToMany(item, { through: 'itemCategory', timestamps: false });
-item.belongsToMany(subCategory, { through: 'itemCategory', timestamps: false });
+subCategory.belongsToMany(model, { through: 'modelCategory', timestamps: false });
+model.belongsToMany(subCategory, { through: 'modelCategory', timestamps: false });
 
 category.hasMany(subCategory, { as: 'SubCategories' });
 
@@ -114,12 +117,8 @@ var domain = connection.define('domain', {
     timestamps: false
 });
 
-domain.belongsToMany(item, { through: 'itemDomain', timestamps: false });
-item.belongsToMany(domain, { through: 'itemDomain', timestamps: false });
-
-// Relationship
-//Wreck.hasMany(Media)
-//Media.belongsTo(Wreck)
+domain.belongsToMany(model, { through: 'modelDomain', timestamps: false });
+model.belongsToMany(domain, { through: 'modelDomain', timestamps: false });
 
 connection.sync({ force: false });
 //    .then(() => {
@@ -135,12 +134,7 @@ connection.sync({ force: false });
 //    category.create({name: "MICRO"})
 //        .then(category => {
 //            return category.createSubCategory({name: "DYNAMIQUE"})
-//                .then(subCategory => {
-//                    return subCategory.createItem({reference:'SM5801',
-//                                                   isInStock: true
-//                    })
-//                })
-//        })
+//          })
 //
 //        //item.find({ where: {reference: 'SM5801'} }).on('success', function(item) {
 //        //    domain.find({where: {name: 'STUDIO'}}).on('success', function(domain){

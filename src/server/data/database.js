@@ -13,24 +13,27 @@ const brand = connection.define('brand', {
 
     name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     description: {
         type: Sequelize.STRING
     }
-})
+
+}, {timestamps: false})
 
 const model = connection.define('model', {
 
     name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
     description: {
         type: Sequelize.STRING,
         allowNull: false
     }
-})
+
+}, {timestamps: false})
 
 brand.hasMany(model)
 
@@ -46,7 +49,7 @@ const item = connection.define('item',  {
             allowNull: false,
             defaultValue: true
         }
-    }
+    }, {timestamps: false}
 )
 
 model.hasMany(item)
@@ -102,8 +105,8 @@ const subCategory = connection.define('subCategory', {
 )
 
 
-subCategory.belongsToMany(item, {through: 'itemCategory', timestamps: false})
-item.belongsToMany(subCategory, {through: 'itemCategory', timestamps: false})
+subCategory.belongsToMany(model, {through: 'modelCategory', timestamps: false})
+model.belongsToMany(subCategory, {through: 'modelCategory', timestamps: false})
 
 category.hasMany(subCategory, {as: 'SubCategories'})
 
@@ -117,15 +120,8 @@ const domain = connection.define('domain', {
     }
 )
 
-domain.belongsToMany(item, {through: 'itemDomain', timestamps: false})
-item.belongsToMany(domain, {through: 'itemDomain', timestamps: false})
-
-
-
-
-// Relationship
-//Wreck.hasMany(Media)
-//Media.belongsTo(Wreck)
+domain.belongsToMany(model, {through: 'modelDomain', timestamps: false})
+model.belongsToMany(domain, {through: 'modelDomain', timestamps: false})
 
 
 connection.sync({force: false})
@@ -142,12 +138,7 @@ connection.sync({force: false})
 //    category.create({name: "MICRO"})
 //        .then(category => {
 //            return category.createSubCategory({name: "DYNAMIQUE"})
-//                .then(subCategory => {
-//                    return subCategory.createItem({reference:'SM5801',
-//                                                   isInStock: true
-//                    })
-//                })
-//        })
+//          })
 //
 //        //item.find({ where: {reference: 'SM5801'} }).on('success', function(item) {
 //        //    domain.find({where: {name: 'STUDIO'}}).on('success', function(domain){

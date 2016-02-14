@@ -74,6 +74,51 @@ var { nodeInterface, nodeField } = nodeDefinitions(
     }
 );
 
+var GraphQLDomainType = new GraphQLObjectType({
+    name: 'DomainType',
+    fields: {
+        id: globalIdField('DomainType'),
+        name: { type: GraphQLString, resolve: (obj) => {
+
+            console.log("obj in domain name resolve: " + JSON.stringify(obj))
+            return obj.name
+        }
+        },
+        description: { type: GraphQLString, resolve: (obj) => obj.description }
+    },
+    interfaces: [nodeInterface]
+});
+
+var GraphQLCategoryType = new GraphQLObjectType({
+    name: 'CategoryType',
+    fields: {
+        id: globalIdField('CategoryType'),
+        name: { type: GraphQLString, resolve: (obj) => {
+            console.log("obj in category name resolve: " + JSON.stringify(obj))
+            return obj.name}},
+        description: { type: GraphQLString, resolve: (obj) => obj.description }
+    },
+    interfaces: [nodeInterface]
+});
+
+var GraphQLSubCategoryType = new GraphQLObjectType({
+    name: 'SubCategoryType',
+    fields: {
+        id: globalIdField('SubCategoryType'),
+        name: { type: GraphQLString, resolve: (obj) => obj.name},
+        description: { type: GraphQLString, resolve: (obj) => obj.description },
+        category: {
+            type: GraphQLCategoryType,
+            resolve: (obj) => {
+                console.log("obj sub category resolve : " + JSON.stringify(obj))
+                return Database.models.category.findById(obj.categoryId)
+            }
+        }
+    },
+    interfaces: [nodeInterface]
+});
+
+
 var GraphQLBrandType = new GraphQLObjectType({
     name: 'BrandType',
     fields: {
@@ -95,37 +140,26 @@ var GraphQLModelType = new GraphQLObjectType({
             resolve: (obj) => {
                 return Database.models.brand.findById(obj.brandId)
             }
-        }
-    },
-    interfaces: [nodeInterface]
-});
+        },
+        domains: {
+            type: new GraphQLList(GraphQLDomainType),
+            resolve: (obj) => {
 
-var GraphQLDomainType = new GraphQLObjectType({
-    name: 'DomainType',
-    fields: {
-        id: globalIdField('DomainType'),
-        name: { type: GraphQLString, resolve: (obj) => {
-
-                console.log("obj in domain name resolve: " + JSON.stringify(obj))
-                return obj.name
+                console.log("domain in itemType: " + JSON.stringify(obj.getDomains()))
+                return obj.getDomains()
             }
         },
-        description: { type: GraphQLString, resolve: (obj) => obj.description }
+        subCategories: {
+            type: new GraphQLList(GraphQLSubCategoryType),
+            resolve: (obj) => {
+                return obj.getSubCategories()
+            }
+        },
     },
     interfaces: [nodeInterface]
 });
 
-var GraphQLCategoryType = new GraphQLObjectType({
-    name: 'CategoryType',
-    fields: {
-        id: globalIdField('CategoryType'),
-        name: { type: GraphQLString, resolve: (obj) => {
-            console.log("obj in category name resolve: " + JSON.stringify(obj))
-            return obj.name}},
-        description: { type: GraphQLString, resolve: (obj) => obj.description }
-    },
-    interfaces: [nodeInterface]
-});
+
 
 var GraphQLItemCommentType = new GraphQLObjectType({
     name: 'ItemCommentType',
@@ -144,24 +178,6 @@ var {
     } = connectionDefinitions({
     name: 'ItemCommentType',
     nodeType: GraphQLItemCommentType
-});
-
-
-var GraphQLSubCategoryType = new GraphQLObjectType({
-    name: 'SubCategoryType',
-    fields: {
-        id: globalIdField('SubCategoryType'),
-        name: { type: GraphQLString, resolve: (obj) => obj.name},
-        description: { type: GraphQLString, resolve: (obj) => obj.description },
-        category: {
-            type: GraphQLCategoryType,
-            resolve: (obj) => {
-                console.log("obj sub category resolve : " + JSON.stringify(obj))
-                return Database.models.category.findById(obj.categoryId)
-            }
-        }
-    },
-    interfaces: [nodeInterface]
 });
 
 var GraphQLItemType = new GraphQLObjectType({
@@ -190,21 +206,7 @@ var GraphQLItemType = new GraphQLObjectType({
                 console.log("comments in item : " + obj.getComments())
                 return connectionFromPromisedArray(obj.getComments(), args)
             }
-        },
-        domains: {
-            type: new GraphQLList(GraphQLDomainType),
-            resolve: (obj) => {
-
-                console.log("domain in itemType: " + JSON.stringify(obj.getDomains()))
-                return obj.getDomains()
-            }
-        },
-        subCategories: {
-            type: new GraphQLList(GraphQLSubCategoryType),
-            resolve: (obj) => {
-                return obj.getSubCategories()
-            }
-        },
+        }
     },
     interfaces: [nodeInterface]
 });

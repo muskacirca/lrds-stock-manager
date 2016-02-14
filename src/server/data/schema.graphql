@@ -39,8 +39,6 @@ type ItemType implements Node {
   reference: String
   isInStock: Boolean
   comments(after: String, first: Int, before: String, last: Int): ItemCommentTypeConnection
-  domains: [DomainType]
-  subCategories: [SubCategoryType]
 }
 
 type ItemTypeConnection {
@@ -58,6 +56,8 @@ type ModelType implements Node {
   name: String
   description: String
   brand: BrandType
+  domains: [DomainType]
+  subCategories: [SubCategoryType]
 }
 
 interface Node {
