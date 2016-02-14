@@ -48,10 +48,7 @@ class StockComponent extends React.Component {
 
     render() {
 
-        console.log("Stock render: " + this.props.viewer.items.edges.length)
-
         var tagRow = this.state.tags.map(function(element, key) {
-
             return <li key={key} className="tag" onClick={this.onCLickTag.bind(this, element)}>{element}</li>
         }.bind(this))
 
@@ -189,13 +186,13 @@ class ProductTableRow extends React.Component {
 
     render() {
 
-            console.log("ProductTableRow render : " + this.props.product.name)
+            var isInStock = this.props.product.isInStock ? <i className="fa fa-check"></i> : <i className="fa fa-times"></i>
 
             return (
                 <tr onCLick="">
-                    <td>{this.props.product.name}</td>
+                    <td>{this.props.product.model.name}</td>
                     <td>{this.props.product.reference}</td>
-                    <td>{this.props.product.isInStock}</td>
+                    <td>{isInStock}</td>
                 </tr>
         )
     }
@@ -225,9 +222,31 @@ export default Relay.createContainer(StockComponent, {
             items(first: 100) {
               edges {
                 node {
-                  name,
                   reference,
-                  isInStock
+                  isInStock,
+                  model {
+                    name
+                    description
+                    brand {
+                      name
+                      description
+                    }
+                    subCategories {
+                      name
+                      description
+                    }
+                    domains {
+                      name
+                      description
+                    }
+                  },
+                  comments(first: 5) {
+                    edges {
+                      node {
+                        text
+                      }
+                    }
+                  }
                 }
               }
             }

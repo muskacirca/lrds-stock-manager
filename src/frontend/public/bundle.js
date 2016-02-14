@@ -47908,10 +47908,7 @@
 	        key: 'render',
 	        value: function render() {
 
-	            console.log("Stock render: " + this.props.viewer.items.edges.length);
-
 	            var tagRow = this.state.tags.map(function (element, key) {
-
 	                return _react2.default.createElement(
 	                    'li',
 	                    { key: key, className: 'tag', onClick: this.onCLickTag.bind(this, element) },
@@ -48165,7 +48162,7 @@
 	        key: 'render',
 	        value: function render() {
 
-	            console.log("ProductTableRow render : " + this.props.product.name);
+	            var isInStock = this.props.product.isInStock ? _react2.default.createElement('i', { className: 'fa fa-check' }) : _react2.default.createElement('i', { className: 'fa fa-times' });
 
 	            return _react2.default.createElement(
 	                'tr',
@@ -48173,7 +48170,7 @@
 	                _react2.default.createElement(
 	                    'td',
 	                    null,
-	                    this.props.product.name
+	                    this.props.product.model.name
 	                ),
 	                _react2.default.createElement(
 	                    'td',
@@ -48183,7 +48180,7 @@
 	                _react2.default.createElement(
 	                    'td',
 	                    null,
-	                    this.props.product.isInStock
+	                    isInStock
 	                )
 	            );
 	        }
@@ -48228,7 +48225,298 @@
 	    fragments: {
 	        viewer: function viewer() {
 	            return function () {
-	                throw new Error('GraphQL validation/transform error ``Cannot query field "name" on "ItemType".`` in file `/Users/muskacirca/dev/Sources/StockManager/src/frontend/components/stock.js`.');
+	                return {
+	                    children: [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'reference',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'isInStock',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'Boolean'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'description',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'description',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'brand',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id'
+	                                        },
+	                                        type: 'BrandType'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'description',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'subCategories',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id',
+	                                            isPlural: true
+	                                        },
+	                                        type: 'SubCategoryType'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'description',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'domains',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id',
+	                                            isPlural: true
+	                                        },
+	                                        type: 'DomainType'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'model',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'ModelType'
+	                                }, {
+	                                    calls: [{
+	                                        kind: 'Call',
+	                                        metadata: {},
+	                                        name: 'first',
+	                                        value: {
+	                                            kind: 'CallValue',
+	                                            callValue: 5
+	                                        }
+	                                    }],
+	                                    children: [{
+	                                        children: [{
+	                                            children: [{
+	                                                fieldName: 'text',
+	                                                kind: 'Field',
+	                                                metadata: {},
+	                                                type: 'String'
+	                                            }, {
+	                                                fieldName: 'id',
+	                                                kind: 'Field',
+	                                                metadata: {
+	                                                    isGenerated: true,
+	                                                    isRequisite: true
+	                                                },
+	                                                type: 'ID'
+	                                            }],
+	                                            fieldName: 'node',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                inferredRootCallName: 'node',
+	                                                inferredPrimaryKey: 'id',
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ItemCommentType'
+	                                        }, {
+	                                            fieldName: 'cursor',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'String'
+	                                        }],
+	                                        fieldName: 'edges',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isPlural: true
+	                                        },
+	                                        type: 'ItemCommentTypeEdge'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'hasNextPage',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'Boolean'
+	                                        }, {
+	                                            fieldName: 'hasPreviousPage',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'Boolean'
+	                                        }],
+	                                        fieldName: 'pageInfo',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'PageInfo'
+	                                    }],
+	                                    fieldName: 'comments',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isConnection: true
+	                                    },
+	                                    type: 'ItemCommentTypeConnection'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'ItemType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isPlural: true
+	                            },
+	                            type: 'ItemTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'items',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isConnection: true
+	                        },
+	                        type: 'ItemTypeConnection'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'Stock',
+	                    type: 'Viewer'
+	                };
 	            }();
 	        }
 	    }
