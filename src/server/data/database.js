@@ -124,7 +124,7 @@ domain.belongsToMany(model, {through: 'modelDomain', timestamps: false})
 model.belongsToMany(domain, {through: 'modelDomain', timestamps: false})
 
 
-connection.sync({force: true})
+connection.sync({force: false})
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})

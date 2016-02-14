@@ -115,7 +115,7 @@ class ProductTable extends React.Component {
                 if (counter < 35) {
                     var hasTags = false
                     for(var i = 0; i < filterTags.length; i++) {
-                        if (product.node.name.toLowerCase().contains(filterTags[i].toLowerCase())) {
+                        if (product.node.model.name.toLowerCase().indexOf(filterTags[i].toLowerCase()) != -1) {
                             counter += 1
                             hasTags = true
                         }
@@ -138,10 +138,10 @@ class ProductTable extends React.Component {
             if(counter < 35 ) {
                 if (filterText === "" || filterText.length <= 2 ) {
                     counter += 1
-
+                    console.log("adding product table row : " + product.node.model.name)
                     return <ProductTableRow key={key} product={product.node}/>
 
-                } else if (filterText.length > 2 && product.node.name.toLowerCase().contains(filterText)) {
+                } else if (filterText.length > 2 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
                     counter += 1
                     return <ProductTableRow key={key} product={product.node}/>
                 }
