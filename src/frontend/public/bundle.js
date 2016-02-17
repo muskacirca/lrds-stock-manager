@@ -48865,12 +48865,10 @@
 	            var inputValue = value.trim().toLowerCase();
 	            var inputLength = inputValue.length;
 
+	            console.log("this.state.sugggestions in getSugggestions : " + JSON.stringify(this.state.suggestions));
 	            var suggestions = _lodash2.default.clone(this.state.suggestions);
 
 	            var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(function (suggestion) {
-
-	                console.log("getSuggestions 1 : " + JSON.stringify(suggestion));
-	                console.log("getSuggestions 2 : " + JSON.stringify(suggestion.suggestions));
 
 	                var itemFiltered = suggestion.suggestions.filter(function (suggest) {
 	                    return suggest.name.toLowerCase().slice(0, inputLength) === inputValue;
@@ -48883,8 +48881,6 @@
 	            });
 
 	            console.log("filteredSuggestion 1 : " + JSON.stringify(filteredSuggestion));
-
-	            this.setState({ filteredSuggestion: filteredSuggestion });
 
 	            return filteredSuggestion;
 	        }
@@ -48904,7 +48900,7 @@
 	            var value = _ref2.value;
 
 	            this.setState({
-	                suggestions: this.getSuggestions(value)
+	                filteredSuggestions: this.getSuggestions(value)
 	            });
 	        }
 	    }, {

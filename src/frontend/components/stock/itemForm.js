@@ -119,12 +119,10 @@ class ItemFormComponent extends React.Component {
         const inputLength = inputValue.length;
 
 
+        console.log("this.state.sugggestions in getSugggestions : " + JSON.stringify(this.state.suggestions))
         var suggestions = _.clone(this.state.suggestions);
 
         var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
-
-        console.log("getSuggestions 1 : " + JSON.stringify(suggestion))
-        console.log("getSuggestions 2 : " + JSON.stringify(suggestion.suggestions))
 
             var itemFiltered = suggestion.suggestions.filter(suggest => {
                 return suggest.name.toLowerCase().slice(0, inputLength) === inputValue
@@ -138,8 +136,6 @@ class ItemFormComponent extends React.Component {
 
         console.log("filteredSuggestion 1 : " + JSON.stringify(filteredSuggestion))
 
-        this.setState({filteredSuggestion: filteredSuggestion})
-
         return filteredSuggestion
     }
 
@@ -152,7 +148,7 @@ class ItemFormComponent extends React.Component {
 
     onSuggestionsUpdateRequested({ value }) {
         this.setState({
-            suggestions: this.getSuggestions(value)
+            filteredSuggestions: this.getSuggestions(value)
         });
     }
 
