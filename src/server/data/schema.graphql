@@ -86,4 +86,9 @@ type SubCategoryType implements Node {
 type Viewer implements Node {
   id: ID!
   items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
+  item(reference: String!): ItemType
+  models: [ModelType]
+  domains: [DomainType]
+  subCategories: [SubCategoryType]
+  categories: [CategoryType]
 }

@@ -98,6 +98,11 @@ li.tag:hover {
   cursor: pointer;
   background: #8bc4ea;
 }
+
+span.inline {
+  background-color:red;
+  display:inline;
+}
 /*.sidebar {
 
   background-color: #ffcdd2;

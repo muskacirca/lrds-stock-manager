@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Models",
+    "suggestions": [
+      {
+        "name": "SM 58"
+      },
+      {
+        "name": "PG 52"
+      }
+    ]
+  },
+  {
+    "title": "Domains",
+    "suggestions": [
+      {
+        "name": "SCENE"
+      },
+      {
+        "name": "STUDIO"
+      }
+    ]
+  },
+  {
+    "title": "MICRO",
+    "suggestions": [
+      {
+        "name": "DYNAMIQUE"
+      },
+      {
+        "name": "BASS"
+      }
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
-import SearchComponent from './sidebars/searchInput.js'
+import SearchComponent from '../sidebars/searchInput'
 import Link from 'react-router'
 
 class StockComponent extends React.Component {

@@ -4,19 +4,36 @@ import { IndexRoute, Route } from 'react-router';
 import authService from '../components/controllers/auth'
 
 import ViewerQuery from '../queries/ViewerQueries'
-import StockQuery from '../queries/StockQuery'
 
 import MainApp from '../components/MainApp'
 import LoginBox from '../components/login'
-import Stock from '../components/stock'
+import Stock from '../components/stock/stock'
+import Item from '../components/stock/item'
+import ItemForm from '../components/stock/itemForm'
 import Product from '../components/product'
 import Profile from '../components/profile'
 import Event from '../components/event'
 import NavBarBox from '../components/navbar'
 
+
+function prepareItemParam(params, route) {
+    return {
+        ...params,
+        reference: params.reference ? params.reference : "error"
+    }
+}
+
+
 export default  <Route path="/" component={MainApp} queries={ViewerQuery}>
                     <IndexRoute component={MainApp} queries={ViewerQuery}/>
-                    <Route path="stock" component={Stock} queries={StockQuery}/>
+                    <Route path="profile" component={Profile} queries={ViewerQuery}/>
+                    <Route path="events" component={Event} queries={ViewerQuery}/>
+
+                    <Route path="stock" component={Stock} queries={ViewerQuery}/>
+                    <Route path="stock/:reference" component={Item} queries={ViewerQuery} prepareParams={prepareItemParam}/>
+                    <Route path="admin/create" component={ItemForm} queries={ViewerQuery}/>
+                    <Route path="admin/edit/:reference" component={ItemForm} queries={ViewerQuery} prepareParams={prepareItemParam}/>
+
                 </Route>
 
 //function prepareWidgetListParams(params, route) {

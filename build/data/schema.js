@@ -32,6 +32,8 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     var id = _fromGlobalId.id;
     var type = _fromGlobalId.type;
 
+    console.log("globalId of " + type + " : " + globalId);
+    console.log("id of " + type + " : " + id);
     if (type === 'ItemType') {
         console.log("Im here getting ItemType");
         return (0, _ItemStore.getById)(id);
@@ -253,6 +255,54 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                     var args = _objectWithoutProperties(_ref2, []);
 
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(), args);
+                }
+            },
+            item: {
+                type: GraphQLItemType,
+                args: {
+                    reference: {
+                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+                    }
+                },
+                resolve: function resolve(obj, _ref3) {
+                    var reference = _ref3.reference;
+
+                    return _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (response) {
+                        return response;
+                    });
+                }
+            },
+            models: {
+                type: new _graphql.GraphQLList(GraphQLModelType),
+                resolve: function resolve() {
+                    return _database2.default.models.model.findAll().then(function (response) {
+                        return response;
+                    });
+                }
+            },
+            domains: {
+                type: new _graphql.GraphQLList(GraphQLDomainType),
+                resolve: function resolve() {
+                    return _database2.default.models.domain.findAll().then(function (response) {
+                        return response;
+                    });
+                }
+            },
+            subCategories: {
+                type: new _graphql.GraphQLList(GraphQLSubCategoryType),
+                resolve: function resolve() {
+                    return _database2.default.models.subCategory.findAll().then(function (response) {
+                        return response;
+                    });
+                }
+            },
+
+            categories: {
+                type: new _graphql.GraphQLList(GraphQLCategoryType),
+                resolve: function resolve() {
+                    return _database2.default.models.category.findAll().then(function (response) {
+                        return response;
+                    });
                 }
             }
         };

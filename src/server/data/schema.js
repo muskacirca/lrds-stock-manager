@@ -42,6 +42,8 @@ import {
 var { nodeInterface, nodeField } = nodeDefinitions(
     (globalId) => {
         let { id, type } = fromGlobalId(globalId);
+        console.log("globalId of " + type + " : " + globalId)
+        console.log("id of " + type + " : " + id)
         if (type === 'ItemType') {
             console.log("Im here getting ItemType")
             return getById(id)
@@ -229,6 +231,35 @@ var GraphQLViewer = new GraphQLObjectType({
             resolve: (obj, {...args}) => {
                 return connectionFromPromisedArray(Database.models.item.findAll(), args)
             }
+        },
+        item: {
+            type: GraphQLItemType,
+            args: {
+                reference: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (obj, {reference}) => {
+                return Database.models.item.findOne({where: {reference : reference}})
+                    .then((response) => response)
+            }
+        },
+        models: {
+            type: new GraphQLList(GraphQLModelType),
+            resolve: () => Database.models.model.findAll().then((response) => response)
+        },
+        domains: {
+            type: new GraphQLList(GraphQLDomainType),
+            resolve: () => Database.models.domain.findAll().then((response) => response)
+        },
+        subCategories: {
+            type: new GraphQLList(GraphQLSubCategoryType),
+            resolve: () => Database.models.subCategory.findAll().then((response) => response)
+        }
+        ,
+        categories: {
+            type: new GraphQLList(GraphQLCategoryType),
+            resolve: () => Database.models.category.findAll().then((response) => response)
         }
     }),
     interfaces: [nodeInterface]
