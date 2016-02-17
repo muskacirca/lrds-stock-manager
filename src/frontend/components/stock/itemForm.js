@@ -147,7 +147,8 @@ class ItemFormComponent extends React.Component {
         const inputProps = {
             placeholder: 'Type a model',
             value,
-            onChange: this.onChange.bind(this)
+            onChange: this.onChange.bind(this),
+            className: "form-control"
         };
 
         var alerts = <div></div>

@@ -48903,7 +48903,8 @@
 	            var inputProps = {
 	                placeholder: 'Type a model',
 	                value: value,
-	                onChange: this.onChange.bind(this)
+	                onChange: this.onChange.bind(this),
+	                className: "form-control"
 	            };
 
 	            var alerts = _react2.default.createElement('div', null);
