@@ -4,8 +4,6 @@ import _ from 'lodash'
 
 import Autosuggest from 'react-autosuggest'
 
-
-
 class ItemFormComponent extends React.Component {
 
     constructor(props) {
@@ -39,9 +37,6 @@ class ItemFormComponent extends React.Component {
 
         var suggestionsCategory = []
 
-
-        console.log("suggestionsCategory: " + JSON.stringify(suggestionsCategory))
-
         var suggestions = [
             {
                 title: "Models",
@@ -55,19 +50,15 @@ class ItemFormComponent extends React.Component {
 
         subCategories.map(subCategory => {
             var index = _.findIndex(suggestions, (o) =>  o.title == subCategory.category.name)
-            console.log("index: " + index)
             if(index === -1) {
-                console.log("didnt find key, pushing category " + subCategory.category.name)
                 suggestions.push({title: subCategory.category.name, suggestions: [{name: subCategory.name}]})
 
             } else {
-
-                console.log("found key, pushing subcategory " + subCategory.name)
                 suggestions[index].suggestions.push({name: subCategory.name})
             }
         })
 
-        console.log("suggestions : " + JSON.stringify(suggestions))
+        console.log("built suggestions : " + JSON.stringify(suggestions))
 
         return suggestions
 
@@ -77,8 +68,6 @@ class ItemFormComponent extends React.Component {
         var models = this.props.viewer.models
         var domains = this.props.viewer.domains
         var subCategories = this.props.viewer.subCategories
-
-        console.log("retrieved models : " + JSON.stringify(models))
 
         var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
         this.setState({suggestions: buildSuggestion, filteredSuggestions: buildSuggestion})
@@ -98,8 +87,7 @@ class ItemFormComponent extends React.Component {
     renderSuggestion(suggestion) {
 
         if(suggestion){
-        console.log("renderSugggestion 1 : " + JSON.stringify(suggestion))
-        console.log("renderSugggestion 2 : " + JSON.stringify(suggestion.suggestions))
+        console.log("renderSugggestion : " + JSON.stringify(suggestion))
 
             var elt = suggestion.suggestions.map(elt => {
                 return <span>{elt.name}</span>
@@ -118,14 +106,13 @@ class ItemFormComponent extends React.Component {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
 
-
-        console.log("this.state.sugggestions in getSugggestions : " + JSON.stringify(this.state.suggestions))
-        var suggestions = _.clone(this.state.suggestions);
+        console.log("this.state.suggestions in getSuggestions : " + JSON.stringify(this.state.suggestions))
+        var suggestions = _.cloneDeep(this.state.suggestions)
 
         var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
 
             var itemFiltered = suggestion.suggestions.filter(suggest => {
-                return suggest.name.toLowerCase().slice(0, inputLength) === inputValue
+                return suggest.name.toLowerCase().indexOf(inputValue) != -1
             })
 
             console.log("itemFiltered : " + JSON.stringify(itemFiltered))
@@ -134,6 +121,7 @@ class ItemFormComponent extends React.Component {
             return suggestion
         });
 
+        console.log("this.state.suggestions after getSuggestions : " + JSON.stringify(this.state.suggestions))
         console.log("filteredSuggestion 1 : " + JSON.stringify(filteredSuggestion))
 
         return filteredSuggestion
@@ -169,8 +157,8 @@ class ItemFormComponent extends React.Component {
             return <li className="inline" key={elt.id}>{elt.name}</li>
         })
 
-        console.log("filtered suugestions in render: " + JSON.stringify(this.state.filteredSuggestions))
-        console.log("suugestions in render: " + JSON.stringify(this.state.suggestions))
+        console.log("suggestions in render: " + JSON.stringify(this.state.suggestions))
+        console.log("filtered suggestions in render: " + JSON.stringify(this.state.filteredSuggestions))
 
         return  <div className="col-md-10 col-md-offset-1">
                     {alerts}
