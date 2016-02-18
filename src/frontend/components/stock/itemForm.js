@@ -84,29 +84,40 @@ class ItemFormComponent extends React.Component {
         return suggestion.name;
     }
 
+    renderSectionTitle(section) {
+        return <strong>{section.title}</strong>
+    }
+
     renderSuggestion(suggestion) {
 
-        if(suggestion){
-        console.log("renderSugggestion : " + JSON.stringify(suggestion))
+        //if(suggestion){
+        //
+        //    var elt = suggestion.suggestions.map(elt => {
+        //        return <span className="suggestion">{elt.name}</span>
+        //    })
+        //
+        //    return  <div className="sectionContainer">
+        //                    <div className="sectionTitle">
+        //                        {suggestion.title}
+        //                    </div>
+        //                    <span className="sectionSuggestionsContainer">
+        //                        {elt}
+        //                    </span>
+        //                </div>
+        //}
 
-            var elt = suggestion.suggestions.map(elt => {
-                return <span>{elt.name}</span>
-            })
-
-            return  <div>
-                <h1>{suggestion.title}</h1>
-                {elt}
-            </div>
-        }
+        return <span>{suggestion.name}</span>
 
     }
 
+    getSectionSuggestions(section) {
+        return section.suggestions;
+    }
 
     getSuggestions(value) {
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
 
-        console.log("this.state.suggestions in getSuggestions : " + JSON.stringify(this.state.suggestions))
         var suggestions = _.cloneDeep(this.state.suggestions)
 
         var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
@@ -115,26 +126,26 @@ class ItemFormComponent extends React.Component {
                 return suggest.name.toLowerCase().indexOf(inputValue) != -1
             })
 
-            console.log("itemFiltered : " + JSON.stringify(itemFiltered))
-
             suggestion.suggestions = itemFiltered
             return suggestion
         });
 
-        console.log("this.state.suggestions after getSuggestions : " + JSON.stringify(this.state.suggestions))
-        console.log("filteredSuggestion 1 : " + JSON.stringify(filteredSuggestion))
-
         return filteredSuggestion
     }
 
-    onChange(event, { newValue }) {
+    onChange(event, { newValue, method }) {
 
-        this.setState({
-            value: newValue
-        });
+        console.log("onChange event : ")
+        // ArrowDown
+            this.setState({
+                value: newValue
+            });
+
     }
 
     onSuggestionsUpdateRequested({ value }) {
+
+
         this.setState({
             filteredSuggestions: this.getSuggestions(value)
         });
@@ -158,9 +169,6 @@ class ItemFormComponent extends React.Component {
             return <li className="inline" key={elt.id}>{elt.name}</li>
         })
 
-        console.log("suggestions in render: " + JSON.stringify(this.state.suggestions))
-        console.log("filtered suggestions in render: " + JSON.stringify(this.state.filteredSuggestions))
-
         return  <div className="col-md-10 col-md-offset-1">
                     {alerts}
                     <h2>{pageTitle}</h2>
@@ -169,10 +177,14 @@ class ItemFormComponent extends React.Component {
                         <div className="col-md-6">
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
-                                <Autosuggest suggestions={this.state.filteredSuggestions}
+                                <h3>Select your model</h3>
+                                <Autosuggest multiSection={true}
+                                             suggestions={this.state.filteredSuggestions}
                                              onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}
                                              getSuggestionValue={this.getSuggestionValue.bind(this)}
+                                             renderSectionTitle={this.renderSectionTitle.bind(this)}
                                              renderSuggestion={this.renderSuggestion.bind(this)}
+                                             getSectionSuggestions={this.getSectionSuggestions.bind(this)}
                                              inputProps={inputProps} />
 
                                 <h2>Domaine</h2>
