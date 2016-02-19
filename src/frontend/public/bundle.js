@@ -48865,7 +48865,7 @@
 	            var modelDomains = modelDomains.map(function (elt) {
 	                return _react2.default.createElement(
 	                    'li',
-	                    { key: elt.name, className: 'tag' },
+	                    { key: elt.name, className: 'model-tag' },
 	                    elt.name
 	                );
 	            });
@@ -48887,12 +48887,36 @@
 	            var modelSubCategories = modelSubCategories.map(function (elt) {
 	                return _react2.default.createElement(
 	                    'li',
-	                    { key: elt.name, className: 'tag' },
+	                    { key: elt.name, className: 'model-tag' },
 	                    elt.name
 	                );
 	            });
 
 	            return _lodash2.default.concat(itemCategories, modelSubCategories);
+	        }
+	    }, {
+	        key: 'onSelectStateChange',
+	        value: function onSelectStateChange(event) {
+
+	            console.log("state value : " + event.target.value);
+	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
+	            _lodash2.default.set(itemFeatures, "state", event.target.value);
+
+	            this.setState({ itemFeatures: itemFeatures });
+	        }
+	    }, {
+	        key: 'computeStateIcon',
+	        value: function computeStateIcon(state) {
+
+	            if (state == "1") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-up green' });
+	            } else if (state == "2") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-up yellow' });
+	            } else if (state == "3") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-down orange' });
+	            } else if (state == "4") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-down red' });
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -48911,6 +48935,8 @@
 	            var alerts = _react2.default.createElement('div', null);
 	            var pageTitle = "Création d'un item";
 
+	            var stateIcon = this.computeStateIcon(this.state.itemFeatures.state);
+
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'col-md-10 col-md-offset-1' },
@@ -48920,27 +48946,52 @@
 	                    null,
 	                    pageTitle
 	                ),
-	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                    'h3',
+	                    null,
+	                    'Select your model'
+	                ),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-3' },
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: builtSuggestion, onSuggestionSelected: this.onSuggestionSelected.bind(this) }),
+	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
-	                            'form',
-	                            { encType: 'multipart/form-data', method: 'post', className: 'form-horizontal', onSubmit: this.submitForm.bind(this) },
+	                            'h3',
+	                            null,
+	                            'Add State'
+	                        ),
+	                        _react2.default.createElement(
+	                            'select',
+	                            { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
 	                            _react2.default.createElement(
-	                                'h3',
-	                                null,
-	                                'Select your model'
+	                                'option',
+	                                { value: '1' },
+	                                'Neuf'
 	                            ),
-	                            _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: builtSuggestion, onSuggestionSelected: this.onSuggestionSelected.bind(this) })
+	                            _react2.default.createElement(
+	                                'option',
+	                                { value: '2' },
+	                                'Bon état'
+	                            ),
+	                            _react2.default.createElement(
+	                                'option',
+	                                { value: '3' },
+	                                'Le dernier souffle'
+	                            ),
+	                            _react2.default.createElement(
+	                                'option',
+	                                { value: '4' },
+	                                'A réparer'
+	                            )
 	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-7' },
+	                        { className: 'col-md-8' },
 	                        _react2.default.createElement(
 	                            'form',
 	                            { encType: 'multipart/form-data', method: 'post', className: 'form-horizontal', onSubmit: this.submitForm.bind(this) },
@@ -48950,22 +49001,73 @@
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'panel-heading' },
-	                                    model.brand.name + ' - ' + model.name,
 	                                    _react2.default.createElement(
-	                                        'ul',
-	                                        null,
-	                                        itemDomains
-	                                    ),
-	                                    _react2.default.createElement(
-	                                        'ul',
-	                                        null,
-	                                        itemSubCategories
+	                                        'div',
+	                                        { className: 'row' },
+	                                        _react2.default.createElement(
+	                                            'div',
+	                                            { className: 'col-md-11' },
+	                                            _react2.default.createElement(
+	                                                'h4',
+	                                                null,
+	                                                _react2.default.createElement(
+	                                                    'strong',
+	                                                    null,
+	                                                    model.brand.name + ' - ' + model.name
+	                                                )
+	                                            )
+	                                        ),
+	                                        _react2.default.createElement(
+	                                            'div',
+	                                            { className: 'col-md-1' },
+	                                            stateIcon
+	                                        )
 	                                    )
 	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'panel-body' },
-	                                    model.description
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'row' },
+	                                        _react2.default.createElement(
+	                                            'div',
+	                                            { className: 'col-md-5' },
+	                                            _react2.default.createElement(
+	                                                'em',
+	                                                null,
+	                                                'Domaine: '
+	                                            ),
+	                                            _react2.default.createElement(
+	                                                'ul',
+	                                                null,
+	                                                itemDomains
+	                                            )
+	                                        ),
+	                                        _react2.default.createElement(
+	                                            'div',
+	                                            { className: 'col-md-5' },
+	                                            _react2.default.createElement(
+	                                                'em',
+	                                                null,
+	                                                'Sous Catégories: '
+	                                            ),
+	                                            _react2.default.createElement(
+	                                                'ul',
+	                                                null,
+	                                                itemSubCategories
+	                                            )
+	                                        )
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'p',
+	                                        null,
+	                                        _react2.default.createElement(
+	                                            'em',
+	                                            null,
+	                                            model.description
+	                                        )
+	                                    )
 	                                )
 	                            )
 	                        )

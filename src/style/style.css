@@ -29,6 +29,11 @@ a {
   cursor: pointer;
 }
 
+.green {color: #4CAF50;}
+.yellow {color: #FDD835;}
+.orange {color: #F57F17;}
+.red {color: #F44336;}
+
 /*
  * Sidebar
  */
@@ -95,6 +100,20 @@ li.tag {
   color: #16527a;
 }
 li.tag:hover {
+  cursor: pointer;
+  background: #8bc4ea;
+}
+
+li.model-tag {
+  list-style: none;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  margin: 2px;
+  border-radius: 3px;
+  background: #a0cfee;
+  color: #16527a;
+}
+li.model-tag:hover {
   cursor: pointer;
   background: #8bc4ea;
 }

@@ -108,7 +108,7 @@ class ItemFormComponent extends React.Component {
         })
 
         var modelDomains = modelDomains.map(elt => {
-            return <li key={elt.name} className="tag">{elt.name}</li>
+            return <li key={elt.name} className="model-tag">{elt.name}</li>
         })
 
         return _.concat(itemCreatedDomains, modelDomains)
@@ -121,10 +121,32 @@ class ItemFormComponent extends React.Component {
         })
 
         var modelSubCategories = modelSubCategories.map(elt => {
-            return <li key={elt.name} className="tag">{elt.name}</li>
+            return <li key={elt.name} className="model-tag">{elt.name}</li>
         })
 
         return _.concat(itemCategories, modelSubCategories)
+    }
+
+    onSelectStateChange(event) {
+
+        console.log("state value : " + event.target.value)
+        var itemFeatures = _.cloneDeep(this.state.itemFeatures)
+        _.set(itemFeatures, "state", event.target.value)
+
+        this.setState({itemFeatures: itemFeatures})
+    }
+
+    computeStateIcon(state) {
+
+        if(state == "1") {
+            return  <i className="fa fa-2x fa-thumbs-up green" />
+        } else if(state == "2") {
+            return  <i className="fa fa-2x fa-thumbs-up yellow" />
+        } else if(state == "3") {
+            return  <i className="fa fa-2x fa-thumbs-down orange" />
+        } else if(state == "4") {
+            return  <i className="fa fa-2x fa-thumbs-down red" />
+        }
     }
 
     render() {
@@ -142,30 +164,53 @@ class ItemFormComponent extends React.Component {
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
 
+        var stateIcon = this.computeStateIcon(this.state.itemFeatures.state)
+
         return  <div className="col-md-10 col-md-offset-1">
                     {alerts}
                     <h2>{pageTitle}</h2>
-                    <br />
+                    <h3>Select your model</h3>
                     <div className="row">
                         <div className="col-md-3">
-                            <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
-
-                                <h3>Select your model</h3>
-                                <AutosuggestWrapper suggestions={builtSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
-
-                            </form>
+                            <AutosuggestWrapper suggestions={builtSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+                            <br />
+                            <h3>Add State</h3>
+                            <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
+                                <option value="1">Neuf</option>
+                                <option value="2">Bon état</option>
+                                <option value="3">Le dernier souffle</option>
+                                <option value="4">A réparer</option>
+                            </select>
                         </div>
-                        <div className="col-md-7">
+
+                        <div className="col-md-8">
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <div className="panel panel-default">
                                     <div className="panel-heading">
-                                        {model.brand.name + ' - ' + model.name}
-                                        <ul>{itemDomains}</ul>
-                                        <ul>{itemSubCategories}</ul>
+                                        <div className="row">
+                                            <div className="col-md-11">
+                                                <h4><strong>{model.brand.name + ' - ' + model.name}</strong></h4>
+                                            </div>
+                                            <div className="col-md-1">
+                                                {stateIcon}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="panel-body">
-                                        {model.description}
+                                        <div className="row">
+                                            <div className="col-md-5">
+                                                <em>Domaine: </em>
+                                                <ul>{itemDomains}</ul>
+                                            </div>
+                                            <div className="col-md-5">
+                                                <em>Sous Catégories: </em>
+                                                <ul>{itemSubCategories}</ul>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <em>{model.description}</em>
+                                        </p>
                                     </div>
                                 </div>
 
