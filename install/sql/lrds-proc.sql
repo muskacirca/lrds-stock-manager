@@ -3,13 +3,15 @@ DELIMITER //
 CREATE PROCEDURE add_item(
   IN reference VARCHAR(255),
   IN isInStock BOOLEAN,
-  IN modelName VARCHAR(255)
+  IN modelName VARCHAR(255),
+  IN stateName VARCHAR(255)
 )
   BEGIN
 
     SET @modelId := (SELECT id FROM models WHERE name = modelName);
+    SET @stateId := (SELECT id FROM states WHERE name = stateName);
 
-    INSERT INTO items (reference, isInStock, modelId) VALUES(reference, isInStock, @modelId);
+    INSERT INTO items (reference, isInStock, modelId, stateId, createdAt, updatedAt) VALUES(reference, isInStock, @modelId, @stateId, now(), now());
 
   END //
 
@@ -107,5 +109,15 @@ CREATE PROCEDURE add_item_comment(
 
   END //
 
+
+CREATE PROCEDURE add_state(
+  IN name VARCHAR(255),
+  IN severity INT
+)
+  BEGIN
+
+    INSERT INTO states (name, severity) VALUES(name, severity);
+
+  END //
 
 DELIMITER ;

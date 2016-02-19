@@ -57,70 +57,87 @@ class ItemFormComponent extends React.Component {
             }
         })
 
-        console.log("built suggestions : " + JSON.stringify(suggestions))
-
         return suggestions
-
     }
 
-    onSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+    buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
-        console.log("method: " + method)
-        console.log("suggestion: " + JSON.stringify(suggestion))
-        console.log("suggestionValue: " + suggestionValue)
-
-        var itemFeatures = _.cloneDeep(this.state.itemFeatures)
         if(suggestion.section === "models") {
 
-            itemFeatures.model = suggestionValue
+            existingItemFeature.model = suggestionValue
 
         } else if(suggestion.section === "domains") {
 
-            var index = _.findIndex(itemFeatures.domains, (o) => o.name == suggestion.name)
-            if(index === -1) itemFeatures.domains.push(suggestionValue)
+            var index = _.findIndex(existingItemFeature.domains, (o) => o.name == suggestion.name)
+            if(index === -1) existingItemFeature.domains.push(suggestionValue)
 
             // A subCategory
         } else {
 
-            var index = _.findIndex(itemFeatures.categories, (o) =>  o.categoryName == suggestion.section)
+            var index = _.findIndex(existingItemFeature.categories, (o) =>  o.categoryName == suggestion.section)
             if(index === -1) {
-                itemFeatures.categories.push({categoryName: suggestion.section, subCategories: [{name: suggestion.name}]})
+                existingItemFeature.categories.push({categoryName: suggestion.section, subCategories: [{name: suggestion.name}]})
 
             } else {
-                itemFeatures.categories[index].suggestions.push({name: suggestion.name})
+                existingItemFeature.categories[index].suggestions.push({name: suggestion.name})
             }
         }
-        console.log("itemFeatures: " + JSON.stringify(itemFeatures))
-        this.setState({itemFeatures: itemFeatures})
 
+        return existingItemFeature
+    }
+
+    onSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+
+        var clonedItemFeatures = _.cloneDeep(this.state.itemFeatures)
+        var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue)
+
+        this.setState({itemFeatures: itemFeature})
     }
 
     findModel(modelName) {
-        if(modelName === "") return {brand: {}}
+        if(modelName === "") return {brand: {}, domains: [], subCategories: []}
         var index = _.findIndex(this.props.viewer.models, (o) => o.name === modelName)
         return this.props.viewer.models[index]
     }
 
 
+    renderItemDomains(createdDomains, modelDomains) {
+
+        var itemCreatedDomains = createdDomains.map(elt => {
+            return <li key={elt} className="tag">{elt}</li>
+        })
+
+        var modelDomains = modelDomains.map(elt => {
+            return <li key={elt.name} className="tag">{elt.name}</li>
+        })
+
+        return _.concat(itemCreatedDomains, modelDomains)
+    }
+
+    renderItemSubCategories(createdSubCategories, modelSubCategories) {
+
+        var itemCategories = createdSubCategories.map(elt => {
+            return <li key={elt.categoryName} className="tag">{elt.categoryName}</li>
+        })
+
+        var modelSubCategories = modelSubCategories.map(elt => {
+            return <li key={elt.name} className="tag">{elt.name}</li>
+        })
+
+        return _.concat(itemCategories, modelSubCategories)
+    }
 
     render() {
 
         var models = this.props.viewer.models
         var domains = this.props.viewer.domains
         var subCategories = this.props.viewer.subCategories
-        var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
-
-        var itemDomain = this.state.itemFeatures.domains.map(elt => {
-            console.log("element : " +  elt)
-            return <div key={elt} className="tag">{elt}</div>
-        })
-
-        var itemCategories = this.state.itemFeatures.categories.map(elt => {
-            console.log("element : " +  elt)
-            return <div key={elt.categoryName} className="tag">{elt.categoryName}</div>
-        })
+        var builtSuggestion = this.buildSuggestion(models, domains, subCategories);
 
         var model = this.findModel(this.state.itemFeatures.model)
+
+        var itemDomains = this.renderItemDomains(this.state.itemFeatures.domains, model.domains)
+        var itemSubCategories = this.renderItemSubCategories(this.state.itemFeatures.categories, model.subCategories)
 
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
@@ -134,7 +151,7 @@ class ItemFormComponent extends React.Component {
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <h3>Select your model</h3>
-                                <AutosuggestWrapper suggestions={buildSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+                                <AutosuggestWrapper suggestions={builtSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
 
                             </form>
                         </div>
@@ -142,13 +159,16 @@ class ItemFormComponent extends React.Component {
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <div className="panel panel-default">
-                                    <div className="panel-heading">{model.brand.name + ' - ' + model.name}</div>
+                                    <div className="panel-heading">
+                                        {model.brand.name + ' - ' + model.name}
+                                        <ul>{itemDomains}</ul>
+                                        <ul>{itemSubCategories}</ul>
+                                    </div>
                                     <div className="panel-body">
                                         {model.description}
                                     </div>
                                 </div>
-                                {itemDomain}
-                                {itemCategories}
+
                             </form>
                         </div>
                     </div>
@@ -168,18 +188,28 @@ export default Relay.createContainer(ItemFormComponent, {
               brand {
                 name
               }
+              domains {
+                id
+                name,
+                description
+              }
+              subCategories {
+                name
+                description
+                category {
+                  name,
+                  description
+                }
+              }
             }
             domains {
               id
-              name,
-              description
+              name
             }
             subCategories {
               name
-              description
               category {
-                name,
-                description
+                name
               }
             }
           }

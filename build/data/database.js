@@ -44,6 +44,19 @@ var model = connection.define('model', {
 
 brand.hasMany(model);
 
+var state = connection.define('state', {
+
+    name: {
+        type: _sequelize2.default.STRING,
+        allowNull: false
+    },
+    severity: {
+        type: _sequelize2.default.INTEGER,
+        allowNull: false
+    }
+
+}, { timestamps: false });
+
 var item = connection.define('item', {
 
     reference: {
@@ -56,8 +69,9 @@ var item = connection.define('item', {
         allowNull: false,
         defaultValue: true
     }
-}, { timestamps: false });
+});
 
+state.hasMany(item);
 model.hasMany(item);
 
 item.belongsToMany(item, { as: 'linkedItem', through: 'linkedItems', timestamps: false });

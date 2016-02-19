@@ -48797,9 +48797,36 @@
 	                }
 	            });
 
-	            console.log("built suggestions : " + JSON.stringify(suggestions));
-
 	            return suggestions;
+	        }
+	    }, {
+	        key: 'buildSelectedItem',
+	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
+
+	            if (suggestion.section === "models") {
+
+	                existingItemFeature.model = suggestionValue;
+	            } else if (suggestion.section === "domains") {
+
+	                var index = _lodash2.default.findIndex(existingItemFeature.domains, function (o) {
+	                    return o.name == suggestion.name;
+	                });
+	                if (index === -1) existingItemFeature.domains.push(suggestionValue);
+
+	                // A subCategory
+	            } else {
+
+	                    var index = _lodash2.default.findIndex(existingItemFeature.categories, function (o) {
+	                        return o.categoryName == suggestion.section;
+	                    });
+	                    if (index === -1) {
+	                        existingItemFeature.categories.push({ categoryName: suggestion.section, subCategories: [{ name: suggestion.name }] });
+	                    } else {
+	                        existingItemFeature.categories[index].suggestions.push({ name: suggestion.name });
+	                    }
+	                }
+
+	            return existingItemFeature;
 	        }
 	    }, {
 	        key: 'onSuggestionSelected',
@@ -48809,44 +48836,63 @@
 	            var method = _ref.method;
 
 
-	            console.log("method: " + method);
-	            console.log("suggestion: " + JSON.stringify(suggestion));
-	            console.log("suggestionValue: " + suggestionValue);
+	            var clonedItemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
+	            var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue);
 
-	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
-	            if (suggestion.section === "models") {
-
-	                itemFeatures.model = suggestionValue;
-	            } else if (suggestion.section === "domains") {
-
-	                var index = _lodash2.default.findIndex(itemFeatures.domains, function (o) {
-	                    return o.name == suggestion.name;
-	                });
-	                if (index === -1) itemFeatures.domains.push(suggestionValue);
-
-	                // A subCategory
-	            } else {
-
-	                    var index = _lodash2.default.findIndex(itemFeatures.categories, function (o) {
-	                        return o.categoryName == suggestion.section;
-	                    });
-	                    if (index === -1) {
-	                        itemFeatures.categories.push({ categoryName: suggestion.section, subCategories: [{ name: suggestion.name }] });
-	                    } else {
-	                        itemFeatures.categories[index].suggestions.push({ name: suggestion.name });
-	                    }
-	                }
-	            console.log("itemFeatures: " + JSON.stringify(itemFeatures));
-	            this.setState({ itemFeatures: itemFeatures });
+	            this.setState({ itemFeatures: itemFeature });
 	        }
 	    }, {
 	        key: 'findModel',
 	        value: function findModel(modelName) {
-	            if (modelName === "") return { brand: {} };
+	            if (modelName === "") return { brand: {}, domains: [], subCategories: [] };
 	            var index = _lodash2.default.findIndex(this.props.viewer.models, function (o) {
 	                return o.name === modelName;
 	            });
 	            return this.props.viewer.models[index];
+	        }
+	    }, {
+	        key: 'renderItemDomains',
+	        value: function renderItemDomains(createdDomains, modelDomains) {
+
+	            var itemCreatedDomains = createdDomains.map(function (elt) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: elt, className: 'tag' },
+	                    elt
+	                );
+	            });
+
+	            var modelDomains = modelDomains.map(function (elt) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: elt.name, className: 'tag' },
+	                    elt.name
+	                );
+	            });
+
+	            return _lodash2.default.concat(itemCreatedDomains, modelDomains);
+	        }
+	    }, {
+	        key: 'renderItemSubCategories',
+	        value: function renderItemSubCategories(createdSubCategories, modelSubCategories) {
+
+	            var itemCategories = createdSubCategories.map(function (elt) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: elt.categoryName, className: 'tag' },
+	                    elt.categoryName
+	                );
+	            });
+
+	            var modelSubCategories = modelSubCategories.map(function (elt) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: elt.name, className: 'tag' },
+	                    elt.name
+	                );
+	            });
+
+	            return _lodash2.default.concat(itemCategories, modelSubCategories);
 	        }
 	    }, {
 	        key: 'render',
@@ -48855,27 +48901,12 @@
 	            var models = this.props.viewer.models;
 	            var domains = this.props.viewer.domains;
 	            var subCategories = this.props.viewer.subCategories;
-	            var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
-
-	            var itemDomain = this.state.itemFeatures.domains.map(function (elt) {
-	                console.log("element : " + elt);
-	                return _react2.default.createElement(
-	                    'div',
-	                    { key: elt, className: 'tag' },
-	                    elt
-	                );
-	            });
-
-	            var itemCategories = this.state.itemFeatures.categories.map(function (elt) {
-	                console.log("element : " + elt);
-	                return _react2.default.createElement(
-	                    'div',
-	                    { key: elt.categoryName, className: 'tag' },
-	                    elt.categoryName
-	                );
-	            });
+	            var builtSuggestion = this.buildSuggestion(models, domains, subCategories);
 
 	            var model = this.findModel(this.state.itemFeatures.model);
+
+	            var itemDomains = this.renderItemDomains(this.state.itemFeatures.domains, model.domains);
+	            var itemSubCategories = this.renderItemSubCategories(this.state.itemFeatures.categories, model.subCategories);
 
 	            var alerts = _react2.default.createElement('div', null);
 	            var pageTitle = "Création d'un item";
@@ -48904,7 +48935,7 @@
 	                                null,
 	                                'Select your model'
 	                            ),
-	                            _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: buildSuggestion, onSuggestionSelected: this.onSuggestionSelected.bind(this) })
+	                            _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: builtSuggestion, onSuggestionSelected: this.onSuggestionSelected.bind(this) })
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -48919,16 +48950,24 @@
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'panel-heading' },
-	                                    model.brand.name + ' - ' + model.name
+	                                    model.brand.name + ' - ' + model.name,
+	                                    _react2.default.createElement(
+	                                        'ul',
+	                                        null,
+	                                        itemDomains
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'ul',
+	                                        null,
+	                                        itemSubCategories
+	                                    )
 	                                ),
 	                                _react2.default.createElement(
 	                                    'div',
 	                                    { className: 'panel-body' },
 	                                    model.description
 	                                )
-	                            ),
-	                            itemDomain,
-	                            itemCategories
+	                            )
 	                        )
 	                    )
 	                )
@@ -48985,6 +49024,88 @@
 	                                inferredPrimaryKey: 'id'
 	                            },
 	                            type: 'BrandType'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }, {
+	                                fieldName: 'name',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'description',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'domains',
+	                            kind: 'Field',
+	                            metadata: {
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
+	                                isPlural: true
+	                            },
+	                            type: 'DomainType'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'name',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'description',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'description',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'category',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id'
+	                                },
+	                                type: 'CategoryType'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'subCategories',
+	                            kind: 'Field',
+	                            metadata: {
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
+	                                isPlural: true
+	                            },
+	                            type: 'SubCategoryType'
 	                        }],
 	                        fieldName: 'models',
 	                        kind: 'Field',
@@ -49007,11 +49128,6 @@
 	                            kind: 'Field',
 	                            metadata: {},
 	                            type: 'String'
-	                        }, {
-	                            fieldName: 'description',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
 	                        }],
 	                        fieldName: 'domains',
 	                        kind: 'Field',
@@ -49028,18 +49144,8 @@
 	                            metadata: {},
 	                            type: 'String'
 	                        }, {
-	                            fieldName: 'description',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }, {
 	                            children: [{
 	                                fieldName: 'name',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'description',
 	                                kind: 'Field',
 	                                metadata: {},
 	                                type: 'String'

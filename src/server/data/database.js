@@ -37,6 +37,19 @@ const model = connection.define('model', {
 
 brand.hasMany(model)
 
+const state = connection.define('state', {
+
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    severity: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
+
+}, {timestamps: false})
+
 const item = connection.define('item',  {
 
         reference: {
@@ -49,9 +62,10 @@ const item = connection.define('item',  {
             allowNull: false,
             defaultValue: true
         }
-    }, {timestamps: false}
+    }
 )
 
+state.hasMany(item)
 model.hasMany(item)
 
 item.belongsToMany(item, {as: 'linkedItem', through: 'linkedItems', timestamps: false})
