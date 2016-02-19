@@ -51,19 +51,12 @@ class AutosuggestWrapper extends React.Component {
         return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
     }
 
-    removeEmptyDomains(suggestions) {
-
-    }
-
     onChange(event, { newValue, method }) {
 
         // ArrowDown
         this.setState({
             value: newValue
         });
-
-        this.props.onChange(event, {newValue, method})
-
     }
 
     onSuggestionsUpdateRequested({ value }) {
@@ -72,6 +65,14 @@ class AutosuggestWrapper extends React.Component {
         this.setState({
             filteredSuggestions: this.getSuggestions(value)
         });
+    }
+
+    onSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+        this.setState({
+            value: ''
+        });
+
+        this.props.onSuggestionSelected(event, { suggestion, suggestionValue, method })
     }
 
     render() {
@@ -91,6 +92,7 @@ class AutosuggestWrapper extends React.Component {
                              renderSectionTitle={this.renderSectionTitle.bind(this)}
                              renderSuggestion={this.renderSuggestion.bind(this)}
                              getSectionSuggestions={this.getSectionSuggestions.bind(this)}
+                             onSuggestionSelected={this.onSuggestionSelected.bind(this)}
                              inputProps={inputProps} />
 
     }

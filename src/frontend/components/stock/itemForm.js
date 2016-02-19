@@ -8,6 +8,13 @@ class ItemFormComponent extends React.Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            itemFeatures : {
+                models: {},
+                domains: [],
+                categories: []
+            }
+        }
     }
 
     submitForm(e) {
@@ -22,11 +29,11 @@ class ItemFormComponent extends React.Component {
     buildSuggestion(models, domains, subCategories) {
 
         var suggestionsModels = models.map(model => {
-            return {name: model.name}
+            return {name: model.name, section: "models"}
         })
 
         var suggestionsDomains = domains.map(domain => {
-            return {name: domain.name}
+            return {name: domain.name, section: "domains"}
         })
 
         var suggestions = [
@@ -43,10 +50,10 @@ class ItemFormComponent extends React.Component {
         subCategories.map(subCategory => {
             var index = _.findIndex(suggestions, (o) =>  o.title == subCategory.category.name)
             if(index === -1) {
-                suggestions.push({title: subCategory.category.name, suggestions: [{name: subCategory.name}]})
+                suggestions.push({title: subCategory.category.name, suggestions: [{name: subCategory.name, section: subCategory.category.name}]})
 
             } else {
-                suggestions[index].suggestions.push({name: subCategory.name})
+                suggestions[index].suggestions.push({name: subCategory.name, section: subCategory.category.name})
             }
         })
 
@@ -56,11 +63,39 @@ class ItemFormComponent extends React.Component {
 
     }
 
-    onAutosuggestEvent(event, { newValue, method }) {
+    onSuggestionSelected(event, { suggestion, suggestionValue, method }) {
 
         console.log("method: " + method)
+        console.log("suggestion: " + JSON.stringify(suggestion))
+        console.log("suggestionValue: " + suggestionValue)
+
+        var itemFeatures = _.cloneDeep(this.state.itemFeatures)
+        if(suggestion.section === "models") {
+
+            itemFeatures.models = suggestionValue
+
+        } else if(suggestion.section === "domains") {
+
+            var index = _.findIndex(itemFeatures.domains, (o) => o.name == suggestion.name)
+            if(index === -1) itemFeatures.domains.push(suggestionValue)
+
+            // A subCategory
+        } else {
+
+            var index = _.findIndex(itemFeatures.categories, (o) =>  o.categoryName == suggestion.section)
+            if(index === -1) {
+                itemFeatures.categories.push({categoryName: suggestion.section, subCategories: [{name: suggestion.name}]})
+
+            } else {
+                itemFeatures.categories[index].suggestions.push({name: suggestion.name})
+            }
+        }
+        console.log("itemFeatures: " + JSON.stringify(itemFeatures))
+        this.setState({itemFeatures: itemFeatures})
 
     }
+
+
 
     render() {
 
@@ -72,10 +107,6 @@ class ItemFormComponent extends React.Component {
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
 
-        var domainOptionList  = this.props.viewer.domains.map((elt) => {
-            return <li className="inline" key={elt.id}>{elt.name}</li>
-        })
-
         return  <div className="col-md-10 col-md-offset-1">
                     {alerts}
                     <h2>{pageTitle}</h2>
@@ -85,7 +116,7 @@ class ItemFormComponent extends React.Component {
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <h3>Select your model</h3>
-                                <AutosuggestWrapper suggestions={buildSuggestion} onChange={this.onAutosuggestEvent.bind(this)} />
+                                <AutosuggestWrapper suggestions={buildSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
                             </form>
                         </div>
                     </div>
