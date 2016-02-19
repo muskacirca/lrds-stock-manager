@@ -10,7 +10,7 @@ class ItemFormComponent extends React.Component {
         super(props)
         this.state = {
             itemFeatures : {
-                models: {},
+                model: "",
                 domains: [],
                 categories: []
             }
@@ -72,7 +72,7 @@ class ItemFormComponent extends React.Component {
         var itemFeatures = _.cloneDeep(this.state.itemFeatures)
         if(suggestion.section === "models") {
 
-            itemFeatures.models = suggestionValue
+            itemFeatures.model = suggestionValue
 
         } else if(suggestion.section === "domains") {
 
@@ -95,6 +95,12 @@ class ItemFormComponent extends React.Component {
 
     }
 
+    findModel(modelName) {
+        if(modelName === "") return {brand: {}}
+        var index = _.findIndex(this.props.viewer.models, (o) => o.name === modelName)
+        return this.props.viewer.models[index]
+    }
+
 
 
     render() {
@@ -104,6 +110,18 @@ class ItemFormComponent extends React.Component {
         var subCategories = this.props.viewer.subCategories
         var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
 
+        var itemDomain = this.state.itemFeatures.domains.map(elt => {
+            console.log("element : " +  elt)
+            return <div key={elt} className="tag">{elt}</div>
+        })
+
+        var itemCategories = this.state.itemFeatures.categories.map(elt => {
+            console.log("element : " +  elt)
+            return <div key={elt.categoryName} className="tag">{elt.categoryName}</div>
+        })
+
+        var model = this.findModel(this.state.itemFeatures.model)
+
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
 
@@ -112,11 +130,25 @@ class ItemFormComponent extends React.Component {
                     <h2>{pageTitle}</h2>
                     <br />
                     <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-3">
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <h3>Select your model</h3>
                                 <AutosuggestWrapper suggestions={buildSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+
+                            </form>
+                        </div>
+                        <div className="col-md-7">
+                            <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
+
+                                <div className="panel panel-default">
+                                    <div className="panel-heading">{model.brand.name + ' - ' + model.name}</div>
+                                    <div className="panel-body">
+                                        {model.description}
+                                    </div>
+                                </div>
+                                {itemDomain}
+                                {itemCategories}
                             </form>
                         </div>
                     </div>
@@ -132,18 +164,22 @@ export default Relay.createContainer(ItemFormComponent, {
             models {
               id
               name
+      		  description
               brand {
                 name
               }
             }
             domains {
               id
-              name
+              name,
+              description
             }
             subCategories {
               name
+              description
               category {
-                name
+                name,
+                description
               }
             }
           }
