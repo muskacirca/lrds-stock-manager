@@ -63910,9 +63910,26 @@
 	        key: 'renderSectionTitle',
 	        value: function renderSectionTitle(section) {
 	            return _react2.default.createElement(
-	                'strong',
+	                'div',
 	                null,
-	                section.title
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-9' },
+	                        _react2.default.createElement(
+	                            'strong',
+	                            null,
+	                            section.title
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-1' },
+	                        _react2.default.createElement('i', { className: 'fa fa-plus-circle' })
+	                    )
+	                )
 	            );
 	        }
 	    }, {

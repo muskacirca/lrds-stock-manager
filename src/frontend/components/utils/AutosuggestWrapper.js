@@ -21,7 +21,16 @@ class AutosuggestWrapper extends React.Component {
     }
 
     renderSectionTitle(section) {
-        return <strong>{section.title}</strong>
+        return  <div>
+                    <div className="row">
+                        <div className="col-md-9">
+                            <strong>{section.title}</strong>
+                        </div>
+                        <div className="col-md-1">
+                            <i className="fa fa-plus-circle"></i>
+                        </div>
+                    </div>
+               </div>
     }
 
     renderSuggestion(suggestion) {
