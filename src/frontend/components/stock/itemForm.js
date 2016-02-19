@@ -8,9 +8,6 @@ class ItemFormComponent extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-
-        }
     }
 
     submitForm(e) {
@@ -59,23 +56,11 @@ class ItemFormComponent extends React.Component {
 
     }
 
+    onAutosuggestEvent(event, { newValue, method }) {
 
-    componentDidMount() {
+        console.log("method: " + method)
 
-
-
-        this.setState({suggestions: buildSuggestion, filteredSuggestions: buildSuggestion})
     }
-
-    onSearchFieldChange(field) {
-
-        var newItem = _.get(this.refs, field)
-        console.log(field + " value: " + newItem.value)
-    }
-
-
-
-
 
     render() {
 
@@ -100,7 +85,7 @@ class ItemFormComponent extends React.Component {
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <h3>Select your model</h3>
-                                <AutosuggestWrapper suggestions={buildSuggestion} />
+                                <AutosuggestWrapper suggestions={buildSuggestion} onChange={this.onAutosuggestEvent.bind(this)} />
                             </form>
                         </div>
                     </div>

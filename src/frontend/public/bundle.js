@@ -48743,10 +48743,7 @@
 	    function ItemFormComponent(props) {
 	        _classCallCheck(this, ItemFormComponent);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
-
-	        _this.state = {};
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
 	    }
 
 	    _createClass(ItemFormComponent, [{
@@ -48796,17 +48793,13 @@
 	            return suggestions;
 	        }
 	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
+	        key: 'onAutosuggestEvent',
+	        value: function onAutosuggestEvent(event, _ref) {
+	            var newValue = _ref.newValue;
+	            var method = _ref.method;
 
-	            this.setState({ suggestions: buildSuggestion, filteredSuggestions: buildSuggestion });
-	        }
-	    }, {
-	        key: 'onSearchFieldChange',
-	        value: function onSearchFieldChange(field) {
 
-	            var newItem = _lodash2.default.get(this.refs, field);
-	            console.log(field + " value: " + newItem.value);
+	            console.log("method: " + method);
 	        }
 	    }, {
 	        key: 'render',
@@ -48852,7 +48845,7 @@
 	                                null,
 	                                'Select your model'
 	                            ),
-	                            _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: buildSuggestion })
+	                            _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: buildSuggestion, onChange: this.onAutosuggestEvent.bind(this) })
 	                        )
 	                    )
 	                )
@@ -63869,6 +63862,8 @@
 	            this.setState({
 	                value: newValue
 	            });
+
+	            this.props.onChange(event, { newValue: newValue, method: method });
 	        }
 	    }, {
 	        key: 'onSuggestionsUpdateRequested',
