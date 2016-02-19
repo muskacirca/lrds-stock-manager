@@ -2,16 +2,14 @@ import React from 'react'
 import Relay from 'react-relay'
 import _ from 'lodash'
 
-import Autosuggest from 'react-autosuggest'
+import AutosuggestWrapper from '../utils/AutosuggestWrapper'
 
 class ItemFormComponent extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            suggestions: [],
-            filteredSuggestions: [],
-            value: ''
+
         }
     }
 
@@ -24,7 +22,6 @@ class ItemFormComponent extends React.Component {
         this.setState({item: newItem})
     }
 
-
     buildSuggestion(models, domains, subCategories) {
 
         var suggestionsModels = models.map(model => {
@@ -34,8 +31,6 @@ class ItemFormComponent extends React.Component {
         var suggestionsDomains = domains.map(domain => {
             return {name: domain.name}
         })
-
-        var suggestionsCategory = []
 
         var suggestions = [
             {
@@ -64,12 +59,11 @@ class ItemFormComponent extends React.Component {
 
     }
 
-    componentDidMount() {
-        var models = this.props.viewer.models
-        var domains = this.props.viewer.domains
-        var subCategories = this.props.viewer.subCategories
 
-        var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
+    componentDidMount() {
+
+
+
         this.setState({suggestions: buildSuggestion, filteredSuggestions: buildSuggestion})
     }
 
@@ -80,87 +74,15 @@ class ItemFormComponent extends React.Component {
     }
 
 
-    getSuggestionValue(suggestion) {
-        return suggestion.name;
-    }
 
-    renderSectionTitle(section) {
-        return <strong>{section.title}</strong>
-    }
-
-    renderSuggestion(suggestion) {
-
-        //if(suggestion){
-        //
-        //    var elt = suggestion.suggestions.map(elt => {
-        //        return <span className="suggestion">{elt.name}</span>
-        //    })
-        //
-        //    return  <div className="sectionContainer">
-        //                    <div className="sectionTitle">
-        //                        {suggestion.title}
-        //                    </div>
-        //                    <span className="sectionSuggestionsContainer">
-        //                        {elt}
-        //                    </span>
-        //                </div>
-        //}
-
-        return <span>{suggestion.name}</span>
-
-    }
-
-    getSectionSuggestions(section) {
-        return section.suggestions;
-    }
-
-    getSuggestions(value) {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-
-        var suggestions = _.cloneDeep(this.state.suggestions)
-
-        var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
-
-            var itemFiltered = suggestion.suggestions.filter(suggest => {
-                return suggest.name.toLowerCase().indexOf(inputValue) != -1
-            })
-
-            suggestion.suggestions = itemFiltered
-            return suggestion
-        });
-
-        return filteredSuggestion
-    }
-
-    onChange(event, { newValue, method }) {
-
-        console.log("onChange event : ")
-        // ArrowDown
-            this.setState({
-                value: newValue
-            });
-
-    }
-
-    onSuggestionsUpdateRequested({ value }) {
-
-
-        this.setState({
-            filteredSuggestions: this.getSuggestions(value)
-        });
-    }
 
 
     render() {
 
-        const { value } = this.state;
-        const inputProps = {
-            placeholder: 'Type a model',
-            value,
-            onChange: this.onChange.bind(this),
-            className: "form-control"
-        };
+        var models = this.props.viewer.models
+        var domains = this.props.viewer.domains
+        var subCategories = this.props.viewer.subCategories
+        var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
 
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
@@ -178,37 +100,7 @@ class ItemFormComponent extends React.Component {
                             <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
 
                                 <h3>Select your model</h3>
-                                <Autosuggest multiSection={true}
-                                             suggestions={this.state.filteredSuggestions}
-                                             onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}
-                                             getSuggestionValue={this.getSuggestionValue.bind(this)}
-                                             renderSectionTitle={this.renderSectionTitle.bind(this)}
-                                             renderSuggestion={this.renderSuggestion.bind(this)}
-                                             getSectionSuggestions={this.getSectionSuggestions.bind(this)}
-                                             inputProps={inputProps} />
-
-                                <h2>Domaine</h2>
-                                <input ref="domainSearchField" type="text" onChange={this.onSearchFieldChange.bind(this, "domainSearchField")}/>
-                                <ul>{domainOptionList}</ul>
-
-
-                                <h2>Category</h2>
-                                <input ref="categorySearchField" type="text" onChange={this.onSearchFieldChange.bind(this, "categorySearchField")}/>
-
-                                <h2>Sous Catégorie</h2>
-                                <input ref="subCategorySearchField" type="text" onChange={this.onSearchFieldChange.bind(this, "subCategorySearchField")}/>
-
-                                <h2>Modèle</h2>
-                                <input ref="modelSearchField" type="text" onChange={this.onSearchFieldChange.bind(this, "modelSearchField")}/>
-
-
-                                <div className="form-group">
-                                    <label htmlFor="referenceItemInput" className="col-md-2 control-label">Reference</label>
-                                    <div className="col-md-10">
-                                        <input id="referenceItemInput" ref="reference" className="form-control" placeholder="Reference"
-                                               type="text" onChange={this.onFieldChange.bind(this, 'reference')}/>
-                                    </div>
-                                </div>
+                                <AutosuggestWrapper suggestions={buildSuggestion} />
                             </form>
                         </div>
                     </div>

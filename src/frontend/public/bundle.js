@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(506);
+	var _history = __webpack_require__(507);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47220,15 +47220,15 @@
 
 	var _itemForm2 = _interopRequireDefault(_itemForm);
 
-	var _product = __webpack_require__(503);
+	var _product = __webpack_require__(504);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(504);
+	var _profile = __webpack_require__(505);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(505);
+	var _event = __webpack_require__(506);
 
 	var _event2 = _interopRequireDefault(_event);
 
@@ -48725,9 +48725,9 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _reactAutosuggest = __webpack_require__(478);
+	var _AutosuggestWrapper = __webpack_require__(478);
 
-	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
+	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48745,11 +48745,7 @@
 
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
 
-	        _this.state = {
-	            suggestions: [],
-	            filteredSuggestions: [],
-	            value: ''
-	        };
+	        _this.state = {};
 	        return _this;
 	    }
 
@@ -48775,8 +48771,6 @@
 	            var suggestionsDomains = domains.map(function (domain) {
 	                return { name: domain.name };
 	            });
-
-	            var suggestionsCategory = [];
 
 	            var suggestions = [{
 	                title: "Models",
@@ -48804,11 +48798,7 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            var models = this.props.viewer.models;
-	            var domains = this.props.viewer.domains;
-	            var subCategories = this.props.viewer.subCategories;
 
-	            var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
 	            this.setState({ suggestions: buildSuggestion, filteredSuggestions: buildSuggestion });
 	        }
 	    }, {
@@ -48819,104 +48809,13 @@
 	            console.log(field + " value: " + newItem.value);
 	        }
 	    }, {
-	        key: 'getSuggestionValue',
-	        value: function getSuggestionValue(suggestion) {
-	            return suggestion.name;
-	        }
-	    }, {
-	        key: 'renderSectionTitle',
-	        value: function renderSectionTitle(section) {
-	            return _react2.default.createElement(
-	                'strong',
-	                null,
-	                section.title
-	            );
-	        }
-	    }, {
-	        key: 'renderSuggestion',
-	        value: function renderSuggestion(suggestion) {
-
-	            //if(suggestion){
-	            //
-	            //    var elt = suggestion.suggestions.map(elt => {
-	            //        return <span className="suggestion">{elt.name}</span>
-	            //    })
-	            //
-	            //    return  <div className="sectionContainer">
-	            //                    <div className="sectionTitle">
-	            //                        {suggestion.title}
-	            //                    </div>
-	            //                    <span className="sectionSuggestionsContainer">
-	            //                        {elt}
-	            //                    </span>
-	            //                </div>
-	            //}
-
-	            return _react2.default.createElement(
-	                'span',
-	                null,
-	                suggestion.name
-	            );
-	        }
-	    }, {
-	        key: 'getSectionSuggestions',
-	        value: function getSectionSuggestions(section) {
-	            return section.suggestions;
-	        }
-	    }, {
-	        key: 'getSuggestions',
-	        value: function getSuggestions(value) {
-	            var inputValue = value.trim().toLowerCase();
-	            var inputLength = inputValue.length;
-
-	            var suggestions = _lodash2.default.cloneDeep(this.state.suggestions);
-
-	            var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(function (suggestion) {
-
-	                var itemFiltered = suggestion.suggestions.filter(function (suggest) {
-	                    return suggest.name.toLowerCase().indexOf(inputValue) != -1;
-	                });
-
-	                suggestion.suggestions = itemFiltered;
-	                return suggestion;
-	            });
-
-	            return filteredSuggestion;
-	        }
-	    }, {
-	        key: 'onChange',
-	        value: function onChange(event, _ref) {
-	            var newValue = _ref.newValue;
-	            var method = _ref.method;
-
-
-	            console.log("onChange event : ");
-	            // ArrowDown
-	            this.setState({
-	                value: newValue
-	            });
-	        }
-	    }, {
-	        key: 'onSuggestionsUpdateRequested',
-	        value: function onSuggestionsUpdateRequested(_ref2) {
-	            var value = _ref2.value;
-
-
-	            this.setState({
-	                filteredSuggestions: this.getSuggestions(value)
-	            });
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var value = this.state.value;
 
-	            var inputProps = {
-	                placeholder: 'Type a model',
-	                value: value,
-	                onChange: this.onChange.bind(this),
-	                className: "form-control"
-	            };
+	            var models = this.props.viewer.models;
+	            var domains = this.props.viewer.domains;
+	            var subCategories = this.props.viewer.subCategories;
+	            var buildSuggestion = this.buildSuggestion(models, domains, subCategories);
 
 	            var alerts = _react2.default.createElement('div', null);
 	            var pageTitle = "Création d'un item";
@@ -48953,58 +48852,7 @@
 	                                null,
 	                                'Select your model'
 	                            ),
-	                            _react2.default.createElement(_reactAutosuggest2.default, { multiSection: true,
-	                                suggestions: this.state.filteredSuggestions,
-	                                onSuggestionsUpdateRequested: this.onSuggestionsUpdateRequested.bind(this),
-	                                getSuggestionValue: this.getSuggestionValue.bind(this),
-	                                renderSectionTitle: this.renderSectionTitle.bind(this),
-	                                renderSuggestion: this.renderSuggestion.bind(this),
-	                                getSectionSuggestions: this.getSectionSuggestions.bind(this),
-	                                inputProps: inputProps }),
-	                            _react2.default.createElement(
-	                                'h2',
-	                                null,
-	                                'Domaine'
-	                            ),
-	                            _react2.default.createElement('input', { ref: 'domainSearchField', type: 'text', onChange: this.onSearchFieldChange.bind(this, "domainSearchField") }),
-	                            _react2.default.createElement(
-	                                'ul',
-	                                null,
-	                                domainOptionList
-	                            ),
-	                            _react2.default.createElement(
-	                                'h2',
-	                                null,
-	                                'Category'
-	                            ),
-	                            _react2.default.createElement('input', { ref: 'categorySearchField', type: 'text', onChange: this.onSearchFieldChange.bind(this, "categorySearchField") }),
-	                            _react2.default.createElement(
-	                                'h2',
-	                                null,
-	                                'Sous Catégorie'
-	                            ),
-	                            _react2.default.createElement('input', { ref: 'subCategorySearchField', type: 'text', onChange: this.onSearchFieldChange.bind(this, "subCategorySearchField") }),
-	                            _react2.default.createElement(
-	                                'h2',
-	                                null,
-	                                'Modèle'
-	                            ),
-	                            _react2.default.createElement('input', { ref: 'modelSearchField', type: 'text', onChange: this.onSearchFieldChange.bind(this, "modelSearchField") }),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'form-group' },
-	                                _react2.default.createElement(
-	                                    'label',
-	                                    { htmlFor: 'referenceItemInput', className: 'col-md-2 control-label' },
-	                                    'Reference'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-md-10' },
-	                                    _react2.default.createElement('input', { id: 'referenceItemInput', ref: 'reference', className: 'form-control', placeholder: 'Reference',
-	                                        type: 'text', onChange: this.onFieldChange.bind(this, 'reference') })
-	                                )
-	                            )
+	                            _react2.default.createElement(_AutosuggestWrapper2.default, { suggestions: buildSuggestion })
 	                        )
 	                    )
 	                )
@@ -63911,10 +63759,165 @@
 
 	'use strict';
 
-	module.exports = __webpack_require__(479).default;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactAutosuggest = __webpack_require__(479);
+
+	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
+
+	var _lodash = __webpack_require__(476);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AutosuggestWrapper = function (_React$Component) {
+	    _inherits(AutosuggestWrapper, _React$Component);
+
+	    function AutosuggestWrapper(props) {
+	        _classCallCheck(this, AutosuggestWrapper);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AutosuggestWrapper).call(this, props));
+
+	        _this.state = {
+	            filteredSuggestions: [],
+	            value: ''
+	        };
+	        return _this;
+	    }
+
+	    _createClass(AutosuggestWrapper, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.setState({ filteredSuggestions: this.props.suggestions });
+	        }
+	    }, {
+	        key: 'getSuggestionValue',
+	        value: function getSuggestionValue(suggestion) {
+	            return suggestion.name;
+	        }
+	    }, {
+	        key: 'renderSectionTitle',
+	        value: function renderSectionTitle(section) {
+	            return _react2.default.createElement(
+	                'strong',
+	                null,
+	                section.title
+	            );
+	        }
+	    }, {
+	        key: 'renderSuggestion',
+	        value: function renderSuggestion(suggestion) {
+	            return _react2.default.createElement(
+	                'span',
+	                null,
+	                suggestion.name
+	            );
+	        }
+	    }, {
+	        key: 'getSectionSuggestions',
+	        value: function getSectionSuggestions(section) {
+	            return section.suggestions;
+	        }
+	    }, {
+	        key: 'getSuggestions',
+	        value: function getSuggestions(value) {
+	            var inputValue = value.trim().toLowerCase();
+	            var inputLength = inputValue.length;
+
+	            var suggestions = _lodash2.default.cloneDeep(this.props.suggestions);
+
+	            var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(function (suggestion) {
+
+	                var itemFiltered = suggestion.suggestions.filter(function (suggest) {
+	                    return suggest.name.toLowerCase().indexOf(inputValue) != -1;
+	                });
+
+	                suggestion.suggestions = itemFiltered;
+	                return suggestion;
+	            });
+
+	            return filteredSuggestion.filter(function (elt) {
+	                return elt.suggestions.length !== 0;
+	            });
+	        }
+	    }, {
+	        key: 'removeEmptyDomains',
+	        value: function removeEmptyDomains(suggestions) {}
+	    }, {
+	        key: 'onChange',
+	        value: function onChange(event, _ref) {
+	            var newValue = _ref.newValue;
+	            var method = _ref.method;
+
+
+	            // ArrowDown
+	            this.setState({
+	                value: newValue
+	            });
+	        }
+	    }, {
+	        key: 'onSuggestionsUpdateRequested',
+	        value: function onSuggestionsUpdateRequested(_ref2) {
+	            var value = _ref2.value;
+
+
+	            this.setState({
+	                filteredSuggestions: this.getSuggestions(value)
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var value = this.state.value;
+
+	            var inputProps = {
+	                placeholder: 'Type a model',
+	                value: value,
+	                onChange: this.onChange.bind(this),
+	                className: "form-control"
+	            };
+
+	            return _react2.default.createElement(_reactAutosuggest2.default, { multiSection: true,
+	                suggestions: this.state.filteredSuggestions,
+	                onSuggestionsUpdateRequested: this.onSuggestionsUpdateRequested.bind(this),
+	                getSuggestionValue: this.getSuggestionValue.bind(this),
+	                renderSectionTitle: this.renderSectionTitle.bind(this),
+	                renderSuggestion: this.renderSuggestion.bind(this),
+	                getSectionSuggestions: this.getSectionSuggestions.bind(this),
+	                inputProps: inputProps });
+	        }
+	    }]);
+
+	    return AutosuggestWrapper;
+	}(_react2.default.Component);
+
+	exports.default = AutosuggestWrapper;
 
 /***/ },
 /* 479 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(480).default;
+
+/***/ },
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63929,15 +63932,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(480);
+	var _redux = __webpack_require__(481);
 
-	var _reactRedux = __webpack_require__(490);
+	var _reactRedux = __webpack_require__(491);
 
-	var _reducerAndActions = __webpack_require__(497);
+	var _reducerAndActions = __webpack_require__(498);
 
 	var _reducerAndActions2 = _interopRequireDefault(_reducerAndActions);
 
-	var _Autosuggest = __webpack_require__(498);
+	var _Autosuggest = __webpack_require__(499);
 
 	var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -64109,7 +64112,7 @@
 	exports.default = AutosuggestContainer;
 
 /***/ },
-/* 480 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64117,27 +64120,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(481);
+	var _createStore = __webpack_require__(482);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(485);
+	var _combineReducers = __webpack_require__(486);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(487);
+	var _bindActionCreators = __webpack_require__(488);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(488);
+	var _applyMiddleware = __webpack_require__(489);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(489);
+	var _compose = __webpack_require__(490);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(486);
+	var _warning = __webpack_require__(487);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -64161,7 +64164,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 481 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64170,7 +64173,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 
-	var _isPlainObject = __webpack_require__(482);
+	var _isPlainObject = __webpack_require__(483);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -64382,11 +64385,11 @@
 	}
 
 /***/ },
-/* 482 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isHostObject = __webpack_require__(483),
-	    isObjectLike = __webpack_require__(484);
+	var isHostObject = __webpack_require__(484),
+	    isObjectLike = __webpack_require__(485);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -64456,7 +64459,7 @@
 
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports) {
 
 	/**
@@ -64482,7 +64485,7 @@
 
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports) {
 
 	/**
@@ -64516,7 +64519,7 @@
 
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64524,13 +64527,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 
-	var _createStore = __webpack_require__(481);
+	var _createStore = __webpack_require__(482);
 
-	var _isPlainObject = __webpack_require__(482);
+	var _isPlainObject = __webpack_require__(483);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(486);
+	var _warning = __webpack_require__(487);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -64649,7 +64652,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 486 */
+/* 487 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -64678,7 +64681,7 @@
 	}
 
 /***/ },
-/* 487 */
+/* 488 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -64734,7 +64737,7 @@
 	}
 
 /***/ },
-/* 488 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64744,7 +64747,7 @@
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 
-	var _compose = __webpack_require__(489);
+	var _compose = __webpack_require__(490);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -64796,7 +64799,7 @@
 	}
 
 /***/ },
-/* 489 */
+/* 490 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -64830,7 +64833,7 @@
 	}
 
 /***/ },
-/* 490 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64838,11 +64841,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(491);
+	var _Provider = __webpack_require__(492);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(493);
+	var _connect = __webpack_require__(494);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -64852,7 +64855,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 491 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64862,7 +64865,7 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(492);
+	var _storeShape = __webpack_require__(493);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
@@ -64936,7 +64939,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 492 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64952,7 +64955,7 @@
 	});
 
 /***/ },
-/* 493 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64964,23 +64967,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(492);
+	var _storeShape = __webpack_require__(493);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(494);
+	var _shallowEqual = __webpack_require__(495);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(495);
+	var _wrapActionCreators = __webpack_require__(496);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(482);
+	var _isPlainObject = __webpack_require__(483);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(496);
+	var _hoistNonReactStatics = __webpack_require__(497);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -65280,7 +65283,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 494 */
+/* 495 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -65311,7 +65314,7 @@
 	}
 
 /***/ },
-/* 495 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65319,7 +65322,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(480);
+	var _redux = __webpack_require__(481);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -65328,7 +65331,7 @@
 	}
 
 /***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports) {
 
 	/**
@@ -65374,7 +65377,7 @@
 
 
 /***/ },
-/* 497 */
+/* 498 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65503,7 +65506,7 @@
 	}
 
 /***/ },
-/* 498 */
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65520,11 +65523,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(490);
+	var _reactRedux = __webpack_require__(491);
 
-	var _reducerAndActions = __webpack_require__(497);
+	var _reducerAndActions = __webpack_require__(498);
 
-	var _reactAutowhatever = __webpack_require__(499);
+	var _reactAutowhatever = __webpack_require__(500);
 
 	var _reactAutowhatever2 = _interopRequireDefault(_reactAutowhatever);
 
@@ -65936,7 +65939,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Autosuggest);
 
 /***/ },
-/* 499 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65955,11 +65958,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _sectionIterator = __webpack_require__(500);
+	var _sectionIterator = __webpack_require__(501);
 
 	var _sectionIterator2 = _interopRequireDefault(_sectionIterator);
 
-	var _reactThemeable = __webpack_require__(501);
+	var _reactThemeable = __webpack_require__(502);
 
 	var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
@@ -66253,7 +66256,7 @@
 
 
 /***/ },
-/* 500 */
+/* 501 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66373,7 +66376,7 @@
 
 
 /***/ },
-/* 501 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66386,7 +66389,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _objectAssign = __webpack_require__(502);
+	var _objectAssign = __webpack_require__(503);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -66411,7 +66414,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 502 */
+/* 503 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -66456,7 +66459,7 @@
 
 
 /***/ },
-/* 503 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66517,7 +66520,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 504 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66585,7 +66588,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 505 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66651,7 +66654,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 506 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66692,7 +66695,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(507);
+	var _useBeforeUnload2 = __webpack_require__(508);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -66712,13 +66715,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(508);
+	var _enableBeforeUnload2 = __webpack_require__(509);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(509);
+	var _enableQueries2 = __webpack_require__(510);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -66727,7 +66730,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 507 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -66844,7 +66847,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 508 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66857,7 +66860,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(507);
+	var _useBeforeUnload = __webpack_require__(508);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -66865,7 +66868,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 509 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
