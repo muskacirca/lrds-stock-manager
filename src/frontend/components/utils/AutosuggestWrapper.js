@@ -87,8 +87,9 @@ class AutosuggestWrapper extends React.Component {
     render() {
 
         const { value } = this.state;
+        const inputText = this.props.inputText
         const inputProps = {
-            placeholder: 'Type a model',
+            placeholder: inputText,
             value,
             onChange: this.onChange.bind(this),
             className: "form-control"

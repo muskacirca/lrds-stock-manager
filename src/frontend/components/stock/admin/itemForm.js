@@ -2,7 +2,9 @@ import React from 'react'
 import Relay from 'react-relay'
 import _ from 'lodash'
 
-import AutosuggestWrapper from '../utils/AutosuggestWrapper'
+import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
+
+import ItemFormDisplay from './itemFormDisplay'
 
 class ItemFormComponent extends React.Component {
 
@@ -172,10 +174,13 @@ class ItemFormComponent extends React.Component {
                     <h3>Select your model</h3>
                     <div className="row">
                         <div className="col-md-3">
-                            <AutosuggestWrapper suggestions={builtSuggestion} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+                            <AutosuggestWrapper inputText="Select a model ..." suggestions={builtSuggestion}
+                                                onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
                             <br />
                             <h3>Add State</h3>
                             <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
+
+                                <option>Select a state ...</option>
                                 <option value="1">Neuf</option>
                                 <option value="2">Bon état</option>
                                 <option value="3">Le dernier souffle</option>
@@ -184,37 +189,7 @@ class ItemFormComponent extends React.Component {
                         </div>
 
                         <div className="col-md-8">
-                            <form encType="multipart/form-data" method="post" className="form-horizontal" onSubmit={this.submitForm.bind(this)}>
-
-                                <div className="panel panel-default">
-                                    <div className="panel-heading">
-                                        <div className="row">
-                                            <div className="col-md-11">
-                                                <h4><strong>{model.brand.name + ' - ' + model.name}</strong></h4>
-                                            </div>
-                                            <div className="col-md-1">
-                                                {stateIcon}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="panel-body">
-                                        <div className="row">
-                                            <div className="col-md-5">
-                                                <em>Domaine: </em>
-                                                <ul>{itemDomains}</ul>
-                                            </div>
-                                            <div className="col-md-5">
-                                                <em>Sous Catégories: </em>
-                                                <ul>{itemSubCategories}</ul>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            <em>{model.description}</em>
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </form>
+                            <ItemFormDisplay model={model} stateIcon={stateIcon}/>
                         </div>
                     </div>
                 </div>

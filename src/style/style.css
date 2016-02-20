@@ -30,8 +30,8 @@ a {
 }
 
 .green {color: #4CAF50;}
-.yellow {color: #FDD835;}
-.orange {color: #F57F17;}
+.yellow {color: #ffc107;}
+.orange {color: #ff9800;}
 .red {color: #F44336;}
 
 /*
@@ -110,12 +110,8 @@ li.model-tag {
   padding: 0.25rem 0.75rem;
   margin: 2px;
   border-radius: 3px;
-  background: #a0cfee;
-  color: #16527a;
-}
-li.model-tag:hover {
-  cursor: pointer;
-  background: #8bc4ea;
+  background: #e53935;
+  color: #ffebee;
 }
 
 span.inline {
