@@ -43,18 +43,8 @@ class ItemFormComponent extends React.Component {
 
     buildBrandSuggestion(brands) {
 
-        var suggestions = []
-
-        brands.map(brand => {
-
-            var modelSuggestion = {name: brand.name, section: "brands"}
-
-            var index = _.findIndex(suggestions, (o) => o.title == "brands")
-            if(index === -1) {
-                suggestions.push({title: "brands", suggestions: [modelSuggestion]})
-            } else {
-                suggestions[index].suggestions.push(modelSuggestion)
-            }
+        var suggestions = brands.map(brand => {
+                return {name: brand.name}
         })
 
         console.log("built brand suggestion : " + JSON.stringify(suggestions))
@@ -68,12 +58,18 @@ class ItemFormComponent extends React.Component {
         return existingItemFeature
     }
 
-    onSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+    onModelSuggestionSelected(event, { suggestion, suggestionValue, method }) {
 
         var clonedItemFeatures = _.cloneDeep(this.state.itemFeatures)
         var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue)
 
         this.setState({itemFeatures: itemFeature})
+    }
+
+    onBrandSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+
+        console.log("brand suggestion value: " + suggestionValue)
+
     }
 
     findModel(modelName) {
@@ -109,6 +105,38 @@ class ItemFormComponent extends React.Component {
         console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
     }
 
+    brandSuggestionFilter(value, suggestions) {
+
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return suggestions.filter(suggest => {
+            return suggest.name.toLowerCase().indexOf(value) != -1
+        })
+    }
+
+    modelSuggestionFilter(value, suggestions) {
+
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        var suggestions = _.cloneDeep(suggestions)
+
+        var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
+
+            var itemFiltered = suggestion.suggestions.filter(suggest => {
+                return suggest.name.toLowerCase().indexOf(inputValue) != -1
+            })
+
+            suggestion.suggestions = itemFiltered
+            return suggestion
+        });
+
+        console.log("filtered suggestions: " + JSON.stringify(filteredSuggestion) )
+
+        return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
+    }
+
     render() {
 
         var models = this.props.viewer.models
@@ -136,11 +164,15 @@ class ItemFormComponent extends React.Component {
                     <div className="row">
                         <div className="col-md-3">
                             <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
-                                                onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+                                                multiSection={true} suggestionFilter={this.modelSuggestionFilter.bind(this)}
+                                                onSuggestionSelected={this.onModelSuggestionSelected.bind(this)} />
                             <br />
-                            <h3>or create one ...</h3>
+                            <h4>or create one ...</h4>
                             <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
-                                                onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+                                                multiSection={false} suggestionFilter={this.brandSuggestionFilter.bind(this)}
+                                                onSuggestionSelected={this.onBrandSuggestionSelected.bind(this)} />
+
+
 
                             <h3>Add State</h3>
                             <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>

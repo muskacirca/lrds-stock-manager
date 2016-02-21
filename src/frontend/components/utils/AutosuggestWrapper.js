@@ -42,34 +42,23 @@ class AutosuggestWrapper extends React.Component {
     }
 
     getSuggestions(value) {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
 
-        var suggestions = _.cloneDeep(this.props.suggestions)
 
-        var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
+        var filteredSuggestions =  this.props.suggestionFilter(value, this.props.suggestions)
 
-            var itemFiltered = suggestion.suggestions.filter(suggest => {
-                return suggest.name.toLowerCase().indexOf(inputValue) != -1
-            })
+        console.log("filtered suggestions in autosuggest wrapper: " + JSON.stringify(filteredSuggestions) )
 
-            suggestion.suggestions = itemFiltered
-            return suggestion
-        });
-
-        return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
+        return filteredSuggestions
     }
 
     onChange(event, { newValue, method }) {
 
-        // ArrowDown
         this.setState({
             value: newValue
         });
     }
 
     onSuggestionsUpdateRequested({ value }) {
-
 
         this.setState({
             filteredSuggestions: this.getSuggestions(value)
@@ -95,7 +84,7 @@ class AutosuggestWrapper extends React.Component {
             className: "form-control"
         };
 
-        return  <Autosuggest multiSection={true}
+        return  <Autosuggest multiSection={this.props.multiSection}
                              suggestions={this.state.filteredSuggestions}
                              onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested.bind(this)}
                              getSuggestionValue={this.getSuggestionValue.bind(this)}
