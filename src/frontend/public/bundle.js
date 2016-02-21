@@ -48765,11 +48765,25 @@
 	        key: 'buildSuggestion',
 	        value: function buildSuggestion(models) {
 
-	            var suggestionsModels = models.map(function (model) {
-	                return { name: model.name, section: "models" };
+	            var suggestions = [];
+
+	            models.map(function (model) {
+
+	                var modelSuggestion = { name: model.name, section: model.brand.name };
+
+	                var index = _lodash2.default.findIndex(suggestions, function (o) {
+	                    return o.title == model.brand.name;
+	                });
+	                if (index === -1) {
+	                    suggestions.push({ title: model.brand.name, suggestions: [modelSuggestion] });
+	                } else {
+	                    suggestions[index].suggestions.push(modelSuggestion);
+	                }
 	            });
 
-	            return [{ title: "Models", suggestions: suggestionsModels }];
+	            console.log("built suggestion : " + JSON.stringify(suggestions));
+
+	            return suggestions;
 	        }
 	    }, {
 	        key: 'buildSelectedItem',

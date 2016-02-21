@@ -22,11 +22,23 @@ class ItemFormComponent extends React.Component {
 
     buildSuggestion(models) {
 
-        var suggestionsModels = models.map(model => {
-            return {name: model.name, section: "models"}
+        var suggestions = []
+
+        models.map(model => {
+
+            var modelSuggestion = {name: model.name, section: model.brand.name}
+
+            var index = _.findIndex(suggestions, (o) => o.title == model.brand.name)
+            if(index === -1) {
+                suggestions.push({title: model.brand.name, suggestions: [modelSuggestion]})
+            } else {
+                suggestions[index].suggestions.push(modelSuggestion)
+            }
         })
 
-        return [{title: "Models", suggestions: suggestionsModels}]
+        console.log("built suggestion : " + JSON.stringify(suggestions))
+
+        return suggestions
     }
 
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
