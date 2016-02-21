@@ -48750,21 +48750,12 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
 
 	        _this.state = {
-	            itemFeatures: {
-	                model: "",
-	                domains: [],
-	                categories: []
-	            }
+	            itemFeatures: {}
 	        };
 	        return _this;
 	    }
 
 	    _createClass(ItemFormComponent, [{
-	        key: 'submitForm',
-	        value: function submitForm(e) {
-	            e.preventDefault();
-	        }
-	    }, {
 	        key: 'onFieldChange',
 	        value: function onFieldChange(field, e) {
 	            var newItem = _lodash2.default.set(this.state.item, field, e.target.value);
@@ -48772,64 +48763,19 @@
 	        }
 	    }, {
 	        key: 'buildSuggestion',
-	        value: function buildSuggestion(models, domains, subCategories) {
+	        value: function buildSuggestion(models) {
 
 	            var suggestionsModels = models.map(function (model) {
 	                return { name: model.name, section: "models" };
 	            });
 
-	            var suggestionsDomains = domains.map(function (domain) {
-	                return { name: domain.name, section: "domains" };
-	            });
-
-	            var suggestions = [{
-	                title: "Models",
-	                suggestions: suggestionsModels
-	            }, {
-	                title: "Domains",
-	                suggestions: suggestionsDomains
-	            }];
-
-	            subCategories.map(function (subCategory) {
-	                var index = _lodash2.default.findIndex(suggestions, function (o) {
-	                    return o.title == subCategory.category.name;
-	                });
-	                if (index === -1) {
-	                    suggestions.push({ title: subCategory.category.name, suggestions: [{ name: subCategory.name, section: subCategory.category.name }] });
-	                } else {
-	                    suggestions[index].suggestions.push({ name: subCategory.name, section: subCategory.category.name });
-	                }
-	            });
-
-	            return suggestions;
+	            return [{ title: "Models", suggestions: suggestionsModels }];
 	        }
 	    }, {
 	        key: 'buildSelectedItem',
 	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
-	            if (suggestion.section === "models") {
-
-	                existingItemFeature.model = suggestionValue;
-	            } else if (suggestion.section === "domains") {
-
-	                var index = _lodash2.default.findIndex(existingItemFeature.domains, function (o) {
-	                    return o.name == suggestion.name;
-	                });
-	                if (index === -1) existingItemFeature.domains.push(suggestionValue);
-
-	                // A subCategory
-	            } else {
-
-	                    var index = _lodash2.default.findIndex(existingItemFeature.categories, function (o) {
-	                        return o.categoryName == suggestion.section;
-	                    });
-	                    if (index === -1) {
-	                        existingItemFeature.categories.push({ categoryName: suggestion.section, subCategories: [{ name: suggestion.name }] });
-	                    } else {
-	                        existingItemFeature.categories[index].suggestions.push({ name: suggestion.name });
-	                    }
-	                }
-
+	            _lodash2.default.set(existingItemFeature, "model", suggestionValue);
 	            return existingItemFeature;
 	        }
 	    }, {
@@ -48848,55 +48794,11 @@
 	    }, {
 	        key: 'findModel',
 	        value: function findModel(modelName) {
-	            if (modelName === "") return { brand: {}, domains: [], subCategories: [] };
+	            if (modelName === undefined) return { brand: {}, domains: [], subCategories: [] };
 	            var index = _lodash2.default.findIndex(this.props.viewer.models, function (o) {
 	                return o.name === modelName;
 	            });
 	            return this.props.viewer.models[index];
-	        }
-	    }, {
-	        key: 'renderItemDomains',
-	        value: function renderItemDomains(createdDomains, modelDomains) {
-
-	            var itemCreatedDomains = createdDomains.map(function (elt) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: elt, className: 'tag' },
-	                    elt
-	                );
-	            });
-
-	            var modelDomains = modelDomains.map(function (elt) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: elt.name, className: 'model-tag' },
-	                    elt.name
-	                );
-	            });
-
-	            return _lodash2.default.concat(itemCreatedDomains, modelDomains);
-	        }
-	    }, {
-	        key: 'renderItemSubCategories',
-	        value: function renderItemSubCategories(createdSubCategories, modelSubCategories) {
-
-	            var itemCategories = createdSubCategories.map(function (elt) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: elt.categoryName, className: 'tag' },
-	                    elt.categoryName
-	                );
-	            });
-
-	            var modelSubCategories = modelSubCategories.map(function (elt) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: elt.name, className: 'model-tag' },
-	                    elt.name
-	                );
-	            });
-
-	            return _lodash2.default.concat(itemCategories, modelSubCategories);
 	        }
 	    }, {
 	        key: 'onSelectStateChange',
@@ -48923,23 +48825,29 @@
 	            }
 	        }
 	    }, {
+	        key: 'onFormSubmit',
+	        value: function onFormSubmit() {
+
+	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var models = this.props.viewer.models;
 	            var domains = this.props.viewer.domains;
 	            var subCategories = this.props.viewer.subCategories;
-	            var builtSuggestion = this.buildSuggestion(models, domains, subCategories);
+
+	            var builtSuggestion = this.buildSuggestion(models);
 
 	            var model = this.findModel(this.state.itemFeatures.model);
-
-	            var itemDomains = this.renderItemDomains(this.state.itemFeatures.domains, model.domains);
-	            var itemSubCategories = this.renderItemSubCategories(this.state.itemFeatures.categories, model.subCategories);
 
 	            var alerts = _react2.default.createElement('div', null);
 	            var pageTitle = "Création d'un item";
 
 	            var stateIcon = this.computeStateIcon(this.state.itemFeatures.state);
+
+	            var itemFormDisplay = this.state.itemFeatures.model !== undefined ? _react2.default.createElement(_itemFormDisplay2.default, { model: model, stateIcon: stateIcon }) : "";
 
 	            return _react2.default.createElement(
 	                'div',
@@ -49002,7 +48910,20 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-8' },
-	                        _react2.default.createElement(_itemFormDisplay2.default, { model: model, stateIcon: stateIcon })
+	                        itemFormDisplay
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-1 col-md-offset-10' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary', onClick: this.onFormSubmit.bind(this) },
+	                            'Submit'
+	                        )
 	                    )
 	                )
 	            );

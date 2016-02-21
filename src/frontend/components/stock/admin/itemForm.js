@@ -11,16 +11,8 @@ class ItemFormComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            itemFeatures : {
-                model: "",
-                domains: [],
-                categories: []
-            }
+            itemFeatures : {}
         }
-    }
-
-    submitForm(e) {
-        e.preventDefault()
     }
 
     onFieldChange(field, e) {
@@ -28,63 +20,18 @@ class ItemFormComponent extends React.Component {
         this.setState({item: newItem})
     }
 
-    buildSuggestion(models, domains, subCategories) {
+    buildSuggestion(models) {
 
         var suggestionsModels = models.map(model => {
             return {name: model.name, section: "models"}
         })
 
-        var suggestionsDomains = domains.map(domain => {
-            return {name: domain.name, section: "domains"}
-        })
-
-        var suggestions = [
-            {
-                title: "Models",
-                suggestions: suggestionsModels,
-            },
-            {
-                title: "Domains",
-                suggestions: suggestionsDomains
-            }
-        ]
-
-        subCategories.map(subCategory => {
-            var index = _.findIndex(suggestions, (o) =>  o.title == subCategory.category.name)
-            if(index === -1) {
-                suggestions.push({title: subCategory.category.name, suggestions: [{name: subCategory.name, section: subCategory.category.name}]})
-
-            } else {
-                suggestions[index].suggestions.push({name: subCategory.name, section: subCategory.category.name})
-            }
-        })
-
-        return suggestions
+        return [{title: "Models", suggestions: suggestionsModels}]
     }
 
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
-        if(suggestion.section === "models") {
-
-            existingItemFeature.model = suggestionValue
-
-        } else if(suggestion.section === "domains") {
-
-            var index = _.findIndex(existingItemFeature.domains, (o) => o.name == suggestion.name)
-            if(index === -1) existingItemFeature.domains.push(suggestionValue)
-
-            // A subCategory
-        } else {
-
-            var index = _.findIndex(existingItemFeature.categories, (o) =>  o.categoryName == suggestion.section)
-            if(index === -1) {
-                existingItemFeature.categories.push({categoryName: suggestion.section, subCategories: [{name: suggestion.name}]})
-
-            } else {
-                existingItemFeature.categories[index].suggestions.push({name: suggestion.name})
-            }
-        }
-
+        _.set(existingItemFeature, "model", suggestionValue)
         return existingItemFeature
     }
 
@@ -97,36 +44,9 @@ class ItemFormComponent extends React.Component {
     }
 
     findModel(modelName) {
-        if(modelName === "") return {brand: {}, domains: [], subCategories: []}
+        if(modelName === undefined) return {brand: {}, domains: [], subCategories: []}
         var index = _.findIndex(this.props.viewer.models, (o) => o.name === modelName)
         return this.props.viewer.models[index]
-    }
-
-
-    renderItemDomains(createdDomains, modelDomains) {
-
-        var itemCreatedDomains = createdDomains.map(elt => {
-            return <li key={elt} className="tag">{elt}</li>
-        })
-
-        var modelDomains = modelDomains.map(elt => {
-            return <li key={elt.name} className="model-tag">{elt.name}</li>
-        })
-
-        return _.concat(itemCreatedDomains, modelDomains)
-    }
-
-    renderItemSubCategories(createdSubCategories, modelSubCategories) {
-
-        var itemCategories = createdSubCategories.map(elt => {
-            return <li key={elt.categoryName} className="tag">{elt.categoryName}</li>
-        })
-
-        var modelSubCategories = modelSubCategories.map(elt => {
-            return <li key={elt.name} className="model-tag">{elt.name}</li>
-        })
-
-        return _.concat(itemCategories, modelSubCategories)
     }
 
     onSelectStateChange(event) {
@@ -151,22 +71,28 @@ class ItemFormComponent extends React.Component {
         }
     }
 
+    onFormSubmit() {
+
+        console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
+    }
+
     render() {
 
         var models = this.props.viewer.models
         var domains = this.props.viewer.domains
         var subCategories = this.props.viewer.subCategories
-        var builtSuggestion = this.buildSuggestion(models, domains, subCategories);
+
+        var builtSuggestion = this.buildSuggestion(models);
 
         var model = this.findModel(this.state.itemFeatures.model)
-
-        var itemDomains = this.renderItemDomains(this.state.itemFeatures.domains, model.domains)
-        var itemSubCategories = this.renderItemSubCategories(this.state.itemFeatures.categories, model.subCategories)
 
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
 
         var stateIcon = this.computeStateIcon(this.state.itemFeatures.state)
+
+        var itemFormDisplay = this.state.itemFeatures.model !== undefined ?
+            <ItemFormDisplay model={model} stateIcon={stateIcon}/> : ""
 
         return  <div className="col-md-10 col-md-offset-1">
                     {alerts}
@@ -189,7 +115,13 @@ class ItemFormComponent extends React.Component {
                         </div>
 
                         <div className="col-md-8">
-                            <ItemFormDisplay model={model} stateIcon={stateIcon}/>
+                            {itemFormDisplay}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-1 col-md-offset-10">
+                            <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
                         </div>
                     </div>
                 </div>
