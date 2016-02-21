@@ -33,6 +33,19 @@ CALL add_item_comment('SHUPG52-1', 'second comment');
 CALL add_item_comment('SHUPG52-1', 'third comment');
 
 
+CALL add_category('CARTE SON', 'a utiliser avec des micros');
+CALL add_subCategory('ADAT', 'optical connection 8 IN/OUT', 'CARTE SON');
+CALL add_subCategory('USB', 'connexion en usb', 'CARTE SON');
+
+CALL add_brand('RME', 'A studio company');
+CALL add_model('FIREFACE UC', 'une carte son 8 entrée 8 sortie, ADAT, etc ...', 'RME');
+
+CALL bind_model_to_subCategory('FIREFACE UC', 'ADAT');
+CALL bind_model_to_subCategory('FIREFACE UC', 'USB');
+
+CALL add_item('RMEFIREUC-1', true, 'FIREFACE UC', 'a réparer');
+
+
 
 
 
