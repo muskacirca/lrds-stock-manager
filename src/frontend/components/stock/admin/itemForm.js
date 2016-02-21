@@ -20,7 +20,7 @@ class ItemFormComponent extends React.Component {
         this.setState({item: newItem})
     }
 
-    buildSuggestion(models) {
+    buildModelSuggestion(models) {
 
         var suggestions = []
 
@@ -37,6 +37,27 @@ class ItemFormComponent extends React.Component {
         })
 
         console.log("built suggestion : " + JSON.stringify(suggestions))
+
+        return suggestions
+    }
+
+    buildBrandSuggestion(brands) {
+
+        var suggestions = []
+
+        brands.map(brand => {
+
+            var modelSuggestion = {name: brand.name, section: "brands"}
+
+            var index = _.findIndex(suggestions, (o) => o.title == "brands")
+            if(index === -1) {
+                suggestions.push({title: "brands", suggestions: [modelSuggestion]})
+            } else {
+                suggestions[index].suggestions.push(modelSuggestion)
+            }
+        })
+
+        console.log("built brand suggestion : " + JSON.stringify(suggestions))
 
         return suggestions
     }
@@ -92,9 +113,11 @@ class ItemFormComponent extends React.Component {
 
         var models = this.props.viewer.models
         var domains = this.props.viewer.domains
+        var brands = this.props.viewer.brands
         var subCategories = this.props.viewer.subCategories
 
-        var builtSuggestion = this.buildSuggestion(models);
+        var builtModelSuggestion = this.buildModelSuggestion(models);
+        var builtBrandSuggestion = this.buildBrandSuggestion(brands);
 
         var model = this.findModel(this.state.itemFeatures.model)
 
@@ -112,9 +135,13 @@ class ItemFormComponent extends React.Component {
                     <h3>Select your model</h3>
                     <div className="row">
                         <div className="col-md-3">
-                            <AutosuggestWrapper inputText="Select a model ..." suggestions={builtSuggestion}
+                            <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
                                                 onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
                             <br />
+                            <h3>or create one ...</h3>
+                            <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
+                                                onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+
                             <h3>Add State</h3>
                             <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
 
@@ -167,6 +194,10 @@ export default Relay.createContainer(ItemFormComponent, {
               }
             }
             domains {
+              id
+              name
+            }
+            brands {
               id
               name
             }

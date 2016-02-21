@@ -272,6 +272,14 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                     });
                 }
             },
+            brands: {
+                type: new _graphql.GraphQLList(GraphQLBrandType),
+                resolve: function resolve() {
+                    return _database2.default.models.brand.findAll().then(function (response) {
+                        return response;
+                    });
+                }
+            },
             models: {
                 type: new _graphql.GraphQLList(GraphQLModelType),
                 resolve: function resolve() {

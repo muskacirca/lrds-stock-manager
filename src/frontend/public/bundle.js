@@ -48762,8 +48762,8 @@
 	            this.setState({ item: newItem });
 	        }
 	    }, {
-	        key: 'buildSuggestion',
-	        value: function buildSuggestion(models) {
+	        key: 'buildModelSuggestion',
+	        value: function buildModelSuggestion(models) {
 
 	            var suggestions = [];
 
@@ -48782,6 +48782,30 @@
 	            });
 
 	            console.log("built suggestion : " + JSON.stringify(suggestions));
+
+	            return suggestions;
+	        }
+	    }, {
+	        key: 'buildBrandSuggestion',
+	        value: function buildBrandSuggestion(brands) {
+
+	            var suggestions = [];
+
+	            brands.map(function (brand) {
+
+	                var modelSuggestion = { name: brand.name, section: "brands" };
+
+	                var index = _lodash2.default.findIndex(suggestions, function (o) {
+	                    return o.title == "brands";
+	                });
+	                if (index === -1) {
+	                    suggestions.push({ title: "brands", suggestions: [modelSuggestion] });
+	                } else {
+	                    suggestions[index].suggestions.push(modelSuggestion);
+	                }
+	            });
+
+	            console.log("built brand suggestion : " + JSON.stringify(suggestions));
 
 	            return suggestions;
 	        }
@@ -48850,9 +48874,11 @@
 
 	            var models = this.props.viewer.models;
 	            var domains = this.props.viewer.domains;
+	            var brands = this.props.viewer.brands;
 	            var subCategories = this.props.viewer.subCategories;
 
-	            var builtSuggestion = this.buildSuggestion(models);
+	            var builtModelSuggestion = this.buildModelSuggestion(models);
+	            var builtBrandSuggestion = this.buildBrandSuggestion(brands);
 
 	            var model = this.findModel(this.state.itemFeatures.model);
 
@@ -48883,9 +48909,16 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-3' },
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a model ...', suggestions: builtSuggestion,
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a model ...', suggestions: builtModelSuggestion,
 	                            onSuggestionSelected: this.onSuggestionSelected.bind(this) }),
 	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            'or create one ...'
+	                        ),
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a brand ...', suggestions: builtBrandSuggestion,
+	                            onSuggestionSelected: this.onSuggestionSelected.bind(this) }),
 	                        _react2.default.createElement(
 	                            'h3',
 	                            null,
@@ -49106,6 +49139,28 @@
 	                            isPlural: true
 	                        },
 	                        type: 'DomainType'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, {
+	                            fieldName: 'name',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }],
+	                        fieldName: 'brands',
+	                        kind: 'Field',
+	                        metadata: {
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'BrandType'
 	                    }, {
 	                        children: [{
 	                            fieldName: 'name',
@@ -64168,7 +64223,7 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1' },
+	                        { className: 'col-md-1 pointer' },
 	                        _react2.default.createElement('i', { className: 'fa fa-plus-circle' })
 	                    )
 	                )

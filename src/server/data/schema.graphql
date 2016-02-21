@@ -87,6 +87,7 @@ type Viewer implements Node {
   id: ID!
   items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
   item(reference: String!): ItemType
+  brands: [BrandType]
   models: [ModelType]
   domains: [DomainType]
   subCategories: [SubCategoryType]

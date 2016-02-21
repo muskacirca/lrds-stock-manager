@@ -244,6 +244,10 @@ var GraphQLViewer = new GraphQLObjectType({
                     .then((response) => response)
             }
         },
+        brands: {
+            type: new GraphQLList(GraphQLBrandType),
+            resolve: () => Database.models.brand.findAll().then((response) => response)
+        },
         models: {
             type: new GraphQLList(GraphQLModelType),
             resolve: () => Database.models.model.findAll().then((response) => response)

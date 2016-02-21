@@ -26,7 +26,7 @@ class AutosuggestWrapper extends React.Component {
                         <div className="col-md-9">
                             <strong>{section.title}</strong>
                         </div>
-                        <div className="col-md-1">
+                        <div className="col-md-1 pointer">
                             <i className="fa fa-plus-circle"></i>
                         </div>
                     </div>
