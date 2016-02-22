@@ -48750,7 +48750,8 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
 
 	        _this.state = {
-	            itemFeatures: {}
+	            itemFeatures: {},
+	            newModel: {}
 	        };
 	        return _this;
 	    }
@@ -48826,6 +48827,9 @@
 
 
 	            console.log("brand suggestion value: " + suggestionValue);
+	            var existingModel = _lodash2.default.cloneDeep(this.state.newModel);
+	            _lodash2.default.set(existingModel, "modelName", suggestionValue);
+	            this.setState({ newModel: existingModel });
 	        }
 	    }, {
 	        key: 'findModel',
@@ -48867,14 +48871,22 @@
 	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
 	        }
 	    }, {
+	        key: 'onAddNewModel',
+	        value: function onAddNewModel() {
+
+	            var newModel = this.refs.inputNewModel.value;
+	            var brand = this.refs.inputFormNewBrand.value;
+
+	            console.log("addinf new model : " + newModel + " - " + brand);
+	        }
+	    }, {
 	        key: 'brandSuggestionFilter',
 	        value: function brandSuggestionFilter(value, suggestions) {
 
 	            var inputValue = value.trim().toLowerCase();
-	            var inputLength = inputValue.length;
 
 	            return suggestions.filter(function (suggest) {
-	                return suggest.name.toLowerCase().indexOf(value) != -1;
+	                return suggest.name.toLowerCase().indexOf(inputValue) != -1;
 	            });
 	        }
 	    }, {
@@ -48945,16 +48957,38 @@
 	                        { className: 'col-md-3' },
 	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a model ...', suggestions: builtModelSuggestion,
 	                            multiSection: true, suggestionFilter: this.modelSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onModelSuggestionSelected.bind(this) }),
+	                            onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
+	                            resetInputValue: true, ref: 'inputFormSearchModel' }),
 	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
-	                            'h4',
+	                            'h5',
 	                            null,
 	                            'or create one ...'
 	                        ),
 	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a brand ...', suggestions: builtBrandSuggestion,
 	                            multiSection: false, suggestionFilter: this.brandSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onBrandSuggestionSelected.bind(this) }),
+	                            onSuggestionSelected: this.onBrandSuggestionSelected.bind(this),
+	                            resetInputValue: false, ref: 'inputFormNewBrand' }),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'row' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-10' },
+	                                _react2.default.createElement('input', { ref: 'inputFormNewModel', type: 'text', className: 'form-control', placeholder: 'Enter a model ...' })
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-1' },
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { className: 'btn btn-default', onClick: this.onAddNewModel.bind(this) },
+	                                    'OK'
+	                                )
+	                            )
+	                        ),
+	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
 	                            'h3',
 	                            null,
@@ -64150,23 +64184,24 @@
 	            var suggestionValue = _ref3.suggestionValue;
 	            var method = _ref3.method;
 
-	            this.setState({
-	                value: ''
-	            });
 
+	            if (this.props.resetInputValue) this.setState({ value: '' });
 	            this.props.onSuggestionSelected(event, { suggestion: suggestion, suggestionValue: suggestionValue, method: method });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var value = this.state.value;
+	            var _props = this.props;
+	            var inputText = _props.inputText;
+	            var ref = _props.ref;
 
-	            var inputText = this.props.inputText;
 	            var inputProps = {
 	                placeholder: inputText,
 	                value: value,
 	                onChange: this.onChange.bind(this),
-	                className: "form-control"
+	                className: "form-control",
+	                ref: ref
 	            };
 
 	            return _react2.default.createElement(_reactAutosuggest2.default, { multiSection: this.props.multiSection,

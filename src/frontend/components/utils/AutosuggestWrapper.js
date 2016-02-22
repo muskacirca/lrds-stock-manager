@@ -66,22 +66,21 @@ class AutosuggestWrapper extends React.Component {
     }
 
     onSuggestionSelected(event, { suggestion, suggestionValue, method }) {
-        this.setState({
-            value: ''
-        });
 
+        if(this.props.resetInputValue) this.setState({value: ''});
         this.props.onSuggestionSelected(event, { suggestion, suggestionValue, method })
     }
 
     render() {
 
         const { value } = this.state;
-        const inputText = this.props.inputText
+        const { inputText, ref } = this.props
         const inputProps = {
             placeholder: inputText,
             value,
             onChange: this.onChange.bind(this),
-            className: "form-control"
+            className: "form-control",
+            ref: ref
         };
 
         return  <Autosuggest multiSection={this.props.multiSection}
