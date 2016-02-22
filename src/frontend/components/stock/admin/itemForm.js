@@ -4,6 +4,9 @@ import _ from 'lodash'
 
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
 
+import AddModelMutation from '../../../mutations/AddModelMutation'
+
+import ModelQuickForm from './modelQuickForm'
 import ItemFormDisplay from './itemFormDisplay'
 
 class ItemFormComponent extends React.Component {
@@ -42,17 +45,6 @@ class ItemFormComponent extends React.Component {
         return suggestions
     }
 
-    buildBrandSuggestion(brands) {
-
-        var suggestions = brands.map(brand => {
-                return {name: brand.name}
-        })
-
-        console.log("built brand suggestion : " + JSON.stringify(suggestions))
-
-        return suggestions
-    }
-
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
         _.set(existingItemFeature, "model", suggestionValue)
@@ -65,15 +57,6 @@ class ItemFormComponent extends React.Component {
         var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue)
 
         this.setState({itemFeatures: itemFeature})
-    }
-
-    onBrandSuggestionSelected(event, { suggestion, suggestionValue, method }) {
-
-        console.log("brand suggestion value: " + suggestionValue)
-        var existingModel = _.cloneDeep(this.state.newModel)
-        _.set(existingModel, "modelName", suggestionValue)
-        this.setState({newModel: existingModel})
-
     }
 
     findModel(modelName) {
@@ -109,24 +92,7 @@ class ItemFormComponent extends React.Component {
         console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
     }
 
-    onAddNewModel() {
 
-        var newModel = this.refs.inputNewModel.value
-        var brand = this.refs.inputFormNewBrand.value
-
-        console.log("addinf new model : " + newModel + " - " + brand)
-
-
-    }
-
-    brandSuggestionFilter(value, suggestions) {
-
-        const inputValue = value.trim().toLowerCase();
-
-        return suggestions.filter(suggest => {
-            return suggest.name.toLowerCase().indexOf(inputValue) != -1
-        })
-    }
 
     modelSuggestionFilter(value, suggestions) {
 
@@ -150,15 +116,23 @@ class ItemFormComponent extends React.Component {
         return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
     }
 
+    onAddNewModel(modelName, brandName) {
+
+        Relay.Store.commitUpdate(
+            new AddModelMutation({model: modelName, brandName: brandName, viewer: this.props.viewer})
+        );
+
+    }
+
     render() {
 
         var models = this.props.viewer.models
         var domains = this.props.viewer.domains
-        var brands = this.props.viewer.brands
+
         var subCategories = this.props.viewer.subCategories
 
         var builtModelSuggestion = this.buildModelSuggestion(models);
-        var builtBrandSuggestion = this.buildBrandSuggestion(brands);
+
 
         var model = this.findModel(this.state.itemFeatures.model)
 
@@ -182,20 +156,7 @@ class ItemFormComponent extends React.Component {
                                                 resetInputValue={true} ref="inputFormSearchModel"/>
                             <br />
                             <h5>or create one ...</h5>
-                            <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
-                                                multiSection={false} suggestionFilter={this.brandSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onBrandSuggestionSelected.bind(this)}
-                                                resetInputValue={false} ref="inputFormNewBrand"/>
-
-                            <br />
-                            <div className="row">
-                                <div className="col-md-10">
-                                    <input ref="inputFormNewModel" type="text" className="form-control" placeholder="Enter a model ..." />
-                                </div>
-                                <div className="col-md-1">
-                                    <button className="btn btn-default" onClick={this.onAddNewModel.bind(this)}>OK</button>
-                                </div>
-                            </div>
+                            <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
                             <br />
 
                             <h3>Add State</h3>
@@ -253,10 +214,7 @@ export default Relay.createContainer(ItemFormComponent, {
               id
               name
             }
-            brands {
-              id
-              name
-            }
+            ${ModelQuickForm.getFragment('viewer')}
             subCategories {
               name
               category {

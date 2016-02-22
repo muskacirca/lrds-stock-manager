@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(508);
+	var _history = __webpack_require__(510);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47220,15 +47220,15 @@
 
 	var _itemForm2 = _interopRequireDefault(_itemForm);
 
-	var _product = __webpack_require__(505);
+	var _product = __webpack_require__(507);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(506);
+	var _profile = __webpack_require__(508);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(507);
+	var _event = __webpack_require__(509);
 
 	var _event2 = _interopRequireDefault(_event);
 
@@ -48729,7 +48729,15 @@
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _itemFormDisplay = __webpack_require__(504);
+	var _AddModelMutation = __webpack_require__(504);
+
+	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
+
+	var _modelQuickForm = __webpack_require__(505);
+
+	var _modelQuickForm2 = _interopRequireDefault(_modelQuickForm);
+
+	var _itemFormDisplay = __webpack_require__(506);
 
 	var _itemFormDisplay2 = _interopRequireDefault(_itemFormDisplay);
 
@@ -48787,18 +48795,6 @@
 	            return suggestions;
 	        }
 	    }, {
-	        key: 'buildBrandSuggestion',
-	        value: function buildBrandSuggestion(brands) {
-
-	            var suggestions = brands.map(function (brand) {
-	                return { name: brand.name };
-	            });
-
-	            console.log("built brand suggestion : " + JSON.stringify(suggestions));
-
-	            return suggestions;
-	        }
-	    }, {
 	        key: 'buildSelectedItem',
 	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
@@ -48817,19 +48813,6 @@
 	            var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue);
 
 	            this.setState({ itemFeatures: itemFeature });
-	        }
-	    }, {
-	        key: 'onBrandSuggestionSelected',
-	        value: function onBrandSuggestionSelected(event, _ref2) {
-	            var suggestion = _ref2.suggestion;
-	            var suggestionValue = _ref2.suggestionValue;
-	            var method = _ref2.method;
-
-
-	            console.log("brand suggestion value: " + suggestionValue);
-	            var existingModel = _lodash2.default.cloneDeep(this.state.newModel);
-	            _lodash2.default.set(existingModel, "modelName", suggestionValue);
-	            this.setState({ newModel: existingModel });
 	        }
 	    }, {
 	        key: 'findModel',
@@ -48871,25 +48854,6 @@
 	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
 	        }
 	    }, {
-	        key: 'onAddNewModel',
-	        value: function onAddNewModel() {
-
-	            var newModel = this.refs.inputNewModel.value;
-	            var brand = this.refs.inputFormNewBrand.value;
-
-	            console.log("addinf new model : " + newModel + " - " + brand);
-	        }
-	    }, {
-	        key: 'brandSuggestionFilter',
-	        value: function brandSuggestionFilter(value, suggestions) {
-
-	            var inputValue = value.trim().toLowerCase();
-
-	            return suggestions.filter(function (suggest) {
-	                return suggest.name.toLowerCase().indexOf(inputValue) != -1;
-	            });
-	        }
-	    }, {
 	        key: 'modelSuggestionFilter',
 	        value: function modelSuggestionFilter(value, suggestions) {
 
@@ -48915,16 +48879,21 @@
 	            });
 	        }
 	    }, {
+	        key: 'onAddNewModel',
+	        value: function onAddNewModel(modelName, brandName) {
+
+	            _reactRelay2.default.Store.commitUpdate(new _AddModelMutation2.default({ model: modelName, brandName: brandName, viewer: this.props.viewer }));
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var models = this.props.viewer.models;
 	            var domains = this.props.viewer.domains;
-	            var brands = this.props.viewer.brands;
+
 	            var subCategories = this.props.viewer.subCategories;
 
 	            var builtModelSuggestion = this.buildModelSuggestion(models);
-	            var builtBrandSuggestion = this.buildBrandSuggestion(brands);
 
 	            var model = this.findModel(this.state.itemFeatures.model);
 
@@ -48965,29 +48934,7 @@
 	                            null,
 	                            'or create one ...'
 	                        ),
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a brand ...', suggestions: builtBrandSuggestion,
-	                            multiSection: false, suggestionFilter: this.brandSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onBrandSuggestionSelected.bind(this),
-	                            resetInputValue: false, ref: 'inputFormNewBrand' }),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'row' },
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-10' },
-	                                _react2.default.createElement('input', { ref: 'inputFormNewModel', type: 'text', className: 'form-control', placeholder: 'Enter a model ...' })
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-1' },
-	                                _react2.default.createElement(
-	                                    'button',
-	                                    { className: 'btn btn-default', onClick: this.onAddNewModel.bind(this) },
-	                                    'OK'
-	                                )
-	                            )
-	                        ),
+	                        _react2.default.createElement(_modelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
 	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
 	                            'h3',
@@ -49054,7 +49001,7 @@
 
 	    fragments: {
 	        viewer: function viewer() {
-	            return function () {
+	            return function (RQL_0) {
 	                return {
 	                    children: [{
 	                        children: [{
@@ -49211,28 +49158,6 @@
 	                        type: 'DomainType'
 	                    }, {
 	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }, {
-	                            fieldName: 'name',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }],
-	                        fieldName: 'brands',
-	                        kind: 'Field',
-	                        metadata: {
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id',
-	                            isPlural: true
-	                        },
-	                        type: 'BrandType'
-	                    }, {
-	                        children: [{
 	                            fieldName: 'name',
 	                            kind: 'Field',
 	                            metadata: {},
@@ -49284,13 +49209,13 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }],
+	                    }, _reactRelay2.default.QL.__frag(RQL_0)],
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'ItemForm',
 	                    type: 'Viewer'
 	                };
-	            }();
+	            }(_modelQuickForm2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -64166,6 +64091,8 @@
 	            this.setState({
 	                value: newValue
 	            });
+
+	            this.props.onInputChange(newValue);
 	        }
 	    }, {
 	        key: 'onSuggestionsUpdateRequested',
@@ -66775,6 +66702,305 @@
 /* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddModelMutation = function (_Relay$Mutation) {
+	    _inherits(AddModelMutation, _Relay$Mutation);
+
+	    function AddModelMutation() {
+	        _classCallCheck(this, AddModelMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddModelMutation).apply(this, arguments));
+	    }
+
+	    _createClass(AddModelMutation, [{
+	        key: 'getMutation',
+	        value: function getMutation() {
+	            return function () {
+	                throw new Error('GraphQL validation/transform error ``Your schema defines a mutation field `addModel` that takes 7 arguments, but mutation fields must have exactly one argument named `input`.`` in file `/Users/muskacirca/dev/Sources/StockManager/src/frontend/mutations/AddModelMutation.js`.');
+	            }();
+	        }
+	    }, {
+	        key: 'getFatQuery',
+	        value: function getFatQuery() {
+	            //return Relay.QL`
+	            //  fragment on AddTodoPayload {
+	            //    todoEdge,
+	            //    viewer {
+	            //      todos,
+	            //      totalCount,
+	            //    },
+	            //  }
+	            //`;
+	        }
+	    }, {
+	        key: 'getConfigs',
+	        value: function getConfigs() {
+	            return [{
+	                type: 'RANGE_ADD',
+	                parentName: 'viewer',
+	                parentID: this.props.viewer.id
+	            }];
+	        }
+	    }, {
+	        key: 'getVariables',
+	        //connectionName: 'todos',
+	        //edgeName: 'todoEdge',
+	        //rangeBehaviors: {
+	        //    '': 'append',
+	        //    'status(any)': 'append',
+	        //    'status(active)': 'append',
+	        //    'status(completed)': null,
+	        //},
+	        value: function getVariables() {
+	            return {
+	                name: this.props.modelName,
+	                brandName: this.props.brandName
+	            };
+	        }
+	    }, {
+	        key: 'getOptimisticResponse',
+	        value: function getOptimisticResponse() {
+	            return {
+	                id: model.id,
+	                name: this.props.modelName,
+	                viewer: {
+	                    id: this.props.viewer.id
+	                }
+	            };
+	        }
+	    }]);
+
+	    return AddModelMutation;
+	}(_reactRelay2.default.Mutation);
+
+	AddModelMutation.fragments = {
+	    viewer: function viewer() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: 'id',
+	                    kind: 'Field',
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: 'ID'
+	                }],
+	                kind: 'Fragment',
+	                metadata: {},
+	                name: 'AddModelMutation',
+	                type: 'Viewer'
+	            };
+	        }();
+	    }
+	};
+	exports.default = AddModelMutation;
+
+/***/ },
+/* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _AutosuggestWrapper = __webpack_require__(478);
+
+	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ModelQuickForm = function (_React$Component) {
+	    _inherits(ModelQuickForm, _React$Component);
+
+	    function ModelQuickForm(props) {
+	        _classCallCheck(this, ModelQuickForm);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ModelQuickForm).call(this, props));
+
+	        _this.state = {
+	            selectedBrand: ""
+	        };
+	        return _this;
+	    }
+
+	    _createClass(ModelQuickForm, [{
+	        key: 'buildBrandSuggestion',
+	        value: function buildBrandSuggestion(brands) {
+
+	            var suggestions = brands.map(function (brand) {
+	                return { name: brand.name };
+	            });
+
+	            console.log("built brand suggestion : " + JSON.stringify(suggestions));
+
+	            return suggestions;
+	        }
+	    }, {
+	        key: 'brandSuggestionFilter',
+	        value: function brandSuggestionFilter(value, suggestions) {
+
+	            var inputValue = value.trim().toLowerCase();
+
+	            return suggestions.filter(function (suggest) {
+	                return suggest.name.toLowerCase().indexOf(inputValue) != -1;
+	            });
+	        }
+	    }, {
+	        key: 'onBrandSuggestionSelected',
+	        value: function onBrandSuggestionSelected(event, _ref) {
+	            var suggestion = _ref.suggestion;
+	            var suggestionValue = _ref.suggestionValue;
+	            var method = _ref.method;
+
+
+	            this.setState({ selectedBrand: suggestionValue });
+	        }
+	    }, {
+	        key: 'onBrandInputChange',
+	        value: function onBrandInputChange(newValue) {
+	            this.setState({ selectedBrand: newValue });
+	        }
+	    }, {
+	        key: 'onAddNewModel',
+	        value: function onAddNewModel() {
+
+	            var newModel = this.refs.inputNewModel.value;
+	            var brand = this.state.selectedBrand;
+	            console.log("adding new model : " + newModel + " - " + brand);
+	            this.props.onAddNewModel(newModel, brand);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            console.log("quick model form : " + JSON.stringify(this.props.viewer));
+
+	            var brands = this.props.viewer.brands;
+
+	            var builtBrandSuggestion = this.buildBrandSuggestion(brands);
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a brand ...', suggestions: builtBrandSuggestion,
+	                    multiSection: false, suggestionFilter: this.brandSuggestionFilter.bind(this),
+	                    onSuggestionSelected: this.onBrandSuggestionSelected.bind(this),
+	                    onInputChange: this.onBrandInputChange.bind(this),
+	                    resetInputValue: false, ref: 'inputFormNewBrand' }),
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-10' },
+	                        _react2.default.createElement('input', { ref: 'inputFormNewModel', type: 'text', className: 'form-control', placeholder: 'Enter a model ...' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-1' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-default', onClick: this.onAddNewModel.bind(this) },
+	                            'OK'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ModelQuickForm;
+	}(_react2.default.Component);
+
+	exports.default = _reactRelay2.default.createContainer(ModelQuickForm, {
+
+	    fragments: {
+	        viewer: function viewer() {
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, {
+	                            fieldName: 'name',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }],
+	                        fieldName: 'brands',
+	                        kind: 'Field',
+	                        metadata: {
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'BrandType'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'ModelQuickForm',
+	                    type: 'Viewer'
+	                };
+	            }();
+	        }
+	    }
+	});
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -66926,7 +67152,7 @@
 	exports.default = ItemFormDisplay;
 
 /***/ },
-/* 505 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66987,7 +67213,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 506 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67055,7 +67281,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 507 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67121,7 +67347,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 508 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67162,7 +67388,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(509);
+	var _useBeforeUnload2 = __webpack_require__(511);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -67182,13 +67408,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(510);
+	var _enableBeforeUnload2 = __webpack_require__(512);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(511);
+	var _enableQueries2 = __webpack_require__(513);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -67197,7 +67423,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 509 */
+/* 511 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67314,7 +67540,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 510 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67327,7 +67553,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(509);
+	var _useBeforeUnload = __webpack_require__(511);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -67335,7 +67561,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 511 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

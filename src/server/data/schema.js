@@ -280,62 +280,74 @@ var GraphQLRoot = new GraphQLObjectType({
     }
 });
 
-const Mutation = new GraphQLObjectType({
-    name: 'Mutation',
-    description: 'Function to create wreck',
-    fields() {
-        return {
-            addModel: {
-                type: GraphQLModelType,
-                args: {
-                    brandName: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    name: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    description: {
-                        type: GraphQLString
-                    },
-                    subCategoriesName: {
-                        type: new GraphQLList(GraphQLString)
-                    },
-                    domainsName: {
-                        type: new GraphQLList(GraphQLString)
-                    },
-                    linkedItemName: {
-                        type: new GraphQLList(GraphQLString)
-                    },
-                    imagePath: {
-                        type: GraphQLString
-                    }
-                },
-                resolve(_, args) {
-
-                    Database.models.brand.findOrCreate({where: {name: args.brandName}})
-                        .spread((brand, wasCreated) => { // spread is necessary when multiple return value
-
-                            console.log("return of add brand: " + JSON.stringify(brand))
-
-                            Database.models.model.create({name: args.name, brandId: brand.id})
-                                .then((model) => {
-                                    console.log("return of add item: " + JSON.stringify(model))
-                                    return {
-                                        id: model.id,
-                                        name: model.name,
-                                        brandId: model.brandId
-                                    }
-                                })
-
-                        })
-
-
-                    }
-
-            }
+const GraphQLAddModelMutation = new GraphQLObjectType({
+    name: 'AddModel',
+    description: 'Function to create model',
+    inputFields: {
+        brandName: {
+            type: new GraphQLNonNull(GraphQLString)
+        },
+        name: {
+            type: new GraphQLNonNull(GraphQLString)
+        },
+        description: {
+            type: GraphQLString
+        },
+        subCategoriesName: {
+            type: new GraphQLList(GraphQLString)
+        },
+        domainsName: {
+            type: new GraphQLList(GraphQLString)
+        },
+        linkedItemName: {
+            type: new GraphQLList(GraphQLString)
+        },
+        imagePath: {
+            type: GraphQLString
         }
+    },
+    outputField: {
+        id: {
+            type: GraphQLInt,
+            resolve: (obj) => obj.id
+        },
+        name: {
+            type: GraphQLString,
+            resolve: (obj) => obj.name
+        },
+        brand: {
+            type: GraphQLInt,
+            resolve: (obj) => obj.brandId
+        }
+
+    },
+    mutateAndGetPayload: ({brandName, name}) => {
+
+        Database.models.brand.findOrCreate({where: {name: brandName}})
+            .spread((brand, wasCreated) => { // spread is necessary when multiple return value
+
+                console.log("return of add brand: " + JSON.stringify(brand))
+
+                Database.models.model.create({name: name, brandId: brand.id})
+                    .then((model) => {
+                        console.log("return of add item: " + JSON.stringify(model))
+                        return {
+                            id: model.id,
+                            name: model.name,
+                            brandId: model.brandId
+                        }
+                    })
+
+            })
     }
 })
+
+var Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addModel: GraphQLAddModelMutation
+    }
+});
 
 export var Schema = new GraphQLSchema({
     query: GraphQLRoot,

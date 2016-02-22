@@ -56,6 +56,8 @@ class AutosuggestWrapper extends React.Component {
         this.setState({
             value: newValue
         });
+
+        this.props.onInputChange(newValue)
     }
 
     onSuggestionsUpdateRequested({ value }) {
