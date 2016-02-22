@@ -331,6 +331,59 @@ var GraphQLRoot = new _graphql.GraphQLObjectType({
     }
 });
 
+var Mutation = new _graphql.GraphQLObjectType({
+    name: 'Mutation',
+    description: 'Function to create wreck',
+    fields: function fields() {
+        return {
+            addModel: {
+                type: GraphQLModelType,
+                args: {
+                    brandName: {
+                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+                    },
+                    name: {
+                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+                    },
+                    description: {
+                        type: _graphql.GraphQLString
+                    },
+                    subCategoriesName: {
+                        type: new _graphql.GraphQLList(_graphql.GraphQLString)
+                    },
+                    domainsName: {
+                        type: new _graphql.GraphQLList(_graphql.GraphQLString)
+                    },
+                    linkedItemName: {
+                        type: new _graphql.GraphQLList(_graphql.GraphQLString)
+                    },
+                    imagePath: {
+                        type: _graphql.GraphQLString
+                    }
+                },
+                resolve: function resolve(_, args) {
+
+                    _database2.default.models.brand.findOrCreate({ where: { name: args.brandName } }).spread(function (brand, wasCreated) {
+                        // spread is necessary when multiple return value
+
+                        console.log("return of add brand: " + JSON.stringify(brand));
+
+                        _database2.default.models.model.create({ name: args.name, brandId: brand.id }).then(function (model) {
+                            console.log("return of add item: " + JSON.stringify(model));
+                            return {
+                                id: model.id,
+                                name: model.name,
+                                brandId: model.brandId
+                            };
+                        });
+                    });
+                }
+            }
+        };
+    }
+});
+
 var Schema = exports.Schema = new _graphql.GraphQLSchema({
-    query: GraphQLRoot
+    query: GraphQLRoot,
+    mutation: Mutation
 });

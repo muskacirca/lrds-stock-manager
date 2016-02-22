@@ -29,8 +29,7 @@ const model = connection.define('model', {
         allowNull: false,
     },
     description: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
     }
 
 }, {timestamps: false})

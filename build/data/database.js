@@ -36,8 +36,7 @@ var model = connection.define('model', {
         allowNull: false
     },
     description: {
-        type: _sequelize2.default.STRING,
-        allowNull: false
+        type: _sequelize2.default.STRING
     }
 
 }, { timestamps: false });

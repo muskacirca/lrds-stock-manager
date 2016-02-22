@@ -60,6 +60,10 @@ type ModelType implements Node {
   subCategories: [SubCategoryType]
 }
 
+type Mutation {
+  addModel(brandName: String!, name: String!, description: String, subCategoriesName: [String], domainsName: [String], linkedItemName: [String], imagePath: String): ModelType
+}
+
 interface Node {
   id: ID!
 }
