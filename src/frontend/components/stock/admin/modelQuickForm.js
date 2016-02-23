@@ -41,7 +41,7 @@ class ModelQuickForm extends React.Component {
         this.setState({selectedBrand: newValue})
     }
 
-    onAddNewModel() {
+    onAddNewModel(inputnewModel) {
 
         var newModel = this.refs.inputNewModel.value
         var brand = this.state.selectedBrand

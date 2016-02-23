@@ -49001,140 +49001,9 @@
 
 	    fragments: {
 	        viewer: function viewer() {
-	            return function (RQL_0) {
+	            return function (RQL_0, RQL_1) {
 	                return {
 	                    children: [{
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }, {
-	                            fieldName: 'name',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }, {
-	                            fieldName: 'description',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'name',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }],
-	                            fieldName: 'brand',
-	                            kind: 'Field',
-	                            metadata: {
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id'
-	                            },
-	                            type: 'BrandType'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }, {
-	                                fieldName: 'name',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'description',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }],
-	                            fieldName: 'domains',
-	                            kind: 'Field',
-	                            metadata: {
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id',
-	                                isPlural: true
-	                            },
-	                            type: 'DomainType'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'name',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'description',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                children: [{
-	                                    fieldName: 'name',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    fieldName: 'description',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    fieldName: 'id',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ID'
-	                                }],
-	                                fieldName: 'category',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    inferredRootCallName: 'node',
-	                                    inferredPrimaryKey: 'id'
-	                                },
-	                                type: 'CategoryType'
-	                            }, {
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }],
-	                            fieldName: 'subCategories',
-	                            kind: 'Field',
-	                            metadata: {
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id',
-	                                isPlural: true
-	                            },
-	                            type: 'SubCategoryType'
-	                        }],
-	                        fieldName: 'models',
-	                        kind: 'Field',
-	                        metadata: {
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id',
-	                            isPlural: true
-	                        },
-	                        type: 'ModelType'
-	                    }, {
 	                        children: [{
 	                            fieldName: 'id',
 	                            kind: 'Field',
@@ -49209,13 +49078,13 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0)],
+	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1)],
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'ItemForm',
 	                    type: 'Viewer'
 	                };
-	            }(_modelQuickForm2.default.getFragment('viewer'));
+	            }(_AddModelMutation2.default.getFragment('viewer'), _modelQuickForm2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -66735,58 +66604,82 @@
 	        key: 'getMutation',
 	        value: function getMutation() {
 	            return function () {
-	                throw new Error('GraphQL validation/transform error ``Your schema defines a mutation field `addModel` that takes 7 arguments, but mutation fields must have exactly one argument named `input`.`` in file `/Users/muskacirca/dev/Sources/StockManager/src/frontend/mutations/AddModelMutation.js`.');
+	                return {
+	                    calls: [{
+	                        kind: 'Call',
+	                        metadata: {},
+	                        name: 'addModel',
+	                        value: {
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'String'
+	                    }],
+	                    kind: 'Mutation',
+	                    metadata: {
+	                        inputType: 'AddModelInput!'
+	                    },
+	                    name: 'AddModelMutation',
+	                    responseType: 'AddModelPayload'
+	                };
 	            }();
 	        }
 	    }, {
 	        key: 'getFatQuery',
 	        value: function getFatQuery() {
-	            //return Relay.QL`
-	            //  fragment on AddTodoPayload {
-	            //    todoEdge,
-	            //    viewer {
-	            //      todos,
-	            //      totalCount,
-	            //    },
-	            //  }
-	            //`;
+	            return function () {
+	                throw new Error('GraphQL validation/transform error ``Cannot query field "modelEdge" on "AddModelPayload". Cannot query field "viewer" on "AddModelPayload".`` in file `/Users/muskacirca/dev/Sources/StockManager/src/frontend/mutations/AddModelMutation.js`.');
+	            }();
 	        }
 	    }, {
 	        key: 'getConfigs',
 	        value: function getConfigs() {
 	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    viewer: this.props.viewer.id
+	                }
+	            }, {
 	                type: 'RANGE_ADD',
 	                parentName: 'viewer',
-	                parentID: this.props.viewer.id
+	                parentID: this.props.viewer.id,
+	                connectionName: 'models',
+	                edgeName: 'modelEdge',
+	                rangeBehaviors: {
+	                    // When the ships connection is not under the influence
+	                    // of any call, append the ship to the end of the connection
+	                    '': 'append',
+	                    // Prepend the ship, wherever the connection is sorted by age
+	                    'orderby(newest)': 'prepend'
+	                }
 	            }];
 	        }
 	    }, {
 	        key: 'getVariables',
-	        //connectionName: 'todos',
-	        //edgeName: 'todoEdge',
-	        //rangeBehaviors: {
-	        //    '': 'append',
-	        //    'status(any)': 'append',
-	        //    'status(active)': 'append',
-	        //    'status(completed)': null,
-	        //},
 	        value: function getVariables() {
 	            return {
 	                name: this.props.modelName,
 	                brandName: this.props.brandName
 	            };
 	        }
-	    }, {
-	        key: 'getOptimisticResponse',
-	        value: function getOptimisticResponse() {
-	            return {
-	                id: model.id,
-	                name: this.props.modelName,
-	                viewer: {
-	                    id: this.props.viewer.id
-	                }
-	            };
-	        }
+	        //getOptimisticResponse() {
+	        //    return {
+	        //        id: model.id,
+	        //        name: this.props.modelName,
+	        //        viewer: {
+	        //            id: this.props.viewer.id,
+	        //        },
+	        //    }
+	        //}
+
 	    }]);
 
 	    return AddModelMutation;
@@ -66899,7 +66792,7 @@
 	        }
 	    }, {
 	        key: 'onAddNewModel',
-	        value: function onAddNewModel() {
+	        value: function onAddNewModel(inputnewModel) {
 
 	            var newModel = this.refs.inputNewModel.value;
 	            var brand = this.state.selectedBrand;

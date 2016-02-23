@@ -1,3 +1,13 @@
+input AddModelInput {
+  brandName: String!
+  name: String!
+  clientMutationId: String!
+}
+
+type AddModelPayload {
+  clientMutationId: String!
+}
+
 type BrandType implements Node {
   id: ID!
   name: String
@@ -60,8 +70,18 @@ type ModelType implements Node {
   subCategories: [SubCategoryType]
 }
 
+type ModelTypeConnection {
+  pageInfo: PageInfo!
+  edges: [ModelTypeEdge]
+}
+
+type ModelTypeEdge {
+  node: ModelType
+  cursor: String!
+}
+
 type Mutation {
-  addModel(brandName: String!, name: String!, description: String, subCategoriesName: [String], domainsName: [String], linkedItemName: [String], imagePath: String): ModelType
+  addModel(input: AddModelInput!): AddModelPayload
 }
 
 interface Node {
@@ -92,7 +112,7 @@ type Viewer implements Node {
   items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
   item(reference: String!): ItemType
   brands: [BrandType]
-  models: [ModelType]
+  models(after: String, first: Int, before: String, last: Int): ModelTypeConnection
   domains: [DomainType]
   subCategories: [SubCategoryType]
   categories: [CategoryType]

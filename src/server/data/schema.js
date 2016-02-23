@@ -16,7 +16,9 @@ import {
     connectionFromArray,
     fromGlobalId,
     globalIdField,
-    nodeDefinitions
+    nodeDefinitions,
+    mutationWithClientMutationId,
+    cursorForObjectInConnection
 } from 'graphql-relay'
 
 import Database from './database'
@@ -215,10 +217,18 @@ var GraphQLItemType = new GraphQLObjectType({
 
 var {
     connectionType: ItemsConnection
-    // ,edgeType: GraphQLSimTypesEdge,
+     //,edgeType: GraphQLSimTypesEdge,
     } = connectionDefinitions({
     name: 'ItemType',
     nodeType: GraphQLItemType
+});
+
+var {
+    connectionType: ModelsConnection
+     ,edgeType: GraphQLModelEdge,
+    } = connectionDefinitions({
+    name: 'ModelType',
+    nodeType: GraphQLModelType
 });
 
 var GraphQLViewer = new GraphQLObjectType({
@@ -249,8 +259,9 @@ var GraphQLViewer = new GraphQLObjectType({
             resolve: () => Database.models.brand.findAll().then((response) => response)
         },
         models: {
-            type: new GraphQLList(GraphQLModelType),
-            resolve: () => Database.models.model.findAll().then((response) => response)
+            type: ModelsConnection,
+            args: {...connectionArgs},
+            resolve: (_, {...args}) => connectionFromPromisedArray(Database.models.model.findAll(), args)
         },
         domains: {
             type: new GraphQLList(GraphQLDomainType),
@@ -280,7 +291,7 @@ var GraphQLRoot = new GraphQLObjectType({
     }
 });
 
-const GraphQLAddModelMutation = new GraphQLObjectType({
+const GraphQLAddModelMutation = new mutationWithClientMutationId({
     name: 'AddModel',
     description: 'Function to create model',
     inputFields: {
@@ -289,52 +300,44 @@ const GraphQLAddModelMutation = new GraphQLObjectType({
         },
         name: {
             type: new GraphQLNonNull(GraphQLString)
-        },
-        description: {
-            type: GraphQLString
-        },
-        subCategoriesName: {
-            type: new GraphQLList(GraphQLString)
-        },
-        domainsName: {
-            type: new GraphQLList(GraphQLString)
-        },
-        linkedItemName: {
-            type: new GraphQLList(GraphQLString)
-        },
-        imagePath: {
-            type: GraphQLString
         }
     },
     outputField: {
-        id: {
-            type: GraphQLInt,
-            resolve: (obj) => obj.id
+        viewer: {
+            type: GraphQLViewer,
+            resolve: () => getViewer
         },
-        name: {
-            type: GraphQLString,
-            resolve: (obj) => obj.name
+        modelEdge: {
+            type: GraphQLModelEdge,
+            resolve: ({id}) => {
+
+                var models = Database.models.model.findAll()
+                    .then(response => response)
+
+                var model = Database.models.model.findById(id)
+                    .then(response => response)
+
+                console.log("returning : " + JSON.stringify(models) + " and " + JSON.stringify(model))
+                return {
+                    cursor: cursorForObjectInConnection(models, model),
+                    node: model
+                }
+            }
         },
-        brand: {
-            type: GraphQLInt,
-            resolve: (obj) => obj.brandId
-        }
 
     },
     mutateAndGetPayload: ({brandName, name}) => {
 
-        Database.models.brand.findOrCreate({where: {name: brandName}})
+        return Database.models.brand.findOrCreate({where: {name: brandName}})
             .spread((brand, wasCreated) => { // spread is necessary when multiple return value
 
                 console.log("return of add brand: " + JSON.stringify(brand))
 
-                Database.models.model.create({name: name, brandId: brand.id})
+                return Database.models.model.create({name: name, brandId: brand.id})
                     .then((model) => {
                         console.log("return of add item: " + JSON.stringify(model))
                         return {
-                            id: model.id,
-                            name: model.name,
-                            brandId: model.brandId
+                            id: model.id
                         }
                     })
 

@@ -234,13 +234,21 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
 });
 
 var _connectionDefinition2 =
-// ,edgeType: GraphQLSimTypesEdge,
+//,edgeType: GraphQLSimTypesEdge,
 (0, _graphqlRelay.connectionDefinitions)({
     name: 'ItemType',
     nodeType: GraphQLItemType
 });
 
 var ItemsConnection = _connectionDefinition2.connectionType;
+
+var _connectionDefinition3 = (0, _graphqlRelay.connectionDefinitions)({
+    name: 'ModelType',
+    nodeType: GraphQLModelType
+});
+
+var ModelsConnection = _connectionDefinition3.connectionType;
+var GraphQLModelEdge = _connectionDefinition3.edgeType;
 
 
 var GraphQLViewer = new _graphql.GraphQLObjectType({
@@ -281,11 +289,12 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 }
             },
             models: {
-                type: new _graphql.GraphQLList(GraphQLModelType),
-                resolve: function resolve() {
-                    return _database2.default.models.model.findAll().then(function (response) {
-                        return response;
-                    });
+                type: ModelsConnection,
+                args: _extends({}, _graphqlRelay.connectionArgs),
+                resolve: function resolve(_, _ref4) {
+                    var args = _objectWithoutProperties(_ref4, []);
+
+                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
                 }
             },
             domains: {
@@ -331,55 +340,70 @@ var GraphQLRoot = new _graphql.GraphQLObjectType({
     }
 });
 
+var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'AddModel',
+    description: 'Function to create model',
+    inputFields: {
+        brandName: {
+            type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+        },
+        name: {
+            type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+        }
+    },
+    outputField: {
+        modelEdge: {
+            type: GraphQLModelEdge,
+            resolve: function resolve(_ref5) {
+                var id = _ref5.id;
+
+
+                var models = _database2.default.models.model.findAll().then(function (response) {
+                    return response;
+                });
+
+                var model = _database2.default.models.model.findById(id).then(function (response) {
+                    return response;
+                });
+
+                console.log("returning : " + JSON.stringify(models) + " and " + JSON.stringify(model));
+                return {
+                    cursor: (0, _graphqlRelay.cursorForObjectInConnection)(models, model),
+                    node: model
+                };
+            }
+        },
+        viewer: {
+            type: GraphQLViewer,
+            resolve: function resolve() {
+                return _ItemStore.getViewer;
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref6) {
+        var brandName = _ref6.brandName;
+        var name = _ref6.name;
+
+
+        return _database2.default.models.brand.findOrCreate({ where: { name: brandName } }).spread(function (brand, wasCreated) {
+            // spread is necessary when multiple return value
+
+            console.log("return of add brand: " + JSON.stringify(brand));
+
+            return _database2.default.models.model.create({ name: name, brandId: brand.id }).then(function (model) {
+                console.log("return of add item: " + JSON.stringify(model));
+                return {
+                    id: model.id
+                };
+            });
+        });
+    }
+});
+
 var Mutation = new _graphql.GraphQLObjectType({
     name: 'Mutation',
-    description: 'Function to create wreck',
-    fields: function fields() {
-        return {
-            addModel: {
-                type: GraphQLModelType,
-                args: {
-                    brandName: {
-                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
-                    },
-                    name: {
-                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
-                    },
-                    description: {
-                        type: _graphql.GraphQLString
-                    },
-                    subCategoriesName: {
-                        type: new _graphql.GraphQLList(_graphql.GraphQLString)
-                    },
-                    domainsName: {
-                        type: new _graphql.GraphQLList(_graphql.GraphQLString)
-                    },
-                    linkedItemName: {
-                        type: new _graphql.GraphQLList(_graphql.GraphQLString)
-                    },
-                    imagePath: {
-                        type: _graphql.GraphQLString
-                    }
-                },
-                resolve: function resolve(_, args) {
-
-                    _database2.default.models.brand.findOrCreate({ where: { name: args.brandName } }).spread(function (brand, wasCreated) {
-                        // spread is necessary when multiple return value
-
-                        console.log("return of add brand: " + JSON.stringify(brand));
-
-                        _database2.default.models.model.create({ name: args.name, brandId: brand.id }).then(function (model) {
-                            console.log("return of add item: " + JSON.stringify(model));
-                            return {
-                                id: model.id,
-                                name: model.name,
-                                brandId: model.brandId
-                            };
-                        });
-                    });
-                }
-            }
-        };
+    fields: {
+        addModel: GraphQLAddModelMutation
     }
 });
 

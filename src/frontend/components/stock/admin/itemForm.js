@@ -120,8 +120,7 @@ class ItemFormComponent extends React.Component {
 
         Relay.Store.commitUpdate(
             new AddModelMutation({model: modelName, brandName: brandName, viewer: this.props.viewer})
-        );
-
+        )
     }
 
     render() {
@@ -189,27 +188,7 @@ export default Relay.createContainer(ItemFormComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            models {
-              id
-              name
-      		  description
-              brand {
-                name
-              }
-              domains {
-                id
-                name,
-                description
-              }
-              subCategories {
-                name
-                description
-                category {
-                  name,
-                  description
-                }
-              }
-            }
+            ${AddModelMutation.getFragment('viewer')}
             domains {
               id
               name
