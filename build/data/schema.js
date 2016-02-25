@@ -351,7 +351,13 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
             type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
         }
     },
-    outputField: {
+    outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: function resolve() {
+                return _ItemStore.getViewer;
+            }
+        },
         modelEdge: {
             type: GraphQLModelEdge,
             resolve: function resolve(_ref5) {
@@ -372,13 +378,8 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
                     node: model
                 };
             }
-        },
-        viewer: {
-            type: GraphQLViewer,
-            resolve: function resolve() {
-                return _ItemStore.getViewer;
-            }
         }
+
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref6) {
         var brandName = _ref6.brandName;

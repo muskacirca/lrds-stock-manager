@@ -302,7 +302,7 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
             type: new GraphQLNonNull(GraphQLString)
         }
     },
-    outputField: {
+    outputFields: {
         viewer: {
             type: GraphQLViewer,
             resolve: () => getViewer

@@ -14,8 +14,7 @@ class ItemFormComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            itemFeatures : {},
-            newModel: {}
+            itemFeatures : {modelName: ""}
         }
     }
 
@@ -28,7 +27,9 @@ class ItemFormComponent extends React.Component {
 
         var suggestions = []
 
-        models.map(model => {
+        models.edges.map(modelNode => {
+
+            var model = modelNode.node
 
             var modelSuggestion = {name: model.name, section: model.brand.name}
 
@@ -47,7 +48,7 @@ class ItemFormComponent extends React.Component {
 
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
-        _.set(existingItemFeature, "model", suggestionValue)
+        _.set(existingItemFeature, "modelName", suggestionValue)
         return existingItemFeature
     }
 
@@ -60,9 +61,9 @@ class ItemFormComponent extends React.Component {
     }
 
     findModel(modelName) {
-        if(modelName === undefined) return {brand: {}, domains: [], subCategories: []}
-        var index = _.findIndex(this.props.viewer.models, (o) => o.name === modelName)
-        return this.props.viewer.models[index]
+        if(modelName === "") return {brand: {}, domains: [], subCategories: []}
+        var index = _.findIndex(this.props.viewer.models.edges, (o) => o.node.name === modelName)
+        return this.props.viewer.models.edges[index].node
     }
 
     onSelectStateChange(event) {
@@ -133,14 +134,14 @@ class ItemFormComponent extends React.Component {
         var builtModelSuggestion = this.buildModelSuggestion(models);
 
 
-        var model = this.findModel(this.state.itemFeatures.model)
+        var model = this.findModel(this.state.itemFeatures.modelName)
 
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
 
         var stateIcon = this.computeStateIcon(this.state.itemFeatures.state)
 
-        var itemFormDisplay = this.state.itemFeatures.model !== undefined ?
+        var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
             <ItemFormDisplay model={model} stateIcon={stateIcon}/> : ""
 
         return  <div className="col-md-10 col-md-offset-1">
@@ -189,6 +190,23 @@ export default Relay.createContainer(ItemFormComponent, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             ${AddModelMutation.getFragment('viewer')}
+            models(first: 100) {
+                edges {
+                    node {
+                        name
+                        brand {
+                            name
+                        }
+                        domains {
+                            name
+                        }
+                        subCategories {
+                            name
+                        }
+                    }
+                }
+
+            }
             domains {
               id
               name

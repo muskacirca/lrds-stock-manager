@@ -5,7 +5,8 @@ class AddModelMutation extends Relay.Mutation {
     static fragments = {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            id
+            id,
+
           }
         `
     };

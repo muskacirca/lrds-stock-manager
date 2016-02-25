@@ -5,6 +5,8 @@ input AddModelInput {
 }
 
 type AddModelPayload {
+  viewer: Viewer
+  modelEdge: ModelTypeEdge
   clientMutationId: String!
 }
 

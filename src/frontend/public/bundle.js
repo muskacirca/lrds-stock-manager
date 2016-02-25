@@ -48758,8 +48758,7 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
 
 	        _this.state = {
-	            itemFeatures: {},
-	            newModel: {}
+	            itemFeatures: { modelName: "" }
 	        };
 	        return _this;
 	    }
@@ -48776,7 +48775,9 @@
 
 	            var suggestions = [];
 
-	            models.map(function (model) {
+	            models.edges.map(function (modelNode) {
+
+	                var model = modelNode.node;
 
 	                var modelSuggestion = { name: model.name, section: model.brand.name };
 
@@ -48798,7 +48799,7 @@
 	        key: 'buildSelectedItem',
 	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
-	            _lodash2.default.set(existingItemFeature, "model", suggestionValue);
+	            _lodash2.default.set(existingItemFeature, "modelName", suggestionValue);
 	            return existingItemFeature;
 	        }
 	    }, {
@@ -48817,11 +48818,11 @@
 	    }, {
 	        key: 'findModel',
 	        value: function findModel(modelName) {
-	            if (modelName === undefined) return { brand: {}, domains: [], subCategories: [] };
-	            var index = _lodash2.default.findIndex(this.props.viewer.models, function (o) {
-	                return o.name === modelName;
+	            if (modelName === "") return { brand: {}, domains: [], subCategories: [] };
+	            var index = _lodash2.default.findIndex(this.props.viewer.models.edges, function (o) {
+	                return o.node.name === modelName;
 	            });
-	            return this.props.viewer.models[index];
+	            return this.props.viewer.models.edges[index].node;
 	        }
 	    }, {
 	        key: 'onSelectStateChange',
@@ -48895,14 +48896,14 @@
 
 	            var builtModelSuggestion = this.buildModelSuggestion(models);
 
-	            var model = this.findModel(this.state.itemFeatures.model);
+	            var model = this.findModel(this.state.itemFeatures.modelName);
 
 	            var alerts = _react2.default.createElement('div', null);
 	            var pageTitle = "Création d'un item";
 
 	            var stateIcon = this.computeStateIcon(this.state.itemFeatures.state);
 
-	            var itemFormDisplay = this.state.itemFeatures.model !== undefined ? _react2.default.createElement(_itemFormDisplay2.default, { model: model, stateIcon: stateIcon }) : "";
+	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_itemFormDisplay2.default, { model: model, stateIcon: stateIcon }) : "";
 
 	            return _react2.default.createElement(
 	                'div',
@@ -49004,6 +49005,155 @@
 	            return function (RQL_0, RQL_1) {
 	                return {
 	                    children: [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'brand',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'BrandType'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'domains',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id',
+	                                        isPlural: true
+	                                    },
+	                                    type: 'DomainType'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'subCategories',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id',
+	                                        isPlural: true
+	                                    },
+	                                    type: 'SubCategoryType'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'ModelType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isPlural: true
+	                            },
+	                            type: 'ModelTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'models',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isConnection: true
+	                        },
+	                        type: 'ModelTypeConnection'
+	                    }, {
 	                        children: [{
 	                            fieldName: 'id',
 	                            kind: 'Field',
@@ -63961,7 +64111,7 @@
 	                value: newValue
 	            });
 
-	            this.props.onInputChange(newValue);
+	            if (this.props.onInputChange) this.props.onInputChange(newValue);
 	        }
 	    }, {
 	        key: 'onSuggestionsUpdateRequested',
@@ -66636,7 +66786,70 @@
 	        key: 'getFatQuery',
 	        value: function getFatQuery() {
 	            return function () {
-	                throw new Error('GraphQL validation/transform error ``Cannot query field "modelEdge" on "AddModelPayload". Cannot query field "viewer" on "AddModelPayload".`` in file `/Users/muskacirca/dev/Sources/StockManager/src/frontend/mutations/AddModelMutation.js`.');
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'cursor',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'String'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'node',
+	                            kind: 'Field',
+	                            metadata: {
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ModelType'
+	                        }],
+	                        fieldName: 'modelEdge',
+	                        kind: 'Field',
+	                        metadata: {},
+	                        type: 'ModelTypeEdge'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'models',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isConnection: true
+	                            },
+	                            type: 'ModelTypeConnection'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'viewer',
+	                        kind: 'Field',
+	                        metadata: {
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'Viewer'
+	                    }],
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'AddModelMutation',
+	                    type: 'AddModelPayload'
+	                };
 	            }();
 	        }
 	    }, {
