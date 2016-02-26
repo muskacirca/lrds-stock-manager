@@ -16,6 +16,9 @@ class AddModelMutation extends Relay.Mutation {
     }
 
     getFatQuery() {
+
+        console.log("geting FatQuery")
+
         return Relay.QL`
           fragment on AddModelPayload {
             modelEdge,
@@ -26,6 +29,8 @@ class AddModelMutation extends Relay.Mutation {
         `
     }
     getConfigs() {
+
+        console.log("geting config")
         return [
             {
                 type: 'FIELDS_CHANGE',
@@ -49,20 +54,32 @@ class AddModelMutation extends Relay.Mutation {
         }];
     }
     getVariables() {
+        console.log("getting FatQuery")
         return {
             name: this.props.modelName,
             brandName: this.props.brandName
         };
     }
-    //getOptimisticResponse() {
-    //    return {
-    //        id: model.id,
-    //        name: this.props.modelName,
-    //        viewer: {
-    //            id: this.props.viewer.id,
-    //        },
-    //    }
-    //}
+
+    getOptimisticResponse() {
+
+        console.log("getOptimisticResponse")
+
+        return {
+            viewer: {
+                id: this.props.viewer.id
+            },
+            modelEdge: {
+                node: {
+                    name: this.props.modelName,
+                    brand: {
+                        name: this.props.brandName
+                    }
+                }
+            }
+
+        }
+    }
 }
 
 export default AddModelMutation

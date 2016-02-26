@@ -45,9 +45,6 @@ class AutosuggestWrapper extends React.Component {
 
 
         var filteredSuggestions =  this.props.suggestionFilter(value, this.props.suggestions)
-
-        console.log("filtered suggestions in autosuggest wrapper: " + JSON.stringify(filteredSuggestions) )
-
         return filteredSuggestions
     }
 
@@ -76,13 +73,13 @@ class AutosuggestWrapper extends React.Component {
     render() {
 
         const { value } = this.state;
-        const { inputText, ref } = this.props
+        const { inputText, inputId } = this.props
         const inputProps = {
             placeholder: inputText,
             value,
             onChange: this.onChange.bind(this),
             className: "form-control",
-            ref: ref
+            id: inputId
         };
 
         return  <Autosuggest multiSection={this.props.multiSection}

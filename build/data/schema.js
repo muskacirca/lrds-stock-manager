@@ -73,11 +73,8 @@ var GraphQLDomainType = new _graphql.GraphQLObjectType({
     fields: {
         id: (0, _graphqlRelay.globalIdField)('DomainType'),
         name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
-
-                console.log("obj in domain name resolve: " + JSON.stringify(obj));
                 return obj.name;
-            }
-        },
+            } },
         description: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
                 return obj.description;
             } }
@@ -90,7 +87,6 @@ var GraphQLCategoryType = new _graphql.GraphQLObjectType({
     fields: {
         id: (0, _graphqlRelay.globalIdField)('CategoryType'),
         name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
-                console.log("obj in category name resolve: " + JSON.stringify(obj));
                 return obj.name;
             } },
         description: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
@@ -113,7 +109,6 @@ var GraphQLSubCategoryType = new _graphql.GraphQLObjectType({
         category: {
             type: GraphQLCategoryType,
             resolve: function resolve(obj) {
-                console.log("obj sub category resolve : " + JSON.stringify(obj));
                 return _database2.default.models.category.findById(obj.categoryId);
             }
         }
@@ -154,8 +149,6 @@ var GraphQLModelType = new _graphql.GraphQLObjectType({
         domains: {
             type: new _graphql.GraphQLList(GraphQLDomainType),
             resolve: function resolve(obj) {
-
-                console.log("domain in itemType: " + JSON.stringify(obj.getDomains()));
                 return obj.getDomains();
             }
         },
@@ -364,19 +357,14 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
                 var id = _ref5.id;
 
 
-                var models = _database2.default.models.model.findAll().then(function (response) {
-                    return response;
+                var models = _database2.default.models.model.findAll().then(function (dataModels) {
+                    _database2.default.models.model.findById(id).then(function (dataModel) {
+                        return {
+                            cursor: (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, dataModel),
+                            node: dataModel
+                        };
+                    });
                 });
-
-                var model = _database2.default.models.model.findById(id).then(function (response) {
-                    return response;
-                });
-
-                console.log("returning : " + JSON.stringify(models) + " and " + JSON.stringify(model));
-                return {
-                    cursor: (0, _graphqlRelay.cursorForObjectInConnection)(models, model),
-                    node: model
-                };
             }
         }
 
@@ -389,13 +377,46 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
         return _database2.default.models.brand.findOrCreate({ where: { name: brandName } }).spread(function (brand, wasCreated) {
             // spread is necessary when multiple return value
 
-            console.log("return of add brand: " + JSON.stringify(brand));
-
             return _database2.default.models.model.create({ name: name, brandId: brand.id }).then(function (model) {
                 console.log("return of add item: " + JSON.stringify(model));
                 return {
+                    model: {
+                        name: model.name,
+                        brand: { name: brand.name }
+                    },
                     id: model.id
+
                 };
+            });
+        });
+    }
+});
+
+var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
+    name: 'AddItem',
+    description: 'A function to create an item',
+    inputFields: {
+        modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        state: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+    },
+    outputFields: {
+        status: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(_ref7) {
+                var status = _ref7.status;
+                return status;
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref8) {
+        var modelName = _ref8.modelName;
+        var state = _ref8.state;
+
+
+        _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
+            var reference = model.brand.name + "/" + modelName;
+            model.createItem({ stateId: state, reference: reference }).then(function (response) {
+                return response.id === undefined ? { status: "Error" } : { status: "Success" };
             });
         });
     }

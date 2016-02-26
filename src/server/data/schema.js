@@ -82,12 +82,7 @@ var GraphQLDomainType = new GraphQLObjectType({
     name: 'DomainType',
     fields: {
         id: globalIdField('DomainType'),
-        name: { type: GraphQLString, resolve: (obj) => {
-
-            console.log("obj in domain name resolve: " + JSON.stringify(obj))
-            return obj.name
-        }
-        },
+        name: { type: GraphQLString, resolve: (obj) => obj.name},
         description: { type: GraphQLString, resolve: (obj) => obj.description }
     },
     interfaces: [nodeInterface]
@@ -97,9 +92,7 @@ var GraphQLCategoryType = new GraphQLObjectType({
     name: 'CategoryType',
     fields: {
         id: globalIdField('CategoryType'),
-        name: { type: GraphQLString, resolve: (obj) => {
-            console.log("obj in category name resolve: " + JSON.stringify(obj))
-            return obj.name}},
+        name: { type: GraphQLString, resolve: (obj) => obj.name},
         description: { type: GraphQLString, resolve: (obj) => obj.description }
     },
     interfaces: [nodeInterface]
@@ -113,10 +106,7 @@ var GraphQLSubCategoryType = new GraphQLObjectType({
         description: { type: GraphQLString, resolve: (obj) => obj.description },
         category: {
             type: GraphQLCategoryType,
-            resolve: (obj) => {
-                console.log("obj sub category resolve : " + JSON.stringify(obj))
-                return Database.models.category.findById(obj.categoryId)
-            }
+            resolve: (obj) => Database.models.category.findById(obj.categoryId)
         }
     },
     interfaces: [nodeInterface]
@@ -147,17 +137,11 @@ var GraphQLModelType = new GraphQLObjectType({
         },
         domains: {
             type: new GraphQLList(GraphQLDomainType),
-            resolve: (obj) => {
-
-                console.log("domain in itemType: " + JSON.stringify(obj.getDomains()))
-                return obj.getDomains()
-            }
+            resolve: (obj) => obj.getDomains()
         },
         subCategories: {
             type: new GraphQLList(GraphQLSubCategoryType),
-            resolve: (obj) => {
-                return obj.getSubCategories()
-            }
+            resolve: (obj) =>  obj.getSubCategories()
         },
     },
     interfaces: [nodeInterface]
@@ -312,18 +296,17 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
             resolve: ({id}) => {
 
                 var models = Database.models.model.findAll()
-                    .then(response => response)
-
-                var model = Database.models.model.findById(id)
-                    .then(response => response)
-
-                console.log("returning : " + JSON.stringify(models) + " and " + JSON.stringify(model))
-                return {
-                    cursor: cursorForObjectInConnection(models, model),
-                    node: model
-                }
+                    .then(dataModels => {
+                        Database.models.model.findById(id)
+                            .then(dataModel =>  {
+                                return {
+                                    cursor: cursorForObjectInConnection(dataModels, dataModel),
+                                    node: dataModel
+                                }
+                            })
+                    })
             }
-        },
+        }
 
     },
     mutateAndGetPayload: ({brandName, name}) => {
@@ -331,17 +314,48 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
         return Database.models.brand.findOrCreate({where: {name: brandName}})
             .spread((brand, wasCreated) => { // spread is necessary when multiple return value
 
-                console.log("return of add brand: " + JSON.stringify(brand))
-
                 return Database.models.model.create({name: name, brandId: brand.id})
                     .then((model) => {
                         console.log("return of add item: " + JSON.stringify(model))
                         return {
+                            model: {
+                                name: model.name,
+                                brand: {name: brand.name}
+                            },
                             id: model.id
+
                         }
                     })
 
             })
+    }
+})
+
+const AddItemMutation = mutationWithClientMutationId({
+    name: 'AddItem',
+    description: 'A function to create an item',
+    inputFields: {
+        modelName: {type: new GraphQLNonNull(GraphQLString)},
+        state: {type: new GraphQLNonNull(GraphQLString)}
+    },
+    outputFields: {
+        status: {
+            type: GraphQLString,
+            resolve: ({status}) => status
+        }
+    },
+    mutateAndGetPayload: ({modelName, state}) => {
+
+        Database.models.model.findOne({where: {name: modelName}})
+            .then(model => {
+                var reference = model.brand.name + "/"+ modelName
+                model.createItem({stateId: state, reference: reference})
+                    .then(response => {
+                        return response.id === undefined ? {status: "Error"} : {status: "Success"}
+                    })
+            })
+
+
     }
 })
 

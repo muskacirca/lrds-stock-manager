@@ -48791,8 +48791,6 @@
 	                }
 	            });
 
-	            console.log("built suggestion : " + JSON.stringify(suggestions));
-
 	            return suggestions;
 	        }
 	    }, {
@@ -48872,9 +48870,6 @@
 	                suggestion.suggestions = itemFiltered;
 	                return suggestion;
 	            });
-
-	            console.log("filtered suggestions: " + JSON.stringify(filteredSuggestion));
-
 	            return filteredSuggestion.filter(function (elt) {
 	                return elt.suggestions.length !== 0;
 	            });
@@ -48883,7 +48878,7 @@
 	        key: 'onAddNewModel',
 	        value: function onAddNewModel(modelName, brandName) {
 
-	            _reactRelay2.default.Store.commitUpdate(new _AddModelMutation2.default({ model: modelName, brandName: brandName, viewer: this.props.viewer }));
+	            _reactRelay2.default.Store.commitUpdate(new _AddModelMutation2.default({ modelName: modelName, brandName: brandName, viewer: this.props.viewer }));
 	        }
 	    }, {
 	        key: 'render',
@@ -64095,9 +64090,6 @@
 	        value: function getSuggestions(value) {
 
 	            var filteredSuggestions = this.props.suggestionFilter(value, this.props.suggestions);
-
-	            console.log("filtered suggestions in autosuggest wrapper: " + JSON.stringify(filteredSuggestions));
-
 	            return filteredSuggestions;
 	        }
 	    }, {
@@ -64140,14 +64132,14 @@
 	            var value = this.state.value;
 	            var _props = this.props;
 	            var inputText = _props.inputText;
-	            var ref = _props.ref;
+	            var inputId = _props.inputId;
 
 	            var inputProps = {
 	                placeholder: inputText,
 	                value: value,
 	                onChange: this.onChange.bind(this),
 	                className: "form-control",
-	                ref: ref
+	                id: inputId
 	            };
 
 	            return _react2.default.createElement(_reactAutosuggest2.default, { multiSection: this.props.multiSection,
@@ -66721,7 +66713,7 @@
 /* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -66751,110 +66743,115 @@
 	    }
 
 	    _createClass(AddModelMutation, [{
-	        key: 'getMutation',
+	        key: "getMutation",
 	        value: function getMutation() {
 	            return function () {
 	                return {
 	                    calls: [{
-	                        kind: 'Call',
+	                        kind: "Call",
 	                        metadata: {},
-	                        name: 'addModel',
+	                        name: "addModel",
 	                        value: {
-	                            kind: 'CallVariable',
-	                            callVariableName: 'input'
+	                            kind: "CallVariable",
+	                            callVariableName: "input"
 	                        }
 	                    }],
 	                    children: [{
-	                        fieldName: 'clientMutationId',
-	                        kind: 'Field',
+	                        fieldName: "clientMutationId",
+	                        kind: "Field",
 	                        metadata: {
 	                            isGenerated: true,
 	                            isRequisite: true
 	                        },
-	                        type: 'String'
+	                        type: "String"
 	                    }],
-	                    kind: 'Mutation',
+	                    kind: "Mutation",
 	                    metadata: {
-	                        inputType: 'AddModelInput!'
+	                        inputType: "AddModelInput!"
 	                    },
-	                    name: 'AddModelMutation',
-	                    responseType: 'AddModelPayload'
+	                    name: "AddModelMutation",
+	                    responseType: "AddModelPayload"
 	                };
 	            }();
 	        }
 	    }, {
-	        key: 'getFatQuery',
+	        key: "getFatQuery",
 	        value: function getFatQuery() {
+
+	            console.log("geting FatQuery");
+
 	            return function () {
 	                return {
 	                    children: [{
 	                        children: [{
-	                            fieldName: 'cursor',
-	                            kind: 'Field',
+	                            fieldName: "cursor",
+	                            kind: "Field",
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: 'String'
+	                            type: "String"
 	                        }, {
 	                            children: [{
-	                                fieldName: 'id',
-	                                kind: 'Field',
+	                                fieldName: "id",
+	                                kind: "Field",
 	                                metadata: {
 	                                    isGenerated: true,
 	                                    isRequisite: true
 	                                },
-	                                type: 'ID'
+	                                type: "ID"
 	                            }],
-	                            fieldName: 'node',
-	                            kind: 'Field',
+	                            fieldName: "node",
+	                            kind: "Field",
 	                            metadata: {
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id',
+	                                inferredRootCallName: "node",
+	                                inferredPrimaryKey: "id",
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: 'ModelType'
+	                            type: "ModelType"
 	                        }],
-	                        fieldName: 'modelEdge',
-	                        kind: 'Field',
+	                        fieldName: "modelEdge",
+	                        kind: "Field",
 	                        metadata: {},
-	                        type: 'ModelTypeEdge'
+	                        type: "ModelTypeEdge"
 	                    }, {
 	                        children: [{
-	                            fieldName: 'models',
-	                            kind: 'Field',
+	                            fieldName: "models",
+	                            kind: "Field",
 	                            metadata: {
 	                                isConnection: true
 	                            },
-	                            type: 'ModelTypeConnection'
+	                            type: "ModelTypeConnection"
 	                        }, {
-	                            fieldName: 'id',
-	                            kind: 'Field',
+	                            fieldName: "id",
+	                            kind: "Field",
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: 'ID'
+	                            type: "ID"
 	                        }],
-	                        fieldName: 'viewer',
-	                        kind: 'Field',
+	                        fieldName: "viewer",
+	                        kind: "Field",
 	                        metadata: {
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id'
+	                            inferredRootCallName: "node",
+	                            inferredPrimaryKey: "id"
 	                        },
-	                        type: 'Viewer'
+	                        type: "Viewer"
 	                    }],
-	                    kind: 'Fragment',
+	                    kind: "Fragment",
 	                    metadata: {},
-	                    name: 'AddModelMutation',
-	                    type: 'AddModelPayload'
+	                    name: "AddModelMutation",
+	                    type: "AddModelPayload"
 	                };
 	            }();
 	        }
 	    }, {
-	        key: 'getConfigs',
+	        key: "getConfigs",
 	        value: function getConfigs() {
+
+	            console.log("geting config");
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
@@ -66876,23 +66873,35 @@
 	            }];
 	        }
 	    }, {
-	        key: 'getVariables',
+	        key: "getVariables",
 	        value: function getVariables() {
+	            console.log("getting FatQuery");
 	            return {
 	                name: this.props.modelName,
 	                brandName: this.props.brandName
 	            };
 	        }
-	        //getOptimisticResponse() {
-	        //    return {
-	        //        id: model.id,
-	        //        name: this.props.modelName,
-	        //        viewer: {
-	        //            id: this.props.viewer.id,
-	        //        },
-	        //    }
-	        //}
+	    }, {
+	        key: "getOptimisticResponse",
+	        value: function getOptimisticResponse() {
 
+	            console.log("getOptimisticResponse");
+
+	            return {
+	                viewer: {
+	                    id: this.props.viewer.id
+	                },
+	                modelEdge: {
+	                    node: {
+	                        name: this.props.modelName,
+	                        brand: {
+	                            name: this.props.brandName
+	                        }
+	                    }
+	                }
+
+	            };
+	        }
 	    }]);
 
 	    return AddModelMutation;
@@ -66903,17 +66912,17 @@
 	        return function () {
 	            return {
 	                children: [{
-	                    fieldName: 'id',
-	                    kind: 'Field',
+	                    fieldName: "id",
+	                    kind: "Field",
 	                    metadata: {
 	                        isRequisite: true
 	                    },
-	                    type: 'ID'
+	                    type: "ID"
 	                }],
-	                kind: 'Fragment',
+	                kind: "Fragment",
 	                metadata: {},
-	                name: 'AddModelMutation',
-	                type: 'Viewer'
+	                name: "AddModelMutation",
+	                type: "Viewer"
 	            };
 	        }();
 	    }
@@ -66935,6 +66944,10 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 
 	var _reactRelay = __webpack_require__(249);
 
@@ -66973,9 +66986,6 @@
 	            var suggestions = brands.map(function (brand) {
 	                return { name: brand.name };
 	            });
-
-	            console.log("built brand suggestion : " + JSON.stringify(suggestions));
-
 	            return suggestions;
 	        }
 	    }, {
@@ -67005,47 +67015,53 @@
 	        }
 	    }, {
 	        key: 'onAddNewModel',
-	        value: function onAddNewModel(inputnewModel) {
+	        value: function onAddNewModel(e) {
 
-	            var newModel = this.refs.inputNewModel.value;
-	            var brand = this.state.selectedBrand;
-	            console.log("adding new model : " + newModel + " - " + brand);
-	            this.props.onAddNewModel(newModel, brand);
+	            e.preventDefault();
+	            if (this.refs.inputFormNewModel.value != '') {
+	                var newModel = this.refs.inputFormNewModel.value;
+	                var brand = this.state.selectedBrand;
+	                console.log("adding new model : " + newModel + " - " + brand);
+	                this.refs.inputFormNewModel.value = '';
+	                document.getElementById("inputFormNewBrand").value = '';
+	                this.props.onAddNewModel(newModel, brand);
+	            }
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 
-	            console.log("quick model form : " + JSON.stringify(this.props.viewer));
-
 	            var brands = this.props.viewer.brands;
-
 	            var builtBrandSuggestion = this.buildBrandSuggestion(brands);
 
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a brand ...', suggestions: builtBrandSuggestion,
-	                    multiSection: false, suggestionFilter: this.brandSuggestionFilter.bind(this),
-	                    onSuggestionSelected: this.onBrandSuggestionSelected.bind(this),
-	                    onInputChange: this.onBrandInputChange.bind(this),
-	                    resetInputValue: false, ref: 'inputFormNewBrand' }),
-	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
+	                    'form',
+	                    { name: 'addNewModelForm' },
+	                    _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a brand ...', suggestions: builtBrandSuggestion,
+	                        multiSection: false, suggestionFilter: this.brandSuggestionFilter.bind(this),
+	                        onSuggestionSelected: this.onBrandSuggestionSelected.bind(this),
+	                        onInputChange: this.onBrandInputChange.bind(this),
+	                        resetInputValue: false, inputId: 'inputFormNewBrand' }),
+	                    _react2.default.createElement('br', null),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-10' },
-	                        _react2.default.createElement('input', { ref: 'inputFormNewModel', type: 'text', className: 'form-control', placeholder: 'Enter a model ...' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1' },
+	                        { className: 'row' },
 	                        _react2.default.createElement(
-	                            'button',
-	                            { className: 'btn btn-default', onClick: this.onAddNewModel.bind(this) },
-	                            'OK'
+	                            'div',
+	                            { className: 'col-md-10' },
+	                            _react2.default.createElement('input', { ref: 'inputFormNewModel', type: 'text', className: 'form-control', placeholder: 'Enter a model ...' })
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-1' },
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-default', type: 'submit', onClick: this.onAddNewModel.bind(this) },
+	                                'OK'
+	                            )
 	                        )
 	                    )
 	                )

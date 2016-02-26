@@ -41,8 +41,6 @@ class ItemFormComponent extends React.Component {
             }
         })
 
-        console.log("built suggestion : " + JSON.stringify(suggestions))
-
         return suggestions
     }
 
@@ -111,16 +109,13 @@ class ItemFormComponent extends React.Component {
             suggestion.suggestions = itemFiltered
             return suggestion
         });
-
-        console.log("filtered suggestions: " + JSON.stringify(filteredSuggestion) )
-
         return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
     }
 
     onAddNewModel(modelName, brandName) {
 
         Relay.Store.commitUpdate(
-            new AddModelMutation({model: modelName, brandName: brandName, viewer: this.props.viewer})
+            new AddModelMutation({modelName: modelName, brandName: brandName, viewer: this.props.viewer})
         )
     }
 

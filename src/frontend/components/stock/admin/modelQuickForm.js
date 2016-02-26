@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Relay from 'react-relay'
 
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
@@ -17,9 +18,6 @@ class ModelQuickForm extends React.Component {
         var suggestions = brands.map(brand => {
             return {name: brand.name}
         })
-
-        console.log("built brand suggestion : " + JSON.stringify(suggestions))
-
         return suggestions
     }
 
@@ -41,38 +39,42 @@ class ModelQuickForm extends React.Component {
         this.setState({selectedBrand: newValue})
     }
 
-    onAddNewModel(inputnewModel) {
+    onAddNewModel(e) {
 
-        var newModel = this.refs.inputNewModel.value
-        var brand = this.state.selectedBrand
-        console.log("adding new model : " + newModel + " - " + brand)
-        this.props.onAddNewModel(newModel, brand)
+        e.preventDefault()
+        if(this.refs.inputFormNewModel.value != '') {
+            var newModel = this.refs.inputFormNewModel.value
+            var brand = this.state.selectedBrand
+            console.log("adding new model : " + newModel + " - " + brand)
+            this.refs.inputFormNewModel.value = ''
+            document.getElementById("inputFormNewBrand").value = ''
+            this.props.onAddNewModel(newModel, brand)
+        }
     }
 
     render() {
 
-        console.log("quick model form : " + JSON.stringify(this.props.viewer))
-
         var brands = this.props.viewer.brands
-
         var builtBrandSuggestion = this.buildBrandSuggestion(brands);
 
         return  <div>
-                    <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
-                                        multiSection={false} suggestionFilter={this.brandSuggestionFilter.bind(this)}
-                                        onSuggestionSelected={this.onBrandSuggestionSelected.bind(this)}
-                                        onInputChange={this.onBrandInputChange.bind(this)}
-                                        resetInputValue={false} ref="inputFormNewBrand"/>
+                    <form name="addNewModelForm">
+                        <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
+                                            multiSection={false} suggestionFilter={this.brandSuggestionFilter.bind(this)}
+                                            onSuggestionSelected={this.onBrandSuggestionSelected.bind(this)}
+                                            onInputChange={this.onBrandInputChange.bind(this)}
+                                            resetInputValue={false} inputId="inputFormNewBrand"/>
 
-                    <br />
-                    <div className="row">
-                        <div className="col-md-10">
-                            <input ref="inputFormNewModel" type="text" className="form-control" placeholder="Enter a model ..." />
+                        <br />
+                        <div className="row">
+                            <div className="col-md-10">
+                                <input ref="inputFormNewModel" type="text" className="form-control" placeholder="Enter a model ..." />
+                            </div>
+                            <div className="col-md-1">
+                                <button className="btn btn-default" type="submit" onClick={this.onAddNewModel.bind(this)}>OK</button>
+                            </div>
                         </div>
-                        <div className="col-md-1">
-                            <button className="btn btn-default" onClick={this.onAddNewModel.bind(this)}>OK</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
     }
 
