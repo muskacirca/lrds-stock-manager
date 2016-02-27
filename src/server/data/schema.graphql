@@ -1,3 +1,15 @@
+input AddItemInput {
+  modelName: String!
+  state: String!
+  clientMutationId: String!
+}
+
+type AddItemPayload {
+  viewer: Viewer
+  itemEdge: ItemTypeEdge
+  clientMutationId: String!
+}
+
 input AddModelInput {
   brandName: String!
   name: String!
@@ -84,6 +96,7 @@ type ModelTypeEdge {
 
 type Mutation {
   addModel(input: AddModelInput!): AddModelPayload
+  addItem(input: AddItemInput!): AddItemPayload
 }
 
 interface Node {

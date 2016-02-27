@@ -5,7 +5,7 @@ class AddModelMutation extends Relay.Mutation {
     static fragments = {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            id,
+            id
 
           }
         `
@@ -21,7 +21,7 @@ class AddModelMutation extends Relay.Mutation {
 
         return Relay.QL`
           fragment on AddModelPayload {
-            modelEdge,
+            modelEdge
             viewer {
               models
             }

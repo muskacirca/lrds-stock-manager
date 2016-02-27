@@ -226,14 +226,13 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var _connectionDefinition2 =
-//,edgeType: GraphQLSimTypesEdge,
-(0, _graphqlRelay.connectionDefinitions)({
+var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'ItemType',
     nodeType: GraphQLItemType
 });
 
 var ItemsConnection = _connectionDefinition2.connectionType;
+var GraphQLItemEdge = _connectionDefinition2.edgeType;
 
 var _connectionDefinition3 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'ModelType',
@@ -357,8 +356,9 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
                 var id = _ref5.id;
 
 
-                var models = _database2.default.models.model.findAll().then(function (dataModels) {
+                return _database2.default.models.model.findAll().then(function (dataModels) {
                     _database2.default.models.model.findById(id).then(function (dataModel) {
+                        console.log("ssssssssssssssklhjhbkjjbAHHJBKJHMHJM: " + JSON.stringify(dataModel));
                         return {
                             cursor: (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, dataModel),
                             node: dataModel
@@ -400,23 +400,36 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
         state: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
     },
     outputFields: {
-        status: {
-            type: _graphql.GraphQLString,
-            resolve: function resolve(_ref7) {
-                var status = _ref7.status;
-                return status;
+        viewer: {
+            type: GraphQLViewer,
+            resolve: function resolve() {
+                return _ItemStore.getViewer;
+            }
+        },
+        itemEdge: {
+            type: GraphQLItemEdge,
+            resolve: function resolve(item) {
+
+                return _database2.default.models.model.findAll().then(function (dataModels) {
+
+                    return {
+                        cursor: (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, item),
+                        node: item
+                    };
+                });
             }
         }
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref8) {
-        var modelName = _ref8.modelName;
-        var state = _ref8.state;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref7) {
+        var modelName = _ref7.modelName;
+        var state = _ref7.state;
 
 
         _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
-            var reference = model.brand.name + "/" + modelName;
+            console.log("retrieved model: " + JSON.stringify(model));
+            var reference = modelName + "/" + state;
             model.createItem({ stateId: state, reference: reference }).then(function (response) {
-                return response.id === undefined ? { status: "Error" } : { status: "Success" };
+                return response;
             });
         });
     }
@@ -425,7 +438,8 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
 var Mutation = new _graphql.GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addModel: GraphQLAddModelMutation
+        addModel: GraphQLAddModelMutation,
+        addItem: AddItemMutation
     }
 });
 

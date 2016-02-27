@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(510);
+	var _history = __webpack_require__(511);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47220,15 +47220,15 @@
 
 	var _itemForm2 = _interopRequireDefault(_itemForm);
 
-	var _product = __webpack_require__(507);
+	var _product = __webpack_require__(508);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(508);
+	var _profile = __webpack_require__(509);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(509);
+	var _event = __webpack_require__(510);
 
 	var _event2 = _interopRequireDefault(_event);
 
@@ -48733,11 +48733,15 @@
 
 	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
 
-	var _modelQuickForm = __webpack_require__(505);
+	var _AddItemMutation = __webpack_require__(505);
+
+	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
+
+	var _modelQuickForm = __webpack_require__(506);
 
 	var _modelQuickForm2 = _interopRequireDefault(_modelQuickForm);
 
-	var _itemFormDisplay = __webpack_require__(506);
+	var _itemFormDisplay = __webpack_require__(507);
 
 	var _itemFormDisplay2 = _interopRequireDefault(_itemFormDisplay);
 
@@ -48851,6 +48855,8 @@
 	        value: function onFormSubmit() {
 
 	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
+
+	            _reactRelay2.default.Store.commitUpdate(new _AddItemMutation2.default({ modelName: this.state.itemFeatures.modelName, state: this.state.itemFeatures.state, viewer: this.props.viewer }));
 	        }
 	    }, {
 	        key: 'modelSuggestionFilter',
@@ -48985,6 +48991,12 @@
 	                            'Submit'
 	                        )
 	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'statius : ',
+	                    this.props.viewer.status
 	                )
 	            );
 	        }
@@ -48997,7 +49009,7 @@
 
 	    fragments: {
 	        viewer: function viewer() {
-	            return function (RQL_0, RQL_1) {
+	            return function (RQL_0, RQL_1, RQL_2) {
 	                return {
 	                    children: [{
 	                        calls: [{
@@ -49223,13 +49235,13 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1)],
+	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1), _reactRelay2.default.QL.__frag(RQL_2)],
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'ItemForm',
 	                    type: 'Viewer'
 	                };
-	            }(_AddModelMutation2.default.getFragment('viewer'), _modelQuickForm2.default.getFragment('viewer'));
+	            }(_AddModelMutation2.default.getFragment('viewer'), _AddItemMutation2.default.getFragment('viewer'), _modelQuickForm2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -66933,6 +66945,224 @@
 /* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddItemMutation = function (_Relay$Mutation) {
+	    _inherits(AddItemMutation, _Relay$Mutation);
+
+	    function AddItemMutation() {
+	        _classCallCheck(this, AddItemMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemMutation).apply(this, arguments));
+	    }
+
+	    _createClass(AddItemMutation, [{
+	        key: "getMutation",
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: "Call",
+	                        metadata: {},
+	                        name: "addItem",
+	                        value: {
+	                            kind: "CallVariable",
+	                            callVariableName: "input"
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: "clientMutationId",
+	                        kind: "Field",
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: "String"
+	                    }],
+	                    kind: "Mutation",
+	                    metadata: {
+	                        inputType: "AddItemInput!"
+	                    },
+	                    name: "AddItemMutation",
+	                    responseType: "AddItemPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getFatQuery",
+	        value: function getFatQuery() {
+
+	            console.log("getting FatQuery");
+
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: "items",
+	                            kind: "Field",
+	                            metadata: {
+	                                isConnection: true
+	                            },
+	                            type: "ItemTypeConnection"
+	                        }, {
+	                            fieldName: "id",
+	                            kind: "Field",
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "ID"
+	                        }],
+	                        fieldName: "viewer",
+	                        kind: "Field",
+	                        metadata: {
+	                            inferredRootCallName: "node",
+	                            inferredPrimaryKey: "id"
+	                        },
+	                        type: "Viewer"
+	                    }, {
+	                        children: [{
+	                            fieldName: "cursor",
+	                            kind: "Field",
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "String"
+	                        }, {
+	                            children: [{
+	                                fieldName: "id",
+	                                kind: "Field",
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "ID"
+	                            }],
+	                            fieldName: "node",
+	                            kind: "Field",
+	                            metadata: {
+	                                inferredRootCallName: "node",
+	                                inferredPrimaryKey: "id",
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "ItemType"
+	                        }],
+	                        fieldName: "itemEdge",
+	                        kind: "Field",
+	                        metadata: {},
+	                        type: "ItemTypeEdge"
+	                    }],
+	                    kind: "Fragment",
+	                    metadata: {},
+	                    name: "AddItemMutation",
+	                    type: "AddItemPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getConfigs",
+	        value: function getConfigs() {
+
+	            console.log("getting config");
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    viewer: this.props.viewer.id
+	                }
+	            }, {
+	                type: 'RANGE_ADD',
+	                parentName: 'viewer',
+	                parentID: this.props.viewer.id,
+	                connectionName: 'items',
+	                edgeName: 'itemEdge',
+	                rangeBehaviors: {
+	                    // When the ships connection is not under the influence
+	                    // of any call, append the ship to the end of the connection
+	                    '': 'append',
+	                    // Prepend the ship, wherever the connection is sorted by age
+	                    'orderby(newest)': 'prepend'
+	                }
+	            }];
+	        }
+	    }, {
+	        key: "getVariables",
+	        value: function getVariables() {
+	            console.log("getting variables");
+	            return {
+	                modelName: this.props.modelName,
+	                state: this.props.state
+	            };
+	        }
+	    }, {
+	        key: "getOptimisticResponse",
+	        value: function getOptimisticResponse() {
+	            return {
+	                viewer: {
+	                    id: this.props.viewer.id
+	                },
+	                itemEdge: {
+	                    node: {
+	                        name: this.props.modelName,
+	                        model: {
+	                            name: this.props.modelName
+	                        },
+	                        isInStock: true,
+	                        reference: this.props.modelName + "/" + this.props.state
+	                    }
+	                }
+	            };
+	        }
+	    }]);
+
+	    return AddItemMutation;
+	}(_reactRelay2.default.Mutation);
+
+	AddItemMutation.fragments = {
+	    viewer: function viewer() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: "id",
+	                    kind: "Field",
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: "ID"
+	                }],
+	                kind: "Fragment",
+	                metadata: {},
+	                name: "AddItemMutation",
+	                type: "Viewer"
+	            };
+	        }();
+	    }
+	};
+	exports.default = AddItemMutation;
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -67120,7 +67350,7 @@
 	});
 
 /***/ },
-/* 506 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67274,7 +67504,7 @@
 	exports.default = ItemFormDisplay;
 
 /***/ },
-/* 507 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67335,7 +67565,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 508 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67403,7 +67633,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 509 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67469,7 +67699,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 510 */
+/* 511 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67510,7 +67740,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(511);
+	var _useBeforeUnload2 = __webpack_require__(512);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -67530,13 +67760,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(512);
+	var _enableBeforeUnload2 = __webpack_require__(513);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(513);
+	var _enableQueries2 = __webpack_require__(514);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -67545,7 +67775,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 511 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -67662,7 +67892,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 512 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67675,7 +67905,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(511);
+	var _useBeforeUnload = __webpack_require__(512);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -67683,7 +67913,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 513 */
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

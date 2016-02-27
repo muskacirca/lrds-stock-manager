@@ -201,7 +201,7 @@ var GraphQLItemType = new GraphQLObjectType({
 
 var {
     connectionType: ItemsConnection
-     //,edgeType: GraphQLSimTypesEdge,
+     ,edgeType: GraphQLItemEdge,
     } = connectionDefinitions({
     name: 'ItemType',
     nodeType: GraphQLItemType
@@ -295,10 +295,11 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
             type: GraphQLModelEdge,
             resolve: ({id}) => {
 
-                var models = Database.models.model.findAll()
+                return Database.models.model.findAll()
                     .then(dataModels => {
                         Database.models.model.findById(id)
                             .then(dataModel =>  {
+                                console.log("ssssssssssssssklhjhbkjjbAHHJBKJHMHJM: " + JSON.stringify(dataModel))
                                 return {
                                     cursor: cursorForObjectInConnection(dataModels, dataModel),
                                     node: dataModel
@@ -339,19 +340,34 @@ const AddItemMutation = mutationWithClientMutationId({
         state: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
-        status: {
-            type: GraphQLString,
-            resolve: ({status}) => status
+        viewer: {
+            type: GraphQLViewer,
+            resolve: () => getViewer
+        },
+        itemEdge: {
+            type: GraphQLItemEdge,
+            resolve: (item) => {
+
+                return Database.models.model.findAll()
+                    .then(dataModels => {
+
+                        return {
+                            cursor: cursorForObjectInConnection(dataModels, item),
+                            node: item
+                        }
+                    })
+            }
         }
     },
     mutateAndGetPayload: ({modelName, state}) => {
 
         Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
-                var reference = model.brand.name + "/"+ modelName
+                console.log("retrieved model: " + JSON.stringify(model))
+                var reference = modelName + "/"+ state
                 model.createItem({stateId: state, reference: reference})
                     .then(response => {
-                        return response.id === undefined ? {status: "Error"} : {status: "Success"}
+                        return response
                     })
             })
 
@@ -362,7 +378,8 @@ const AddItemMutation = mutationWithClientMutationId({
 var Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        addModel: GraphQLAddModelMutation
+        addModel: GraphQLAddModelMutation,
+        addItem: AddItemMutation
     }
 });
 

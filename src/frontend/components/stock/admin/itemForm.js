@@ -5,6 +5,7 @@ import _ from 'lodash'
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
 
 import AddModelMutation from '../../../mutations/AddModelMutation'
+import AddItemMutation from '../../../mutations/AddItemMutation'
 
 import ModelQuickForm from './modelQuickForm'
 import ItemFormDisplay from './itemFormDisplay'
@@ -89,6 +90,10 @@ class ItemFormComponent extends React.Component {
     onFormSubmit() {
 
         console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
+
+        Relay.Store.commitUpdate(
+            new AddItemMutation({modelName: this.state.itemFeatures.modelName, state: this.state.itemFeatures.state, viewer: this.props.viewer})
+        )
     }
 
 
@@ -175,6 +180,9 @@ class ItemFormComponent extends React.Component {
                             <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
                         </div>
                     </div>
+                    <div>
+                        statius : {this.props.viewer.status}
+                    </div>
                 </div>
     }
 }
@@ -185,6 +193,7 @@ export default Relay.createContainer(ItemFormComponent, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             ${AddModelMutation.getFragment('viewer')}
+            ${AddItemMutation.getFragment('viewer')}
             models(first: 100) {
                 edges {
                     node {

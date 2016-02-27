@@ -1,13 +1,11 @@
 import Relay from 'react-relay';
 
-class AddModelMutation extends Relay.Mutation {
+class AddItemMutation extends Relay.Mutation {
 
     static fragments = {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            id,
-            status
-
+            id
           }
         `
     };
@@ -18,13 +16,14 @@ class AddModelMutation extends Relay.Mutation {
 
     getFatQuery() {
 
-        console.log("geting FatQuery")
+        console.log("getting FatQuery")
 
         return Relay.QL`
           fragment on AddItemPayload {
-            viewer {
-              status
-            }
+              viewer {
+                items
+              }
+              itemEdge
           }
         `
     }
@@ -38,15 +37,46 @@ class AddModelMutation extends Relay.Mutation {
                     viewer: this.props.viewer.id
                 }
             },
-            ];
+            {
+                type: 'RANGE_ADD',
+                parentName: 'viewer',
+                parentID: this.props.viewer.id,
+                connectionName: 'items',
+                edgeName: 'itemEdge',
+                rangeBehaviors: {
+                    // When the ships connection is not under the influence
+                    // of any call, append the ship to the end of the connection
+                    '': 'append',
+                    // Prepend the ship, wherever the connection is sorted by age
+                    'orderby(newest)': 'prepend'
+                }
+            }];
     }
     getVariables() {
-        console.log("getting FatQuery")
+        console.log("getting variables")
         return {
-            name: this.props.modelName,
+            modelName: this.props.modelName,
             state: this.props.state
+        };
+    }
+
+    getOptimisticResponse() {
+        return {
+            viewer: {
+                id: this.props.viewer.id
+            },
+            itemEdge: {
+                node: {
+                    name: this.props.modelName,
+                    model: {
+                        name: this.props.modelName
+                    },
+                    isInStock: true,
+                    reference: this.props.modelName + "/" + this.props.state
+                }
+            }
         };
     }
 }
 
-export default AddModelMutation
+export default AddItemMutation
