@@ -18,7 +18,8 @@ import {
     globalIdField,
     nodeDefinitions,
     mutationWithClientMutationId,
-    cursorForObjectInConnection
+    cursorForObjectInConnection,
+    offsetToCursor
 } from 'graphql-relay'
 
 import Database from './database'
@@ -223,6 +224,7 @@ var GraphQLViewer = new GraphQLObjectType({
             type: ItemsConnection,
             args: {...connectionArgs},
             resolve: (obj, {...args}) => {
+                console.log("retrieving viewer, items")
                 return connectionFromPromisedArray(Database.models.item.findAll(), args)
             }
         },
@@ -245,7 +247,10 @@ var GraphQLViewer = new GraphQLObjectType({
         models: {
             type: ModelsConnection,
             args: {...connectionArgs},
-            resolve: (_, {...args}) => connectionFromPromisedArray(Database.models.model.findAll(), args)
+            resolve: (_, {...args}) => {
+                console.log("retrieving viewer, models")
+                return connectionFromPromisedArray(Database.models.model.findAll(), args)
+            }
         },
         domains: {
             type: new GraphQLList(GraphQLDomainType),
@@ -297,17 +302,28 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
 
                 return Database.models.model.findAll()
                     .then(dataModels => {
-                        Database.models.model.findById(id)
+                        return Database.models.model.findById(id)
                             .then(dataModel =>  {
-                                console.log("ssssssssssssssklhjhbkjjbAHHJBKJHMHJM: " + JSON.stringify(dataModel))
+                                console.log("retrieved model after add item: " + JSON.stringify(dataModel))
+
+                                let itemToPass
+                                for (const i of dataModels) {
+                                    if (i.id === dataModel.id) {
+                                        itemToPass = i;
+                                    }
+                                }
+                                console.log("itemToPass : " + JSON.stringify(itemToPass))
+                                var cursor = cursorForObjectInConnection(dataModels, itemToPass);
+                                console.log("cursor : " + JSON.stringify(cursor))
                                 return {
-                                    cursor: cursorForObjectInConnection(dataModels, dataModel),
-                                    node: dataModel
+                                    cursor: cursor,
+                                    node: itemToPass
                                 }
                             })
                     })
             }
         }
+
 
     },
     mutateAndGetPayload: ({brandName, name}) => {
@@ -345,33 +361,22 @@ const AddItemMutation = mutationWithClientMutationId({
             resolve: () => getViewer
         },
         itemEdge: {
-            type: GraphQLItemEdge,
-            resolve: (item) => {
+            type: GraphQLItemType,
+            resolve: (response) => {
 
-                return Database.models.model.findAll()
-                    .then(dataModels => {
-
-                        return {
-                            cursor: cursorForObjectInConnection(dataModels, item),
-                            node: item
-                        }
-                    })
+                console.log("addItemMutaion, itemEdgge resolve, " + JSON.stringify(response))
+                return response
             }
         }
     },
     mutateAndGetPayload: ({modelName, state}) => {
 
-        Database.models.model.findOne({where: {name: modelName}})
+        return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
                 console.log("retrieved model: " + JSON.stringify(model))
                 var reference = modelName + "/"+ state
-                model.createItem({stateId: state, reference: reference})
-                    .then(response => {
-                        return response
-                    })
+                return model.createItem({stateId: state, reference: reference}).then(model => model)
             })
-
-
     }
 })
 

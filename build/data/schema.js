@@ -254,6 +254,7 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 resolve: function resolve(obj, _ref2) {
                     var args = _objectWithoutProperties(_ref2, []);
 
+                    console.log("retrieving viewer, items");
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(), args);
                 }
             },
@@ -286,6 +287,7 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 resolve: function resolve(_, _ref4) {
                     var args = _objectWithoutProperties(_ref4, []);
 
+                    console.log("retrieving viewer, models");
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
                 }
             },
@@ -357,11 +359,43 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
 
 
                 return _database2.default.models.model.findAll().then(function (dataModels) {
-                    _database2.default.models.model.findById(id).then(function (dataModel) {
-                        console.log("ssssssssssssssklhjhbkjjbAHHJBKJHMHJM: " + JSON.stringify(dataModel));
+                    return _database2.default.models.model.findById(id).then(function (dataModel) {
+                        console.log("retrieved model after add item: " + JSON.stringify(dataModel));
+
+                        var itemToPass = undefined;
+                        var _iteratorNormalCompletion = true;
+                        var _didIteratorError = false;
+                        var _iteratorError = undefined;
+
+                        try {
+                            for (var _iterator = dataModels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                var i = _step.value;
+
+                                if (i.id === dataModel.id) {
+                                    itemToPass = i;
+                                }
+                            }
+                        } catch (err) {
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion && _iterator.return) {
+                                    _iterator.return();
+                                }
+                            } finally {
+                                if (_didIteratorError) {
+                                    throw _iteratorError;
+                                }
+                            }
+                        }
+
+                        console.log("itemToPass : " + JSON.stringify(itemToPass));
+                        var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, itemToPass);
+                        console.log("cursor : " + JSON.stringify(cursor));
                         return {
-                            cursor: (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, dataModel),
-                            node: dataModel
+                            cursor: cursor,
+                            node: itemToPass
                         };
                     });
                 });
@@ -407,16 +441,11 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
             }
         },
         itemEdge: {
-            type: GraphQLItemEdge,
-            resolve: function resolve(item) {
+            type: GraphQLItemType,
+            resolve: function resolve(response) {
 
-                return _database2.default.models.model.findAll().then(function (dataModels) {
-
-                    return {
-                        cursor: (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, item),
-                        node: item
-                    };
-                });
+                console.log("addItemMutaion, itemEdgge resolve, " + JSON.stringify(response));
+                return response;
             }
         }
     },
@@ -425,11 +454,11 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
         var state = _ref7.state;
 
 
-        _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
+        return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
             console.log("retrieved model: " + JSON.stringify(model));
             var reference = modelName + "/" + state;
-            model.createItem({ stateId: state, reference: reference }).then(function (response) {
-                return response;
+            return model.createItem({ stateId: state, reference: reference }).then(function (model) {
+                return model;
             });
         });
     }

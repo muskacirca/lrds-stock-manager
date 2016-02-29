@@ -66790,7 +66790,7 @@
 	        key: "getFatQuery",
 	        value: function getFatQuery() {
 
-	            console.log("geting FatQuery");
+	            console.log("getting FatQuery");
 
 	            return function () {
 	                return {
@@ -66863,7 +66863,7 @@
 	        key: "getConfigs",
 	        value: function getConfigs() {
 
-	            console.log("geting config");
+	            console.log("getting config");
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
@@ -66876,11 +66876,9 @@
 	                connectionName: 'models',
 	                edgeName: 'modelEdge',
 	                rangeBehaviors: {
-	                    // When the ships connection is not under the influence
-	                    // of any call, append the ship to the end of the connection
 	                    '': 'append',
 	                    // Prepend the ship, wherever the connection is sorted by age
-	                    'orderby(newest)': 'prepend'
+	                    'first(100)': 'prepend'
 	                }
 	            }];
 	        }
@@ -67016,13 +67014,6 @@
 	                return {
 	                    children: [{
 	                        children: [{
-	                            fieldName: "items",
-	                            kind: "Field",
-	                            metadata: {
-	                                isConnection: true
-	                            },
-	                            type: "ItemTypeConnection"
-	                        }, {
 	                            fieldName: "id",
 	                            kind: "Field",
 	                            metadata: {
@@ -67040,37 +67031,21 @@
 	                        type: "Viewer"
 	                    }, {
 	                        children: [{
-	                            fieldName: "cursor",
+	                            fieldName: "id",
 	                            kind: "Field",
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "String"
-	                        }, {
-	                            children: [{
-	                                fieldName: "id",
-	                                kind: "Field",
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: "ID"
-	                            }],
-	                            fieldName: "node",
-	                            kind: "Field",
-	                            metadata: {
-	                                inferredRootCallName: "node",
-	                                inferredPrimaryKey: "id",
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: "ItemType"
+	                            type: "ID"
 	                        }],
 	                        fieldName: "itemEdge",
 	                        kind: "Field",
-	                        metadata: {},
-	                        type: "ItemTypeEdge"
+	                        metadata: {
+	                            inferredRootCallName: "node",
+	                            inferredPrimaryKey: "id"
+	                        },
+	                        type: "ItemType"
 	                    }],
 	                    kind: "Fragment",
 	                    metadata: {},
@@ -67088,19 +67063,6 @@
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
 	                    viewer: this.props.viewer.id
-	                }
-	            }, {
-	                type: 'RANGE_ADD',
-	                parentName: 'viewer',
-	                parentID: this.props.viewer.id,
-	                connectionName: 'items',
-	                edgeName: 'itemEdge',
-	                rangeBehaviors: {
-	                    // When the ships connection is not under the influence
-	                    // of any call, append the ship to the end of the connection
-	                    '': 'append',
-	                    // Prepend the ship, wherever the connection is sorted by age
-	                    'orderby(newest)': 'prepend'
 	                }
 	            }];
 	        }
@@ -67121,14 +67083,11 @@
 	                    id: this.props.viewer.id
 	                },
 	                itemEdge: {
-	                    node: {
-	                        name: this.props.modelName,
-	                        model: {
-	                            name: this.props.modelName
-	                        },
-	                        isInStock: true,
-	                        reference: this.props.modelName + "/" + this.props.state
-	                    }
+	                    model: {
+	                        name: this.props.modelName
+	                    },
+	                    isInStock: true,
+	                    reference: this.props.modelName + "/" + this.props.state
 	                }
 	            };
 	        }

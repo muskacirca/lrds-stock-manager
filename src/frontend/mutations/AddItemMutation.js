@@ -6,6 +6,7 @@ class AddItemMutation extends Relay.Mutation {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
+
           }
         `
     };
@@ -20,9 +21,7 @@ class AddItemMutation extends Relay.Mutation {
 
         return Relay.QL`
           fragment on AddItemPayload {
-              viewer {
-                items
-              }
+              viewer
               itemEdge
           }
         `
@@ -36,21 +35,7 @@ class AddItemMutation extends Relay.Mutation {
                 fieldIDs: {
                     viewer: this.props.viewer.id
                 }
-            },
-            {
-                type: 'RANGE_ADD',
-                parentName: 'viewer',
-                parentID: this.props.viewer.id,
-                connectionName: 'items',
-                edgeName: 'itemEdge',
-                rangeBehaviors: {
-                    // When the ships connection is not under the influence
-                    // of any call, append the ship to the end of the connection
-                    '': 'append',
-                    // Prepend the ship, wherever the connection is sorted by age
-                    'orderby(newest)': 'prepend'
-                }
-            }];
+            }]
     }
     getVariables() {
         console.log("getting variables")
@@ -66,14 +51,11 @@ class AddItemMutation extends Relay.Mutation {
                 id: this.props.viewer.id
             },
             itemEdge: {
-                node: {
-                    name: this.props.modelName,
                     model: {
                         name: this.props.modelName
                     },
                     isInStock: true,
                     reference: this.props.modelName + "/" + this.props.state
-                }
             }
         };
     }

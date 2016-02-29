@@ -5,8 +5,7 @@ class AddModelMutation extends Relay.Mutation {
     static fragments = {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            id
-
+                id
           }
         `
     };
@@ -17,11 +16,11 @@ class AddModelMutation extends Relay.Mutation {
 
     getFatQuery() {
 
-        console.log("geting FatQuery")
+        console.log("getting FatQuery")
 
         return Relay.QL`
           fragment on AddModelPayload {
-            modelEdge
+          modelEdge,
             viewer {
               models
             }
@@ -30,7 +29,7 @@ class AddModelMutation extends Relay.Mutation {
     }
     getConfigs() {
 
-        console.log("geting config")
+        console.log("getting config")
         return [
             {
                 type: 'FIELDS_CHANGE',
@@ -45,11 +44,9 @@ class AddModelMutation extends Relay.Mutation {
                 connectionName: 'models',
                 edgeName: 'modelEdge',
                 rangeBehaviors: {
-                    // When the ships connection is not under the influence
-                    // of any call, append the ship to the end of the connection
                     '': 'append',
                     // Prepend the ship, wherever the connection is sorted by age
-                    'orderby(newest)': 'prepend'
+                    'first(100)': 'prepend'
             }
         }];
     }

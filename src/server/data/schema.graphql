@@ -6,7 +6,7 @@ input AddItemInput {
 
 type AddItemPayload {
   viewer: Viewer
-  itemEdge: ItemTypeEdge
+  itemEdge: ItemType
   clientMutationId: String!
 }
 
