@@ -6,7 +6,8 @@ var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test"
 
 
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL)
-    :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: "localhost"})
+    :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: "localhost",
+        logging: (param) => {param.indexOf("Executing (default):") !== -1 ? false : true}})
 
 
 const brand = connection.define('brand', {
