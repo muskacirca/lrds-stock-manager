@@ -1,6 +1,6 @@
 DELIMITER //
 
-CREATE PROCEDURE add_item(
+CREATE PROCEDURE lrds.add_item(
   IN reference VARCHAR(255),
   IN isInStock BOOLEAN,
   IN modelName VARCHAR(255),
@@ -15,7 +15,7 @@ CREATE PROCEDURE add_item(
 
   END //
 
-CREATE PROCEDURE add_brand(
+CREATE PROCEDURE lrds.add_brand(
   IN name VARCHAR(255),
   IN description VARCHAR(255)
 )
@@ -26,7 +26,7 @@ CREATE PROCEDURE add_brand(
   END //
 
 
-CREATE PROCEDURE add_model(
+CREATE PROCEDURE lrds.add_model(
   IN name VARCHAR(255),
   IN description VARCHAR(255),
   IN brandName VARCHAR(255)
@@ -40,7 +40,7 @@ CREATE PROCEDURE add_model(
   END //
 
 
-CREATE PROCEDURE add_domain(
+CREATE PROCEDURE lrds.add_domain(
   IN name VARCHAR(255),
   IN description VARCHAR(255)
 )
@@ -50,7 +50,7 @@ CREATE PROCEDURE add_domain(
 
   END //
 
-CREATE PROCEDURE add_category(
+CREATE PROCEDURE lrds.add_category(
   IN name VARCHAR(255),
   IN description VARCHAR(255)
 )
@@ -61,7 +61,7 @@ CREATE PROCEDURE add_category(
   END //
 
 
-CREATE PROCEDURE add_subCategory(
+CREATE PROCEDURE lrds.add_subCategory(
   IN name VARCHAR(255),
   IN description VARCHAR(255),
   IN categoryName VARCHAR(255)
@@ -73,7 +73,7 @@ CREATE PROCEDURE add_subCategory(
 
   END //
 
-CREATE PROCEDURE bind_model_to_subCategory(
+CREATE PROCEDURE lrds.bind_model_to_subCategory(
   IN modelName VARCHAR(255),
   IN subCategoryName VARCHAR(255)
 )
@@ -85,7 +85,7 @@ CREATE PROCEDURE bind_model_to_subCategory(
 
   END //
 
-CREATE PROCEDURE bind_model_to_domain(
+CREATE PROCEDURE lrds.bind_model_to_domain(
   IN modelName VARCHAR(255),
   IN domainName VARCHAR(255)
 )
@@ -98,7 +98,7 @@ CREATE PROCEDURE bind_model_to_domain(
   END //
 
 
-CREATE PROCEDURE add_item_comment(
+CREATE PROCEDURE lrds.add_item_comment(
   IN text VARCHAR(255),
   IN itemReference VARCHAR(255)
 )
@@ -110,7 +110,7 @@ CREATE PROCEDURE add_item_comment(
   END //
 
 
-CREATE PROCEDURE add_state(
+CREATE PROCEDURE lrds.add_state(
   IN name VARCHAR(255),
   IN severity INT
 )

@@ -15,7 +15,8 @@ class ItemFormComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            itemFeatures : {modelName: ""}
+            itemFeatures : {modelName: ""},
+            status: ""
         }
     }
 
@@ -91,12 +92,18 @@ class ItemFormComponent extends React.Component {
 
         console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
 
-        Relay.Store.commitUpdate(
-            new AddItemMutation({modelName: this.state.itemFeatures.modelName, state: this.state.itemFeatures.state, viewer: this.props.viewer})
-        )
+        var addItemMutation = new AddItemMutation({modelName: this.state.itemFeatures.modelName, state: this.state.itemFeatures.state, viewer: this.props.viewer});
+
+        var onSuccess = (response) => {
+            console.log('Mutation successful! ' + JSON.stringify(response));
+        };
+        var onFailure = (transaction) => {
+            var error = transaction.getError() || new Error('Mutation failed.');
+            console.error(error);
+        };
+
+        Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
     }
-
-
 
     modelSuggestionFilter(value, suggestions) {
 
@@ -119,9 +126,20 @@ class ItemFormComponent extends React.Component {
 
     onAddNewModel(modelName, brandName) {
 
-        Relay.Store.commitUpdate(
-            new AddModelMutation({modelName: modelName, brandName: brandName, viewer: this.props.viewer})
-        )
+        var addModelMutation = new AddModelMutation({modelName: modelName, brandName: brandName, viewer: this.props.viewer});
+
+        var onSuccess = (response) => {
+            console.log('Mutation successful! ' + JSON.stringify(response));
+            this.setState({itemFeatures: response.modelEdge.node.name})
+        };
+
+        var onFailure = (transaction) => {
+            var error = transaction.getError() || new Error('Mutation failed.');
+            console.error(error);
+            this.setState({status: "Mutation failed"})
+        };
+
+        Relay.Store.commitUpdate(addModelMutation, {onSuccess, onFailure})
     }
 
     render() {
@@ -181,7 +199,7 @@ class ItemFormComponent extends React.Component {
                         </div>
                     </div>
                     <div>
-                        statius : {this.props.viewer.status}
+                        statius : {this.state.status}
                     </div>
                 </div>
     }
