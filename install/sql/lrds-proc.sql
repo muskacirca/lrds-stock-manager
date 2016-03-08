@@ -27,7 +27,7 @@ CREATE PROCEDURE lrds.add_brand(
 
 
 CREATE PROCEDURE lrds.add_model(
-  IN name VARCHAR(255),
+  IN modelName VARCHAR(255),
   IN description VARCHAR(255),
   IN brandName VARCHAR(255)
 )
@@ -35,7 +35,7 @@ CREATE PROCEDURE lrds.add_model(
 
     SET @brandId := (SELECT id FROM brands WHERE name = brandName);
 
-    INSERT INTO models (name, description, brandId) VALUES(name, description, @brandId);
+    INSERT INTO models (name, description, brandId) VALUES(modelName, description, @brandId);
 
   END //
 
@@ -62,14 +62,14 @@ CREATE PROCEDURE lrds.add_category(
 
 
 CREATE PROCEDURE lrds.add_subCategory(
-  IN name VARCHAR(255),
+  IN subCategoryName VARCHAR(255),
   IN description VARCHAR(255),
   IN categoryName VARCHAR(255)
 )
   BEGIN
 
     SET @categoryId := (SELECT id FROM categories WHERE name = categoryName);
-    INSERT INTO subCategories (name, description, categoryId) VALUES(name, description, @categoryId);
+    INSERT INTO subCategories (name, description, categoryId) VALUES(subCategoryName, description, @categoryId);
 
   END //
 
@@ -105,6 +105,7 @@ CREATE PROCEDURE lrds.add_item_comment(
   BEGIN
 
     SET @itemId := (SELECT id FROM items WHERE reference = itemReference);
+
     INSERT INTO itemComments (text, itemId, createdAt, updatedAt) VALUES(text, @itemId, now(), now());
 
   END //
