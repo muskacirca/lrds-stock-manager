@@ -431,7 +431,8 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
     description: 'A function to create an item',
     inputFields: {
         modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
-        state: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+        state: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
     },
     outputFields: {
         viewer: {
@@ -443,8 +444,6 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
         itemEdge: {
             type: GraphQLItemType,
             resolve: function resolve(response) {
-
-                console.log("addItemMutaion, itemEdgge resolve, " + JSON.stringify(response));
                 return response;
             }
         }
@@ -452,13 +451,25 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
     mutateAndGetPayload: function mutateAndGetPayload(_ref7) {
         var modelName = _ref7.modelName;
         var state = _ref7.state;
+        var domains = _ref7.domains;
 
+
+        var newDomains = [];
+        console.log("input domains : " + JSON.stringify(domains));
+        domains.forEach(function (domain) {
+
+            console.log("domain to create : " + JSON.stringify(domain));
+            _database2.default.models.domain.findOrCreate(domain).then(function (domain) {
+                newDomains.push(domain);
+            });
+        });
+
+        console.log("newDomains : " + JSON.stringify(newDomains));
 
         return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
-            console.log("retrieved model: " + JSON.stringify(model));
             var reference = modelName + "/" + state;
-            return model.createItem({ stateId: state, reference: reference }).then(function (model) {
-                return model;
+            return model.createItem({ stateId: state, reference: reference }).then(function (item) {
+                return item.setDomains(domains);
             });
         });
     }

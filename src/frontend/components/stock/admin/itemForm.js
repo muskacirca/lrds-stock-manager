@@ -97,7 +97,14 @@ class ItemFormComponent extends React.Component {
 
         console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
 
-        var addItemMutation = new AddItemMutation({modelName: this.state.itemFeatures.modelName, state: this.state.itemFeatures.state, viewer: this.props.viewer});
+        var domainsToAdd = this.state.itemFeatures.domains.map(elt => elt.name)
+        console.log("about to add domains : " + JSON.stringify(domainsToAdd))
+
+
+        var addItemMutation = new AddItemMutation({modelName: this.state.itemFeatures.modelName,
+            state: this.state.itemFeatures.state,
+            domains: domainsToAdd,
+            viewer: this.props.viewer});
 
         var onSuccess = (response) => {
             console.log('Mutation successful! ' + JSON.stringify(response));
@@ -240,7 +247,7 @@ class ItemFormComponent extends React.Component {
                         </div>
                     </div>
                     <div>
-                        statius : {this.state.status}
+                        status : {this.state.status}
                     </div>
                 </div>
     }

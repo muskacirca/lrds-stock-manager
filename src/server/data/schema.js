@@ -353,7 +353,8 @@ const AddItemMutation = mutationWithClientMutationId({
     description: 'A function to create an item',
     inputFields: {
         modelName: {type: new GraphQLNonNull(GraphQLString)},
-        state: {type: new GraphQLNonNull(GraphQLString)}
+        state: {type: new GraphQLNonNull(GraphQLString)},
+        domains: {type: new GraphQLList(GraphQLString)}
     },
     outputFields: {
         viewer: {
@@ -363,19 +364,33 @@ const AddItemMutation = mutationWithClientMutationId({
         itemEdge: {
             type: GraphQLItemType,
             resolve: (response) => {
-
-                console.log("addItemMutaion, itemEdgge resolve, " + JSON.stringify(response))
                 return response
             }
         }
     },
-    mutateAndGetPayload: ({modelName, state}) => {
+    mutateAndGetPayload: ({modelName, state, domains}) => {
+
+        var newDomains = []
+        console.log("input domains : " + JSON.stringify(domains))
+        domains.forEach(domain => {
+
+            console.log("domain to create : " + JSON.stringify(domain))
+            Database.models.domain.findOrCreate(domain)
+                .then(domain => {
+                    newDomains.push(domain)
+                })
+        })
+
+
+        console.log("newDomains : " + JSON.stringify(newDomains))
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
-                console.log("retrieved model: " + JSON.stringify(model))
                 var reference = modelName + "/"+ state
-                return model.createItem({stateId: state, reference: reference}).then(model => model)
+                return model.createItem({stateId: state, reference: reference})
+                    .then(item => {
+                        return item.setDomains(domains)
+                    })
             })
     }
 })
