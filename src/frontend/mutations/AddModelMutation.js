@@ -71,7 +71,9 @@ class AddModelMutation extends Relay.Mutation {
                     name: this.props.modelName,
                     brand: {
                         name: this.props.brandName
-                    }
+                    },
+                    domains: [],
+                    subCategories: []
                 }
             }
 

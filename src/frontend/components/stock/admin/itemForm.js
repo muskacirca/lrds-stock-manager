@@ -60,10 +60,15 @@ class ItemFormComponent extends React.Component {
         this.setState({itemFeatures: itemFeature})
     }
 
-    findModel(modelName) {
-        if(modelName === "") return {brand: {}, domains: [], subCategories: []}
-        var index = _.findIndex(this.props.viewer.models.edges, (o) => o.node.name === modelName)
-        return this.props.viewer.models.edges[index].node
+    findModelAndBindNewFeatures(itemFeatures) {
+        if(itemFeatures.modelName === "") return {brand: {}, domains: [], subCategories: []}
+        var index = _.findIndex(this.props.viewer.models.edges, (o) => o.node.name === itemFeatures.modelName)
+        var model = this.props.viewer.models.edges[index].node
+
+        var newDomains = _.unionWith(model.domains, itemFeatures.domains, (a, b) => a === b)
+        _.set(model, "domains", newDomains)
+
+        return model
     }
 
     onSelectStateChange(event) {
@@ -96,6 +101,7 @@ class ItemFormComponent extends React.Component {
 
         var onSuccess = (response) => {
             console.log('Mutation successful! ' + JSON.stringify(response));
+            this.setState({status: "Item add successfully"})
         };
         var onFailure = (transaction) => {
             var error = transaction.getError() || new Error('Mutation failed.');
@@ -130,7 +136,7 @@ class ItemFormComponent extends React.Component {
 
         var onSuccess = (response) => {
             console.log('Mutation successful! ' + JSON.stringify(response));
-            this.setState({itemFeatures: response.modelEdge.node.name})
+            this.setState({itemFeatures: {modelName: response.addModel.modelEdge.node.name}, status: "Model add successfully"});
         };
 
         var onFailure = (transaction) => {
@@ -142,17 +148,46 @@ class ItemFormComponent extends React.Component {
         Relay.Store.commitUpdate(addModelMutation, {onSuccess, onFailure})
     }
 
+    buildDomainSuggestion(domains) {
+        var suggestions = domains.map(domain => {
+            return {name: domain.name}
+        })
+        return suggestions
+    }
+
+    domainSuggestionFilter(value, suggestions) {
+
+        const inputValue = value.trim().toLowerCase();
+
+        return suggestions.filter(suggest => {
+            return suggest.name.toLowerCase().indexOf(inputValue) != -1
+        })
+    }
+
+
+    onDomainSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+
+        var itemFeatures = _.cloneDeep(this.state.itemFeatures)
+        itemFeatures.domains === undefined
+            ? _.set(itemFeatures, "domains", [{name: suggestionValue}])
+            : itemFeatures.domains.push({name: suggestionValue})
+
+        console.log("new itemItemFeatures after addDomain : " + JSON.stringify(itemFeatures))
+
+        this.setState({itemFeatures: itemFeatures})
+    }
+
+
     render() {
 
         var models = this.props.viewer.models
         var domains = this.props.viewer.domains
-
         var subCategories = this.props.viewer.subCategories
 
         var builtModelSuggestion = this.buildModelSuggestion(models);
+        var builtDomainSuggestion = this.buildDomainSuggestion(domains);
 
-
-        var model = this.findModel(this.state.itemFeatures.modelName)
+        var model = this.findModelAndBindNewFeatures(this.state.itemFeatures)
 
         var alerts = <div></div>
         var pageTitle = "Création d'un item"
@@ -186,6 +221,12 @@ class ItemFormComponent extends React.Component {
                                 <option value="3">Le dernier souffle</option>
                                 <option value="4">A réparer</option>
                             </select>
+
+                            <h3>Add Domain</h3>
+                            <AutosuggestWrapper inputText="Select a domain ..." suggestions={builtDomainSuggestion}
+                                                multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
+                                                onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
+                                                resetInputValue={true} ref="inputFormSearchDomain"/>
                         </div>
 
                         <div className="col-md-8">

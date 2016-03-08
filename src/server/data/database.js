@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize'
 
 var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds"
-var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds"
-var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds"
+var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec"
+var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test"
 
 
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL)
@@ -28,6 +28,7 @@ const model = connection.define('model', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true
     },
     description: {
         type: Sequelize.STRING
