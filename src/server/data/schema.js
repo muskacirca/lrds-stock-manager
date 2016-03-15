@@ -224,7 +224,6 @@ var GraphQLViewer = new GraphQLObjectType({
             type: ItemsConnection,
             args: {...connectionArgs},
             resolve: (obj, {...args}) => {
-                console.log("retrieving viewer, items")
                 return connectionFromPromisedArray(Database.models.item.findAll(), args)
             }
         },
@@ -248,7 +247,6 @@ var GraphQLViewer = new GraphQLObjectType({
             type: ModelsConnection,
             args: {...connectionArgs},
             resolve: (_, {...args}) => {
-                console.log("retrieving viewer, models")
                 return connectionFromPromisedArray(Database.models.model.findAll(), args)
             }
         },
@@ -372,24 +370,24 @@ const AddItemMutation = mutationWithClientMutationId({
 
         var newDomains = []
         console.log("input domains : " + JSON.stringify(domains))
-        domains.forEach(domain => {
-
-            console.log("domain to create : " + JSON.stringify(domain))
-            Database.models.domain.findOrCreate(domain)
-                .then(domain => {
-                    newDomains.push(domain)
-                })
-        })
-
-
-        console.log("newDomains : " + JSON.stringify(newDomains))
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
+
+                domains.forEach(domain => {
+
+
+                    Database.models.domain.findOrCreate({where: {name: domain}})
+                        .then(domain => {
+                            console.log("domain to create : " + JSON.stringify(domain))
+                            model.addDomain(domain[0])
+                        })
+                })
+
                 var reference = modelName + "/"+ state
                 return model.createItem({stateId: state, reference: reference})
                     .then(item => {
-                        return item.setDomains(domains)
+                        return item
                     })
             })
     }

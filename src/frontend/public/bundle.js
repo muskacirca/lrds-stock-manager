@@ -67323,10 +67323,11 @@
 	    }, {
 	        key: "getVariables",
 	        value: function getVariables() {
-	            console.log("getting variables");
+	            console.log("getting variables : " + JSON.stringify(this.props.domains));
 	            return {
 	                modelName: this.props.modelName,
-	                state: this.props.state
+	                state: this.props.state,
+	                domains: this.props.domains
 	            };
 	        }
 	    }, {

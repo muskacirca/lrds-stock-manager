@@ -100,7 +100,6 @@ class ItemFormComponent extends React.Component {
         var domainsToAdd = this.state.itemFeatures.domains.map(elt => elt.name)
         console.log("about to add domains : " + JSON.stringify(domainsToAdd))
 
-
         var addItemMutation = new AddItemMutation({modelName: this.state.itemFeatures.modelName,
             state: this.state.itemFeatures.state,
             domains: domainsToAdd,

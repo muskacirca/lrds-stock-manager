@@ -6,7 +6,6 @@ class AddItemMutation extends Relay.Mutation {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
-
           }
         `
     };
@@ -38,10 +37,11 @@ class AddItemMutation extends Relay.Mutation {
             }]
     }
     getVariables() {
-        console.log("getting variables")
+        console.log("getting variables : " + JSON.stringify(this.props.domains))
         return {
             modelName: this.props.modelName,
-            state: this.props.state
+            state: this.props.state,
+            domains: this.props.domains
         };
     }
 

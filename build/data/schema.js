@@ -254,7 +254,6 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 resolve: function resolve(obj, _ref2) {
                     var args = _objectWithoutProperties(_ref2, []);
 
-                    console.log("retrieving viewer, items");
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(), args);
                 }
             },
@@ -287,7 +286,6 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 resolve: function resolve(_, _ref4) {
                     var args = _objectWithoutProperties(_ref4, []);
 
-                    console.log("retrieving viewer, models");
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
                 }
             },
@@ -456,20 +454,20 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
 
         var newDomains = [];
         console.log("input domains : " + JSON.stringify(domains));
-        domains.forEach(function (domain) {
-
-            console.log("domain to create : " + JSON.stringify(domain));
-            _database2.default.models.domain.findOrCreate(domain).then(function (domain) {
-                newDomains.push(domain);
-            });
-        });
-
-        console.log("newDomains : " + JSON.stringify(newDomains));
 
         return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
+
+            domains.forEach(function (domain) {
+
+                _database2.default.models.domain.findOrCreate({ where: { name: domain } }).then(function (domain) {
+                    console.log("domain to create : " + JSON.stringify(domain));
+                    model.addDomain(domain[0]);
+                });
+            });
+
             var reference = modelName + "/" + state;
             return model.createItem({ stateId: state, reference: reference }).then(function (item) {
-                return item.setDomains(domains);
+                return item;
             });
         });
     }
