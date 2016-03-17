@@ -15,8 +15,7 @@ class ItemFormComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            itemFeatures : {modelName: ""},
-            status: ""
+            itemFeatures : {modelName: "", domains: [], subCategories: []}
         }
     }
 
@@ -28,6 +27,7 @@ class ItemFormComponent extends React.Component {
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
         _.set(existingItemFeature, "modelName", suggestionValue)
+        console.log("buildSelectedItem: " + JSON.stringify(existingItemFeature))
         return existingItemFeature
     }
 
@@ -40,13 +40,7 @@ class ItemFormComponent extends React.Component {
         var newDomains = _.unionWith(model.domains, itemFeatures.domains, (a, b) => a === b)
         _.set(model, "domains", newDomains)
 
-        var newSubCategories = _.unionWith(model.subCategories, itemFeatures.subCategories, (a, b) => {
-
-            console.log("new sub categories (a) : " + JSON.stringify(a))
-            console.log("new sub categories (b) : " + JSON.stringify(b))
-
-            return a === b
-        })
+        var newSubCategories = _.unionWith(model.subCategories, itemFeatures.subCategories, (a, b) => a === b)
         _.set(model, "subCategories", newSubCategories)
 
         return model
@@ -54,7 +48,6 @@ class ItemFormComponent extends React.Component {
 
     onSelectStateChange(event) {
 
-        console.log("state value : " + event.target.value)
         var itemFeatures = _.cloneDeep(this.state.itemFeatures)
         _.set(itemFeatures, "state", event.target.value)
 
@@ -87,15 +80,19 @@ class ItemFormComponent extends React.Component {
             viewer: this.props.viewer});
 
         var onSuccess = (response) => {
-            console.log('Mutation successful! ' + JSON.stringify(response));
-            this.setState({status: "Item add successfully"})
+            this.updateAlert("Item added successfully !", "success");
         };
+
         var onFailure = (transaction) => {
-            var error = transaction.getError() || new Error('Mutation failed.');
-            console.error(error);
+            this.updateAlert("An error occurred when adding new item", "error");
         };
 
         Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
+    }
+
+    updateAlert(message, type) {
+        var alert = {message: message, type: type}
+        this.setState({alert: alert})
     }
 
     onAddNewModel(modelName, brandName) {
@@ -103,22 +100,21 @@ class ItemFormComponent extends React.Component {
         var addModelMutation = new AddModelMutation({modelName: modelName, brandName: brandName, viewer: this.props.viewer});
 
         var onSuccess = (response) => {
-            console.log('Mutation successful! ' + JSON.stringify(response));
-            this.setState({itemFeatures: {modelName: response.addModel.modelEdge.node.name}, status: "Model add successfully"});
+
+            this.updateAlert("Model added successfully !", "success");
+            var itemFeatures = _.cloneDeep(this.state.itemFeatures)
+            _.set(itemFeatures, "modelName", response.addModel.modelEdge.node.name)
+            this.setState({itemFeatures: itemFeatures});
         };
 
         var onFailure = (transaction) => {
-            var error = transaction.getError() || new Error('Mutation failed.');
-            console.error(error);
-            this.setState({status: "Mutation failed"})
+            this.updateAlert("An error occurred when adding new model", "error");
         };
 
         Relay.Store.commitUpdate(addModelMutation, {onSuccess, onFailure})
     }
 
-
     // FILTER //
-
     buildModelSuggestion(models) {
 
         var suggestions = []
@@ -187,7 +183,7 @@ class ItemFormComponent extends React.Component {
     onDomainSuggestionSelected(event, { suggestion, suggestionValue, method }) {
 
         var itemFeatures = _.cloneDeep(this.state.itemFeatures)
-        itemFeatures.domains === undefined
+        itemFeatures.domains.length == 0
             ? _.set(itemFeatures, "domains", [{name: suggestionValue}])
             : itemFeatures.domains.push({name: suggestionValue})
 
@@ -218,7 +214,7 @@ class ItemFormComponent extends React.Component {
     onSubCategoriesSuggestionSelected(event, { suggestion, suggestionValue, method }) {
 
         var itemFeatures = _.cloneDeep(this.state.itemFeatures)
-        itemFeatures.subCategories === undefined
+        itemFeatures.subCategories.length == 0
             ? _.set(itemFeatures, "subCategories", [{name: suggestionValue}])
             : itemFeatures.subCategories.push({name: suggestionValue})
 
@@ -226,6 +222,23 @@ class ItemFormComponent extends React.Component {
 
         this.setState({itemFeatures: itemFeatures})
     }
+
+    renderAlert() {
+
+        console.log("alert : " + JSON.stringify(this.state.alert))
+        if(this.state.alert !== undefined) {
+            var commonAlert = "alert alert-dismissible "
+            var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger"
+
+            return  <div className={commonAlert + alertType} role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {this.state.alert.message}
+                    </div>
+        }
+    }
+
 
     render() {
 
@@ -239,7 +252,7 @@ class ItemFormComponent extends React.Component {
 
         var model = this.findModelAndBindNewFeatures(this.state.itemFeatures)
 
-        var alerts = <div></div>
+        var alert = this.renderAlert()
         var pageTitle = "Création d'un item"
 
         var stateIcon = this.computeStateIcon(this.state.itemFeatures.state)
@@ -248,8 +261,8 @@ class ItemFormComponent extends React.Component {
             <ItemFormDisplay model={model} stateIcon={stateIcon}/> : ""
 
         return  <div className="col-md-10 col-md-offset-1">
-                    {alerts}
                     <h2>{pageTitle}</h2>
+                    {alert}
                     <h3>Select your model</h3>
                     <div className="row">
                         <div className="col-md-3">
@@ -294,9 +307,6 @@ class ItemFormComponent extends React.Component {
                         <div className="col-md-1 col-md-offset-10">
                             <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
                         </div>
-                    </div>
-                    <div>
-                        status : {this.state.status}
                     </div>
                 </div>
     }
