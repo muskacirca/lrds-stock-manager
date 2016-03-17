@@ -25,48 +25,29 @@ class ItemFormComponent extends React.Component {
         this.setState({item: newItem})
     }
 
-    buildModelSuggestion(models) {
-
-        var suggestions = []
-
-        models.edges.map(modelNode => {
-
-            var model = modelNode.node
-
-            var modelSuggestion = {name: model.name, section: model.brand.name}
-
-            var index = _.findIndex(suggestions, (o) => o.title == model.brand.name)
-            if(index === -1) {
-                suggestions.push({title: model.brand.name, suggestions: [modelSuggestion]})
-            } else {
-                suggestions[index].suggestions.push(modelSuggestion)
-            }
-        })
-
-        return suggestions
-    }
-
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
         _.set(existingItemFeature, "modelName", suggestionValue)
         return existingItemFeature
     }
 
-    onModelSuggestionSelected(event, { suggestion, suggestionValue, method }) {
-
-        var clonedItemFeatures = _.cloneDeep(this.state.itemFeatures)
-        var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue)
-
-        this.setState({itemFeatures: itemFeature})
-    }
-
     findModelAndBindNewFeatures(itemFeatures) {
+
         if(itemFeatures.modelName === "") return {brand: {}, domains: [], subCategories: []}
         var index = _.findIndex(this.props.viewer.models.edges, (o) => o.node.name === itemFeatures.modelName)
         var model = this.props.viewer.models.edges[index].node
 
         var newDomains = _.unionWith(model.domains, itemFeatures.domains, (a, b) => a === b)
         _.set(model, "domains", newDomains)
+
+        var newSubCategories = _.unionWith(model.subCategories, itemFeatures.subCategories, (a, b) => {
+
+            console.log("new sub categories (a) : " + JSON.stringify(a))
+            console.log("new sub categories (b) : " + JSON.stringify(b))
+
+            return a === b
+        })
+        _.set(model, "subCategories", newSubCategories)
 
         return model
     }
@@ -117,25 +98,6 @@ class ItemFormComponent extends React.Component {
         Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
     }
 
-    modelSuggestionFilter(value, suggestions) {
-
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-
-        var suggestions = _.cloneDeep(suggestions)
-
-        var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
-
-            var itemFiltered = suggestion.suggestions.filter(suggest => {
-                return suggest.name.toLowerCase().indexOf(inputValue) != -1
-            })
-
-            suggestion.suggestions = itemFiltered
-            return suggestion
-        });
-        return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
-    }
-
     onAddNewModel(modelName, brandName) {
 
         var addModelMutation = new AddModelMutation({modelName: modelName, brandName: brandName, viewer: this.props.viewer});
@@ -152,6 +114,57 @@ class ItemFormComponent extends React.Component {
         };
 
         Relay.Store.commitUpdate(addModelMutation, {onSuccess, onFailure})
+    }
+
+
+    // FILTER //
+
+    buildModelSuggestion(models) {
+
+        var suggestions = []
+
+        models.edges.map(modelNode => {
+
+            var model = modelNode.node
+
+            var modelSuggestion = {name: model.name, section: model.brand.name}
+
+            var index = _.findIndex(suggestions, (o) => o.title == model.brand.name)
+            if(index === -1) {
+                suggestions.push({title: model.brand.name, suggestions: [modelSuggestion]})
+            } else {
+                suggestions[index].suggestions.push(modelSuggestion)
+            }
+        })
+
+        return suggestions
+    }
+
+    onModelSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+
+        var clonedItemFeatures = _.cloneDeep(this.state.itemFeatures)
+        var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue)
+
+        this.setState({itemFeatures: itemFeature})
+    }
+
+    multiSectionSuggestionFilter(value, suggestions) {
+
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        var suggestions = _.cloneDeep(suggestions)
+
+        var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(suggestion => {
+
+            var itemFiltered = suggestion.suggestions.filter(suggest => {
+                return suggest.name.toLowerCase().indexOf(inputValue) != -1
+            })
+
+            suggestion.suggestions = itemFiltered
+            return suggestion
+        });
+        return filteredSuggestion.filter(elt => elt.suggestions.length !== 0)
     }
 
     buildDomainSuggestion(domains) {
@@ -183,6 +196,36 @@ class ItemFormComponent extends React.Component {
         this.setState({itemFeatures: itemFeatures})
     }
 
+    buildSubCategoriesSuggestion(subCategories) {
+
+        var suggestions = []
+
+        subCategories.map(subCategory => {
+
+            var modelSuggestion = {name: subCategory.name, section: subCategory.category.name}
+
+            var index = _.findIndex(suggestions, (o) => o.title == subCategory.category.name)
+            if(index === -1) {
+                suggestions.push({title: subCategory.category.name, suggestions: [modelSuggestion]})
+            } else {
+                suggestions[index].suggestions.push(modelSuggestion)
+            }
+        })
+
+        return suggestions
+    }
+
+    onSubCategoriesSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+
+        var itemFeatures = _.cloneDeep(this.state.itemFeatures)
+        itemFeatures.subCategories === undefined
+            ? _.set(itemFeatures, "subCategories", [{name: suggestionValue}])
+            : itemFeatures.subCategories.push({name: suggestionValue})
+
+        console.log("new itemFeatures after addCategories : " + JSON.stringify(itemFeatures))
+
+        this.setState({itemFeatures: itemFeatures})
+    }
 
     render() {
 
@@ -192,6 +235,7 @@ class ItemFormComponent extends React.Component {
 
         var builtModelSuggestion = this.buildModelSuggestion(models);
         var builtDomainSuggestion = this.buildDomainSuggestion(domains);
+        var builtSubCategoriesSuggestion = this.buildSubCategoriesSuggestion(subCategories);
 
         var model = this.findModelAndBindNewFeatures(this.state.itemFeatures)
 
@@ -210,7 +254,7 @@ class ItemFormComponent extends React.Component {
                     <div className="row">
                         <div className="col-md-3">
                             <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
-                                                multiSection={true} suggestionFilter={this.modelSuggestionFilter.bind(this)}
+                                                multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
                                                 onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
                                                 resetInputValue={true} ref="inputFormSearchModel"/>
                             <br />
@@ -233,6 +277,12 @@ class ItemFormComponent extends React.Component {
                                                 multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
                                                 onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
                                                 resetInputValue={true} ref="inputFormSearchDomain"/>
+
+                            <h3>Add Categories</h3>
+                            <AutosuggestWrapper inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
+                                                multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                                onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
+                                                resetInputValue={true} ref="inputFormSearchSubCategories"/>
                         </div>
 
                         <div className="col-md-8">
