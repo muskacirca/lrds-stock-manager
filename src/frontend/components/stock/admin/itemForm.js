@@ -74,18 +74,18 @@ class ItemFormComponent extends React.Component {
         var domainsToAdd = this.state.itemFeatures.domains.map(elt => elt.name)
         console.log("about to add domains : " + JSON.stringify(domainsToAdd))
 
+        var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(elt => elt.name)
+        console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd))
+
         var addItemMutation = new AddItemMutation({modelName: this.state.itemFeatures.modelName,
             state: this.state.itemFeatures.state,
             domains: domainsToAdd,
+            subCategories: subCategoriesToAdd,
             viewer: this.props.viewer});
 
-        var onSuccess = (response) => {
-            this.updateAlert("Item added successfully !", "success");
-        };
+        var onSuccess = (response) => this.updateAlert("Item added successfully !", "success");
 
-        var onFailure = (transaction) => {
-            this.updateAlert("An error occurred when adding new item", "error");
-        };
+        var onFailure = (transaction) => this.updateAlert("An error occurred when adding new item", "error");
 
         Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
     }

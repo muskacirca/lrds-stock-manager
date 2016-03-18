@@ -430,7 +430,8 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
     inputFields: {
         modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         state: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
-        domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+        domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
     },
     outputFields: {
         viewer: {
@@ -450,10 +451,8 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
         var modelName = _ref7.modelName;
         var state = _ref7.state;
         var domains = _ref7.domains;
+        var subCategories = _ref7.subCategories;
 
-
-        var newDomains = [];
-        console.log("input domains : " + JSON.stringify(domains));
 
         return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
 
@@ -462,6 +461,14 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
                 _database2.default.models.domain.findOrCreate({ where: { name: domain } }).then(function (domain) {
                     console.log("domain to create : " + JSON.stringify(domain));
                     model.addDomain(domain[0]);
+                });
+            });
+
+            subCategories.forEach(function (subCategory) {
+
+                _database2.default.models.subCategory.findOne({ where: { name: subCategory } }).then(function (retrievedSubCategory) {
+                    console.log("subCategory to create : " + JSON.stringify(retrievedSubCategory));
+                    model.addSubCategory(retrievedSubCategory);
                 });
             });
 

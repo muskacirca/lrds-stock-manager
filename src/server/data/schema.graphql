@@ -2,6 +2,7 @@ input AddItemInput {
   modelName: String!
   state: String!
   domains: [String]
+  subCategories: [String]
   clientMutationId: String!
 }
 

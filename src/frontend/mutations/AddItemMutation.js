@@ -41,7 +41,8 @@ class AddItemMutation extends Relay.Mutation {
         return {
             modelName: this.props.modelName,
             state: this.props.state,
-            domains: this.props.domains
+            domains: this.props.domains,
+            subCategories: this.props.subCategories
         };
     }
 

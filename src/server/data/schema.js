@@ -352,7 +352,8 @@ const AddItemMutation = mutationWithClientMutationId({
     inputFields: {
         modelName: {type: new GraphQLNonNull(GraphQLString)},
         state: {type: new GraphQLNonNull(GraphQLString)},
-        domains: {type: new GraphQLList(GraphQLString)}
+        domains: {type: new GraphQLList(GraphQLString)},
+        subCategories: {type: new GraphQLList(GraphQLString)}
     },
     outputFields: {
         viewer: {
@@ -366,21 +367,26 @@ const AddItemMutation = mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({modelName, state, domains}) => {
-
-        var newDomains = []
-        console.log("input domains : " + JSON.stringify(domains))
+    mutateAndGetPayload: ({modelName, state, domains, subCategories}) => {
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
 
                 domains.forEach(domain => {
 
-
                     Database.models.domain.findOrCreate({where: {name: domain}})
                         .then(domain => {
                             console.log("domain to create : " + JSON.stringify(domain))
                             model.addDomain(domain[0])
+                        })
+                })
+
+                subCategories.forEach(subCategory => {
+
+                    Database.models.subCategory.findOne({where: {name: subCategory}})
+                        .then(retrievedSubCategory => {
+                            console.log("subCategory to create : " + JSON.stringify(retrievedSubCategory))
+                            model.addSubCategory(retrievedSubCategory)
                         })
                 })
 
