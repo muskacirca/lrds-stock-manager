@@ -66,7 +66,7 @@ class StockComponent extends React.Component {
                     </div>
                 </div>
                 <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <StockTable data={this.props.viewer.items.edges} filterText={this.state.searchedText} tags={this.state.tags} />
+                    <StockTable viewer={this.props.viewer} filterText={this.state.searchedText} tags={this.state.tags} />
                 </div>
             </div>
         )
@@ -94,37 +94,7 @@ export default Relay.createContainer(StockComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            items(first: 100) {
-              edges {
-                node {
-                  reference,
-                  isInStock,
-                  model {
-                    name
-                    description
-                    brand {
-                      name
-                      description
-                    }
-                    subCategories {
-                      name
-                      description
-                    }
-                    domains {
-                      name
-                      description
-                    }
-                  },
-                  comments(first: 5) {
-                    edges {
-                      node {
-                        text
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            ${StockTable.getFragment('viewer')}
           }
         `
     }

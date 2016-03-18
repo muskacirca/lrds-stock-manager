@@ -47941,7 +47941,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main' },
-	                    _react2.default.createElement(_StockTable2.default, { data: this.props.viewer.items.edges, filterText: this.state.searchedText, tags: this.state.tags })
+	                    _react2.default.createElement(_StockTable2.default, { viewer: this.props.viewer, filterText: this.state.searchedText, tags: this.state.tags })
 	                )
 	            );
 	        }
@@ -47983,6 +47983,236 @@
 	}(_react2.default.Component);
 
 	exports.default = _reactRelay2.default.createContainer(StockComponent, {
+	    fragments: {
+	        viewer: function viewer() {
+	            return function (RQL_0) {
+	                return {
+	                    children: [{
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, _reactRelay2.default.QL.__frag(RQL_0)],
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'Stock',
+	                    type: 'Viewer'
+	                };
+	            }(_StockTable2.default.getFragment('viewer'));
+	        }
+	    }
+	});
+
+/***/ },
+/* 473 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SearchComponent = function (_React$Component) {
+	    _inherits(SearchComponent, _React$Component);
+
+	    function SearchComponent(props) {
+	        _classCallCheck(this, SearchComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchComponent).call(this, props));
+
+	        _this.state = { searchedText: "" };
+	        return _this;
+	    }
+
+	    _createClass(SearchComponent, [{
+	        key: 'getSearch',
+	        value: function getSearch(cb) {
+	            cb = arguments[arguments.length - 1];
+	            var searchedText = this.state.searchedText;
+	            if (cb) {
+	                if (searchedText.length > 3) cb(searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'handleSearch',
+	        value: function handleSearch() {
+	            var _this2 = this;
+
+	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
+	            this.setState({ searchedText: searchedText }, function (e) {
+	                _this2.props.onChange(searchedText);
+	            });
+	        }
+	    }, {
+	        key: 'handlePressEnter',
+	        value: function handlePressEnter(e) {
+	            if (e.keyCode === 13) {
+	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
+	                this.props.onKeyDown(this.state.searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return false;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'input-group' },
+	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
+	                _react2.default.createElement('input', { ref: 'searchInput',
+	                    type: 'text',
+	                    className: 'form-control',
+	                    placeholder: 'Search',
+	                    'aria-describedby': 'basic-addon1',
+	                    onChange: this.handleSearch.bind(this),
+	                    onKeyDown: this.handlePressEnter.bind(this) })
+	            );
+	        }
+	    }]);
+
+	    return SearchComponent;
+	}(_react2.default.Component);
+
+	exports.default = SearchComponent;
+
+/***/ },
+/* 474 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _StockTableHeader = __webpack_require__(475);
+
+	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
+
+	var _StockTableRow = __webpack_require__(476);
+
+	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockTable = function (_React$Component) {
+	    _inherits(StockTable, _React$Component);
+
+	    function StockTable(props) {
+	        _classCallCheck(this, StockTable);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTable).call(this, props));
+	    }
+
+	    _createClass(StockTable, [{
+	        key: 'render',
+	        value: function render() {
+
+	            var filterText = this.props.filterText.toLowerCase();
+	            var filterTags = this.props.tags;
+
+	            var counter = 0;
+
+	            console.log("FilterTags: " + JSON.stringify(filterTags));
+	            var items = this.props.viewer.items;
+
+	            var taggedFilteredRows = [];
+	            if (filterTags.length !== 0) {
+	                taggedFilteredRows = items.edges.map(function (item) {
+
+	                    if (counter < 35) {
+	                        var hasTags = false;
+	                        for (var i = 0; i < filterTags.length; i++) {
+	                            if (item.node.model.name.toLowerCase().indexOf(filterTags[i].toLowerCase()) != -1) {
+	                                counter += 1;
+	                                hasTags = true;
+	                            }
+	                        }
+
+	                        return hasTags ? item : undefined;
+	                    }
+	                });
+	            }
+
+	            var t = taggedFilteredRows.filter(function (element) {
+	                return element !== undefined;
+	            });
+
+	            counter = 0;
+
+	            var rowsToShow = t.length === 0 ? items.edges : t;
+	            var rows = rowsToShow.map(function (product, key) {
+
+	                if (counter < 35) {
+	                    if (filterText === "" || filterText.length <= 2) {
+	                        counter += 1;
+	                        return _react2.default.createElement(_StockTableRow2.default, { key: key, product: product.node });
+	                    } else if (filterText.length > 2 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
+	                        counter += 1;
+	                        return _react2.default.createElement(_StockTableRow2.default, { key: key, product: product.node });
+	                    }
+	                }
+	            });
+
+	            return _react2.default.createElement(
+	                'table',
+	                { className: 'table' },
+	                _react2.default.createElement(_StockTableHeader2.default, null),
+	                _react2.default.createElement(
+	                    'tbody',
+	                    null,
+	                    rows
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockTable;
+	}(_react2.default.Component);
+
+	exports.default = _reactRelay2.default.createContainer(StockTable, {
 	    fragments: {
 	        viewer: function viewer() {
 	            return function () {
@@ -48275,217 +48505,13 @@
 	                    }],
 	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: 'Stock',
+	                    name: 'StockTable',
 	                    type: 'Viewer'
 	                };
 	            }();
 	        }
 	    }
 	});
-
-/***/ },
-/* 473 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SearchComponent = function (_React$Component) {
-	    _inherits(SearchComponent, _React$Component);
-
-	    function SearchComponent(props) {
-	        _classCallCheck(this, SearchComponent);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchComponent).call(this, props));
-
-	        _this.state = { searchedText: "" };
-	        return _this;
-	    }
-
-	    _createClass(SearchComponent, [{
-	        key: 'getSearch',
-	        value: function getSearch(cb) {
-	            cb = arguments[arguments.length - 1];
-	            var searchedText = this.state.searchedText;
-	            if (cb) {
-	                if (searchedText.length > 3) cb(searchedText);
-	            }
-	        }
-	    }, {
-	        key: 'handleSearch',
-	        value: function handleSearch() {
-	            var _this2 = this;
-
-	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
-	            this.setState({ searchedText: searchedText }, function (e) {
-	                _this2.props.onChange(searchedText);
-	            });
-	        }
-	    }, {
-	        key: 'handlePressEnter',
-	        value: function handlePressEnter(e) {
-	            if (e.keyCode === 13) {
-	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
-	                this.props.onKeyDown(this.state.searchedText);
-	            }
-	        }
-	    }, {
-	        key: 'shouldComponentUpdate',
-	        value: function shouldComponentUpdate() {
-	            return false;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'input-group' },
-	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
-	                _react2.default.createElement('input', { ref: 'searchInput',
-	                    type: 'text',
-	                    className: 'form-control',
-	                    placeholder: 'Search',
-	                    'aria-describedby': 'basic-addon1',
-	                    onChange: this.handleSearch.bind(this),
-	                    onKeyDown: this.handlePressEnter.bind(this) })
-	            );
-	        }
-	    }]);
-
-	    return SearchComponent;
-	}(_react2.default.Component);
-
-	exports.default = SearchComponent;
-
-/***/ },
-/* 474 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _StockTableHeader = __webpack_require__(475);
-
-	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
-
-	var _StockTableRow = __webpack_require__(476);
-
-	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockTable = function (_React$Component) {
-	    _inherits(StockTable, _React$Component);
-
-	    function StockTable(props) {
-	        _classCallCheck(this, StockTable);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTable).call(this, props));
-	    }
-
-	    _createClass(StockTable, [{
-	        key: 'render',
-	        value: function render() {
-
-	            var filterText = this.props.filterText.toLowerCase();
-	            var filterTags = this.props.tags;
-
-	            var counter = 0;
-
-	            console.log("ProductTable render: " + this.props.data.length);
-
-	            var taggedFilteredRows = [];
-	            if (filterTags.length !== 0) {
-	                taggedFilteredRows = this.props.data.map(function (product) {
-
-	                    if (counter < 35) {
-	                        var hasTags = false;
-	                        for (var i = 0; i < filterTags.length; i++) {
-	                            if (product.node.model.name.toLowerCase().indexOf(filterTags[i].toLowerCase()) != -1) {
-	                                counter += 1;
-	                                hasTags = true;
-	                            }
-	                        }
-
-	                        return hasTags ? product : undefined;
-	                    }
-	                });
-	            }
-
-	            var t = taggedFilteredRows.filter(function (element) {
-	                return element !== undefined;
-	            });
-
-	            counter = 0;
-
-	            var rowsToShow = t.length === 0 ? this.props.data : t;
-	            var rows = rowsToShow.map(function (product, key) {
-
-	                if (counter < 35) {
-	                    if (filterText === "" || filterText.length <= 2) {
-	                        counter += 1;
-	                        console.log("adding product table row : " + product.node.model.name);
-	                        return _react2.default.createElement(_StockTableRow2.default, { key: key, product: product.node });
-	                    } else if (filterText.length > 2 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
-	                        counter += 1;
-	                        return _react2.default.createElement(_StockTableRow2.default, { key: key, product: product.node });
-	                    }
-	                }
-	            });
-
-	            return _react2.default.createElement(
-	                'table',
-	                { className: 'table' },
-	                _react2.default.createElement(_StockTableHeader2.default, null),
-	                _react2.default.createElement(
-	                    'tbody',
-	                    null,
-	                    rows
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockTable;
-	}(_react2.default.Component);
-
-	exports.default = StockTable;
 
 /***/ },
 /* 475 */
