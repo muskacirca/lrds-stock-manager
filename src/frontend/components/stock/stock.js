@@ -1,11 +1,9 @@
-/* @flow */
-
 import React from 'react'
 import Relay from 'react-relay'
-import SearchComponent from '../sidebars/searchInput'
 import Link from 'react-router'
 
 import StockTable from './StockTable'
+import StockNavigationBar from './StockNavigationBar'
 
 class StockComponent extends React.Component {
 
@@ -22,9 +20,9 @@ class StockComponent extends React.Component {
         this.setState({searchedText: searchedText})
     }
 
-    onKeyDownSearch(searchedText) {
+    onTagSelected(newTag) {
         var t = this.state.tags.slice()
-        t.push(searchedText)
+        t.push(newTag)
         this.setState({
             tags: t,
             searchedText: ''}, e => {})
@@ -34,7 +32,7 @@ class StockComponent extends React.Component {
         var tmpTag = this.state.tags
         var i = tmpTag.indexOf(tagToRemove)
         if(i !== -1) tmpTag.splice(i, 1);
-        this.setState({ tags: tmpTag }, e => {})
+        this.setState({ tags: tmpTag })
     }
 
     filterByTag(tags, rowsToFilter) {
@@ -99,9 +97,7 @@ class StockComponent extends React.Component {
 
     render() {
 
-        var tagRow = this.state.tags.map(function(element, key) {
-            return <li key={key} className="tag" onClick={this.onCLickTag.bind(this, element)}>{element}</li>
-        }.bind(this))
+
 
         var items = this.props.viewer.items.edges;
         var filterText = this.state.searchedText.toLowerCase()
@@ -117,9 +113,10 @@ class StockComponent extends React.Component {
                 <div className="row sub-bar">
                     <div className="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1">
                         <div className="sub-bar-component">
-                            <SearchComponent from="stock"
-                                             onChange={this.onSearchInputChange.bind(this)}
-                                             onKeyDown={this.onKeyDownSearch.bind(this)} />
+                            <StockNavigationBar onTagSelected={this.onTagSelected.bind(this)}
+                                                onSearchInputChange={this.onSearchInputChange.bind(this)}
+                                                onTagRemoval={this.onCLickTag.bind(this)}
+                                                tags={this.state.tags} />
                         </div>
                     </div>
                 </div>
