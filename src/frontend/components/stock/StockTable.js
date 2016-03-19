@@ -11,13 +11,11 @@ class StockTable extends React.Component {
     }
 
     handleRowClick(id) {
-        console.log("second : " + id)
         this.props.handleSelectRow(id)
     }
 
     renderStockTableRows(rowsToShow) {
 
-        console.log("aahhaha")
        return rowsToShow.map((item, key) => {
             return <StockTableRow key={item.reference + "-" + key} item={item}
                                   handleRowClick={this.handleRowClick.bind(this)} />
