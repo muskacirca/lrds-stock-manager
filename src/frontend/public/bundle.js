@@ -47216,7 +47216,7 @@
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _itemForm = __webpack_require__(478);
+	var _itemForm = __webpack_require__(479);
 
 	var _itemForm2 = _interopRequireDefault(_itemForm);
 
@@ -47868,11 +47868,73 @@
 	        }
 	    }, {
 	        key: 'onCLickTag',
-	        value: function onCLickTag(tagToremove) {
+	        value: function onCLickTag(tagToRemove) {
 	            var tmpTag = this.state.tags;
-	            var i = tmpTag.indexOf(tagToremove);
+	            var i = tmpTag.indexOf(tagToRemove);
 	            if (i !== -1) tmpTag.splice(i, 1);
 	            this.setState({ tags: tmpTag }, function (e) {});
+	        }
+	    }, {
+	        key: 'filterByTag',
+	        value: function filterByTag(tags, rowsToFilter) {
+
+	            var counter = 0;
+
+	            var taggedFilteredRows = [];
+	            if (tags.length !== 0) {
+
+	                taggedFilteredRows = rowsToFilter.map(function (product) {
+
+	                    if (counter < 35) {
+	                        var hasTags = false;
+	                        for (var i = 0; i < tags.length; i++) {
+	                            if (product.node.model.name.toLowerCase().indexOf(tags[i].toLowerCase()) != -1) {
+	                                counter += 1;
+	                                hasTags = true;
+	                            }
+	                        }
+
+	                        return hasTags ? product : undefined;
+	                    }
+	                });
+	            }
+
+	            var filteredTags = taggedFilteredRows.filter(function (element) {
+	                return element !== undefined;
+	            });
+
+	            return filteredTags;
+	        }
+	    }, {
+	        key: 'filter',
+	        value: function filter(filterText, rowsRoFilter) {
+
+	            var counter = 0;
+
+	            var rows = rowsRoFilter.map(function (product, key) {
+
+	                if (counter < 35) {
+	                    if (filterText === "" || filterText.length <= 1) {
+	                        counter += 1;
+	                        return product.node;
+	                    } else if (filterText.length > 1 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
+	                        counter += 1;
+	                        return product.node;
+	                    }
+	                }
+	            });
+
+	            var goodRows = rows.filter(function (element) {
+	                return element !== undefined;
+	            });
+
+	            return goodRows;
+	        }
+	    }, {
+	        key: 'selectItem',
+	        value: function selectItem(reference) {
+	            console.log("third: " + reference);
+	            this.context.router.push("/stock/" + reference);
 	        }
 	    }, {
 	        key: 'render',
@@ -47886,62 +47948,41 @@
 	                );
 	            }.bind(this));
 
+	            var items = this.props.viewer.items.edges;
+	            var filterText = this.state.searchedText.toLowerCase();
+	            var filterTags = this.state.tags;
+
+	            var tagFilteredData = this.filterByTag(filterTags, items);
+	            tagFilteredData = tagFilteredData.length === 0 ? items : tagFilteredData;
+
+	            var filteredItems = this.filter(filterText, tagFilteredData);
+
 	            return _react2.default.createElement(
 	                'div',
 	                null,
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'container-fluid' },
+	                    { className: 'row sub-bar' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'row' },
+	                        { className: 'col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'col-sm-3 col-md-2 sidebar' },
+	                            { className: 'sub-bar-component' },
 	                            _react2.default.createElement(_searchInput2.default, { from: 'stock',
 	                                onChange: this.onSearchInputChange.bind(this),
-	                                onKeyDown: this.onKeyDownSearch.bind(this) }),
-	                            _react2.default.createElement('br', null),
-	                            _react2.default.createElement(
-	                                'ul',
-	                                null,
-	                                tagRow
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'list-group' },
-	                                _react2.default.createElement(
-	                                    'a',
-	                                    { className: 'list-group-item', href: '#' },
-	                                    _react2.default.createElement('i', { className: 'fa fa-plus-circle fa-fw' }),
-	                                    '  Add item'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'a',
-	                                    { className: 'list-group-item', href: '#' },
-	                                    _react2.default.createElement('i', { className: 'fa fa-bookmark fa-fw' }),
-	                                    '  Book item'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'a',
-	                                    { className: 'list-group-item', href: '#' },
-	                                    _react2.default.createElement('i', { className: 'fa fa-pencil fa-fw' }),
-	                                    '  Applications'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'a',
-	                                    { className: 'list-group-item', href: '#' },
-	                                    _react2.default.createElement('i', { className: 'fa fa-cog fa-fw' }),
-	                                    '  Settings'
-	                                )
-	                            )
+	                                onKeyDown: this.onKeyDownSearch.bind(this) })
 	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main' },
-	                    _react2.default.createElement(_StockTable2.default, { viewer: this.props.viewer, filterText: this.state.searchedText, tags: this.state.tags })
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-10 col-md-offset-1' },
+	                        _react2.default.createElement(_StockTable2.default, { data: filteredItems, handleSelectRow: this.selectItem.bind(this) })
+	                    )
 	                )
 	            );
 	        }
@@ -47950,269 +47991,33 @@
 	    return StockComponent;
 	}(_react2.default.Component);
 
-	var TagBox = function (_React$Component2) {
-	    _inherits(TagBox, _React$Component2);
+	StockComponent.contextTypes = {
+	    router: _react2.default.PropTypes.object.isRequired
+	};
 
-	    function TagBox(props) {
-	        _classCallCheck(this, TagBox);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(TagBox).call(this, props));
-	    }
-
-	    _createClass(TagBox, [{
-	        key: 'render',
-	        value: function render() {
-
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-sm-1' },
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'btn btn-default' },
-	                        _react2.default.createElement('i', { className: 'fa fa-pencil pointer' })
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return TagBox;
-	}(_react2.default.Component);
+	//
+	//<div className="container-fluid">
+	//    <div className="row">
+	//        <div className="col-sm-3 col-md-2 sidebar">
+	//            <SearchComponent from="stock"
+	//                             onChange={this.onSearchInputChange.bind(this)}
+	//                             onKeyDown={this.onKeyDownSearch.bind(this)} />
+	//            <br />
+	//            <ul>
+	//                {tagRow}
+	//            </ul>
+	//            <div className="list-group">
+	//                <a className="list-group-item" href="#"><i className="fa fa-plus-circle fa-fw"></i>&nbsp; Add item</a>
+	//                <a className="list-group-item" href="#"><i className="fa fa-bookmark fa-fw"></i>&nbsp; Book item</a>
+	//                <a className="list-group-item" href="#"><i className="fa fa-pencil fa-fw"></i>&nbsp; Applications</a>
+	//                <a className="list-group-item" href="#"><i className="fa fa-cog fa-fw"></i>&nbsp; Settings</a>
+	//            </div>
+	//        </div>
+	//
+	//    </div>
+	//</div>
 
 	exports.default = _reactRelay2.default.createContainer(StockComponent, {
-	    fragments: {
-	        viewer: function viewer() {
-	            return function (RQL_0) {
-	                return {
-	                    children: [{
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0)],
-	                    kind: 'Fragment',
-	                    metadata: {},
-	                    name: 'Stock',
-	                    type: 'Viewer'
-	                };
-	            }(_StockTable2.default.getFragment('viewer'));
-	        }
-	    }
-	});
-
-/***/ },
-/* 473 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SearchComponent = function (_React$Component) {
-	    _inherits(SearchComponent, _React$Component);
-
-	    function SearchComponent(props) {
-	        _classCallCheck(this, SearchComponent);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchComponent).call(this, props));
-
-	        _this.state = { searchedText: "" };
-	        return _this;
-	    }
-
-	    _createClass(SearchComponent, [{
-	        key: 'getSearch',
-	        value: function getSearch(cb) {
-	            cb = arguments[arguments.length - 1];
-	            var searchedText = this.state.searchedText;
-	            if (cb) {
-	                if (searchedText.length > 3) cb(searchedText);
-	            }
-	        }
-	    }, {
-	        key: 'handleSearch',
-	        value: function handleSearch() {
-	            var _this2 = this;
-
-	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
-	            this.setState({ searchedText: searchedText }, function (e) {
-	                _this2.props.onChange(searchedText);
-	            });
-	        }
-	    }, {
-	        key: 'handlePressEnter',
-	        value: function handlePressEnter(e) {
-	            if (e.keyCode === 13) {
-	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
-	                this.props.onKeyDown(this.state.searchedText);
-	            }
-	        }
-	    }, {
-	        key: 'shouldComponentUpdate',
-	        value: function shouldComponentUpdate() {
-	            return false;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'input-group' },
-	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
-	                _react2.default.createElement('input', { ref: 'searchInput',
-	                    type: 'text',
-	                    className: 'form-control',
-	                    placeholder: 'Search',
-	                    'aria-describedby': 'basic-addon1',
-	                    onChange: this.handleSearch.bind(this),
-	                    onKeyDown: this.handlePressEnter.bind(this) })
-	            );
-	        }
-	    }]);
-
-	    return SearchComponent;
-	}(_react2.default.Component);
-
-	exports.default = SearchComponent;
-
-/***/ },
-/* 474 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _StockTableHeader = __webpack_require__(475);
-
-	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
-
-	var _StockTableRow = __webpack_require__(476);
-
-	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockTable = function (_React$Component) {
-	    _inherits(StockTable, _React$Component);
-
-	    function StockTable(props) {
-	        _classCallCheck(this, StockTable);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTable).call(this, props));
-	    }
-
-	    _createClass(StockTable, [{
-	        key: 'render',
-	        value: function render() {
-
-	            var filterText = this.props.filterText.toLowerCase();
-	            var filterTags = this.props.tags;
-
-	            var counter = 0;
-
-	            console.log("FilterTags: " + JSON.stringify(filterTags));
-	            var items = this.props.viewer.items;
-
-	            var taggedFilteredRows = [];
-	            if (filterTags.length !== 0) {
-	                taggedFilteredRows = items.edges.map(function (item) {
-
-	                    if (counter < 35) {
-	                        var hasTags = false;
-	                        for (var i = 0; i < filterTags.length; i++) {
-	                            if (item.node.model.name.toLowerCase().indexOf(filterTags[i].toLowerCase()) != -1) {
-	                                counter += 1;
-	                                hasTags = true;
-	                            }
-	                        }
-
-	                        return hasTags ? item : undefined;
-	                    }
-	                });
-	            }
-
-	            var t = taggedFilteredRows.filter(function (element) {
-	                return element !== undefined;
-	            });
-
-	            counter = 0;
-
-	            var rowsToShow = t.length === 0 ? items.edges : t;
-	            var rows = rowsToShow.map(function (product, key) {
-
-	                if (counter < 35) {
-	                    if (filterText === "" || filterText.length <= 2) {
-	                        counter += 1;
-	                        return _react2.default.createElement(_StockTableRow2.default, { key: key, product: product.node });
-	                    } else if (filterText.length > 2 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
-	                        counter += 1;
-	                        return _react2.default.createElement(_StockTableRow2.default, { key: key, product: product.node });
-	                    }
-	                }
-	            });
-
-	            return _react2.default.createElement(
-	                'table',
-	                { className: 'table' },
-	                _react2.default.createElement(_StockTableHeader2.default, null),
-	                _react2.default.createElement(
-	                    'tbody',
-	                    null,
-	                    rows
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockTable;
-	}(_react2.default.Component);
-
-	exports.default = _reactRelay2.default.createContainer(StockTable, {
 	    fragments: {
 	        viewer: function viewer() {
 	            return function () {
@@ -48239,6 +48044,28 @@
 	                                    kind: 'Field',
 	                                    metadata: {},
 	                                    type: 'Boolean'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'severity',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'Int'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'state',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'StateType'
 	                                }, {
 	                                    children: [{
 	                                        fieldName: 'name',
@@ -48505,13 +48332,194 @@
 	                    }],
 	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: 'StockTable',
+	                    name: 'Stock',
 	                    type: 'Viewer'
 	                };
 	            }();
 	        }
 	    }
 	});
+
+/***/ },
+/* 473 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SearchComponent = function (_React$Component) {
+	    _inherits(SearchComponent, _React$Component);
+
+	    function SearchComponent(props) {
+	        _classCallCheck(this, SearchComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchComponent).call(this, props));
+
+	        _this.state = { searchedText: "" };
+	        return _this;
+	    }
+
+	    _createClass(SearchComponent, [{
+	        key: 'getSearch',
+	        value: function getSearch(cb) {
+	            cb = arguments[arguments.length - 1];
+	            var searchedText = this.state.searchedText;
+	            if (cb) {
+	                if (searchedText.length > 3) cb(searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'handleSearch',
+	        value: function handleSearch() {
+	            var _this2 = this;
+
+	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
+	            this.setState({ searchedText: searchedText }, function (e) {
+	                _this2.props.onChange(searchedText);
+	            });
+	        }
+	    }, {
+	        key: 'handlePressEnter',
+	        value: function handlePressEnter(e) {
+	            if (e.keyCode === 13) {
+	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
+	                this.props.onKeyDown(this.state.searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return false;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'input-group' },
+	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
+	                _react2.default.createElement('input', { ref: 'searchInput',
+	                    type: 'text',
+	                    className: 'form-control',
+	                    placeholder: 'Search',
+	                    'aria-describedby': 'basic-addon1',
+	                    onChange: this.handleSearch.bind(this),
+	                    onKeyDown: this.handlePressEnter.bind(this) })
+	            );
+	        }
+	    }]);
+
+	    return SearchComponent;
+	}(_react2.default.Component);
+
+	exports.default = SearchComponent;
+
+/***/ },
+/* 474 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _StockTableHeader = __webpack_require__(475);
+
+	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
+
+	var _StockTableRow = __webpack_require__(476);
+
+	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockTable = function (_React$Component) {
+	    _inherits(StockTable, _React$Component);
+
+	    function StockTable(props) {
+	        _classCallCheck(this, StockTable);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTable).call(this, props));
+	    }
+
+	    _createClass(StockTable, [{
+	        key: 'handleRowClick',
+	        value: function handleRowClick(id) {
+	            console.log("second : " + id);
+	            this.props.handleSelectRow(id);
+	        }
+	    }, {
+	        key: 'renderStockTableRows',
+	        value: function renderStockTableRows(rowsToShow) {
+	            var _this2 = this;
+
+	            console.log("aahhaha");
+	            return rowsToShow.map(function (item, key) {
+	                return _react2.default.createElement(_StockTableRow2.default, { key: item.reference + "-" + key, item: item,
+	                    handleRowClick: _this2.handleRowClick.bind(_this2) });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var rows = this.renderStockTableRows(this.props.data);
+
+	            return _react2.default.createElement(
+	                'table',
+	                { className: 'table' },
+	                _react2.default.createElement(_StockTableHeader2.default, null),
+	                _react2.default.createElement(
+	                    'tbody',
+	                    null,
+	                    rows
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockTable;
+	}(_react2.default.Component);
+
+	exports.default = StockTable;
 
 /***/ },
 /* 475 */
@@ -48558,7 +48566,17 @@
 	                    _react2.default.createElement(
 	                        'th',
 	                        null,
-	                        'Nom'
+	                        'Etat'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Modèle'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Marque'
 	                    ),
 	                    _react2.default.createElement(
 	                        'th',
@@ -48614,23 +48632,54 @@
 	    }
 
 	    _createClass(StockTableRow, [{
+	        key: "computeState",
+	        value: function computeState(state) {
+	            if (state == "1") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square green" });
+	            } else if (state == "2") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square yellow" });
+	            } else if (state == "3") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square orange" });
+	            } else if (state == "4") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square red" });
+	            }
+	        }
+	    }, {
+	        key: "handleRowClick",
+	        value: function handleRowClick() {
+	            console.log("first : " + this.props.item.reference);
+	            this.props.handleRowClick(this.props.item.reference);
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
 
-	            var isInStock = this.props.product.isInStock ? _react2.default.createElement("i", { className: "fa fa-check" }) : _react2.default.createElement("i", { className: "fa fa-times" });
+	            var item = this.props.item;
+	            var isInStock = item.isInStock ? _react2.default.createElement("i", { className: "fa fa-check" }) : _react2.default.createElement("i", { className: "fa fa-times" });
+	            var state = this.computeState(item.state.severity);
 
 	            return _react2.default.createElement(
 	                "tr",
-	                { onCLick: "" },
+	                { className: "pointer", onClick: this.handleRowClick.bind(this) },
 	                _react2.default.createElement(
 	                    "td",
 	                    null,
-	                    this.props.product.model.name
+	                    state
 	                ),
 	                _react2.default.createElement(
 	                    "td",
 	                    null,
-	                    this.props.product.reference
+	                    item.model.name
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    item.model.brand.name
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    item.reference
 	                ),
 	                _react2.default.createElement(
 	                    "td",
@@ -48666,6 +48715,10 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
+	var _itemFormDisplay = __webpack_require__(478);
+
+	var _itemFormDisplay2 = _interopRequireDefault(_itemFormDisplay);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48690,7 +48743,13 @@
 	        key: 'render',
 	        value: function render() {
 
-	            return _react2.default.createElement('div', { className: 'col-md-10 col-md-offset-1' });
+	            var item = this.props.viewer.item;
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'col-md-10 col-md-offset-1' },
+	                _react2.default.createElement(_itemFormDisplay2.default, { item: item })
+	            );
 	        }
 	    }]);
 
@@ -48698,6 +48757,20 @@
 	}(_react2.default.Component);
 
 	exports.default = _reactRelay2.default.createContainer(ItemComponent, {
+
+	    initialVariables: {
+	        reference: null
+	    },
+	    prepareVariables: function prepareVariables(_ref) {
+	        var reference = _ref.reference;
+
+
+	        console.log("reference in ItemComponent : " + reference);
+	        return {
+	            reference: reference
+	        };
+	    },
+
 	    fragments: {
 	        viewer: function viewer() {
 	            return function () {
@@ -48717,6 +48790,204 @@
 	                            kind: 'Field',
 	                            metadata: {},
 	                            type: 'String'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'name',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'description',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'brand',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id'
+	                                },
+	                                type: 'BrandType'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'domains',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isPlural: true
+	                                },
+	                                type: 'DomainType'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'subCategories',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isPlural: true
+	                                },
+	                                type: 'SubCategoryType'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'model',
+	                            kind: 'Field',
+	                            metadata: {
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id'
+	                            },
+	                            type: 'ModelType'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'severity',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'Int'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'state',
+	                            kind: 'Field',
+	                            metadata: {
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id'
+	                            },
+	                            type: 'StateType'
+	                        }, {
+	                            calls: [{
+	                                kind: 'Call',
+	                                metadata: {},
+	                                name: 'first',
+	                                value: {
+	                                    kind: 'CallValue',
+	                                    callValue: 10
+	                                }
+	                            }],
+	                            children: [{
+	                                children: [{
+	                                    children: [{
+	                                        fieldName: 'text',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'node',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id',
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ItemCommentType'
+	                                }, {
+	                                    fieldName: 'cursor',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'String'
+	                                }],
+	                                fieldName: 'edges',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isPlural: true
+	                                },
+	                                type: 'ItemCommentTypeEdge'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'hasNextPage',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'Boolean'
+	                                }, {
+	                                    fieldName: 'hasPreviousPage',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'Boolean'
+	                                }],
+	                                fieldName: 'pageInfo',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'PageInfo'
+	                            }],
+	                            fieldName: 'comments',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isConnection: true
+	                            },
+	                            type: 'ItemCommentTypeConnection'
 	                        }, {
 	                            fieldName: 'id',
 	                            kind: 'Field',
@@ -48756,6 +49027,175 @@
 /* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemFormDisplay = function (_React$Component) {
+	    _inherits(ItemFormDisplay, _React$Component);
+
+	    function ItemFormDisplay(props) {
+	        _classCallCheck(this, ItemFormDisplay);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormDisplay).call(this, props));
+	    }
+
+	    _createClass(ItemFormDisplay, [{
+	        key: "renderItemDomains",
+	        value: function renderItemDomains(modelDomains) {
+
+	            return modelDomains.map(function (elt) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    { key: elt.name, className: "model-tag" },
+	                    elt.name
+	                );
+	            });
+	        }
+	    }, {
+	        key: "renderItemSubCategories",
+	        value: function renderItemSubCategories(modelSubCategories) {
+
+	            return modelSubCategories.map(function (elt) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    { key: elt.name, className: "model-tag" },
+	                    elt.name
+	                );
+	            });
+	        }
+	    }, {
+	        key: "computeStateIcon",
+	        value: function computeStateIcon(state) {
+
+	            if (state == "1") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-up green" });
+	            } else if (state == "2") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-up yellow" });
+	            } else if (state == "3") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-down orange" });
+	            } else if (state == "4") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-down red" });
+	            }
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+
+	            var item = this.props.item;
+
+	            var itemDomains = this.renderItemDomains(item.model.domains);
+	            var itemSubCategories = this.renderItemSubCategories(item.model.subCategories);
+
+	            var stateIcon = this.computeStateIcon(item.state.severity);
+
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "panel panel-default" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "panel-heading" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-11" },
+	                                _react2.default.createElement(
+	                                    "h4",
+	                                    null,
+	                                    _react2.default.createElement(
+	                                        "strong",
+	                                        null,
+	                                        item.model.brand.name + ' - ' + item.model.name
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-1" },
+	                                stateIcon
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "panel-body" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-5" },
+	                                _react2.default.createElement(
+	                                    "em",
+	                                    null,
+	                                    "Domaine: "
+	                                ),
+	                                _react2.default.createElement(
+	                                    "ul",
+	                                    null,
+	                                    itemDomains
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-5" },
+	                                _react2.default.createElement(
+	                                    "em",
+	                                    null,
+	                                    "Sous Catégories: "
+	                                ),
+	                                _react2.default.createElement(
+	                                    "ul",
+	                                    null,
+	                                    itemSubCategories
+	                                )
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "p",
+	                            null,
+	                            _react2.default.createElement(
+	                                "em",
+	                                null,
+	                                item.model.description
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ItemFormDisplay;
+	}(_react2.default.Component);
+
+	exports.default = ItemFormDisplay;
+
+/***/ },
+/* 479 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -48772,27 +49212,27 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _lodash = __webpack_require__(479);
+	var _lodash = __webpack_require__(480);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _AutosuggestWrapper = __webpack_require__(481);
+	var _AutosuggestWrapper = __webpack_require__(482);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _AddModelMutation = __webpack_require__(507);
+	var _AddModelMutation = __webpack_require__(508);
 
 	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
 
-	var _AddItemMutation = __webpack_require__(508);
+	var _AddItemMutation = __webpack_require__(509);
 
 	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
-	var _modelQuickForm = __webpack_require__(509);
+	var _modelQuickForm = __webpack_require__(510);
 
 	var _modelQuickForm2 = _interopRequireDefault(_modelQuickForm);
 
-	var _itemFormDisplay = __webpack_require__(510);
+	var _itemFormDisplay = __webpack_require__(478);
 
 	var _itemFormDisplay2 = _interopRequireDefault(_itemFormDisplay);
 
@@ -48862,20 +49302,6 @@
 	            _lodash2.default.set(itemFeatures, "state", event.target.value);
 
 	            this.setState({ itemFeatures: itemFeatures });
-	        }
-	    }, {
-	        key: 'computeStateIcon',
-	        value: function computeStateIcon(state) {
-
-	            if (state == "1") {
-	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-up green' });
-	            } else if (state == "2") {
-	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-up yellow' });
-	            } else if (state == "3") {
-	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-down orange' });
-	            } else if (state == "4") {
-	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-down red' });
-	            }
 	        }
 	    }, {
 	        key: 'onFormSubmit',
@@ -49111,9 +49537,7 @@
 	            var alert = this.renderAlert();
 	            var pageTitle = "Création d'un item";
 
-	            var stateIcon = this.computeStateIcon(this.state.itemFeatures.state);
-
-	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_itemFormDisplay2.default, { model: model, stateIcon: stateIcon }) : "";
+	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_itemFormDisplay2.default, { item: { model: model, state: { severity: this.state.itemFeatures.state } } }) : "";
 
 	            return _react2.default.createElement(
 	                'div',
@@ -49468,7 +49892,7 @@
 	});
 
 /***/ },
-/* 479 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -64203,10 +64627,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(480)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(481)(module), (function() { return this; }())))
 
 /***/ },
-/* 480 */
+/* 481 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -64222,7 +64646,7 @@
 
 
 /***/ },
-/* 481 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64237,11 +64661,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactAutosuggest = __webpack_require__(482);
+	var _reactAutosuggest = __webpack_require__(483);
 
 	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
 
-	var _lodash = __webpack_require__(479);
+	var _lodash = __webpack_require__(480);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -64393,15 +64817,15 @@
 	exports.default = AutosuggestWrapper;
 
 /***/ },
-/* 482 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(483).default;
+	module.exports = __webpack_require__(484).default;
 
 /***/ },
-/* 483 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64416,15 +64840,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(484);
+	var _redux = __webpack_require__(485);
 
-	var _reactRedux = __webpack_require__(494);
+	var _reactRedux = __webpack_require__(495);
 
-	var _reducerAndActions = __webpack_require__(501);
+	var _reducerAndActions = __webpack_require__(502);
 
 	var _reducerAndActions2 = _interopRequireDefault(_reducerAndActions);
 
-	var _Autosuggest = __webpack_require__(502);
+	var _Autosuggest = __webpack_require__(503);
 
 	var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -64596,7 +65020,7 @@
 	exports.default = AutosuggestContainer;
 
 /***/ },
-/* 484 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -64604,27 +65028,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(485);
+	var _createStore = __webpack_require__(486);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(489);
+	var _combineReducers = __webpack_require__(490);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(491);
+	var _bindActionCreators = __webpack_require__(492);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(492);
+	var _applyMiddleware = __webpack_require__(493);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(493);
+	var _compose = __webpack_require__(494);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(490);
+	var _warning = __webpack_require__(491);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -64648,7 +65072,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 485 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64657,7 +65081,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 
-	var _isPlainObject = __webpack_require__(486);
+	var _isPlainObject = __webpack_require__(487);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -64869,11 +65293,11 @@
 	}
 
 /***/ },
-/* 486 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isHostObject = __webpack_require__(487),
-	    isObjectLike = __webpack_require__(488);
+	var isHostObject = __webpack_require__(488),
+	    isObjectLike = __webpack_require__(489);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -64943,7 +65367,7 @@
 
 
 /***/ },
-/* 487 */
+/* 488 */
 /***/ function(module, exports) {
 
 	/**
@@ -64969,7 +65393,7 @@
 
 
 /***/ },
-/* 488 */
+/* 489 */
 /***/ function(module, exports) {
 
 	/**
@@ -65003,7 +65427,7 @@
 
 
 /***/ },
-/* 489 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -65011,13 +65435,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 
-	var _createStore = __webpack_require__(485);
+	var _createStore = __webpack_require__(486);
 
-	var _isPlainObject = __webpack_require__(486);
+	var _isPlainObject = __webpack_require__(487);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(490);
+	var _warning = __webpack_require__(491);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -65136,7 +65560,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 490 */
+/* 491 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65165,7 +65589,7 @@
 	}
 
 /***/ },
-/* 491 */
+/* 492 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65221,7 +65645,7 @@
 	}
 
 /***/ },
-/* 492 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65231,7 +65655,7 @@
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 
-	var _compose = __webpack_require__(493);
+	var _compose = __webpack_require__(494);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -65283,7 +65707,7 @@
 	}
 
 /***/ },
-/* 493 */
+/* 494 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -65317,7 +65741,7 @@
 	}
 
 /***/ },
-/* 494 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65325,11 +65749,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(495);
+	var _Provider = __webpack_require__(496);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(497);
+	var _connect = __webpack_require__(498);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -65339,7 +65763,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 495 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -65349,7 +65773,7 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(496);
+	var _storeShape = __webpack_require__(497);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
@@ -65423,7 +65847,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65439,7 +65863,7 @@
 	});
 
 /***/ },
-/* 497 */
+/* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -65451,23 +65875,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(496);
+	var _storeShape = __webpack_require__(497);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(498);
+	var _shallowEqual = __webpack_require__(499);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(499);
+	var _wrapActionCreators = __webpack_require__(500);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(486);
+	var _isPlainObject = __webpack_require__(487);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(500);
+	var _hoistNonReactStatics = __webpack_require__(501);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -65767,7 +66191,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 498 */
+/* 499 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -65798,7 +66222,7 @@
 	}
 
 /***/ },
-/* 499 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65806,7 +66230,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(484);
+	var _redux = __webpack_require__(485);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -65815,7 +66239,7 @@
 	}
 
 /***/ },
-/* 500 */
+/* 501 */
 /***/ function(module, exports) {
 
 	/**
@@ -65861,7 +66285,7 @@
 
 
 /***/ },
-/* 501 */
+/* 502 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65990,7 +66414,7 @@
 	}
 
 /***/ },
-/* 502 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66007,11 +66431,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(494);
+	var _reactRedux = __webpack_require__(495);
 
-	var _reducerAndActions = __webpack_require__(501);
+	var _reducerAndActions = __webpack_require__(502);
 
-	var _reactAutowhatever = __webpack_require__(503);
+	var _reactAutowhatever = __webpack_require__(504);
 
 	var _reactAutowhatever2 = _interopRequireDefault(_reactAutowhatever);
 
@@ -66423,7 +66847,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Autosuggest);
 
 /***/ },
-/* 503 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66442,11 +66866,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _sectionIterator = __webpack_require__(504);
+	var _sectionIterator = __webpack_require__(505);
 
 	var _sectionIterator2 = _interopRequireDefault(_sectionIterator);
 
-	var _reactThemeable = __webpack_require__(505);
+	var _reactThemeable = __webpack_require__(506);
 
 	var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
@@ -66740,7 +67164,7 @@
 
 
 /***/ },
-/* 504 */
+/* 505 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -66860,7 +67284,7 @@
 
 
 /***/ },
-/* 505 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66873,7 +67297,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _objectAssign = __webpack_require__(506);
+	var _objectAssign = __webpack_require__(507);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -66898,7 +67322,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 506 */
+/* 507 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -66943,7 +67367,7 @@
 
 
 /***/ },
-/* 507 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67163,7 +67587,7 @@
 	exports.default = AddModelMutation;
 
 /***/ },
-/* 508 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -67344,7 +67768,7 @@
 	exports.default = AddItemMutation;
 
 /***/ },
-/* 509 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67367,7 +67791,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _AutosuggestWrapper = __webpack_require__(481);
+	var _AutosuggestWrapper = __webpack_require__(482);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
@@ -67532,160 +67956,6 @@
 	        }
 	    }
 	});
-
-/***/ },
-/* 510 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ItemFormDisplay = function (_React$Component) {
-	    _inherits(ItemFormDisplay, _React$Component);
-
-	    function ItemFormDisplay(props) {
-	        _classCallCheck(this, ItemFormDisplay);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormDisplay).call(this, props));
-	    }
-
-	    _createClass(ItemFormDisplay, [{
-	        key: "renderItemDomains",
-	        value: function renderItemDomains(modelDomains) {
-
-	            return modelDomains.map(function (elt) {
-	                return _react2.default.createElement(
-	                    "li",
-	                    { key: elt.name, className: "model-tag" },
-	                    elt.name
-	                );
-	            });
-	        }
-	    }, {
-	        key: "renderItemSubCategories",
-	        value: function renderItemSubCategories(modelSubCategories) {
-
-	            return modelSubCategories.map(function (elt) {
-	                return _react2.default.createElement(
-	                    "li",
-	                    { key: elt.name, className: "model-tag" },
-	                    elt.name
-	                );
-	            });
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-
-	            var model = this.props.model;
-	            var stateIcon = this.props.stateIcon;
-
-	            var itemDomains = this.renderItemDomains(model.domains);
-	            var itemSubCategories = this.renderItemSubCategories(model.subCategories);
-
-	            return _react2.default.createElement(
-	                "div",
-	                null,
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "panel panel-default" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "panel-heading" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-11" },
-	                                _react2.default.createElement(
-	                                    "h4",
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        "strong",
-	                                        null,
-	                                        model.brand.name + ' - ' + model.name
-	                                    )
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-1" },
-	                                stateIcon
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "panel-body" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-5" },
-	                                _react2.default.createElement(
-	                                    "em",
-	                                    null,
-	                                    "Domaine: "
-	                                ),
-	                                _react2.default.createElement(
-	                                    "ul",
-	                                    null,
-	                                    itemDomains
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-5" },
-	                                _react2.default.createElement(
-	                                    "em",
-	                                    null,
-	                                    "Sous Catégories: "
-	                                ),
-	                                _react2.default.createElement(
-	                                    "ul",
-	                                    null,
-	                                    itemSubCategories
-	                                )
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "p",
-	                            null,
-	                            _react2.default.createElement(
-	                                "em",
-	                                null,
-	                                model.description
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ItemFormDisplay;
-	}(_react2.default.Component);
-
-	exports.default = ItemFormDisplay;
 
 /***/ },
 /* 511 */

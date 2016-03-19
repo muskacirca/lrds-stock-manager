@@ -20,21 +20,34 @@ class ItemFormDisplay extends React.Component {
         })
     }
 
+    computeStateIcon(state) {
+
+        if(state == "1") {
+            return  <i className="fa fa-2x fa-thumbs-up green" />
+        } else if(state == "2") {
+            return  <i className="fa fa-2x fa-thumbs-up yellow" />
+        } else if(state == "3") {
+            return  <i className="fa fa-2x fa-thumbs-down orange" />
+        } else if(state == "4") {
+            return  <i className="fa fa-2x fa-thumbs-down red" />
+        }
+    }
+
     render() {
 
-        var model = this.props.model
-        var stateIcon = this.props.stateIcon
+        var item = this.props.item
 
-        var itemDomains = this.renderItemDomains(model.domains)
-        var itemSubCategories = this.renderItemSubCategories(model.subCategories)
+        var itemDomains = this.renderItemDomains(item.model.domains)
+        var itemSubCategories = this.renderItemSubCategories(item.model.subCategories)
 
+        var stateIcon = this.computeStateIcon(item.state.severity)
 
         return  <div>
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <div className="row">
                                 <div className="col-md-11">
-                                    <h4><strong>{model.brand.name + ' - ' + model.name}</strong></h4>
+                                    <h4><strong>{item.model.brand.name + ' - ' + item.model.name}</strong></h4>
                                 </div>
                                 <div className="col-md-1">
                                     {stateIcon}
@@ -53,7 +66,7 @@ class ItemFormDisplay extends React.Component {
                                 </div>
                             </div>
                             <p>
-                                <em>{model.description}</em>
+                                <em>{item.model.description}</em>
                             </p>
                         </div>
                     </div>

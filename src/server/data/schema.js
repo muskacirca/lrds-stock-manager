@@ -161,6 +161,16 @@ var GraphQLItemCommentType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var GraphQLStateType = new GraphQLObjectType({
+    name: 'StateType',
+    fields: {
+        id: globalIdField('StateType'),
+        name: { type: GraphQLString, resolve: (obj) => obj.name},
+        severity: { type: GraphQLInt, resolve: (obj) => obj.severity }
+    },
+    interfaces: [nodeInterface]
+});
+
 var {
     connectionType: ItemCommentConnection
     // ,edgeType: GraphQLSimTypesEdge,
@@ -183,6 +193,10 @@ var GraphQLItemType = new GraphQLObjectType({
         reference: {
             type: GraphQLString,
             resolve: (obj) => obj.reference
+        },
+        state: {
+            type: GraphQLStateType,
+            resolve: (obj) => Database.models.state.findById(obj.stateId)
         },
         isInStock: {
             type: GraphQLBoolean,
@@ -234,10 +248,11 @@ var GraphQLViewer = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve: (obj, {reference}) => {
-                return Database.models.item.findOne({where: {reference : reference}})
-                    .then((response) => response)
-            }
+            resolve: (_, {reference}) => Database.models.item.findOne({where: {reference : reference}})
+                                            .then((response) => {
+                                                console.log("retrieved item : " + JSON.stringify((response)))
+                                                return response
+                                            })
         },
         brands: {
             type: new GraphQLList(GraphQLBrandType),

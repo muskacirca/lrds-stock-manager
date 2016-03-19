@@ -6,7 +6,9 @@ class StockTableHeader extends React.Component {
         return (
             <thead>
             <tr>
-                <th>Nom</th>
+                <th>Etat</th>
+                <th>Modèle</th>
+                <th>Marque</th>
                 <th>Reference</th>
                 <th>En Stock</th>
             </tr>

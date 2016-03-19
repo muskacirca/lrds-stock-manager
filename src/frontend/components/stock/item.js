@@ -1,6 +1,8 @@
 import React from 'react'
 import Relay from 'react-relay'
 
+import ItemFormDisplay from './itemFormDisplay'
+
 class ItemComponent extends React.Component {
 
     constructor(props) {
@@ -9,20 +11,57 @@ class ItemComponent extends React.Component {
         }
     }
 
+
     render() {
 
+        var item = this.props.viewer.item
 
         return  <div className="col-md-10 col-md-offset-1">
+                    <ItemFormDisplay item={item}/>
                 </div>
     }
 }
 
 export default Relay.createContainer(ItemComponent, {
+
+    initialVariables: {
+        reference: null
+    },
+    prepareVariables({ reference }) {
+
+        console.log("reference in ItemComponent : " + reference)
+        return {
+            reference: reference
+        }
+    },
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
             item(reference: $reference) {
                 reference
+                model {
+                    name
+                    description
+                    brand {
+                        name
+                    }
+                    domains {
+                        name
+                    }
+                    subCategories {
+                        name
+                    }
+                }
+                state {
+                    severity
+                }
+                comments(first: 10) {
+                    edges {
+                        node {
+                            text
+                        }
+                    }
+                }
             }
           }
         `

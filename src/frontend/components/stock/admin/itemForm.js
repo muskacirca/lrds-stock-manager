@@ -8,7 +8,7 @@ import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
 
 import ModelQuickForm from './modelQuickForm'
-import ItemFormDisplay from './itemFormDisplay'
+import ItemFormDisplay from '../itemFormDisplay'
 
 class ItemFormComponent extends React.Component {
 
@@ -52,19 +52,6 @@ class ItemFormComponent extends React.Component {
         _.set(itemFeatures, "state", event.target.value)
 
         this.setState({itemFeatures: itemFeatures})
-    }
-
-    computeStateIcon(state) {
-
-        if(state == "1") {
-            return  <i className="fa fa-2x fa-thumbs-up green" />
-        } else if(state == "2") {
-            return  <i className="fa fa-2x fa-thumbs-up yellow" />
-        } else if(state == "3") {
-            return  <i className="fa fa-2x fa-thumbs-down orange" />
-        } else if(state == "4") {
-            return  <i className="fa fa-2x fa-thumbs-down red" />
-        }
     }
 
     onFormSubmit() {
@@ -255,10 +242,8 @@ class ItemFormComponent extends React.Component {
         var alert = this.renderAlert()
         var pageTitle = "Création d'un item"
 
-        var stateIcon = this.computeStateIcon(this.state.itemFeatures.state)
-
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
-            <ItemFormDisplay model={model} stateIcon={stateIcon}/> : ""
+            <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.state}}} /> : ""
 
         return  <div className="col-md-10 col-md-offset-1">
                     <h2>{pageTitle}</h2>

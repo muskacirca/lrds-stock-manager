@@ -179,6 +179,20 @@ var GraphQLItemCommentType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var GraphQLStateType = new _graphql.GraphQLObjectType({
+    name: 'StateType',
+    fields: {
+        id: (0, _graphqlRelay.globalIdField)('StateType'),
+        name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.name;
+            } },
+        severity: { type: _graphql.GraphQLInt, resolve: function resolve(obj) {
+                return obj.severity;
+            } }
+    },
+    interfaces: [nodeInterface]
+});
+
 var _connectionDefinition =
 // ,edgeType: GraphQLSimTypesEdge,
 (0, _graphqlRelay.connectionDefinitions)({
@@ -204,6 +218,12 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
             type: _graphql.GraphQLString,
             resolve: function resolve(obj) {
                 return obj.reference;
+            }
+        },
+        state: {
+            type: GraphQLStateType,
+            resolve: function resolve(obj) {
+                return _database2.default.models.state.findById(obj.stateId);
             }
         },
         isInStock: {
@@ -264,10 +284,10 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                         type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                     }
                 },
-                resolve: function resolve(obj, _ref3) {
+                resolve: function resolve(_, _ref3) {
                     var reference = _ref3.reference;
-
                     return _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (response) {
+                        console.log("retrieved item : " + JSON.stringify(response));
                         return response;
                     });
                 }

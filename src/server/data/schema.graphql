@@ -63,6 +63,7 @@ type ItemType implements Node {
   id: ID!
   model: ModelType
   reference: String
+  state: StateType
   isInStock: Boolean
   comments(after: String, first: Int, before: String, last: Int): ItemCommentTypeConnection
 }
@@ -115,6 +116,12 @@ type PageInfo {
 type Root {
   viewer: Viewer
   node(id: ID!): Node
+}
+
+type StateType implements Node {
+  id: ID!
+  name: String
+  severity: Int
 }
 
 type SubCategoryType implements Node {

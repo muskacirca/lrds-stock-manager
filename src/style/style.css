@@ -34,6 +34,15 @@ a {
 .orange {color: #ff9800;}
 .red {color: #F44336;}
 
+.sub-bar {
+  background: #E0E0E0;
+  height: 55px;
+}
+
+.sub-bar-component {
+  padding-top: 10px;
+}
+
 /*
  * Sidebar
  */
