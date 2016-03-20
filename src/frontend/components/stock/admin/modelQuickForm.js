@@ -44,11 +44,8 @@ class ModelQuickForm extends React.Component {
         e.preventDefault()
         if(this.refs.inputFormNewModel.value != '') {
             var newModel = this.refs.inputFormNewModel.value
-            var brand = this.state.selectedBrand
-            console.log("adding new model : " + newModel + " - " + brand)
             this.refs.inputFormNewModel.value = ''
-            document.getElementById("inputFormNewBrand").value = ''
-            this.props.onAddNewModel(newModel, brand)
+            this.props.onAddNewModel(newModel, this.state.selectedBrand)
         }
     }
 
