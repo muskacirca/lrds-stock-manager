@@ -26,7 +26,7 @@ class StockTableRow extends React.Component {
     render() {
 
         var item = this.props.item;
-        var isInStock = item.isInStock ? <i className="fa fa-check"></i> : <i className="fa fa-times"></i>
+        var isInStock = item.isInStock ? <i className="fa fa-check" /> : <i className="fa fa-times" />
         var state = this.computeState(item.state.severity)
 
         return  <tr className="pointer" onClick={this.handleRowClick.bind(this)}>

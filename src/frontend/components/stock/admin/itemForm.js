@@ -7,7 +7,7 @@ import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
 import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
 
-import ModelQuickForm from './modelQuickForm'
+import ModelQuickForm from './ModelQuickForm'
 import ItemFormDisplay from '../itemFormDisplay'
 
 class ItemFormComponent extends React.Component {

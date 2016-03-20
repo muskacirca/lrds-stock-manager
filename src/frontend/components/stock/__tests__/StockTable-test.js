@@ -1,8 +1,9 @@
-jest.unmock('../stock/StockTable')
+jest.unmock('../StockTable')
 
 import React from 'react';
 import TestUtils from 'react-addons-test-utils'
-import StockTable from '../stock/StockTable'
+import StockTable from '../StockTable'
+import StockTableRow from '../StockTableRow';
 
 
 describe('StockTable', () => {
@@ -14,10 +15,7 @@ describe('StockTable', () => {
        let instance = TestUtils.renderIntoDocument(<StockTable data={stockData} />);
        expect(TestUtils.isCompositeComponent(instance)).toBeTruthy() ;
 
-       //var list = TestUtils.scryRenderedDOMComponentsWithTag(instance, 'StockTableRow');
-       //expect(list.length).toEqual(2);
-       //expect(list[0].innerHTML).toContain('1234');
-
+       expect(StockTableRow.mock.calls.length).toBe(2);
     });
 
 });
