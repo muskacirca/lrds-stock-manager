@@ -36,11 +36,15 @@ a {
 
 .sub-bar {
   background: #E0E0E0;
-  height: 55px;
+  height: 85px;
 }
 
 .sub-bar-component {
-  padding-top: 10px;
+  padding-top: 15px;
+}
+
+.navigation-sub-row {
+  margin-top: 5px;
 }
 
 /*

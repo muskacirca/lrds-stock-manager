@@ -48381,7 +48381,6 @@
 	    _createClass(StockTable, [{
 	        key: 'handleRowClick',
 	        value: function handleRowClick(id) {
-	            console.log("second : " + id);
 	            this.props.handleSelectRow(id);
 	        }
 	    }, {
@@ -48389,7 +48388,6 @@
 	        value: function renderStockTableRows(rowsToShow) {
 	            var _this2 = this;
 
-	            console.log("aahhaha");
 	            return rowsToShow.map(function (item, key) {
 	                return _react2.default.createElement(_StockTableRow2.default, { key: item.reference + "-" + key, item: item,
 	                    handleRowClick: _this2.handleRowClick.bind(_this2) });
@@ -48675,9 +48673,13 @@
 	                    onChange: this.onSearchInputChange.bind(this),
 	                    onKeyDown: this.onKeyDownSearch.bind(this) }),
 	                _react2.default.createElement(
-	                    'ul',
-	                    null,
-	                    tagRow
+	                    'div',
+	                    { className: 'navigation-sub-row' },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        null,
+	                        tagRow
+	                    )
 	                )
 	            );
 	        }
@@ -49316,9 +49318,9 @@
 
 	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
-	var _modelQuickForm = __webpack_require__(511);
+	var _ModelQuickForm = __webpack_require__(511);
 
-	var _modelQuickForm2 = _interopRequireDefault(_modelQuickForm);
+	var _ModelQuickForm2 = _interopRequireDefault(_ModelQuickForm);
 
 	var _itemFormDisplay = __webpack_require__(477);
 
@@ -49657,7 +49659,7 @@
 	                            null,
 	                            'or create one ...'
 	                        ),
-	                        _react2.default.createElement(_modelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
+	                        _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
 	                        _react2.default.createElement('br', null),
 	                        _react2.default.createElement(
 	                            'h3',
@@ -49974,7 +49976,7 @@
 	                    name: 'ItemForm',
 	                    type: 'Viewer'
 	                };
-	            }(_AddModelMutation2.default.getFragment('viewer'), _AddItemMutation2.default.getFragment('viewer'), _modelQuickForm2.default.getFragment('viewer'));
+	            }(_AddModelMutation2.default.getFragment('viewer'), _AddItemMutation2.default.getFragment('viewer'), _ModelQuickForm2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -67946,11 +67948,8 @@
 	            e.preventDefault();
 	            if (this.refs.inputFormNewModel.value != '') {
 	                var newModel = this.refs.inputFormNewModel.value;
-	                var brand = this.state.selectedBrand;
-	                console.log("adding new model : " + newModel + " - " + brand);
 	                this.refs.inputFormNewModel.value = '';
-	                document.getElementById("inputFormNewBrand").value = '';
-	                this.props.onAddNewModel(newModel, brand);
+	                this.props.onAddNewModel(newModel, this.state.selectedBrand);
 	            }
 	        }
 	    }, {

@@ -36,7 +36,9 @@ class StockNavigationBar extends React.Component {
                                      onChange={this.onSearchInputChange.bind(this)}
                                      onKeyDown={this.onKeyDownSearch.bind(this)} />
 
-                    <ul>{tagRow}</ul>
+                    <div className="navigation-sub-row">
+                        <ul>{tagRow}</ul>
+                    </div>
                 </div>
     }
 }
