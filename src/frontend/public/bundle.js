@@ -48685,9 +48685,18 @@
 	                    'div',
 	                    { className: 'navigation-sub-row col-md-6' },
 	                    _react2.default.createElement(
-	                        'ul',
-	                        null,
-	                        tagRow
+	                        'div',
+	                        { className: 'col-md-1' },
+	                        'Tags:'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-11' },
+	                        _react2.default.createElement(
+	                            'ul',
+	                            { className: 'inline-ul' },
+	                            tagRow
+	                        )
 	                    )
 	                )
 	            );

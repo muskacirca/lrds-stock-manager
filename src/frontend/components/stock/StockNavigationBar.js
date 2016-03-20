@@ -41,7 +41,10 @@ class StockNavigationBar extends React.Component {
                         An other thing
                     </div>
                     <div className="navigation-sub-row col-md-6">
-                        <ul>{tagRow}</ul>
+                        <div className="col-md-1">Tags:</div>
+                        <div className="col-md-11">
+                            <ul className="inline-ul">{tagRow}</ul>
+                        </div>
                     </div>
                 </div>
     }
