@@ -48668,13 +48668,22 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: '' },
-	                _react2.default.createElement(_searchInput2.default, { from: 'stock',
-	                    onChange: this.onSearchInputChange.bind(this),
-	                    onKeyDown: this.onKeyDownSearch.bind(this) }),
+	                { className: 'row' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'navigation-sub-row' },
+	                    { className: 'col-md-12' },
+	                    _react2.default.createElement(_searchInput2.default, { from: 'stock',
+	                        onChange: this.onSearchInputChange.bind(this),
+	                        onKeyDown: this.onKeyDownSearch.bind(this) })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'navigation-sub-row col-md-6' },
+	                    'An other thing'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'navigation-sub-row col-md-6' },
 	                    _react2.default.createElement(
 	                        'ul',
 	                        null,
@@ -48911,18 +48920,17 @@
 	    }, {
 	        key: 'handleSearch',
 	        value: function handleSearch() {
-	            var _this2 = this;
-
 	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
-	            this.setState({ searchedText: searchedText }, function (e) {
-	                _this2.props.onChange(searchedText);
-	            });
+	            console.log(searchedText);
+	            this.setState({ searchedText: searchedText });
+	            this.props.onChange(searchedText);
 	        }
 	    }, {
 	        key: 'handlePressEnter',
 	        value: function handlePressEnter(e) {
-	            if (e.keyCode === 13) {
+	            if (e.keyCode === 13 && this.state.searchedText != "") {
 	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
+	                this.setState({ searchedText: "" });
 	                this.props.onKeyDown(this.state.searchedText);
 	            }
 	        }

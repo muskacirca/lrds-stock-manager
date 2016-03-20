@@ -31,12 +31,16 @@ class StockNavigationBar extends React.Component {
             return <li key={key} className="tag" onClick={this.onCLickTag.bind(this, element)}>{element}</li>
         }.bind(this))
 
-        return  <div className="">
-                    <SearchComponent from="stock"
+        return  <div className="row">
+                    <div className="col-md-12">
+                        <SearchComponent from="stock"
                                      onChange={this.onSearchInputChange.bind(this)}
                                      onKeyDown={this.onKeyDownSearch.bind(this)} />
-
-                    <div className="navigation-sub-row">
+                    </div>
+                    <div className="navigation-sub-row col-md-6">
+                        An other thing
+                    </div>
+                    <div className="navigation-sub-row col-md-6">
                         <ul>{tagRow}</ul>
                     </div>
                 </div>

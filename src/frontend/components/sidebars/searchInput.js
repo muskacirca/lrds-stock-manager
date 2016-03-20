@@ -18,14 +18,15 @@ class SearchComponent extends React.Component {
 
     handleSearch() {
         var searchedText = ReactDOM.findDOMNode(this.refs.searchInput).value
-        this.setState({searchedText: searchedText}, e => {
-            this.props.onChange(searchedText);
-        })
+        console.log(searchedText)
+        this.setState({searchedText: searchedText})
+        this.props.onChange(searchedText);
     }
 
     handlePressEnter(e) {
-        if(e.keyCode === 13){
+        if(e.keyCode === 13 && this.state.searchedText != ""){
             ReactDOM.findDOMNode(this.refs.searchInput).value = ''
+            this.setState({searchedText: ""})
             this.props.onKeyDown(this.state.searchedText);
         }
     }
