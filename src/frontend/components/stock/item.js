@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 
-import ItemFormDisplay from './itemFormDisplay'
+import ItemFormDisplay from './ItemFormDisplay'
 
 class ItemComponent extends React.Component {
 

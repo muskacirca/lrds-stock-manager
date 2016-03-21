@@ -52,7 +52,8 @@
       "<rootDir>/node_modules/react-addons-test-utils",
       "<rootDir>/node_modules/fbjs",
       "<rootDir>/node_modules/history",
-      "<rootDir>/node_modules/moment"
+      "<rootDir>/node_modules/moment",
+      "<rootDir>/node_modules/lodash"
     ],
     "moduleFileExtensions": [
       "js"
