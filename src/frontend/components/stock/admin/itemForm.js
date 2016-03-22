@@ -8,7 +8,7 @@ import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
 
 import ModelQuickForm from './ModelQuickForm'
-import ItemFormDisplay from '../itemFormDisplay'
+import ItemFormDisplay from '../ItemFormDisplay'
 
 class ItemFormComponent extends React.Component {
 
@@ -116,6 +116,7 @@ class ItemFormComponent extends React.Component {
             if(index === -1) {
                 suggestions.push({title: model.brand.name, suggestions: [modelSuggestion]})
             } else {
+
                 suggestions[index].suggestions.push(modelSuggestion)
             }
         })
@@ -212,7 +213,6 @@ class ItemFormComponent extends React.Component {
 
     renderAlert() {
 
-        console.log("alert : " + JSON.stringify(this.state.alert))
         if(this.state.alert !== undefined) {
             var commonAlert = "alert alert-dismissible "
             var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger"
