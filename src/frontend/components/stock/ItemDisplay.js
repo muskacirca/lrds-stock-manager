@@ -1,6 +1,6 @@
 import React from 'react'
 
-class ItemFormDisplay extends React.Component {
+class ItemDisplay extends React.Component {
 
     constructor(props) {
         super(props)
@@ -75,4 +75,4 @@ class ItemFormDisplay extends React.Component {
     }
 }
 
-export default ItemFormDisplay
+export default ItemDisplay

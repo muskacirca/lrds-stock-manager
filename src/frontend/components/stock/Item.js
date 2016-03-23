@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 
-import ItemFormDisplay from './ItemFormDisplay'
+import ItemDisplay from './ItemDisplay'
 
 class ItemComponent extends React.Component {
 
@@ -17,7 +17,7 @@ class ItemComponent extends React.Component {
         var item = this.props.viewer.item
 
         return  <div className="col-md-10 col-md-offset-1">
-                    <ItemFormDisplay item={item}/>
+                    <ItemDisplay item={item}/>
                 </div>
     }
 }

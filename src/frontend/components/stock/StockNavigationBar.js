@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 
-import ItemFormDisplay from './itemFormDisplay'
+import ItemFormDisplay from './ItemDisplay'
 import SearchComponent from '../sidebars/searchInput'
 
 class StockNavigationBar extends React.Component {

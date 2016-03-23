@@ -5,43 +5,42 @@ import TestUtils from 'react-addons-test-utils'
 import ItemForm from '../ItemForm'
 import AutosuggestWrapper from '../../../utils/AutosuggestWrapper';
 
-import ItemFormDisplay from '../../ItemFormDisplay'
+import ItemFormDisplay from '../../ItemDisplay'
 
+const itemFormData = {
+    models: {
+        edges: [
+            {
+                node: {
+                    name: "model-1",
+                    brand: {name: "RME"},
+                    domains: [{name: "domain1"}],
+                    subCategories: [{name: "subCategory2"}]
+                }
+            },
+            {
+                node: {
+                    name: "model-2",
+                    brand: {name: "Shure"},
+                    domains: [{name: "domain2"}],
+                    subCategories: [{name: "subCategory1"}]
+                }
+            }
+        ]
+    },
+    domains: [
+        {name: "domain1"},
+        {name: "domain2"}
+    ],
+    subCategories: [
+        {name: "subCategory1", category: {name: "category1"}},
+        {name: "subCategory2", category: {name: "category1"}}
+    ]
+}
 
 describe('ItemForm', () => {
 
     it('Display a form for adding an item', () => {
-
-        const itemFormData = {
-            models: {
-                edges: [
-                    {
-                        node: {
-                            name: "model-1",
-                            brand: {name: "RME"},
-                            domains: [{name: "domain1"}],
-                            subCategories: [{name: "subCategory2"}]
-                        }
-                    },
-                    {
-                        node: {
-                            name: "model-2",
-                            brand: {name: "Shure"},
-                            domains: [{name: "domain2"}],
-                            subCategories: [{name: "subCategory1"}]
-                        }
-                    }
-                ]
-            },
-            domains: [
-                {name: "domain1"},
-                {name: "domain2"}
-            ],
-            subCategories: [
-                {name: "subCategory1", category: {name: "category1"}},
-                {name: "subCategory2", category: {name: "category1"}}
-            ]
-        }
 
         TestUtils.renderIntoDocument(<ItemForm viewer={itemFormData}/>)
 

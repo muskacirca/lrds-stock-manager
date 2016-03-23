@@ -8,7 +8,7 @@ import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
 
 import ModelQuickForm from './ModelQuickForm'
-import ItemFormDisplay from '../ItemFormDisplay'
+import ItemDisplay from '../ItemDisplay'
 
 class ItemFormComponent extends React.Component {
 
@@ -243,7 +243,7 @@ class ItemFormComponent extends React.Component {
         var pageTitle = "Création d'un item"
 
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
-            <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.state}}} /> : ""
+            <ItemDisplay item={{model: model, state: {severity: this.state.itemFeatures.state}}} /> : ""
 
         return  <div className="col-md-10 col-md-offset-1">
                     <h2>{pageTitle}</h2>
