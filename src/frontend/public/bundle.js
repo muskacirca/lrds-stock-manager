@@ -47567,15 +47567,6 @@
 	                { role: 'presentation' },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/profile', activeClassName: 'link-active' },
-	                  'Profile'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
 	                  { to: '/stock', activeClassName: 'link-active' },
 	                  'Stock'
 	                )
@@ -47585,17 +47576,8 @@
 	                { role: 'presentation' },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
-	                  { to: '/event', activeClassName: 'link-active' },
-	                  'Events'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/logout', activeClassName: 'link-active' },
-	                  'Log out'
+	                  { to: '/admin/create', activeClassName: 'link-active' },
+	                  'Admin'
 	                )
 	              )
 	            )

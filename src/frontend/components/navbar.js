@@ -23,16 +23,10 @@ class NavBarBox extends React.Component{
                     <Link to="/" activeClassName="link-active">Home</Link>
                   </li>
                   <li role="presentation">
-                    <Link to="/profile" activeClassName="link-active">Profile</Link>
-                  </li>
-                  <li role="presentation">
                     <Link to="/stock" activeClassName="link-active">Stock</Link>
                   </li>
                   <li role="presentation">
-                    <Link to="/event" activeClassName="link-active">Events</Link>
-                  </li>
-                  <li role="presentation">
-                    <Link to="/logout" activeClassName="link-active">Log out</Link>
+                    <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                   </li>
                 </ul>
               </div>
