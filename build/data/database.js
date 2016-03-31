@@ -14,7 +14,13 @@ var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
 var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec";
 var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
 
-var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: "localhost",
+var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
+    pool: {
+        max: 5,
+        min: 0,
+        idle: 10000
+    }
+}) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: "localhost",
     logging: function logging(param) {
         param.indexOf("Executing (default):") !== -1 ? false : true;
     } });
