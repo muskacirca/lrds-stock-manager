@@ -40,6 +40,12 @@ describe('ItemForm', () => {
             subCategories: [
                 {name: "subCategory1", category: {name: "category1"}},
                 {name: "subCategory2", category: {name: "category1"}}
+            ],
+            states: [
+                {name: "ok", severity: 1},
+                {name: "ko", severity: 2},
+                {name: "melon", severity: 3},
+                {name: "poire", severity: 4},
             ]
         }
 

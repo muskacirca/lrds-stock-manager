@@ -32,6 +32,7 @@ class ItemFormComponent extends React.Component {
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
         _.set(existingItemFeature, "modelName", suggestionValue)
+        _.set(existingItemFeature, "severity", undefined)
         console.log("buildSelectedItem: " + JSON.stringify(existingItemFeature))
         return existingItemFeature
     }

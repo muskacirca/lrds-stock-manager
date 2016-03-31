@@ -49533,6 +49533,7 @@
 	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
 	            _lodash2.default.set(existingItemFeature, "modelName", suggestionValue);
+	            _lodash2.default.set(existingItemFeature, "severity", undefined);
 	            console.log("buildSelectedItem: " + JSON.stringify(existingItemFeature));
 	            return existingItemFeature;
 	        }
