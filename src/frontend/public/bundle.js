@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(516);
+	var _history = __webpack_require__(517);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47220,15 +47220,15 @@
 
 	var _ItemForm2 = _interopRequireDefault(_ItemForm);
 
-	var _product = __webpack_require__(513);
+	var _product = __webpack_require__(514);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(514);
+	var _profile = __webpack_require__(515);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(515);
+	var _event = __webpack_require__(516);
 
 	var _event2 = _interopRequireDefault(_event);
 
@@ -49478,15 +49478,19 @@
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _AddModelMutation = __webpack_require__(510);
+	var _Expire = __webpack_require__(510);
+
+	var _Expire2 = _interopRequireDefault(_Expire);
+
+	var _AddModelMutation = __webpack_require__(511);
 
 	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
 
-	var _AddItemMutation = __webpack_require__(511);
+	var _AddItemMutation = __webpack_require__(512);
 
 	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
-	var _ModelQuickForm = __webpack_require__(512);
+	var _ModelQuickForm = __webpack_require__(513);
 
 	var _ModelQuickForm2 = _interopRequireDefault(_ModelQuickForm);
 
@@ -49511,8 +49515,10 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
 
 	        _this.state = {
-	            itemFeatures: { modelName: "", domains: [], subCategories: [] }
+	            itemFeatures: { modelName: "", domains: [], subCategories: [] },
+	            alert: undefined
 	        };
+
 	        return _this;
 	    }
 
@@ -49598,6 +49604,7 @@
 	    }, {
 	        key: 'updateAlert',
 	        value: function updateAlert(message, type) {
+	            console.log("updateAlert: " + message);
 	            var alert = { message: message, type: type };
 	            this.setState({ alert: alert });
 	        }
@@ -49756,28 +49763,41 @@
 	            this.setState({ itemFeatures: itemFeatures });
 	        }
 	    }, {
+	        key: 'onAlertDismiss',
+	        value: function onAlertDismiss() {
+	            this.setState({ alert: undefined });
+	        }
+	    }, {
 	        key: 'renderAlert',
 	        value: function renderAlert() {
 
 	            if (this.state.alert !== undefined) {
-	                var commonAlert = "alert alert-dismissible ";
+	                console.log("alert");
+
+	                var commonAlert = "alert ";
 	                var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger";
 
 	                return _react2.default.createElement(
-	                    'div',
-	                    { className: commonAlert + alertType, role: 'alert' },
+	                    _Expire2.default,
+	                    { delay: 5000, callback: this.onAlertDismiss.bind(this) },
 	                    _react2.default.createElement(
-	                        'button',
-	                        { type: 'button', className: 'close', 'data-dismiss': 'alert', 'aria-label': 'Close' },
-	                        _react2.default.createElement(
-	                            'span',
-	                            { 'aria-hidden': 'true' },
-	                            '×'
-	                        )
-	                    ),
-	                    this.state.alert.message
+	                        'div',
+	                        { className: commonAlert + alertType, role: 'alert' },
+	                        this.state.alert.message
+	                    )
 	                );
 	            }
+	        }
+	    }, {
+	        key: 'renderStateList',
+	        value: function renderStateList(states) {
+	            return states.map(function (state, key) {
+	                return _react2.default.createElement(
+	                    'option',
+	                    { key: "state-list-" + key, value: state.severity },
+	                    state.name
+	                );
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -49793,8 +49813,10 @@
 
 	            var model = this.findModelAndBindNewFeatures(this.state.itemFeatures);
 
+	            var stateList = this.renderStateList(this.props.viewer.states);
+
 	            var alert = this.renderAlert();
-	            var pageTitle = "Création d'un item";
+	            var pageTitle = "Create an item";
 
 	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_ItemFormDisplay2.default, { item: { model: model, state: { severity: this.state.itemFeatures.state } } }) : "";
 
@@ -49843,26 +49865,7 @@
 	                                null,
 	                                'Select a state ...'
 	                            ),
-	                            _react2.default.createElement(
-	                                'option',
-	                                { value: '1' },
-	                                'Neuf'
-	                            ),
-	                            _react2.default.createElement(
-	                                'option',
-	                                { value: '2' },
-	                                'Bon état'
-	                            ),
-	                            _react2.default.createElement(
-	                                'option',
-	                                { value: '3' },
-	                                'Le dernier souffle'
-	                            ),
-	                            _react2.default.createElement(
-	                                'option',
-	                                { value: '4' },
-	                                'A réparer'
-	                            )
+	                            stateList
 	                        ),
 	                        _react2.default.createElement(
 	                            'h3',
@@ -50064,6 +50067,34 @@
 	                            isConnection: true
 	                        },
 	                        type: 'ModelTypeConnection'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'severity',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'Int'
+	                        }, {
+	                            fieldName: 'name',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'states',
+	                        kind: 'Field',
+	                        metadata: {
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'StateType'
 	                    }, {
 	                        children: [{
 	                            fieldName: 'id',
@@ -67629,6 +67660,93 @@
 /* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Expire = function (_React$Component) {
+	    _inherits(Expire, _React$Component);
+
+	    function Expire(props) {
+	        _classCallCheck(this, Expire);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Expire).call(this, props));
+
+	        _this.state = {
+	            visible: true
+	        };
+	        return _this;
+	    }
+
+	    _createClass(Expire, [{
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(nextProps) {
+
+	            // reset the timer if children are changed
+	            if (nextProps.children !== this.props.children) {
+	                this.setTimer();
+	                this.setState({ visible: true });
+	            }
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.setTimer();
+	        }
+	    }, {
+	        key: 'setTimer',
+	        value: function setTimer() {
+	            // clear any existing timer
+	            this._timer != null ? clearTimeout(this._timer) : null;
+
+	            // hide after `delay` milliseconds
+	            this._timer = setTimeout(function () {
+	                this.setState({ visible: false });
+	                this._timer = null;
+	                this.props.callback();
+	            }.bind(this), this.props.delay);
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            clearTimeout(this._timer);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return this.state.visible ? _react2.default.createElement(
+	                'div',
+	                null,
+	                this.props.children
+	            ) : _react2.default.createElement('span', null);
+	        }
+	    }]);
+
+	    return Expire;
+	}(_react2.default.Component);
+
+	exports.default = Expire;
+
+/***/ },
+/* 511 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -67846,7 +67964,7 @@
 	exports.default = AddModelMutation;
 
 /***/ },
-/* 511 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68027,7 +68145,7 @@
 	exports.default = AddItemMutation;
 
 /***/ },
-/* 512 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68214,7 +68332,7 @@
 	});
 
 /***/ },
-/* 513 */
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68275,7 +68393,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 514 */
+/* 515 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68343,7 +68461,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 515 */
+/* 516 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68409,7 +68527,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 516 */
+/* 517 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68450,7 +68568,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(517);
+	var _useBeforeUnload2 = __webpack_require__(518);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -68470,13 +68588,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(518);
+	var _enableBeforeUnload2 = __webpack_require__(519);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(519);
+	var _enableQueries2 = __webpack_require__(520);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -68485,7 +68603,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 517 */
+/* 518 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -68602,7 +68720,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 518 */
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68615,7 +68733,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(517);
+	var _useBeforeUnload = __webpack_require__(518);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -68623,7 +68741,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 519 */
+/* 520 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

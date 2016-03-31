@@ -210,7 +210,6 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
         model: {
             type: GraphQLModelType,
             resolve: function resolve(obj) {
-                console.log("get model in item : " + JSON.stringify(obj));
                 return _database2.default.models.model.findById(obj.modelId);
             }
         },
@@ -328,6 +327,14 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 type: new _graphql.GraphQLList(GraphQLCategoryType),
                 resolve: function resolve() {
                     return _database2.default.models.category.findAll().then(function (response) {
+                        return response;
+                    });
+                }
+            },
+            states: {
+                type: new _graphql.GraphQLList(GraphQLStateType),
+                resolve: function resolve() {
+                    return _database2.default.models.state.findAll().then(function (response) {
                         return response;
                     });
                 }

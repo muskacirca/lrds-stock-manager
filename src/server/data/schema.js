@@ -186,7 +186,6 @@ var GraphQLItemType = new GraphQLObjectType({
         model: {
             type: GraphQLModelType,
             resolve: (obj) => {
-                console.log("get model in item : " + JSON.stringify(obj))
                 return Database.models.model.findById(obj.modelId)
             }
         },
@@ -276,6 +275,10 @@ var GraphQLViewer = new GraphQLObjectType({
             type: new GraphQLList(GraphQLCategoryType),
             resolve: () => Database.models.category.findAll().then((response) => response)
         },
+        states: {
+            type: new GraphQLList(GraphQLStateType),
+            resolve: () => Database.models.state.findAll().then(response => response)
+        },        
         countNextItemId: {
             type: GraphQLInt,
             args: {
