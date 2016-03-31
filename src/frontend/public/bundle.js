@@ -49563,7 +49563,7 @@
 	        value: function onSelectStateChange(event) {
 
 	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
-	            _lodash2.default.set(itemFeatures, "state", event.target.value);
+	            _lodash2.default.set(itemFeatures, "severity", event.target.value);
 
 	            this.setState({ itemFeatures: itemFeatures });
 	        }
@@ -49586,7 +49586,7 @@
 
 	            var addItemMutation = new _AddItemMutation2.default({
 	                modelName: this.state.itemFeatures.modelName,
-	                state: this.state.itemFeatures.state,
+	                severity: this.state.itemFeatures.severity,
 	                domains: domainsToAdd,
 	                subCategories: subCategoriesToAdd,
 	                viewer: this.props.viewer });
@@ -49818,7 +49818,7 @@
 	            var alert = this.renderAlert();
 	            var pageTitle = "Create an item";
 
-	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_ItemFormDisplay2.default, { item: { model: model, state: { severity: this.state.itemFeatures.state } } }) : "";
+	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_ItemFormDisplay2.default, { item: { model: model, state: { severity: this.state.itemFeatures.severity } } }) : "";
 
 	            return _react2.default.createElement(
 	                'div',
@@ -50069,6 +50069,13 @@
 	                        type: 'ModelTypeConnection'
 	                    }, {
 	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, {
 	                            fieldName: 'severity',
 	                            kind: 'Field',
 	                            metadata: {},
@@ -50078,14 +50085,6 @@
 	                            kind: 'Field',
 	                            metadata: {},
 	                            type: 'String'
-	                        }, {
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
 	                        }],
 	                        fieldName: 'states',
 	                        kind: 'Field',
@@ -68096,7 +68095,7 @@
 	            console.log("getting variables : " + JSON.stringify(this.props.domains));
 	            return {
 	                modelName: this.props.modelName,
-	                state: this.props.state,
+	                severity: this.props.severity,
 	                domains: this.props.domains,
 	                subCategories: this.props.subCategories
 	            };

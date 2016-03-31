@@ -386,7 +386,7 @@ const AddItemMutation = mutationWithClientMutationId({
     description: 'A function to create an item',
     inputFields: {
         modelName: {type: new GraphQLNonNull(GraphQLString)},
-        state: {type: new GraphQLNonNull(GraphQLString)},
+        severity: {type: new GraphQLNonNull(GraphQLString)},
         domains: {type: new GraphQLList(GraphQLString)},
         subCategories: {type: new GraphQLList(GraphQLString)}
     },
@@ -402,7 +402,7 @@ const AddItemMutation = mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({modelName, state, domains, subCategories}) => {
+    mutateAndGetPayload: ({modelName, severity, domains, subCategories}) => {
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
@@ -441,9 +441,13 @@ const AddItemMutation = mutationWithClientMutationId({
                                 reference = reference  + "-" + nextId
                                 console.log("createReference: " + reference)
 
-                                return model.createItem({stateId: state, reference: reference})
-                                    .then(item => {
-                                        return item
+                                return Database.models.state.findOne({where: {severity: severity}})
+                                    .then(state => {
+                                        console.log("found state: " + JSON.stringify(state))
+                                        return model.createItem({stateId: state.severity, reference: reference})
+                                            .then(item => {
+                                                return item
+                                            })
                                     })
                             })
                     })

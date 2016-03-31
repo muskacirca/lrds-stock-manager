@@ -54,7 +54,7 @@ class ItemFormComponent extends React.Component {
     onSelectStateChange(event) {
 
         var itemFeatures = _.cloneDeep(this.state.itemFeatures)
-        _.set(itemFeatures, "state", event.target.value)
+        _.set(itemFeatures, "severity", event.target.value)
 
         this.setState({itemFeatures: itemFeatures})
     }
@@ -71,7 +71,7 @@ class ItemFormComponent extends React.Component {
 
         var addItemMutation = new AddItemMutation({
             modelName: this.state.itemFeatures.modelName,
-            state: this.state.itemFeatures.state,
+            severity: this.state.itemFeatures.severity,
             domains: domainsToAdd,
             subCategories: subCategoriesToAdd,
             viewer: this.props.viewer});
@@ -82,7 +82,8 @@ class ItemFormComponent extends React.Component {
 
         Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
 
-
+        // TODO Re-initialize all components
+        
     }
 
     updateAlert(message, type) {
@@ -265,7 +266,7 @@ class ItemFormComponent extends React.Component {
         var pageTitle = "Create an item"
 
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
-            <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.state}}} /> : ""
+            <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> : ""
 
         return  <div className="col-md-10 col-md-offset-1">
                     <h2>{pageTitle}</h2>
@@ -340,6 +341,7 @@ export default Relay.createContainer(ItemFormComponent, {
 
             }
             states {
+                id
                 severity
                 name
             }

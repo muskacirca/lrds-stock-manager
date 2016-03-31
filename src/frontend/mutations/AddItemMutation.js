@@ -40,7 +40,7 @@ class AddItemMutation extends Relay.Mutation {
         console.log("getting variables : " + JSON.stringify(this.props.domains))
         return {
             modelName: this.props.modelName,
-            state: this.props.state,
+            severity: this.props.severity,
             domains: this.props.domains,
             subCategories: this.props.subCategories
         };

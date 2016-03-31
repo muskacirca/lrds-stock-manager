@@ -1549,7 +1549,7 @@
               "defaultValue": null
             },
             {
-              "name": "state",
+              "name": "severity",
               "description": null,
               "type": {
                 "kind": "NON_NULL",

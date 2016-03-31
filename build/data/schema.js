@@ -474,7 +474,7 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
     description: 'A function to create an item',
     inputFields: {
         modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
-        state: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        severity: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
         subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
     },
@@ -494,7 +494,7 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref8) {
         var modelName = _ref8.modelName;
-        var state = _ref8.state;
+        var severity = _ref8.severity;
         var domains = _ref8.domains;
         var subCategories = _ref8.subCategories;
 
@@ -530,8 +530,11 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
                     reference = reference + "-" + nextId;
                     console.log("createReference: " + reference);
 
-                    return model.createItem({ stateId: state, reference: reference }).then(function (item) {
-                        return item;
+                    return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
+                        console.log("found state: " + JSON.stringify(state));
+                        return model.createItem({ stateId: state.severity, reference: reference }).then(function (item) {
+                            return item;
+                        });
                     });
                 });
             });
