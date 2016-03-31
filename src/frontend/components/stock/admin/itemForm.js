@@ -269,6 +269,7 @@ class ItemFormComponent extends React.Component {
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
             <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> : ""
 
+        
         return  <div className="col-md-10 col-md-offset-1">
                     <h2>{pageTitle}</h2>
                     {alert}
