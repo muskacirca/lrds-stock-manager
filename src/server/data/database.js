@@ -8,7 +8,7 @@ var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test"
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL, {
     pool: {
         max: 5,
-        min: 0,
+        min: 1,
         idle: 10000
     },
 })
