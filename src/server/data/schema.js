@@ -444,7 +444,7 @@ const AddItemMutation = mutationWithClientMutationId({
                                 return Database.models.state.findOne({where: {severity: severity}})
                                     .then(state => {
                                         console.log("found state: " + JSON.stringify(state))
-                                        return model.createItem({stateId: state.severity, reference: reference})
+                                        return model.createItem({stateId: state.id, reference: reference})
                                             .then(item => {
                                                 return item
                                             })

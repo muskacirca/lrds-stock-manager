@@ -49600,6 +49600,8 @@
 	            };
 
 	            _reactRelay2.default.Store.commitUpdate(addItemMutation, { onSuccess: onSuccess, onFailure: onFailure });
+
+	            // TODO Re-initialize all components
 	        }
 	    }, {
 	        key: 'updateAlert',

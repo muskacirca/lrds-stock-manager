@@ -532,7 +532,7 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
 
                     return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
                         console.log("found state: " + JSON.stringify(state));
-                        return model.createItem({ stateId: state.severity, reference: reference }).then(function (item) {
+                        return model.createItem({ stateId: state.id, reference: reference }).then(function (item) {
                             return item;
                         });
                     });
