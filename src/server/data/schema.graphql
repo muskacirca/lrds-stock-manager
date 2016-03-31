@@ -140,4 +140,5 @@ type Viewer implements Node {
   domains: [DomainType]
   subCategories: [SubCategoryType]
   categories: [CategoryType]
+  countNextItemId(itemReference: String!): Int
 }

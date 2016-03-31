@@ -238,7 +238,6 @@ var GraphQLItemType = new _graphql.GraphQLObjectType({
             resolve: function resolve(obj, _ref) {
                 var args = _objectWithoutProperties(_ref, []);
 
-                console.log("comments in item : " + obj.getComments());
                 return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getComments(), args);
             }
         }
@@ -287,7 +286,6 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                 resolve: function resolve(_, _ref3) {
                     var reference = _ref3.reference;
                     return _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (response) {
-                        console.log("retrieved item : " + JSON.stringify(response));
                         return response;
                     });
                 }
@@ -333,6 +331,26 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
                         return response;
                     });
                 }
+            },
+            countNextItemId: {
+                type: _graphql.GraphQLInt,
+                args: {
+                    itemReference: {
+                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+                    }
+                },
+                resolve: function resolve(functionToRetrievedViewerFromCache, _ref5) {
+                    var itemReference = _ref5.itemReference;
+
+
+                    var searchKey = itemReference + '%';
+                    console.log("search key:  " + JSON.stringify(searchKey));
+                    console.log("function:  " + JSON.stringify(functionToRetrievedViewerFromCache));
+                    return _database2.default.models.item.count({ where: { reference: { $like: searchKey } } }).then(function (response) {
+                        console.log("retrieved count:  " + JSON.stringify(response));
+                        return response + 1;
+                    });
+                }
             }
         };
     },
@@ -372,8 +390,8 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
         },
         modelEdge: {
             type: GraphQLModelEdge,
-            resolve: function resolve(_ref5) {
-                var id = _ref5.id;
+            resolve: function resolve(_ref6) {
+                var id = _ref6.id;
 
 
                 return _database2.default.models.model.findAll().then(function (dataModels) {
@@ -421,9 +439,9 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
         }
 
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref6) {
-        var brandName = _ref6.brandName;
-        var name = _ref6.name;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref7) {
+        var brandName = _ref7.brandName;
+        var name = _ref7.name;
 
 
         return _database2.default.models.brand.findOrCreate({ where: { name: brandName } }).spread(function (brand, wasCreated) {
@@ -467,11 +485,11 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
             }
         }
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref7) {
-        var modelName = _ref7.modelName;
-        var state = _ref7.state;
-        var domains = _ref7.domains;
-        var subCategories = _ref7.subCategories;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref8) {
+        var modelName = _ref8.modelName;
+        var state = _ref8.state;
+        var domains = _ref8.domains;
+        var subCategories = _ref8.subCategories;
 
 
         return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
@@ -492,9 +510,23 @@ var AddItemMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
                 });
             });
 
-            var reference = modelName + "/" + state;
-            return model.createItem({ stateId: state, reference: reference }).then(function (item) {
-                return item;
+            console.log("model : " + JSON.stringify(model));
+
+            return _database2.default.models.brand.findById(model.brandId).then(function (brand) {
+
+                var brandName = brand.name.replace(/ /g, '').substring(0, 4);
+                var modelName = model.name.replace(/ /g, '').substring(0, 4);
+                var reference = brandName.toUpperCase() + modelName.toUpperCase();
+
+                return _database2.default.models.item.count({ where: { reference: { $like: reference + '%' } } }).then(function (id) {
+                    var nextId = id + 1;
+                    reference = reference + "-" + nextId;
+                    console.log("createReference: " + reference);
+
+                    return model.createItem({ stateId: state, reference: reference }).then(function (item) {
+                        return item;
+                    });
+                });
             });
         });
     }

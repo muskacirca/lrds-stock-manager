@@ -49578,7 +49578,8 @@
 	            });
 	            console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd));
 
-	            var addItemMutation = new _AddItemMutation2.default({ modelName: this.state.itemFeatures.modelName,
+	            var addItemMutation = new _AddItemMutation2.default({
+	                modelName: this.state.itemFeatures.modelName,
 	                state: this.state.itemFeatures.state,
 	                domains: domainsToAdd,
 	                subCategories: subCategoriesToAdd,
