@@ -84,7 +84,7 @@ class ItemFormComponent extends React.Component {
         Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
 
         // TODO Re-initialize all components
-        
+
     }
 
     updateAlert(message, type) {
@@ -230,15 +230,15 @@ class ItemFormComponent extends React.Component {
 
         if(this.state.alert !== undefined) {
             console.log("alert")
-            
+
             var commonAlert = "alert "
             var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger"
 
             return  <Expire delay={5000} callback={this.onAlertDismiss.bind(this)}>
-                        <div className={commonAlert + alertType} role="alert">
-                            {this.state.alert.message}
-                        </div>
-                    </Expire>
+                <div className={commonAlert + alertType} role="alert">
+                    {this.state.alert.message}
+                </div>
+            </Expire>
         }
     }
 
@@ -269,52 +269,52 @@ class ItemFormComponent extends React.Component {
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
             <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> : ""
 
-        
+
         return  <div className="col-md-10 col-md-offset-1">
-                    <h2>{pageTitle}</h2>
-                    {alert}
-                    <h3>Select your model</h3>
-                    <div className="row">
-                        <div className="col-md-3">
-                            <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
-                                                multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
-                                                resetInputValue={true} ref="inputFormSearchModel"/>
-                            <br />
-                            <h5>or create one ...</h5>
-                            <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
-                            <br />
+            <h2>{pageTitle}</h2>
+            {alert}
+            <h3>Select your model</h3>
+            <div className="row">
+                <div className="col-md-3">
+                    <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
+                                        multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchModel"/>
+                    <br />
+                    <h5>or create one ...</h5>
+                    <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
+                    <br />
 
-                            <h3>Add State</h3>
-                            <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
-                                <option>Select a state ...</option>
-                                {stateList}
-                            </select>
+                    <h3>Add State</h3>
+                    <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
+                        <option>Select a state ...</option>
+                        {stateList}
+                    </select>
 
-                            <h3>Add Domain</h3>
-                            <AutosuggestWrapper inputText="Select a domain ..." suggestions={builtDomainSuggestion}
-                                                multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
-                                                resetInputValue={true} ref="inputFormSearchDomain"/>
+                    <h3>Add Domain</h3>
+                    <AutosuggestWrapper inputText="Select a domain ..." suggestions={builtDomainSuggestion}
+                                        multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchDomain"/>
 
-                            <h3>Add Categories</h3>
-                            <AutosuggestWrapper inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
-                                                multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
-                                                resetInputValue={true} ref="inputFormSearchSubCategories"/>
-                        </div>
-
-                        <div className="col-md-8">
-                            {itemFormDisplay}
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-md-1 col-md-offset-10">
-                            <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
-                        </div>
-                    </div>
+                    <h3>Add Categories</h3>
+                    <AutosuggestWrapper inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
+                                        multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchSubCategories"/>
                 </div>
+
+                <div className="col-md-8">
+                    {itemFormDisplay}
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-md-1 col-md-offset-10">
+                    <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
+                </div>
+            </div>
+        </div>
     }
 }
 

@@ -55,24 +55,24 @@ class ModelQuickForm extends React.Component {
         var builtBrandSuggestion = this.buildBrandSuggestion(brands);
 
         return  <div>
-                    <form name="addNewModelForm">
-                        <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
-                                            multiSection={false} suggestionFilter={this.brandSuggestionFilter.bind(this)}
-                                            onSuggestionSelected={this.onBrandSuggestionSelected.bind(this)}
-                                            onInputChange={this.onBrandInputChange.bind(this)}
-                                            resetInputValue={false} inputId="inputFormNewBrand"/>
+            <form name="addNewModelForm">
+                <AutosuggestWrapper inputText="Select a brand ..." suggestions={builtBrandSuggestion}
+                                    multiSection={false} suggestionFilter={this.brandSuggestionFilter.bind(this)}
+                                    onSuggestionSelected={this.onBrandSuggestionSelected.bind(this)}
+                                    onInputChange={this.onBrandInputChange.bind(this)}
+                                    resetInputValue={false} inputId="inputFormNewBrand"/>
 
-                        <br />
-                        <div className="row">
-                            <div className="col-md-10">
-                                <input ref="inputFormNewModel" type="text" className="form-control" placeholder="Enter a model ..." />
-                            </div>
-                            <div className="col-md-1">
-                                <button className="btn btn-default" type="submit" onClick={this.onAddNewModel.bind(this)}>OK</button>
-                            </div>
-                        </div>
-                    </form>
+                <br />
+                <div className="row">
+                    <div className="col-md-10">
+                        <input ref="inputFormNewModel" type="text" className="form-control" placeholder="Enter a model ..." />
+                    </div>
+                    <div className="col-md-1">
+                        <button className="btn btn-default" type="submit" onClick={this.onAddNewModel.bind(this)}>OK</button>
+                    </div>
                 </div>
+            </form>
+        </div>
     }
 
 }
