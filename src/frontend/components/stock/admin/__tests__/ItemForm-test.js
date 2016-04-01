@@ -7,7 +7,6 @@ import AutosuggestWrapper from '../../../utils/AutosuggestWrapper';
 
 import ItemFormDisplay from '../../ItemFormDisplay'
 
-
 describe('ItemForm', () => {
 
     const itemFormData = {

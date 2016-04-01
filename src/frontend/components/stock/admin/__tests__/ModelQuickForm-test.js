@@ -5,6 +5,7 @@ import TestUtils from 'react-addons-test-utils'
 import ModelQuickForm from '../ModelQuickForm'
 import AutosuggestWrapper from '../../../utils/AutosuggestWrapper';
 
+
 describe('ModelQuickForm', () => {
 
    it('Display a quick form for adding model', () => {
