@@ -1,4 +1,4 @@
-jest.unmock('../ItemForm')
+jest.unmock('../ItemForm.js')
 
 import React from 'react';
 import TestUtils from 'react-addons-test-utils'
