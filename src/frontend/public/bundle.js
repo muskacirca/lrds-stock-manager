@@ -50889,7 +50889,8 @@
 	            { className: 'navbar-header' },
 	            _react2.default.createElement(
 	              'button',
-	              { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
+	              { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse',
+	                'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
 	              _react2.default.createElement(
 	                'span',
 	                { className: 'sr-only' },
@@ -50938,8 +50939,22 @@
 	                  'Admin'
 	                )
 	              )
+	            ),
+	            _react2.default.createElement(
+	              'ul',
+	              { className: 'nav navbar-nav' },
+	              _react2.default.createElement(
+	                'li',
+	                { role: 'presentation' },
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { to: '/admin/create', className: 'navbar-right', activeClassName: 'link-active' },
+	                  _react2.default.createElement('i', { className: 'fa fa-2x fa-shopping-cart' })
+	                )
+	              )
 	            )
-	          )
+	          ),
+	          _react2.default.createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' })
 	        )
 	      );
 	    }
@@ -51837,6 +51852,11 @@
 	                        'th',
 	                        null,
 	                        'En Stock'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Actions'
 	                    )
 	                )
 	            );
@@ -51935,6 +51955,24 @@
 	                    "td",
 	                    null,
 	                    isInStock
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "row" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "col-md-1" },
+	                            _react2.default.createElement("i", { className: "fa fa-cart-plus" })
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "col-md-1" },
+	                            _react2.default.createElement("i", { className: "fa fa-cart-plus" })
+	                        )
+	                    )
 	                )
 	            );
 	        }

@@ -35,6 +35,17 @@ class StockTableRow extends React.Component {
                     <td>{item.model.brand.name}</td>
                     <td>{item.reference}</td>
                     <td>{isInStock}</td>
+                    <td>
+                        <div className="row">
+                            <div className="col-md-1">
+                                <i className="fa fa-cart-plus"></i>
+                            </div>
+                            <div className="col-md-1">
+                                <i className="fa fa-cart-plus"></i>
+                            </div>
+                        </div>
+
+                    </td>
                 </tr>
 
     }

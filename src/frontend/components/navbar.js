@@ -8,7 +8,8 @@ class NavBarBox extends React.Component{
           <nav className="navbar navbar-inverse navbar-fixed-top">
             <div className="container-fluid">
               <div className="navbar-header">
-                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                   <span className="sr-only">Toggle navigation</span>
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
@@ -29,7 +30,18 @@ class NavBarBox extends React.Component{
                     <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                   </li>
                 </ul>
+                  <ul className="nav navbar-nav">
+                      <li role="presentation">
+                          <Link to="/admin/create" className="navbar-right" activeClassName="link-active">
+                              <i className="fa fa-2x fa-shopping-cart"></i>
+                          </Link>
+
+                      </li>
+                  </ul>
               </div>
+                <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                </div>
             </div>
           </nav>
         )

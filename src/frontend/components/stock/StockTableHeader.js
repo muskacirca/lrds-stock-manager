@@ -11,6 +11,7 @@ class StockTableHeader extends React.Component {
                 <th>Marque</th>
                 <th>Reference</th>
                 <th>En Stock</th>
+                <th>Actions</th>
             </tr>
             </thead>
         )
