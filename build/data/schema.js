@@ -405,7 +405,7 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
                     return _database2.default.models.model.findById(id).then(function (dataModel) {
                         console.log("retrieved model after add item: " + JSON.stringify(dataModel));
 
-                        var itemToPass = undefined;
+                        var itemToPass = void 0;
                         var _iteratorNormalCompletion = true;
                         var _didIteratorError = false;
                         var _iteratorError = undefined;
