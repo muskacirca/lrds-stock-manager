@@ -1,44 +1,54 @@
-jest.unmock('../ItemForm')
+jest.unmock('../ItemForm.js')
 
 import React from 'react';
 import TestUtils from 'react-addons-test-utils'
 import ItemForm from '../ItemForm'
 import AutosuggestWrapper from '../../../utils/AutosuggestWrapper';
 
-import ItemFormDisplay from '../../ItemDisplay'
-
-const itemFormData = {
-    models: {
-        edges: [
-            {
-                node: {
-                    name: "model-1",
-                    brand: {name: "RME"},
-                    domains: [{name: "domain1"}],
-                    subCategories: [{name: "subCategory2"}]
-                }
-            },
-            {
-                node: {
-                    name: "model-2",
-                    brand: {name: "Shure"},
-                    domains: [{name: "domain2"}],
-                    subCategories: [{name: "subCategory1"}]
-                }
-            }
-        ]
-    },
-    domains: [
-        {name: "domain1"},
-        {name: "domain2"}
-    ],
-    subCategories: [
-        {name: "subCategory1", category: {name: "category1"}},
-        {name: "subCategory2", category: {name: "category1"}}
-    ]
-}
+import ItemFormDisplay from '../../ItemFormDisplay'
 
 describe('ItemForm', () => {
+
+    const itemFormData = {
+        models: {
+            edges: [
+                {
+                    node: {
+                        name: "model-1",
+                        brand: {name: "RME"},
+                        domains: [{name: "domain1"}],
+                        subCategories: [{name: "subCategory2"}]
+                    }
+                },
+                {
+                    node: {
+                        name: "model-2",
+                        brand: {name: "Shure"},
+                        domains: [{name: "domain2"}],
+                        subCategories: [{name: "subCategory1"}]
+                    }
+                }
+            ]
+        },
+        domains: [
+            {name: "domain1"},
+            {name: "domain2"}
+        ],
+        subCategories: [
+            {name: "subCategory1", category: {name: "category1"}},
+            {name: "subCategory2", category: {name: "category1"}}
+        ],
+        states: [
+            {name: "ok", severity: 1},
+            {name: "ko", severity: 2},
+            {name: "melon", severity: 3},
+            {name: "poire", severity: 4},
+        ]
+    };
+
+    beforeEach(() => {
+        ItemFormDisplay.mockClear();
+    });
 
     it('Display a form for adding an item', () => {
 
@@ -78,5 +88,26 @@ describe('ItemForm', () => {
         expect(autosuggestSubCategoriesCallArgs.suggestions[0].title).toEqual("category1");
 
         expect(ItemFormDisplay.mock.calls.length).toBe(0)
+    });
+
+    it('reset item feature severity when selection new model', () => {
+
+        var instance = TestUtils.renderIntoDocument(<ItemForm viewer={itemFormData}/>)
+
+        var options = TestUtils.scryRenderedDOMComponentsWithTag(instance, 'option')
+        expect(options.length).toBe(5)
+
+        var select = TestUtils.findRenderedDOMComponentWithTag(instance, 'select')
+        TestUtils.Simulate.change(select, { target: { value: 'ok' } });
+        
+        var select = TestUtils.findRenderedDOMComponentWithTag(instance, 'select')
+        TestUtils.Simulate.change(select, { target: { value: 'ok' } });
+        //
+        // expect(ItemFormDisplay.mock.calls.length).toBe(1)
+        // var itemFormDisplayArgs = ItemFormDisplay.mock.calls[0][0];
+        //
+        // expect(itemFormDisplayArgs.item.state.severity).toContain("1")
+
+
     });
 })

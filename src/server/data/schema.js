@@ -186,7 +186,6 @@ var GraphQLItemType = new GraphQLObjectType({
         model: {
             type: GraphQLModelType,
             resolve: (obj) => {
-                console.log("get model in item : " + JSON.stringify(obj))
                 return Database.models.model.findById(obj.modelId)
             }
         },
@@ -206,7 +205,6 @@ var GraphQLItemType = new GraphQLObjectType({
             type: ItemCommentConnection,
             args: {...connectionArgs},
             resolve: (obj, {...args}) => {
-                console.log("comments in item : " + obj.getComments())
                 return connectionFromPromisedArray(obj.getComments(), args)
             }
         }
@@ -250,7 +248,6 @@ var GraphQLViewer = new GraphQLObjectType({
             },
             resolve: (_, {reference}) => Database.models.item.findOne({where: {reference : reference}})
                                             .then((response) => {
-                                                console.log("retrieved item : " + JSON.stringify((response)))
                                                 return response
                                             })
         },
@@ -277,6 +274,29 @@ var GraphQLViewer = new GraphQLObjectType({
         categories: {
             type: new GraphQLList(GraphQLCategoryType),
             resolve: () => Database.models.category.findAll().then((response) => response)
+        },
+        states: {
+            type: new GraphQLList(GraphQLStateType),
+            resolve: () => Database.models.state.findAll().then(response => response)
+        },        
+        countNextItemId: {
+            type: GraphQLInt,
+            args: {
+                itemReference: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (functionToRetrievedViewerFromCache, {itemReference}) => {
+
+
+                var searchKey = itemReference + '%'
+                console.log("search key:  " + JSON.stringify(searchKey))
+                console.log("function:  " + JSON.stringify(functionToRetrievedViewerFromCache))
+                return Database.models.item.count({where: {reference: {$like: searchKey}}}).then(response => {
+                    console.log("retrieved count:  " + JSON.stringify(response))
+                    return response + 1
+                })
+            }
         }
     }),
     interfaces: [nodeInterface]
@@ -366,7 +386,7 @@ const AddItemMutation = mutationWithClientMutationId({
     description: 'A function to create an item',
     inputFields: {
         modelName: {type: new GraphQLNonNull(GraphQLString)},
-        state: {type: new GraphQLNonNull(GraphQLString)},
+        severity: {type: new GraphQLNonNull(GraphQLString)},
         domains: {type: new GraphQLList(GraphQLString)},
         subCategories: {type: new GraphQLList(GraphQLString)}
     },
@@ -382,7 +402,7 @@ const AddItemMutation = mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({modelName, state, domains, subCategories}) => {
+    mutateAndGetPayload: ({modelName, severity, domains, subCategories}) => {
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
@@ -405,11 +425,35 @@ const AddItemMutation = mutationWithClientMutationId({
                         })
                 })
 
-                var reference = modelName + "/"+ state
-                return model.createItem({stateId: state, reference: reference})
-                    .then(item => {
-                        return item
+
+                console.log("model : " + JSON.stringify(model))
+
+                return Database.models.brand.findById(model.brandId)
+                    .then(brand => {
+
+                        var brandName = brand.name.replace(/ /g,'').substring(0, 4);
+                        var modelName = model.name.replace(/ /g,'').substring(0, 4);
+                        var reference = brandName.toUpperCase() + modelName.toUpperCase()
+
+                        return Database.models.item.count({where: {reference: {$like: reference + '%'}}})
+                            .then(id => {
+                                var nextId = id + 1
+                                reference = reference  + "-" + nextId
+                                console.log("createReference: " + reference)
+
+                                return Database.models.state.findOne({where: {severity: severity}})
+                                    .then(state => {
+                                        console.log("found state: " + JSON.stringify(state))
+                                        return model.createItem({stateId: state.id, reference: reference})
+                                            .then(item => {
+                                                return item
+                                            })
+                                    })
+                            })
                     })
+
+
+
             })
     }
 })

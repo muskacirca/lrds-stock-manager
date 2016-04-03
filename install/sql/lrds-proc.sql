@@ -40,6 +40,7 @@ CREATE PROCEDURE lrds.add_model(
   END //
 
 
+
 CREATE PROCEDURE lrds.add_domain(
   IN name VARCHAR(255),
   IN description VARCHAR(255)

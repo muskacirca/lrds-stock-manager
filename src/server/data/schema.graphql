@@ -1,6 +1,6 @@
 input AddItemInput {
   modelName: String!
-  state: String!
+  severity: String!
   domains: [String]
   subCategories: [String]
   clientMutationId: String!
@@ -140,4 +140,6 @@ type Viewer implements Node {
   domains: [DomainType]
   subCategories: [SubCategoryType]
   categories: [CategoryType]
+  states: [StateType]
+  countNextItemId(itemReference: String!): Int
 }

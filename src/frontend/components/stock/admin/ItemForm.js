@@ -3,20 +3,25 @@ import Relay from 'react-relay'
 import _ from 'lodash'
 
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
+import Expire from '../../utils/Expire'
 
 import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
 
 import ModelQuickForm from './ModelQuickForm'
-import ItemDisplay from '../ItemDisplay'
+import ItemFormDisplay from '../ItemFormDisplay'
+
+
 
 class ItemFormComponent extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            itemFeatures : {modelName: "", domains: [], subCategories: []}
+            itemFeatures : {modelName: "", domains: [], subCategories: []},
+            alert: undefined
         }
+
     }
 
     onFieldChange(field, e) {
@@ -27,6 +32,7 @@ class ItemFormComponent extends React.Component {
     buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
 
         _.set(existingItemFeature, "modelName", suggestionValue)
+        _.set(existingItemFeature, "severity", undefined)
         console.log("buildSelectedItem: " + JSON.stringify(existingItemFeature))
         return existingItemFeature
     }
@@ -49,7 +55,7 @@ class ItemFormComponent extends React.Component {
     onSelectStateChange(event) {
 
         var itemFeatures = _.cloneDeep(this.state.itemFeatures)
-        _.set(itemFeatures, "state", event.target.value)
+        _.set(itemFeatures, "severity", event.target.value)
 
         this.setState({itemFeatures: itemFeatures})
     }
@@ -64,8 +70,9 @@ class ItemFormComponent extends React.Component {
         var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(elt => elt.name)
         console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd))
 
-        var addItemMutation = new AddItemMutation({modelName: this.state.itemFeatures.modelName,
-            state: this.state.itemFeatures.state,
+        var addItemMutation = new AddItemMutation({
+            modelName: this.state.itemFeatures.modelName,
+            severity: this.state.itemFeatures.severity,
             domains: domainsToAdd,
             subCategories: subCategoriesToAdd,
             viewer: this.props.viewer});
@@ -75,9 +82,13 @@ class ItemFormComponent extends React.Component {
         var onFailure = (transaction) => this.updateAlert("An error occurred when adding new item", "error");
 
         Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
+
+        // TODO Re-initialize all components
+
     }
 
     updateAlert(message, type) {
+        console.log("updateAlert: " + message)
         var alert = {message: message, type: type}
         this.setState({alert: alert})
     }
@@ -211,19 +222,30 @@ class ItemFormComponent extends React.Component {
         this.setState({itemFeatures: itemFeatures})
     }
 
+    onAlertDismiss() {
+        this.setState({alert: undefined})
+    }
+
     renderAlert() {
 
         if(this.state.alert !== undefined) {
-            var commonAlert = "alert alert-dismissible "
+            console.log("alert")
+
+            var commonAlert = "alert "
             var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger"
 
-            return  <div className={commonAlert + alertType} role="alert">
-                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        {this.state.alert.message}
-                    </div>
+            return  <Expire delay={5000} callback={this.onAlertDismiss.bind(this)}>
+                <div className={commonAlert + alertType} role="alert">
+                    {this.state.alert.message}
+                </div>
+            </Expire>
         }
+    }
+
+    renderStateList(states) {
+        return states.map((state, key) => {
+            return <option key={"state-list-" + key} value={state.severity}>{state.name}</option>
+        })
     }
 
 
@@ -239,61 +261,60 @@ class ItemFormComponent extends React.Component {
 
         var model = this.findModelAndBindNewFeatures(this.state.itemFeatures)
 
+        var stateList = this.renderStateList(this.props.viewer.states)
+
         var alert = this.renderAlert()
-        var pageTitle = "Création d'un item"
+        var pageTitle = "Create an item"
 
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
-            <ItemDisplay item={{model: model, state: {severity: this.state.itemFeatures.state}}} /> : ""
+            <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> : ""
+
 
         return  <div className="col-md-10 col-md-offset-1">
-                    <h2>{pageTitle}</h2>
-                    {alert}
-                    <h3>Select your model</h3>
-                    <div className="row">
-                        <div className="col-md-3">
-                            <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
-                                                multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
-                                                resetInputValue={true} ref="inputFormSearchModel"/>
-                            <br />
-                            <h5>or create one ...</h5>
-                            <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
-                            <br />
+            <h2>{pageTitle}</h2>
+            {alert}
+            <h3>Select your model</h3>
+            <div className="row">
+                <div className="col-md-3">
+                    <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
+                                        multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchModel"/>
+                    <br />
+                    <h5>or create one ...</h5>
+                    <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
+                    <br />
 
-                            <h3>Add State</h3>
-                            <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
+                    <h3>Add State</h3>
+                    <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
+                        <option>Select a state ...</option>
+                        {stateList}
+                    </select>
 
-                                <option>Select a state ...</option>
-                                <option value="1">Neuf</option>
-                                <option value="2">Bon état</option>
-                                <option value="3">Le dernier souffle</option>
-                                <option value="4">A réparer</option>
-                            </select>
+                    <h3>Add Domain</h3>
+                    <AutosuggestWrapper inputText="Select a domain ..." suggestions={builtDomainSuggestion}
+                                        multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchDomain"/>
 
-                            <h3>Add Domain</h3>
-                            <AutosuggestWrapper inputText="Select a domain ..." suggestions={builtDomainSuggestion}
-                                                multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
-                                                resetInputValue={true} ref="inputFormSearchDomain"/>
-
-                            <h3>Add Categories</h3>
-                            <AutosuggestWrapper inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
-                                                multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
-                                                onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
-                                                resetInputValue={true} ref="inputFormSearchSubCategories"/>
-                        </div>
-
-                        <div className="col-md-8">
-                            {itemFormDisplay}
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-md-1 col-md-offset-10">
-                            <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
-                        </div>
-                    </div>
+                    <h3>Add Categories</h3>
+                    <AutosuggestWrapper inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
+                                        multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchSubCategories"/>
                 </div>
+
+                <div className="col-md-8">
+                    {itemFormDisplay}
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-md-1 col-md-offset-10">
+                    <button className="btn btn-primary" onClick={this.onFormSubmit.bind(this)}>Submit</button>
+                </div>
+            </div>
+        </div>
     }
 }
 
@@ -320,6 +341,11 @@ export default Relay.createContainer(ItemFormComponent, {
                     }
                 }
 
+            }
+            states {
+                id
+                severity
+                name
             }
             domains {
               id
