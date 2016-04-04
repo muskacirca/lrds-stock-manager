@@ -3,19 +3,10 @@ import {
 } from 'graphql'
 
 import {
-    connectionArgs,
-    connectionDefinitions,
-    connectionFromPromisedArray,
-    connectionFromArray,
-    fromGlobalId,
-    globalIdField,
-    nodeDefinitions,
     mutationWithClientMutationId,
-    cursorForObjectInConnection,
-    offsetToCursor
 } from 'graphql-relay'
 
-import Database from './database'
+import Database from '../database'
 
 import {
     GraphQLViewer,
@@ -31,9 +22,7 @@ import {
     pushItemInCart
 } from '../CartStore';
 
-
-
-const AddItemInCartMutation = new mutationWithClientMutationId({
+export const AddItemInCartMutation = new mutationWithClientMutationId({
     name: 'AddItemInCart',
     description: 'Add one item into the cart',
     inputFields: {
@@ -57,5 +46,3 @@ const AddItemInCartMutation = new mutationWithClientMutationId({
             })
     }
 })
-
-export default AddItemInCartMutation
