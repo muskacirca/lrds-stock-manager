@@ -1,4 +1,7 @@
 import React from 'react'
+import Relay from 'react-relay'
+
+import RemoveItemFromCartMutation from '../mutations/RemoveItemFromCartMutation'
 
 class CartComponent extends React.Component {
 
@@ -10,13 +13,21 @@ class CartComponent extends React.Component {
     }
 
     toggleCartDisplay() {
-        console.log(this.props.cart.length)
-        if(this.props.cart.selectedItems.length != 0) this.setState({toggleCart: !this.state.toggleCart})
+        if(this.props.viewer.cart.selectedItems.length != 0) this.setState({toggleCart: !this.state.toggleCart})
     }
 
     onRemoveItemFromCart(reference) {
         console.log("removing item from cart: " + reference)
-        // this.props.removeItemFromCart(reference)
+        var removeItemFromCartMutation = new RemoveItemFromCartMutation({
+            itemReference: reference,
+            viewer: this.props.viewer
+        });
+
+        var onSuccess = (response) => console.log("Remove item from cart");
+
+        var onFailure = (transaction) => console.log("Remove item from cart failed");
+
+        Relay.Store.commitUpdate(removeItemFromCartMutation, {onSuccess, onFailure})
     }
 
     renderCart(cart) {
@@ -36,7 +47,7 @@ class CartComponent extends React.Component {
 
     render() {
 
-        var cartItems = this.renderCart(this.props.cart)
+        var cartItems = this.renderCart(this.props.viewer.cart)
         let styles = {
             display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
         };
@@ -53,4 +64,17 @@ class CartComponent extends React.Component {
     }
 }
 
-export default CartComponent
+export default Relay.createContainer(CartComponent, {
+    fragments: {
+        viewer: () => Relay.QL`
+          fragment on Viewer {
+            ${RemoveItemFromCartMutation.getFragment('viewer')}
+            cart {
+                selectedItems {
+                    reference
+                }
+            }
+          }
+        `
+    }
+})

@@ -6,8 +6,6 @@ class NavBarBox extends React.Component {
 
     render() {
 
-        var cart = this.props.viewer.cart
-
         return (
           <nav className="navbar navbar-inverse navbar-fixed-top">
             <div className="container-fluid">
@@ -34,12 +32,6 @@ class NavBarBox extends React.Component {
                     <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                   </li>
                 </ul>
-                  <ul className="nav navbar-nav">
-                      <li role="presentation">
-
-                          <a><Cart cart={cart} /></a>
-                      </li>
-                  </ul>
               </div>
                 <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 

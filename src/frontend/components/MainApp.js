@@ -1,5 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
+import Cart from './Cart'
+import AddItemInCartMutation from '../mutations/AddItemInCartMutation'
 
 import NavBarBox from './navbar'
 
@@ -15,7 +17,8 @@ class MainApp extends React.Component{
 
         return (
             <div>
-                <NavBarBox viewer={this.props.viewer} />
+                <NavBarBox />
+                <Cart viewer={this.props.viewer} />
                 <div>
                     {this.props.children}
                 </div>
@@ -29,11 +32,7 @@ export default Relay.createContainer(MainApp, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
-            cart {
-                selectedItems {
-                    reference
-                }
-            }
+            ${Cart.getFragment('viewer')}
           }
         `
     }

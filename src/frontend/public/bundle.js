@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(590);
+	var _history = __webpack_require__(591);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50561,35 +50561,35 @@
 
 	var _MainApp2 = _interopRequireDefault(_MainApp);
 
-	var _login = __webpack_require__(547);
+	var _login = __webpack_require__(550);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _stock = __webpack_require__(548);
+	var _stock = __webpack_require__(551);
 
 	var _stock2 = _interopRequireDefault(_stock);
 
-	var _Item = __webpack_require__(556);
+	var _Item = __webpack_require__(558);
 
 	var _Item2 = _interopRequireDefault(_Item);
 
-	var _ItemForm = __webpack_require__(557);
+	var _ItemForm = __webpack_require__(559);
 
 	var _ItemForm2 = _interopRequireDefault(_ItemForm);
 
-	var _product = __webpack_require__(587);
+	var _product = __webpack_require__(588);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(588);
+	var _profile = __webpack_require__(589);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(589);
+	var _event = __webpack_require__(590);
 
 	var _event2 = _interopRequireDefault(_event);
 
-	var _navbar = __webpack_require__(545);
+	var _navbar = __webpack_require__(549);
 
 	var _navbar2 = _interopRequireDefault(_navbar);
 
@@ -50773,7 +50773,15 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _navbar = __webpack_require__(545);
+	var _Cart = __webpack_require__(545);
+
+	var _Cart2 = _interopRequireDefault(_Cart);
+
+	var _AddItemInCartMutation = __webpack_require__(547);
+
+	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
+
+	var _navbar = __webpack_require__(549);
 
 	var _navbar2 = _interopRequireDefault(_navbar);
 
@@ -50803,7 +50811,8 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_navbar2.default, { viewer: this.props.viewer }),
+	                _react2.default.createElement(_navbar2.default, null),
+	                _react2.default.createElement(_Cart2.default, { viewer: this.props.viewer }),
 	                _react2.default.createElement(
 	                    'div',
 	                    null,
@@ -50819,16 +50828,167 @@
 	exports.default = _reactRelay2.default.createContainer(MainApp, {
 	    fragments: {
 	        viewer: function viewer() {
-	            return function () {
+	            return function (RQL_0, RQL_1) {
 	                return {
-	                    children: [{
+	                    children: [].concat.apply([], [{
 	                        fieldName: 'id',
 	                        kind: 'Field',
 	                        metadata: {
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, {
+	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1)]),
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'MainApp_ViewerRelayQL',
+	                    type: 'Viewer'
+	                };
+	            }(_Cart2.default.getFragment('viewer'), _AddItemInCartMutation2.default.getFragment('viewer'));
+	        }
+	    }
+	});
+
+/***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _RemoveItemFromCartMutation = __webpack_require__(546);
+
+	var _RemoveItemFromCartMutation2 = _interopRequireDefault(_RemoveItemFromCartMutation);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CartComponent = function (_React$Component) {
+	    _inherits(CartComponent, _React$Component);
+
+	    function CartComponent(props) {
+	        _classCallCheck(this, CartComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CartComponent).call(this, props));
+
+	        _this.state = {
+	            toggleCart: false
+	        };
+	        return _this;
+	    }
+
+	    _createClass(CartComponent, [{
+	        key: 'toggleCartDisplay',
+	        value: function toggleCartDisplay() {
+	            if (this.props.viewer.cart.selectedItems.length != 0) this.setState({ toggleCart: !this.state.toggleCart });
+	        }
+	    }, {
+	        key: 'onRemoveItemFromCart',
+	        value: function onRemoveItemFromCart(reference) {
+	            console.log("removing item from cart: " + reference);
+	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
+	                itemReference: reference,
+	                viewer: this.props.viewer
+	            });
+
+	            var onSuccess = function onSuccess(response) {
+	                return console.log("Remove item from cart");
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                return console.log("Remove item from cart failed");
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(removeItemFromCartMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+	    }, {
+	        key: 'renderCart',
+	        value: function renderCart(cart) {
+	            var _this2 = this;
+
+	            return cart.selectedItems.map(function (item) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-10' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { key: "cart-" + item.reference },
+	                            item.reference
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-2' },
+	                        _react2.default.createElement('i', { className: 'fa fa-times red', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) })
+	                    )
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var cartItems = this.renderCart(this.props.viewer.cart);
+	            var styles = {
+	                display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
+	            };
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'navbar-link-color' },
+	                _react2.default.createElement(
+	                    'i',
+	                    { className: 'fa fa-2x fa-shopping-cart pointer', onClick: this.toggleCartDisplay.bind(this) },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'badge' },
+	                        cartItems.length
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'cart-dropdown', style: styles },
+	                    cartItems,
+	                    _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        'Empty cart'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CartComponent;
+	}(_react2.default.Component);
+
+	exports.default = _reactRelay2.default.createContainer(CartComponent, {
+	    fragments: {
+	        viewer: function viewer() {
+	            return function (RQL_0) {
+	                return {
+	                    children: [].concat.apply([], [{
 	                        children: [{
 	                            children: [{
 	                                fieldName: 'reference',
@@ -50870,155 +51030,31 @@
 	                            inferredPrimaryKey: 'id'
 	                        },
 	                        type: 'CartType'
-	                    }],
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: 'MainApp_ViewerRelayQL',
+	                    name: 'Cart_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }();
+	            }(_RemoveItemFromCartMutation2.default.getFragment('viewer'));
 	        }
 	    }
 	});
 
 /***/ },
-/* 545 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(191);
-
-	var _Cart = __webpack_require__(546);
-
-	var _Cart2 = _interopRequireDefault(_Cart);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var NavBarBox = function (_React$Component) {
-	  _inherits(NavBarBox, _React$Component);
-
-	  function NavBarBox() {
-	    _classCallCheck(this, NavBarBox);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NavBarBox).apply(this, arguments));
-	  }
-
-	  _createClass(NavBarBox, [{
-	    key: 'render',
-	    value: function render() {
-
-	      var cart = this.props.viewer.cart;
-
-	      return _react2.default.createElement(
-	        'nav',
-	        { className: 'navbar navbar-inverse navbar-fixed-top' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'container-fluid' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'navbar-header' },
-	            _react2.default.createElement(
-	              'button',
-	              { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse',
-	                'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
-	              _react2.default.createElement(
-	                'span',
-	                { className: 'sr-only' },
-	                'Toggle navigation'
-	              ),
-	              _react2.default.createElement('span', { className: 'icon-bar' }),
-	              _react2.default.createElement('span', { className: 'icon-bar' }),
-	              _react2.default.createElement('span', { className: 'icon-bar' })
-	            ),
-	            _react2.default.createElement(
-	              'a',
-	              { className: 'navbar-brand', href: '#' },
-	              'LRDS'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
-	            _react2.default.createElement(
-	              'ul',
-	              { className: 'nav navbar-nav' },
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/', activeClassName: 'link-active' },
-	                  'Home'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/stock', activeClassName: 'link-active' },
-	                  'Stock'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/admin/create', activeClassName: 'link-active' },
-	                  'Admin'
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'ul',
-	              { className: 'nav navbar-nav' },
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  'a',
-	                  null,
-	                  _react2.default.createElement(_Cart2.default, { cart: cart })
-	                )
-	              )
-	            )
-	          ),
-	          _react2.default.createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return NavBarBox;
-	}(_react2.default.Component);
-
-	exports.default = NavBarBox;
-
-/***/ },
 /* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -51026,9 +51062,9 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _reactRelay = __webpack_require__(249);
 
-	var _react2 = _interopRequireDefault(_react);
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51038,97 +51074,157 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var CartComponent = function (_React$Component) {
-	    _inherits(CartComponent, _React$Component);
+	var RemoveItemFromCartMutation = function (_Relay$Mutation) {
+	    _inherits(RemoveItemFromCartMutation, _Relay$Mutation);
 
-	    function CartComponent(props) {
-	        _classCallCheck(this, CartComponent);
+	    function RemoveItemFromCartMutation() {
+	        _classCallCheck(this, RemoveItemFromCartMutation);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CartComponent).call(this, props));
-
-	        _this.state = {
-	            toggleCart: false
-	        };
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(RemoveItemFromCartMutation).apply(this, arguments));
 	    }
 
-	    _createClass(CartComponent, [{
-	        key: "toggleCartDisplay",
-	        value: function toggleCartDisplay() {
-	            console.log(this.props.cart.length);
-	            if (this.props.cart.selectedItems.length != 0) this.setState({ toggleCart: !this.state.toggleCart });
+	    _createClass(RemoveItemFromCartMutation, [{
+	        key: 'getMutation',
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: 'Call',
+	                        metadata: {},
+	                        name: 'removeItemFromCart',
+	                        value: {
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'String'
+	                    }],
+	                    kind: 'Mutation',
+	                    metadata: {
+	                        inputType: 'RemoveItemFromCartInput!'
+	                    },
+	                    name: 'RemoveItemFromCartMutation',
+	                    responseType: 'RemoveItemFromCartPayload'
+	                };
+	            }();
 	        }
 	    }, {
-	        key: "onRemoveItemFromCart",
-	        value: function onRemoveItemFromCart(reference) {
-	            console.log("removing item from cart: " + reference);
-	            // this.props.removeItemFromCart(reference)
+	        key: 'getFatQuery',
+	        value: function getFatQuery() {
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'cart',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'CartType'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'viewer',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'Viewer'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'RemoveItemFromCartMutation_ValueRelayQL',
+	                    type: 'RemoveItemFromCartPayload'
+	                };
+	            }();
 	        }
 	    }, {
-	        key: "renderCart",
-	        value: function renderCart(cart) {
-	            var _this2 = this;
-
-	            return cart.selectedItems.map(function (item) {
-	                return _react2.default.createElement(
-	                    "div",
-	                    { className: "row" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "col-md-10" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { key: "cart-" + item.reference },
-	                            item.reference
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "col-md-2" },
-	                        _react2.default.createElement("i", { className: "fa fa-times red", onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) })
-	                    )
-	                );
-	            });
+	        key: 'getConfigs',
+	        value: function getConfigs() {
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    viewer: this.props.viewer.id
+	                }
+	            }];
 	        }
 	    }, {
-	        key: "render",
-	        value: function render() {
-
-	            var cartItems = this.renderCart(this.props.cart);
-	            var styles = {
-	                display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
+	        key: 'getVariables',
+	        value: function getVariables() {
+	            return {
+	                itemReference: this.props.itemReference
 	            };
+	        }
+	    }, {
+	        key: 'getOptimisticResponse',
+	        value: function getOptimisticResponse() {
 
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "navbar-link-color" },
-	                _react2.default.createElement(
-	                    "i",
-	                    { className: "fa fa-2x fa-shopping-cart pointer", onClick: this.toggleCartDisplay.bind(this) },
-	                    _react2.default.createElement(
-	                        "span",
-	                        { className: "badge" },
-	                        cartItems.length
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "cart-dropdown", style: styles },
-	                    cartItems,
-	                    _react2.default.createElement(
-	                        "div",
-	                        null,
-	                        "Empty cart"
-	                    )
-	                )
-	            );
+	            console.log("getOptimisticResponse : " + JSON.stringify(this.props.viewer.cart));
+
+	            return {
+	                cart: {
+	                    selectedItems: [{
+	                        reference: this.props.itemReference
+	                    }]
+	                },
+	                viewer: this.props.viewer
+
+	            };
 	        }
 	    }]);
 
-	    return CartComponent;
-	}(_react2.default.Component);
+	    return RemoveItemFromCartMutation;
+	}(_reactRelay2.default.Mutation);
 
-	exports.default = CartComponent;
+	RemoveItemFromCartMutation.fragments = {
+	    viewer: function viewer() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: 'id',
+	                    kind: 'Field',
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: 'ID'
+	                }],
+	                id: _reactRelay2.default.QL.__id(),
+	                kind: 'Fragment',
+	                metadata: {},
+	                name: 'RemoveItemFromCartMutation_ViewerRelayQL',
+	                type: 'Viewer'
+	            };
+	        }();
+	    }
+	};
+	exports.default = RemoveItemFromCartMutation;
 
 /***/ },
 /* 547 */
@@ -51142,1414 +51238,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(191);
-
-	var _reactRouter2 = _interopRequireDefault(_reactRouter);
-
-	var _auth = __webpack_require__(542);
-
-	var _auth2 = _interopRequireDefault(_auth);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LoginBox = function (_React$Component) {
-	    _inherits(LoginBox, _React$Component);
-
-	    function LoginBox(props) {
-	        _classCallCheck(this, LoginBox);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginBox).call(this, props));
-
-	        console.log(props);
-	        _this.history = props.history;
-	        return _this;
-	    }
-
-	    _createClass(LoginBox, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main' },
-	                _react2.default.createElement(Header, { label: 'Please login' }),
-	                _react2.default.createElement(LoginForm, { history: this.history })
-	            );
-	        }
-	    }]);
-
-	    return LoginBox;
-	}(_react2.default.Component);
-
-	var Header = function (_React$Component2) {
-	    _inherits(Header, _React$Component2);
-
-	    function Header() {
-	        _classCallCheck(this, Header);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Header).apply(this, arguments));
-	    }
-
-	    _createClass(Header, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                this.props.label
-	            );
-	        }
-	    }]);
-
-	    return Header;
-	}(_react2.default.Component);
-
-	var LoginForm = function (_React$Component3) {
-	    _inherits(LoginForm, _React$Component3);
-
-	    function LoginForm(props) {
-	        _classCallCheck(this, LoginForm);
-
-	        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginForm).call(this, props));
-
-	        _this3.history = props.history, _this3.state = { error: false };
-	        return _this3;
-	    }
-
-	    _createClass(LoginForm, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(e) {
-	            var _this4 = this;
-
-	            e.preventDefault();
-
-	            var email = _react2.default.findDOMNode(this.refs.loginField).value;
-	            var pass = _react2.default.findDOMNode(this.refs.passwordField).value;
-
-	            console.log("email: " + email);
-	            console.log("pass: " + pass);
-
-	            _auth2.default.login(email, pass, function (loggedIn) {
-	                if (!loggedIn) {
-	                    console.log("not authenticated");
-	                    return _this4.setState({ error: true });
-	                }
-
-	                console.log("authenticated, redirecting to profile");
-	                _this4.history.replaceState(null, '/jeestock/profile');
-	            });
-
-	            return;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'form',
-	                { className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-group' },
-	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'input-group-addon', id: 'basic-addon1' },
-	                        '@'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'loginField', placeholder: 'login',
-	                        'aria-describedby': 'basic-addon1' })
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'input-group' },
-	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'input-group-addon', id: 'basic-addon1' },
-	                        '?'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'password', className: 'form-control', ref: 'passwordField', placeholder: 'password',
-	                        'aria-describedby': 'basic-addon1' })
-	                ),
-	                _react2.default.createElement(SubmitButton, { label: 'Login' }),
-	                this.state.error && _react2.default.createElement(
-	                    'p',
-	                    null,
-	                    'Bad login information'
-	                )
-	            );
-	        }
-	    }]);
-
-	    return LoginForm;
-	}(_react2.default.Component);
-
-	var SubmitButton = function (_React$Component4) {
-	    _inherits(SubmitButton, _React$Component4);
-
-	    function SubmitButton() {
-	        _classCallCheck(this, SubmitButton);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SubmitButton).apply(this, arguments));
-	    }
-
-	    _createClass(SubmitButton, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'button',
-	                { type: 'submit', className: 'btn btn-default primary' },
-	                this.props.label
-	            );
-	        }
-	    }]);
-
-	    return SubmitButton;
-	}(_react2.default.Component);
-
-	exports.default = LoginBox;
-
-/***/ },
-/* 548 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
 	var _reactRelay = __webpack_require__(249);
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _reactRouter = __webpack_require__(191);
+	var _lodash = __webpack_require__(548);
 
-	var _reactRouter2 = _interopRequireDefault(_reactRouter);
-
-	var _StockTable = __webpack_require__(549);
-
-	var _StockTable2 = _interopRequireDefault(_StockTable);
-
-	var _StockNavigationBar = __webpack_require__(552);
-
-	var _StockNavigationBar2 = _interopRequireDefault(_StockNavigationBar);
-
-	var _AddItemInCartMutation = __webpack_require__(555);
-
-	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockComponent = function (_React$Component) {
-	    _inherits(StockComponent, _React$Component);
-
-	    function StockComponent(props) {
-	        _classCallCheck(this, StockComponent);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StockComponent).call(this, props));
-
-	        _this.state = {
-	            data: [],
-	            searchedText: "",
-	            tags: []
-	        };
-	        return _this;
-	    }
-
-	    _createClass(StockComponent, [{
-	        key: 'onSearchInputChange',
-	        value: function onSearchInputChange(searchedText) {
-	            this.setState({ searchedText: searchedText });
-	        }
-	    }, {
-	        key: 'onTagSelected',
-	        value: function onTagSelected(newTag) {
-	            var t = this.state.tags.slice();
-	            t.push(newTag);
-	            this.setState({
-	                tags: t,
-	                searchedText: '' }, function (e) {});
-	        }
-	    }, {
-	        key: 'onCLickTag',
-	        value: function onCLickTag(tagToRemove) {
-	            var tmpTag = this.state.tags;
-	            var i = tmpTag.indexOf(tagToRemove);
-	            if (i !== -1) tmpTag.splice(i, 1);
-	            this.setState({ tags: tmpTag });
-	        }
-	    }, {
-	        key: 'filterByTag',
-	        value: function filterByTag(tags, rowsToFilter) {
-
-	            var counter = 0;
-
-	            var taggedFilteredRows = [];
-	            if (tags.length !== 0) {
-
-	                taggedFilteredRows = rowsToFilter.map(function (product) {
-
-	                    if (counter < 35) {
-	                        var hasTags = false;
-	                        for (var i = 0; i < tags.length; i++) {
-	                            if (product.node.model.name.toLowerCase().indexOf(tags[i].toLowerCase()) != -1) {
-	                                counter += 1;
-	                                hasTags = true;
-	                            }
-	                        }
-
-	                        return hasTags ? product : undefined;
-	                    }
-	                });
-	            }
-
-	            var filteredTags = taggedFilteredRows.filter(function (element) {
-	                return element !== undefined;
-	            });
-
-	            return filteredTags;
-	        }
-	    }, {
-	        key: 'filter',
-	        value: function filter(filterText, rowsRoFilter) {
-
-	            var counter = 0;
-
-	            var rows = rowsRoFilter.map(function (product, key) {
-
-	                if (counter < 35) {
-	                    if (filterText === "" || filterText.length <= 1) {
-	                        counter += 1;
-	                        return product.node;
-	                    } else if (filterText.length > 1 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
-	                        counter += 1;
-	                        return product.node;
-	                    }
-	                }
-	            });
-
-	            var goodRows = rows.filter(function (element) {
-	                return element !== undefined;
-	            });
-
-	            return goodRows;
-	        }
-	    }, {
-	        key: 'selectItem',
-	        value: function selectItem(reference) {
-	            this.context.router.push("/stock/" + reference);
-	        }
-	    }, {
-	        key: 'addItemToCart',
-	        value: function addItemToCart(reference) {
-
-	            var addItemInCartMutation = new _AddItemInCartMutation2.default({
-	                itemReference: reference,
-	                viewer: this.props.viewer
-	            });
-
-	            var onSuccess = function onSuccess(response) {
-	                return console.log("Item added to cart");
-	            };
-
-	            var onFailure = function onFailure(transaction) {
-	                return console.log("Item added to cart");
-	            };
-
-	            _reactRelay2.default.Store.commitUpdate(addItemInCartMutation, { onSuccess: onSuccess, onFailure: onFailure });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-
-	            var items = this.props.viewer.items.edges;
-	            var filterText = this.state.searchedText.toLowerCase();
-	            var filterTags = this.state.tags;
-
-	            var tagFilteredData = this.filterByTag(filterTags, items);
-	            tagFilteredData = tagFilteredData.length === 0 ? items : tagFilteredData;
-
-	            var filteredItems = this.filter(filterText, tagFilteredData);
-
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row sub-bar' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1' },
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'sub-bar-component' },
-	                            _react2.default.createElement(_StockNavigationBar2.default, { onTagSelected: this.onTagSelected.bind(this),
-	                                onSearchInputChange: this.onSearchInputChange.bind(this),
-	                                onTagRemoval: this.onCLickTag.bind(this),
-	                                tags: this.state.tags })
-	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-10 col-md-offset-1' },
-	                        _react2.default.createElement(_StockTable2.default, { data: filteredItems,
-	                            handleSelectRow: this.selectItem.bind(this),
-	                            handleAddItemToCart: this.addItemToCart.bind(this) })
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockComponent;
-	}(_react2.default.Component);
-
-	StockComponent.contextTypes = {
-	    router: _react2.default.PropTypes.object.isRequired
-	};
-
-	exports.default = _reactRelay2.default.createContainer(StockComponent, {
-	    fragments: {
-	        viewer: function viewer() {
-	            return function (RQL_0) {
-	                return {
-	                    children: [].concat.apply([], [{
-	                        calls: [{
-	                            kind: 'Call',
-	                            metadata: {},
-	                            name: 'first',
-	                            value: {
-	                                kind: 'CallValue',
-	                                callValue: 100
-	                            }
-	                        }],
-	                        children: [{
-	                            children: [{
-	                                children: [{
-	                                    fieldName: 'reference',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    fieldName: 'isInStock',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'Boolean'
-	                                }, {
-	                                    children: [{
-	                                        fieldName: 'severity',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'Int'
-	                                    }, {
-	                                        fieldName: 'id',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'ID'
-	                                    }],
-	                                    fieldName: 'state',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        inferredRootCallName: 'node',
-	                                        inferredPrimaryKey: 'id'
-	                                    },
-	                                    type: 'StateType'
-	                                }, {
-	                                    children: [{
-	                                        fieldName: 'name',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'String'
-	                                    }, {
-	                                        fieldName: 'description',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'String'
-	                                    }, {
-	                                        children: [{
-	                                            fieldName: 'name',
-	                                            kind: 'Field',
-	                                            metadata: {},
-	                                            type: 'String'
-	                                        }, {
-	                                            fieldName: 'description',
-	                                            kind: 'Field',
-	                                            metadata: {},
-	                                            type: 'String'
-	                                        }, {
-	                                            fieldName: 'id',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                isGenerated: true,
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'ID'
-	                                        }],
-	                                        fieldName: 'brand',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            canHaveSubselections: true,
-	                                            inferredRootCallName: 'node',
-	                                            inferredPrimaryKey: 'id'
-	                                        },
-	                                        type: 'BrandType'
-	                                    }, {
-	                                        children: [{
-	                                            fieldName: 'name',
-	                                            kind: 'Field',
-	                                            metadata: {},
-	                                            type: 'String'
-	                                        }, {
-	                                            fieldName: 'description',
-	                                            kind: 'Field',
-	                                            metadata: {},
-	                                            type: 'String'
-	                                        }, {
-	                                            fieldName: 'id',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                isGenerated: true,
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'ID'
-	                                        }],
-	                                        fieldName: 'subCategories',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            canHaveSubselections: true,
-	                                            inferredRootCallName: 'node',
-	                                            inferredPrimaryKey: 'id',
-	                                            isPlural: true
-	                                        },
-	                                        type: 'SubCategoryType'
-	                                    }, {
-	                                        children: [{
-	                                            fieldName: 'name',
-	                                            kind: 'Field',
-	                                            metadata: {},
-	                                            type: 'String'
-	                                        }, {
-	                                            fieldName: 'description',
-	                                            kind: 'Field',
-	                                            metadata: {},
-	                                            type: 'String'
-	                                        }, {
-	                                            fieldName: 'id',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                isGenerated: true,
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'ID'
-	                                        }],
-	                                        fieldName: 'domains',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            canHaveSubselections: true,
-	                                            inferredRootCallName: 'node',
-	                                            inferredPrimaryKey: 'id',
-	                                            isPlural: true
-	                                        },
-	                                        type: 'DomainType'
-	                                    }, {
-	                                        fieldName: 'id',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'ID'
-	                                    }],
-	                                    fieldName: 'model',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        inferredRootCallName: 'node',
-	                                        inferredPrimaryKey: 'id'
-	                                    },
-	                                    type: 'ModelType'
-	                                }, {
-	                                    calls: [{
-	                                        kind: 'Call',
-	                                        metadata: {},
-	                                        name: 'first',
-	                                        value: {
-	                                            kind: 'CallValue',
-	                                            callValue: 5
-	                                        }
-	                                    }],
-	                                    children: [{
-	                                        children: [{
-	                                            children: [{
-	                                                fieldName: 'text',
-	                                                kind: 'Field',
-	                                                metadata: {},
-	                                                type: 'String'
-	                                            }, {
-	                                                fieldName: 'id',
-	                                                kind: 'Field',
-	                                                metadata: {
-	                                                    isGenerated: true,
-	                                                    isRequisite: true
-	                                                },
-	                                                type: 'ID'
-	                                            }],
-	                                            fieldName: 'node',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                canHaveSubselections: true,
-	                                                inferredRootCallName: 'node',
-	                                                inferredPrimaryKey: 'id',
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'ItemCommentType'
-	                                        }, {
-	                                            fieldName: 'cursor',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                isGenerated: true,
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'String'
-	                                        }],
-	                                        fieldName: 'edges',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            canHaveSubselections: true,
-	                                            isPlural: true
-	                                        },
-	                                        type: 'ItemCommentTypeEdge'
-	                                    }, {
-	                                        children: [{
-	                                            fieldName: 'hasNextPage',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                isGenerated: true,
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'Boolean'
-	                                        }, {
-	                                            fieldName: 'hasPreviousPage',
-	                                            kind: 'Field',
-	                                            metadata: {
-	                                                isGenerated: true,
-	                                                isRequisite: true
-	                                            },
-	                                            type: 'Boolean'
-	                                        }],
-	                                        fieldName: 'pageInfo',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            canHaveSubselections: true,
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'PageInfo'
-	                                    }],
-	                                    fieldName: 'comments',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        isConnection: true
-	                                    },
-	                                    type: 'ItemCommentTypeConnection'
-	                                }, {
-	                                    fieldName: 'id',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ID'
-	                                }],
-	                                fieldName: 'node',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    inferredRootCallName: 'node',
-	                                    inferredPrimaryKey: 'id',
-	                                    isRequisite: true
-	                                },
-	                                type: 'ItemType'
-	                            }, {
-	                                fieldName: 'cursor',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'String'
-	                            }],
-	                            fieldName: 'edges',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                isPlural: true
-	                            },
-	                            type: 'ItemTypeEdge'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'hasNextPage',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'Boolean'
-	                            }, {
-	                                fieldName: 'hasPreviousPage',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'Boolean'
-	                            }],
-	                            fieldName: 'pageInfo',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'PageInfo'
-	                        }],
-	                        fieldName: 'items',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            isConnection: true
-	                        },
-	                        type: 'ItemTypeConnection'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
-	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: 'Fragment',
-	                    metadata: {},
-	                    name: 'Stock_ViewerRelayQL',
-	                    type: 'Viewer'
-	                };
-	            }(_AddItemInCartMutation2.default.getFragment('viewer'));
-	        }
-	    }
-	});
-
-/***/ },
-/* 549 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _StockTableHeader = __webpack_require__(550);
-
-	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
-
-	var _StockTableRow = __webpack_require__(551);
-
-	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockTable = function (_React$Component) {
-	    _inherits(StockTable, _React$Component);
-
-	    function StockTable(props) {
-	        _classCallCheck(this, StockTable);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTable).call(this, props));
-	    }
-
-	    _createClass(StockTable, [{
-	        key: 'handleRowClick',
-	        value: function handleRowClick(id) {
-	            this.props.handleSelectRow(id);
-	        }
-	    }, {
-	        key: 'handleAddItemToCart',
-	        value: function handleAddItemToCart(reference) {
-	            this.props.handleAddItemToCart(reference);
-	        }
-	    }, {
-	        key: 'renderStockTableRows',
-	        value: function renderStockTableRows(rowsToShow) {
-	            var _this2 = this;
-
-	            return rowsToShow.map(function (item, key) {
-	                return _react2.default.createElement(_StockTableRow2.default, { key: item.reference + "-" + key, item: item,
-	                    handleRowClick: _this2.handleRowClick.bind(_this2),
-	                    handleAddItemToCart: _this2.handleAddItemToCart.bind(_this2) });
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-
-	            var rows = this.renderStockTableRows(this.props.data);
-
-	            return _react2.default.createElement(
-	                'table',
-	                { className: 'table' },
-	                _react2.default.createElement(_StockTableHeader2.default, null),
-	                _react2.default.createElement(
-	                    'tbody',
-	                    null,
-	                    rows
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockTable;
-	}(_react2.default.Component);
-
-	exports.default = StockTable;
-
-/***/ },
-/* 550 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockTableHeader = function (_React$Component) {
-	    _inherits(StockTableHeader, _React$Component);
-
-	    function StockTableHeader() {
-	        _classCallCheck(this, StockTableHeader);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTableHeader).apply(this, arguments));
-	    }
-
-	    _createClass(StockTableHeader, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'thead',
-	                null,
-	                _react2.default.createElement(
-	                    'tr',
-	                    null,
-	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'Etat'
-	                    ),
-	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'Modèle'
-	                    ),
-	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'Marque'
-	                    ),
-	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'Reference'
-	                    ),
-	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'En Stock'
-	                    ),
-	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'Actions'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockTableHeader;
-	}(_react2.default.Component);
-
-	exports.default = StockTableHeader;
-
-/***/ },
-/* 551 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockTableRow = function (_React$Component) {
-	    _inherits(StockTableRow, _React$Component);
-
-	    function StockTableRow(props) {
-	        _classCallCheck(this, StockTableRow);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTableRow).call(this, props));
-	    }
-
-	    _createClass(StockTableRow, [{
-	        key: "computeState",
-	        value: function computeState(state) {
-	            if (state == "1") {
-	                return _react2.default.createElement("i", { className: "fa fa fa-square green" });
-	            } else if (state == "2") {
-	                return _react2.default.createElement("i", { className: "fa fa fa-square yellow" });
-	            } else if (state == "3") {
-	                return _react2.default.createElement("i", { className: "fa fa fa-square orange" });
-	            } else if (state == "4") {
-	                return _react2.default.createElement("i", { className: "fa fa fa-square red" });
-	            }
-	        }
-	    }, {
-	        key: "handleRowClick",
-	        value: function handleRowClick() {
-	            this.props.handleRowClick(this.props.item.reference);
-	        }
-	    }, {
-	        key: "onAddToCartClick",
-	        value: function onAddToCartClick() {
-	            this.props.handleAddItemToCart(this.props.item.reference);
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-
-	            var item = this.props.item;
-	            var isInStock = item.isInStock ? _react2.default.createElement("i", { className: "fa fa-check" }) : _react2.default.createElement("i", { className: "fa fa-times" });
-	            var state = this.computeState(item.state.severity);
-
-	            return _react2.default.createElement(
-	                "tr",
-	                null,
-	                _react2.default.createElement(
-	                    "td",
-	                    { className: "pointer", onClick: this.handleRowClick.bind(this) },
-	                    state
-	                ),
-	                _react2.default.createElement(
-	                    "td",
-	                    null,
-	                    item.model.name
-	                ),
-	                _react2.default.createElement(
-	                    "td",
-	                    null,
-	                    item.model.brand.name
-	                ),
-	                _react2.default.createElement(
-	                    "td",
-	                    null,
-	                    item.reference
-	                ),
-	                _react2.default.createElement(
-	                    "td",
-	                    null,
-	                    isInStock
-	                ),
-	                _react2.default.createElement(
-	                    "td",
-	                    null,
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "row" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "pointer col-md-1", onClick: this.onAddToCartClick.bind(this) },
-	                            _react2.default.createElement("i", { className: "fa fa-cart-plus" })
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockTableRow;
-	}(_react2.default.Component);
-
-	exports.default = StockTableRow;
-
-/***/ },
-/* 552 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _ItemDisplay = __webpack_require__(553);
-
-	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
-
-	var _searchInput = __webpack_require__(554);
-
-	var _searchInput2 = _interopRequireDefault(_searchInput);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var StockNavigationBar = function (_React$Component) {
-	    _inherits(StockNavigationBar, _React$Component);
-
-	    function StockNavigationBar(props) {
-	        _classCallCheck(this, StockNavigationBar);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StockNavigationBar).call(this, props));
-
-	        _this.state = {};
-	        return _this;
-	    }
-
-	    _createClass(StockNavigationBar, [{
-	        key: 'onSearchInputChange',
-	        value: function onSearchInputChange(searchedText) {
-	            this.props.onSearchInputChange(searchedText);
-	        }
-	    }, {
-	        key: 'onKeyDownSearch',
-	        value: function onKeyDownSearch(newTag) {
-	            this.props.onTagSelected(newTag);
-	        }
-	    }, {
-	        key: 'onCLickTag',
-	        value: function onCLickTag(tag) {
-	            this.props.onTagRemoval(tag);
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-
-	            var tagRow = this.props.tags.map(function (element, key) {
-	                return _react2.default.createElement(
-	                    'li',
-	                    { key: key, className: 'tag', onClick: this.onCLickTag.bind(this, element) },
-	                    element
-	                );
-	            }.bind(this));
-
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'row' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-md-12' },
-	                    _react2.default.createElement(_searchInput2.default, { from: 'stock',
-	                        onChange: this.onSearchInputChange.bind(this),
-	                        onKeyDown: this.onKeyDownSearch.bind(this) })
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'navigation-sub-row col-md-6' },
-	                    'An other thing'
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'navigation-sub-row col-md-6' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1' },
-	                        'Tags:'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-11' },
-	                        _react2.default.createElement(
-	                            'ul',
-	                            { className: 'inline-ul' },
-	                            tagRow
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return StockNavigationBar;
-	}(_react2.default.Component);
-
-	exports.default = StockNavigationBar;
-
-/***/ },
-/* 553 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ItemDisplay = function (_React$Component) {
-	    _inherits(ItemDisplay, _React$Component);
-
-	    function ItemDisplay(props) {
-	        _classCallCheck(this, ItemDisplay);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemDisplay).call(this, props));
-	    }
-
-	    _createClass(ItemDisplay, [{
-	        key: "renderItemDomains",
-	        value: function renderItemDomains(modelDomains) {
-
-	            return modelDomains.map(function (elt) {
-	                return _react2.default.createElement(
-	                    "li",
-	                    { key: elt.name, className: "model-tag" },
-	                    elt.name
-	                );
-	            });
-	        }
-	    }, {
-	        key: "renderItemSubCategories",
-	        value: function renderItemSubCategories(modelSubCategories) {
-
-	            return modelSubCategories.map(function (elt) {
-	                return _react2.default.createElement(
-	                    "li",
-	                    { key: elt.name, className: "model-tag" },
-	                    elt.name
-	                );
-	            });
-	        }
-	    }, {
-	        key: "computeStateIcon",
-	        value: function computeStateIcon(state) {
-
-	            if (state == "1") {
-	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-up green" });
-	            } else if (state == "2") {
-	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-up yellow" });
-	            } else if (state == "3") {
-	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-down orange" });
-	            } else if (state == "4") {
-	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-down red" });
-	            }
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-
-	            var item = this.props.item;
-
-	            var itemDomains = this.renderItemDomains(item.model.domains);
-	            var itemSubCategories = this.renderItemSubCategories(item.model.subCategories);
-
-	            var stateIcon = this.computeStateIcon(item.state.severity);
-
-	            return _react2.default.createElement(
-	                "div",
-	                null,
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "panel panel-default" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "panel-heading" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-11" },
-	                                _react2.default.createElement(
-	                                    "h4",
-	                                    null,
-	                                    _react2.default.createElement(
-	                                        "strong",
-	                                        null,
-	                                        item.model.brand.name + ' - ' + item.model.name
-	                                    )
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-1" },
-	                                stateIcon
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "panel-body" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-5" },
-	                                _react2.default.createElement(
-	                                    "em",
-	                                    null,
-	                                    "Domaine: "
-	                                ),
-	                                _react2.default.createElement(
-	                                    "ul",
-	                                    null,
-	                                    itemDomains
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-5" },
-	                                _react2.default.createElement(
-	                                    "em",
-	                                    null,
-	                                    "Sous Catégories: "
-	                                ),
-	                                _react2.default.createElement(
-	                                    "ul",
-	                                    null,
-	                                    itemSubCategories
-	                                )
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            "p",
-	                            null,
-	                            _react2.default.createElement(
-	                                "em",
-	                                null,
-	                                item.model.description
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ItemDisplay;
-	}(_react2.default.Component);
-
-	exports.default = ItemDisplay;
-
-/***/ },
-/* 554 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SearchComponent = function (_React$Component) {
-	    _inherits(SearchComponent, _React$Component);
-
-	    function SearchComponent(props) {
-	        _classCallCheck(this, SearchComponent);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchComponent).call(this, props));
-
-	        _this.state = { searchedText: "" };
-	        return _this;
-	    }
-
-	    _createClass(SearchComponent, [{
-	        key: 'getSearch',
-	        value: function getSearch(cb) {
-	            cb = arguments[arguments.length - 1];
-	            var searchedText = this.state.searchedText;
-	            if (cb) {
-	                if (searchedText.length > 3) cb(searchedText);
-	            }
-	        }
-	    }, {
-	        key: 'handleSearch',
-	        value: function handleSearch() {
-	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
-	            console.log(searchedText);
-	            this.setState({ searchedText: searchedText });
-	            this.props.onChange(searchedText);
-	        }
-	    }, {
-	        key: 'handlePressEnter',
-	        value: function handlePressEnter(e) {
-	            if (e.keyCode === 13 && this.state.searchedText != "") {
-	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
-	                this.setState({ searchedText: "" });
-	                this.props.onKeyDown(this.state.searchedText);
-	            }
-	        }
-	    }, {
-	        key: 'shouldComponentUpdate',
-	        value: function shouldComponentUpdate() {
-	            return false;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'input-group' },
-	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
-	                _react2.default.createElement('input', { ref: 'searchInput',
-	                    type: 'text',
-	                    className: 'form-control',
-	                    placeholder: 'Search',
-	                    'aria-describedby': 'basic-addon1',
-	                    onChange: this.handleSearch.bind(this),
-	                    onKeyDown: this.handlePressEnter.bind(this) })
-	            );
-	        }
-	    }]);
-
-	    return SearchComponent;
-	}(_react2.default.Component);
-
-	exports.default = SearchComponent;
-
-/***/ },
-/* 555 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52670,12 +51365,15 @@
 	    }, {
 	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
+	            console.log("get optimistic responbse : " + JSON.stringify(this.props.viewer.cart));
+
+	            var actualCart = _lodash2.default.cloneDeep(this.props.viewer.cart);
+	            actualCart.selectedItems.push({ reference: this.props.itemReference });
+
+	            console.log("modified cart : " + JSON.stringify(actualCart));
+
 	            return {
-	                cart: {
-	                    selectedItems: [{
-	                        reference: this.props.itemReference
-	                    }]
-	                },
+	                cart: actualCart,
 	                viewer: this.props.viewer
 
 	            };
@@ -52696,6 +51394,48 @@
 	                        isRequisite: true
 	                    },
 	                    type: 'ID'
+	                }, {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'reference',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'selectedItems',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'ItemType'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    fieldName: 'cart',
+	                    kind: 'Field',
+	                    metadata: {
+	                        canHaveSubselections: true,
+	                        inferredRootCallName: 'node',
+	                        inferredPrimaryKey: 'id'
+	                    },
+	                    type: 'CartType'
 	                }],
 	                id: _reactRelay2.default.QL.__id(),
 	                kind: 'Fragment',
@@ -52709,1091 +51449,7 @@
 	exports.default = AddItemInCartMutation;
 
 /***/ },
-/* 556 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _ItemDisplay = __webpack_require__(553);
-
-	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ItemComponent = function (_React$Component) {
-	    _inherits(ItemComponent, _React$Component);
-
-	    function ItemComponent(props) {
-	        _classCallCheck(this, ItemComponent);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemComponent).call(this, props));
-
-	        _this.state = {};
-	        return _this;
-	    }
-
-	    _createClass(ItemComponent, [{
-	        key: 'render',
-	        value: function render() {
-
-	            var item = this.props.viewer.item;
-
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'col-md-10 col-md-offset-1' },
-	                _react2.default.createElement(_ItemDisplay2.default, { item: item })
-	            );
-	        }
-	    }]);
-
-	    return ItemComponent;
-	}(_react2.default.Component);
-
-	exports.default = _reactRelay2.default.createContainer(ItemComponent, {
-
-	    initialVariables: {
-	        reference: null
-	    },
-	    prepareVariables: function prepareVariables(_ref) {
-	        var reference = _ref.reference;
-
-
-	        console.log("reference in ItemComponent : " + reference);
-	        return {
-	            reference: reference
-	        };
-	    },
-
-	    fragments: {
-	        viewer: function viewer() {
-	            return function () {
-	                return {
-	                    children: [{
-	                        calls: [{
-	                            kind: 'Call',
-	                            metadata: {},
-	                            name: 'reference',
-	                            value: {
-	                                kind: 'CallVariable',
-	                                callVariableName: 'reference'
-	                            }
-	                        }],
-	                        children: [{
-	                            fieldName: 'reference',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'name',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'description',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                children: [{
-	                                    fieldName: 'name',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    fieldName: 'id',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ID'
-	                                }],
-	                                fieldName: 'brand',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    inferredRootCallName: 'node',
-	                                    inferredPrimaryKey: 'id'
-	                                },
-	                                type: 'BrandType'
-	                            }, {
-	                                children: [{
-	                                    fieldName: 'name',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    fieldName: 'id',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ID'
-	                                }],
-	                                fieldName: 'domains',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    inferredRootCallName: 'node',
-	                                    inferredPrimaryKey: 'id',
-	                                    isPlural: true
-	                                },
-	                                type: 'DomainType'
-	                            }, {
-	                                children: [{
-	                                    fieldName: 'name',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    fieldName: 'id',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ID'
-	                                }],
-	                                fieldName: 'subCategories',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    inferredRootCallName: 'node',
-	                                    inferredPrimaryKey: 'id',
-	                                    isPlural: true
-	                                },
-	                                type: 'SubCategoryType'
-	                            }, {
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }],
-	                            fieldName: 'model',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id'
-	                            },
-	                            type: 'ModelType'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'severity',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'Int'
-	                            }, {
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }],
-	                            fieldName: 'state',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id'
-	                            },
-	                            type: 'StateType'
-	                        }, {
-	                            calls: [{
-	                                kind: 'Call',
-	                                metadata: {},
-	                                name: 'first',
-	                                value: {
-	                                    kind: 'CallValue',
-	                                    callValue: 10
-	                                }
-	                            }],
-	                            children: [{
-	                                children: [{
-	                                    children: [{
-	                                        fieldName: 'text',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'String'
-	                                    }, {
-	                                        fieldName: 'id',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'ID'
-	                                    }],
-	                                    fieldName: 'node',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        inferredRootCallName: 'node',
-	                                        inferredPrimaryKey: 'id',
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ItemCommentType'
-	                                }, {
-	                                    fieldName: 'cursor',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'String'
-	                                }],
-	                                fieldName: 'edges',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    isPlural: true
-	                                },
-	                                type: 'ItemCommentTypeEdge'
-	                            }, {
-	                                children: [{
-	                                    fieldName: 'hasNextPage',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'Boolean'
-	                                }, {
-	                                    fieldName: 'hasPreviousPage',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'Boolean'
-	                                }],
-	                                fieldName: 'pageInfo',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'PageInfo'
-	                            }],
-	                            fieldName: 'comments',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                isConnection: true
-	                            },
-	                            type: 'ItemCommentTypeConnection'
-	                        }, {
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'item',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id'
-	                        },
-	                        type: 'ItemType'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }],
-	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: 'Fragment',
-	                    metadata: {},
-	                    name: 'Item_ViewerRelayQL',
-	                    type: 'Viewer'
-	                };
-	            }();
-	        }
-	    }
-	});
-
-/***/ },
-/* 557 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _lodash = __webpack_require__(558);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	var _AutosuggestWrapper = __webpack_require__(559);
-
-	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
-
-	var _Expire = __webpack_require__(583);
-
-	var _Expire2 = _interopRequireDefault(_Expire);
-
-	var _AddModelMutation = __webpack_require__(584);
-
-	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
-
-	var _AddItemMutation = __webpack_require__(585);
-
-	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
-
-	var _ModelQuickForm = __webpack_require__(586);
-
-	var _ModelQuickForm2 = _interopRequireDefault(_ModelQuickForm);
-
-	var _ItemDisplay = __webpack_require__(553);
-
-	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ItemFormComponent = function (_React$Component) {
-	    _inherits(ItemFormComponent, _React$Component);
-
-	    function ItemFormComponent(props) {
-	        _classCallCheck(this, ItemFormComponent);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
-
-	        _this.state = {
-	            itemFeatures: { modelName: "", domains: [], subCategories: [] },
-	            alert: undefined
-	        };
-
-	        return _this;
-	    }
-
-	    _createClass(ItemFormComponent, [{
-	        key: 'onFieldChange',
-	        value: function onFieldChange(field, e) {
-	            var newItem = _lodash2.default.set(this.state.item, field, e.target.value);
-	            this.setState({ item: newItem });
-	        }
-	    }, {
-	        key: 'buildSelectedItem',
-	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
-
-	            _lodash2.default.set(existingItemFeature, "modelName", suggestionValue);
-	            _lodash2.default.set(existingItemFeature, "severity", undefined);
-	            console.log("buildSelectedItem: " + JSON.stringify(existingItemFeature));
-	            return existingItemFeature;
-	        }
-	    }, {
-	        key: 'findModelAndBindNewFeatures',
-	        value: function findModelAndBindNewFeatures(itemFeatures) {
-
-	            if (itemFeatures.modelName === "") return { brand: {}, domains: [], subCategories: [] };
-	            var index = _lodash2.default.findIndex(this.props.viewer.models.edges, function (o) {
-	                return o.node.name === itemFeatures.modelName;
-	            });
-	            var model = this.props.viewer.models.edges[index].node;
-
-	            var newDomains = _lodash2.default.unionWith(model.domains, itemFeatures.domains, function (a, b) {
-	                return a === b;
-	            });
-	            _lodash2.default.set(model, "domains", newDomains);
-
-	            var newSubCategories = _lodash2.default.unionWith(model.subCategories, itemFeatures.subCategories, function (a, b) {
-	                return a === b;
-	            });
-	            _lodash2.default.set(model, "subCategories", newSubCategories);
-
-	            return model;
-	        }
-	    }, {
-	        key: 'onSelectStateChange',
-	        value: function onSelectStateChange(event) {
-
-	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
-	            _lodash2.default.set(itemFeatures, "severity", event.target.value);
-
-	            this.setState({ itemFeatures: itemFeatures });
-	        }
-	    }, {
-	        key: 'onFormSubmit',
-	        value: function onFormSubmit() {
-	            var _this2 = this;
-
-	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
-
-	            var domainsToAdd = this.state.itemFeatures.domains.map(function (elt) {
-	                return elt.name;
-	            });
-	            console.log("about to add domains : " + JSON.stringify(domainsToAdd));
-
-	            var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(function (elt) {
-	                return elt.name;
-	            });
-	            console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd));
-
-	            var addItemMutation = new _AddItemMutation2.default({
-	                modelName: this.state.itemFeatures.modelName,
-	                severity: this.state.itemFeatures.severity,
-	                domains: domainsToAdd,
-	                subCategories: subCategoriesToAdd,
-	                viewer: this.props.viewer });
-
-	            var onSuccess = function onSuccess(response) {
-	                return _this2.updateAlert("Item added successfully !", "success");
-	            };
-
-	            var onFailure = function onFailure(transaction) {
-	                return _this2.updateAlert("An error occurred when adding new item", "error");
-	            };
-
-	            _reactRelay2.default.Store.commitUpdate(addItemMutation, { onSuccess: onSuccess, onFailure: onFailure });
-
-	            // TODO Re-initialize all components
-	        }
-	    }, {
-	        key: 'updateAlert',
-	        value: function updateAlert(message, type) {
-	            console.log("updateAlert: " + message);
-	            var alert = { message: message, type: type };
-	            this.setState({ alert: alert });
-	        }
-	    }, {
-	        key: 'onAddNewModel',
-	        value: function onAddNewModel(modelName, brandName) {
-	            var _this3 = this;
-
-	            var addModelMutation = new _AddModelMutation2.default({ modelName: modelName, brandName: brandName, viewer: this.props.viewer });
-
-	            var onSuccess = function onSuccess(response) {
-
-	                _this3.updateAlert("Model added successfully !", "success");
-	                var itemFeatures = _lodash2.default.cloneDeep(_this3.state.itemFeatures);
-	                _lodash2.default.set(itemFeatures, "modelName", response.addModel.modelEdge.node.name);
-	                _this3.setState({ itemFeatures: itemFeatures });
-	            };
-
-	            var onFailure = function onFailure(transaction) {
-	                _this3.updateAlert("An error occurred when adding new model", "error");
-	            };
-
-	            _reactRelay2.default.Store.commitUpdate(addModelMutation, { onSuccess: onSuccess, onFailure: onFailure });
-	        }
-
-	        // FILTER //
-
-	    }, {
-	        key: 'buildModelSuggestion',
-	        value: function buildModelSuggestion(models) {
-
-	            var suggestions = [];
-
-	            models.edges.map(function (modelNode) {
-
-	                var model = modelNode.node;
-
-	                var modelSuggestion = { name: model.name, section: model.brand.name };
-
-	                var index = _lodash2.default.findIndex(suggestions, function (o) {
-	                    return o.title == model.brand.name;
-	                });
-	                if (index === -1) {
-	                    suggestions.push({ title: model.brand.name, suggestions: [modelSuggestion] });
-	                } else {
-
-	                    suggestions[index].suggestions.push(modelSuggestion);
-	                }
-	            });
-
-	            return suggestions;
-	        }
-	    }, {
-	        key: 'onModelSuggestionSelected',
-	        value: function onModelSuggestionSelected(event, _ref) {
-	            var suggestion = _ref.suggestion;
-	            var suggestionValue = _ref.suggestionValue;
-	            var method = _ref.method;
-
-
-	            var clonedItemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
-	            var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue);
-
-	            this.setState({ itemFeatures: itemFeature });
-	        }
-	    }, {
-	        key: 'multiSectionSuggestionFilter',
-	        value: function multiSectionSuggestionFilter(value, suggestions) {
-
-	            var inputValue = value.trim().toLowerCase();
-	            var inputLength = inputValue.length;
-
-	            var suggestions = _lodash2.default.cloneDeep(suggestions);
-
-	            var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(function (suggestion) {
-
-	                var itemFiltered = suggestion.suggestions.filter(function (suggest) {
-	                    return suggest.name.toLowerCase().indexOf(inputValue) != -1;
-	                });
-
-	                suggestion.suggestions = itemFiltered;
-	                return suggestion;
-	            });
-	            return filteredSuggestion.filter(function (elt) {
-	                return elt.suggestions.length !== 0;
-	            });
-	        }
-	    }, {
-	        key: 'buildDomainSuggestion',
-	        value: function buildDomainSuggestion(domains) {
-	            var suggestions = domains.map(function (domain) {
-	                return { name: domain.name };
-	            });
-	            return suggestions;
-	        }
-	    }, {
-	        key: 'domainSuggestionFilter',
-	        value: function domainSuggestionFilter(value, suggestions) {
-
-	            var inputValue = value.trim().toLowerCase();
-
-	            return suggestions.filter(function (suggest) {
-	                return suggest.name.toLowerCase().indexOf(inputValue) != -1;
-	            });
-	        }
-	    }, {
-	        key: 'onDomainSuggestionSelected',
-	        value: function onDomainSuggestionSelected(event, _ref2) {
-	            var suggestion = _ref2.suggestion;
-	            var suggestionValue = _ref2.suggestionValue;
-	            var method = _ref2.method;
-
-
-	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
-	            itemFeatures.domains.length == 0 ? _lodash2.default.set(itemFeatures, "domains", [{ name: suggestionValue }]) : itemFeatures.domains.push({ name: suggestionValue });
-
-	            console.log("new itemItemFeatures after addDomain : " + JSON.stringify(itemFeatures));
-
-	            this.setState({ itemFeatures: itemFeatures });
-	        }
-	    }, {
-	        key: 'buildSubCategoriesSuggestion',
-	        value: function buildSubCategoriesSuggestion(subCategories) {
-
-	            var suggestions = [];
-
-	            subCategories.map(function (subCategory) {
-
-	                var modelSuggestion = { name: subCategory.name, section: subCategory.category.name };
-
-	                var index = _lodash2.default.findIndex(suggestions, function (o) {
-	                    return o.title == subCategory.category.name;
-	                });
-	                if (index === -1) {
-	                    suggestions.push({ title: subCategory.category.name, suggestions: [modelSuggestion] });
-	                } else {
-	                    suggestions[index].suggestions.push(modelSuggestion);
-	                }
-	            });
-
-	            return suggestions;
-	        }
-	    }, {
-	        key: 'onSubCategoriesSuggestionSelected',
-	        value: function onSubCategoriesSuggestionSelected(event, _ref3) {
-	            var suggestion = _ref3.suggestion;
-	            var suggestionValue = _ref3.suggestionValue;
-	            var method = _ref3.method;
-
-
-	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
-	            itemFeatures.subCategories.length == 0 ? _lodash2.default.set(itemFeatures, "subCategories", [{ name: suggestionValue }]) : itemFeatures.subCategories.push({ name: suggestionValue });
-
-	            console.log("new itemFeatures after addCategories : " + JSON.stringify(itemFeatures));
-
-	            this.setState({ itemFeatures: itemFeatures });
-	        }
-	    }, {
-	        key: 'onAlertDismiss',
-	        value: function onAlertDismiss() {
-	            this.setState({ alert: undefined });
-	        }
-	    }, {
-	        key: 'renderAlert',
-	        value: function renderAlert() {
-
-	            if (this.state.alert !== undefined) {
-	                console.log("alert");
-
-	                var commonAlert = "alert ";
-	                var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger";
-
-	                return _react2.default.createElement(
-	                    _Expire2.default,
-	                    { delay: 5000, callback: this.onAlertDismiss.bind(this) },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: commonAlert + alertType, role: 'alert' },
-	                        this.state.alert.message
-	                    )
-	                );
-	            }
-	        }
-	    }, {
-	        key: 'renderStateList',
-	        value: function renderStateList(states) {
-	            return states.map(function (state, key) {
-	                return _react2.default.createElement(
-	                    'option',
-	                    { key: "state-list-" + key, value: state.severity },
-	                    state.name
-	                );
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-
-	            var models = this.props.viewer.models;
-	            var domains = this.props.viewer.domains;
-	            var subCategories = this.props.viewer.subCategories;
-
-	            var builtModelSuggestion = this.buildModelSuggestion(models);
-	            var builtDomainSuggestion = this.buildDomainSuggestion(domains);
-	            var builtSubCategoriesSuggestion = this.buildSubCategoriesSuggestion(subCategories);
-
-	            var model = this.findModelAndBindNewFeatures(this.state.itemFeatures);
-
-	            var stateList = this.renderStateList(this.props.viewer.states);
-
-	            var alert = this.renderAlert();
-	            var pageTitle = "Create an item";
-
-	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_ItemDisplay2.default, { item: { model: model, state: { severity: this.state.itemFeatures.severity } } }) : "";
-
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'col-md-10 col-md-offset-1' },
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    pageTitle
-	                ),
-	                alert,
-	                _react2.default.createElement(
-	                    'h3',
-	                    null,
-	                    'Select your model'
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-3' },
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a model ...', suggestions: builtModelSuggestion,
-	                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
-	                            resetInputValue: true, ref: 'inputFormSearchModel' }),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'h5',
-	                            null,
-	                            'or create one ...'
-	                        ),
-	                        _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Add State'
-	                        ),
-	                        _react2.default.createElement(
-	                            'select',
-	                            { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
-	                            _react2.default.createElement(
-	                                'option',
-	                                null,
-	                                'Select a state ...'
-	                            ),
-	                            stateList
-	                        ),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Add Domain'
-	                        ),
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a domain ...', suggestions: builtDomainSuggestion,
-	                            multiSection: false, suggestionFilter: this.domainSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onDomainSuggestionSelected.bind(this),
-	                            resetInputValue: true, ref: 'inputFormSearchDomain' }),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Add Categories'
-	                        ),
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a category ...', suggestions: builtSubCategoriesSuggestion,
-	                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onSubCategoriesSuggestionSelected.bind(this),
-	                            resetInputValue: true, ref: 'inputFormSearchSubCategories' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-8' },
-	                        itemFormDisplay
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1 col-md-offset-10' },
-	                        _react2.default.createElement(
-	                            'button',
-	                            { className: 'btn btn-primary', onClick: this.onFormSubmit.bind(this) },
-	                            'Submit'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ItemFormComponent;
-	}(_react2.default.Component);
-
-	exports.default = _reactRelay2.default.createContainer(ItemFormComponent, {
-
-	    fragments: {
-	        viewer: function viewer() {
-	            return function (RQL_0, RQL_1, RQL_2) {
-	                return {
-	                    children: [].concat.apply([], [{
-	                        calls: [{
-	                            kind: 'Call',
-	                            metadata: {},
-	                            name: 'first',
-	                            value: {
-	                                kind: 'CallValue',
-	                                callValue: 100
-	                            }
-	                        }],
-	                        children: [{
-	                            children: [{
-	                                children: [{
-	                                    fieldName: 'name',
-	                                    kind: 'Field',
-	                                    metadata: {},
-	                                    type: 'String'
-	                                }, {
-	                                    children: [{
-	                                        fieldName: 'name',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'String'
-	                                    }, {
-	                                        fieldName: 'id',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'ID'
-	                                    }],
-	                                    fieldName: 'brand',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        inferredRootCallName: 'node',
-	                                        inferredPrimaryKey: 'id'
-	                                    },
-	                                    type: 'BrandType'
-	                                }, {
-	                                    children: [{
-	                                        fieldName: 'name',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'String'
-	                                    }, {
-	                                        fieldName: 'id',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'ID'
-	                                    }],
-	                                    fieldName: 'domains',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        inferredRootCallName: 'node',
-	                                        inferredPrimaryKey: 'id',
-	                                        isPlural: true
-	                                    },
-	                                    type: 'DomainType'
-	                                }, {
-	                                    children: [{
-	                                        fieldName: 'name',
-	                                        kind: 'Field',
-	                                        metadata: {},
-	                                        type: 'String'
-	                                    }, {
-	                                        fieldName: 'id',
-	                                        kind: 'Field',
-	                                        metadata: {
-	                                            isGenerated: true,
-	                                            isRequisite: true
-	                                        },
-	                                        type: 'ID'
-	                                    }],
-	                                    fieldName: 'subCategories',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        canHaveSubselections: true,
-	                                        inferredRootCallName: 'node',
-	                                        inferredPrimaryKey: 'id',
-	                                        isPlural: true
-	                                    },
-	                                    type: 'SubCategoryType'
-	                                }, {
-	                                    fieldName: 'id',
-	                                    kind: 'Field',
-	                                    metadata: {
-	                                        isGenerated: true,
-	                                        isRequisite: true
-	                                    },
-	                                    type: 'ID'
-	                                }],
-	                                fieldName: 'node',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    canHaveSubselections: true,
-	                                    inferredRootCallName: 'node',
-	                                    inferredPrimaryKey: 'id',
-	                                    isRequisite: true
-	                                },
-	                                type: 'ModelType'
-	                            }, {
-	                                fieldName: 'cursor',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'String'
-	                            }],
-	                            fieldName: 'edges',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                isPlural: true
-	                            },
-	                            type: 'ModelTypeEdge'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'hasNextPage',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'Boolean'
-	                            }, {
-	                                fieldName: 'hasPreviousPage',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'Boolean'
-	                            }],
-	                            fieldName: 'pageInfo',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'PageInfo'
-	                        }],
-	                        fieldName: 'models',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            isConnection: true
-	                        },
-	                        type: 'ModelTypeConnection'
-	                    }, {
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }, {
-	                            fieldName: 'severity',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'Int'
-	                        }, {
-	                            fieldName: 'name',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }],
-	                        fieldName: 'states',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id',
-	                            isPlural: true
-	                        },
-	                        type: 'StateType'
-	                    }, {
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }, {
-	                            fieldName: 'name',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }],
-	                        fieldName: 'domains',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id',
-	                            isPlural: true
-	                        },
-	                        type: 'DomainType'
-	                    }, {
-	                        children: [{
-	                            fieldName: 'name',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'name',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }],
-	                            fieldName: 'category',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id'
-	                            },
-	                            type: 'CategoryType'
-	                        }, {
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'subCategories',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id',
-	                            isPlural: true
-	                        },
-	                        type: 'SubCategoryType'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1), _reactRelay2.default.QL.__frag(RQL_2)]),
-	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: 'Fragment',
-	                    metadata: {},
-	                    name: 'ItemForm_ViewerRelayQL',
-	                    type: 'Viewer'
-	                };
-	            }(_AddModelMutation2.default.getFragment('viewer'), _AddItemMutation2.default.getFragment('viewer'), _ModelQuickForm2.default.getFragment('viewer'));
-	        }
-	    }
-	});
-
-/***/ },
-/* 558 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -69668,6 +67324,1867 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(496)(module), (function() { return this; }())))
 
 /***/ },
+/* 549 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(191);
+
+	var _Cart = __webpack_require__(545);
+
+	var _Cart2 = _interopRequireDefault(_Cart);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NavBarBox = function (_React$Component) {
+	  _inherits(NavBarBox, _React$Component);
+
+	  function NavBarBox() {
+	    _classCallCheck(this, NavBarBox);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NavBarBox).apply(this, arguments));
+	  }
+
+	  _createClass(NavBarBox, [{
+	    key: 'render',
+	    value: function render() {
+
+	      return _react2.default.createElement(
+	        'nav',
+	        { className: 'navbar navbar-inverse navbar-fixed-top' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'container-fluid' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'navbar-header' },
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse',
+	                'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
+	              _react2.default.createElement(
+	                'span',
+	                { className: 'sr-only' },
+	                'Toggle navigation'
+	              ),
+	              _react2.default.createElement('span', { className: 'icon-bar' }),
+	              _react2.default.createElement('span', { className: 'icon-bar' }),
+	              _react2.default.createElement('span', { className: 'icon-bar' })
+	            ),
+	            _react2.default.createElement(
+	              'a',
+	              { className: 'navbar-brand', href: '#' },
+	              'LRDS'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	            _react2.default.createElement(
+	              'ul',
+	              { className: 'nav navbar-nav' },
+	              _react2.default.createElement(
+	                'li',
+	                { role: 'presentation' },
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { to: '/', activeClassName: 'link-active' },
+	                  'Home'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                { role: 'presentation' },
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { to: '/stock', activeClassName: 'link-active' },
+	                  'Stock'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                { role: 'presentation' },
+	                _react2.default.createElement(
+	                  _reactRouter.Link,
+	                  { to: '/admin/create', activeClassName: 'link-active' },
+	                  'Admin'
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return NavBarBox;
+	}(_react2.default.Component);
+
+	exports.default = NavBarBox;
+
+/***/ },
+/* 550 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(191);
+
+	var _reactRouter2 = _interopRequireDefault(_reactRouter);
+
+	var _auth = __webpack_require__(542);
+
+	var _auth2 = _interopRequireDefault(_auth);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoginBox = function (_React$Component) {
+	    _inherits(LoginBox, _React$Component);
+
+	    function LoginBox(props) {
+	        _classCallCheck(this, LoginBox);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginBox).call(this, props));
+
+	        console.log(props);
+	        _this.history = props.history;
+	        return _this;
+	    }
+
+	    _createClass(LoginBox, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main' },
+	                _react2.default.createElement(Header, { label: 'Please login' }),
+	                _react2.default.createElement(LoginForm, { history: this.history })
+	            );
+	        }
+	    }]);
+
+	    return LoginBox;
+	}(_react2.default.Component);
+
+	var Header = function (_React$Component2) {
+	    _inherits(Header, _React$Component2);
+
+	    function Header() {
+	        _classCallCheck(this, Header);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Header).apply(this, arguments));
+	    }
+
+	    _createClass(Header, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                this.props.label
+	            );
+	        }
+	    }]);
+
+	    return Header;
+	}(_react2.default.Component);
+
+	var LoginForm = function (_React$Component3) {
+	    _inherits(LoginForm, _React$Component3);
+
+	    function LoginForm(props) {
+	        _classCallCheck(this, LoginForm);
+
+	        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginForm).call(this, props));
+
+	        _this3.history = props.history, _this3.state = { error: false };
+	        return _this3;
+	    }
+
+	    _createClass(LoginForm, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(e) {
+	            var _this4 = this;
+
+	            e.preventDefault();
+
+	            var email = _react2.default.findDOMNode(this.refs.loginField).value;
+	            var pass = _react2.default.findDOMNode(this.refs.passwordField).value;
+
+	            console.log("email: " + email);
+	            console.log("pass: " + pass);
+
+	            _auth2.default.login(email, pass, function (loggedIn) {
+	                if (!loggedIn) {
+	                    console.log("not authenticated");
+	                    return _this4.setState({ error: true });
+	                }
+
+	                console.log("authenticated, redirecting to profile");
+	                _this4.history.replaceState(null, '/jeestock/profile');
+	            });
+
+	            return;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'form',
+	                { className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-group' },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'input-group-addon', id: 'basic-addon1' },
+	                        '@'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'loginField', placeholder: 'login',
+	                        'aria-describedby': 'basic-addon1' })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'input-group' },
+	                    _react2.default.createElement(
+	                        'span',
+	                        { className: 'input-group-addon', id: 'basic-addon1' },
+	                        '?'
+	                    ),
+	                    _react2.default.createElement('input', { type: 'password', className: 'form-control', ref: 'passwordField', placeholder: 'password',
+	                        'aria-describedby': 'basic-addon1' })
+	                ),
+	                _react2.default.createElement(SubmitButton, { label: 'Login' }),
+	                this.state.error && _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Bad login information'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return LoginForm;
+	}(_react2.default.Component);
+
+	var SubmitButton = function (_React$Component4) {
+	    _inherits(SubmitButton, _React$Component4);
+
+	    function SubmitButton() {
+	        _classCallCheck(this, SubmitButton);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SubmitButton).apply(this, arguments));
+	    }
+
+	    _createClass(SubmitButton, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'button',
+	                { type: 'submit', className: 'btn btn-default primary' },
+	                this.props.label
+	            );
+	        }
+	    }]);
+
+	    return SubmitButton;
+	}(_react2.default.Component);
+
+	exports.default = LoginBox;
+
+/***/ },
+/* 551 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _reactRouter = __webpack_require__(191);
+
+	var _reactRouter2 = _interopRequireDefault(_reactRouter);
+
+	var _StockTable = __webpack_require__(552);
+
+	var _StockTable2 = _interopRequireDefault(_StockTable);
+
+	var _StockNavigationBar = __webpack_require__(555);
+
+	var _StockNavigationBar2 = _interopRequireDefault(_StockNavigationBar);
+
+	var _AddItemInCartMutation = __webpack_require__(547);
+
+	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockComponent = function (_React$Component) {
+	    _inherits(StockComponent, _React$Component);
+
+	    function StockComponent(props) {
+	        _classCallCheck(this, StockComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StockComponent).call(this, props));
+
+	        _this.state = {
+	            data: [],
+	            searchedText: "",
+	            tags: []
+	        };
+	        return _this;
+	    }
+
+	    _createClass(StockComponent, [{
+	        key: 'onSearchInputChange',
+	        value: function onSearchInputChange(searchedText) {
+	            this.setState({ searchedText: searchedText });
+	        }
+	    }, {
+	        key: 'onTagSelected',
+	        value: function onTagSelected(newTag) {
+	            var t = this.state.tags.slice();
+	            t.push(newTag);
+	            this.setState({
+	                tags: t,
+	                searchedText: '' }, function (e) {});
+	        }
+	    }, {
+	        key: 'onCLickTag',
+	        value: function onCLickTag(tagToRemove) {
+	            var tmpTag = this.state.tags;
+	            var i = tmpTag.indexOf(tagToRemove);
+	            if (i !== -1) tmpTag.splice(i, 1);
+	            this.setState({ tags: tmpTag });
+	        }
+	    }, {
+	        key: 'filterByTag',
+	        value: function filterByTag(tags, rowsToFilter) {
+
+	            var counter = 0;
+
+	            var taggedFilteredRows = [];
+	            if (tags.length !== 0) {
+
+	                taggedFilteredRows = rowsToFilter.map(function (product) {
+
+	                    if (counter < 35) {
+	                        var hasTags = false;
+	                        for (var i = 0; i < tags.length; i++) {
+	                            if (product.node.model.name.toLowerCase().indexOf(tags[i].toLowerCase()) != -1) {
+	                                counter += 1;
+	                                hasTags = true;
+	                            }
+	                        }
+
+	                        return hasTags ? product : undefined;
+	                    }
+	                });
+	            }
+
+	            var filteredTags = taggedFilteredRows.filter(function (element) {
+	                return element !== undefined;
+	            });
+
+	            return filteredTags;
+	        }
+	    }, {
+	        key: 'filter',
+	        value: function filter(filterText, rowsRoFilter) {
+
+	            var counter = 0;
+
+	            var rows = rowsRoFilter.map(function (product, key) {
+
+	                if (counter < 35) {
+	                    if (filterText === "" || filterText.length <= 1) {
+	                        counter += 1;
+	                        return product.node;
+	                    } else if (filterText.length > 1 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
+	                        counter += 1;
+	                        return product.node;
+	                    }
+	                }
+	            });
+
+	            var goodRows = rows.filter(function (element) {
+	                return element !== undefined;
+	            });
+
+	            return goodRows;
+	        }
+	    }, {
+	        key: 'selectItem',
+	        value: function selectItem(reference) {
+	            this.context.router.push("/stock/" + reference);
+	        }
+	    }, {
+	        key: 'addItemToCart',
+	        value: function addItemToCart(reference) {
+
+	            var addItemInCartMutation = new _AddItemInCartMutation2.default({
+	                itemReference: reference,
+	                viewer: this.props.viewer
+	            });
+
+	            var onSuccess = function onSuccess(response) {
+	                return console.log("Item added to cart");
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                return console.log("Item added to cart");
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(addItemInCartMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var items = this.props.viewer.items.edges;
+	            var filterText = this.state.searchedText.toLowerCase();
+	            var filterTags = this.state.tags;
+
+	            var tagFilteredData = this.filterByTag(filterTags, items);
+	            tagFilteredData = tagFilteredData.length === 0 ? items : tagFilteredData;
+
+	            var filteredItems = this.filter(filterText, tagFilteredData);
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row sub-bar' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'sub-bar-component' },
+	                            _react2.default.createElement(_StockNavigationBar2.default, { onTagSelected: this.onTagSelected.bind(this),
+	                                onSearchInputChange: this.onSearchInputChange.bind(this),
+	                                onTagRemoval: this.onCLickTag.bind(this),
+	                                tags: this.state.tags })
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-10 col-md-offset-1' },
+	                        _react2.default.createElement(_StockTable2.default, { data: filteredItems,
+	                            handleSelectRow: this.selectItem.bind(this),
+	                            handleAddItemToCart: this.addItemToCart.bind(this) })
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockComponent;
+	}(_react2.default.Component);
+
+	StockComponent.contextTypes = {
+	    router: _react2.default.PropTypes.object.isRequired
+	};
+
+	exports.default = _reactRelay2.default.createContainer(StockComponent, {
+	    fragments: {
+	        viewer: function viewer() {
+	            return function (RQL_0) {
+	                return {
+	                    children: [].concat.apply([], [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'reference',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'isInStock',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'Boolean'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'severity',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'Int'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'state',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'StateType'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'description',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'description',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'brand',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            canHaveSubselections: true,
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id'
+	                                        },
+	                                        type: 'BrandType'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'description',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'subCategories',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            canHaveSubselections: true,
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id',
+	                                            isPlural: true
+	                                        },
+	                                        type: 'SubCategoryType'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'description',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'domains',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            canHaveSubselections: true,
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id',
+	                                            isPlural: true
+	                                        },
+	                                        type: 'DomainType'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'model',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'ModelType'
+	                                }, {
+	                                    calls: [{
+	                                        kind: 'Call',
+	                                        metadata: {},
+	                                        name: 'first',
+	                                        value: {
+	                                            kind: 'CallValue',
+	                                            callValue: 5
+	                                        }
+	                                    }],
+	                                    children: [{
+	                                        children: [{
+	                                            children: [{
+	                                                fieldName: 'text',
+	                                                kind: 'Field',
+	                                                metadata: {},
+	                                                type: 'String'
+	                                            }, {
+	                                                fieldName: 'id',
+	                                                kind: 'Field',
+	                                                metadata: {
+	                                                    isGenerated: true,
+	                                                    isRequisite: true
+	                                                },
+	                                                type: 'ID'
+	                                            }],
+	                                            fieldName: 'node',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                canHaveSubselections: true,
+	                                                inferredRootCallName: 'node',
+	                                                inferredPrimaryKey: 'id',
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ItemCommentType'
+	                                        }, {
+	                                            fieldName: 'cursor',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'String'
+	                                        }],
+	                                        fieldName: 'edges',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            canHaveSubselections: true,
+	                                            isPlural: true
+	                                        },
+	                                        type: 'ItemCommentTypeEdge'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'hasNextPage',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'Boolean'
+	                                        }, {
+	                                            fieldName: 'hasPreviousPage',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'Boolean'
+	                                        }],
+	                                        fieldName: 'pageInfo',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            canHaveSubselections: true,
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'PageInfo'
+	                                    }],
+	                                    fieldName: 'comments',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        isConnection: true
+	                                    },
+	                                    type: 'ItemCommentTypeConnection'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'ItemType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isPlural: true
+	                            },
+	                            type: 'ItemTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'items',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            isConnection: true
+	                        },
+	                        type: 'ItemTypeConnection'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'Stock_ViewerRelayQL',
+	                    type: 'Viewer'
+	                };
+	            }(_AddItemInCartMutation2.default.getFragment('viewer'));
+	        }
+	    }
+	});
+
+/***/ },
+/* 552 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _StockTableHeader = __webpack_require__(553);
+
+	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
+
+	var _StockTableRow = __webpack_require__(554);
+
+	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockTable = function (_React$Component) {
+	    _inherits(StockTable, _React$Component);
+
+	    function StockTable(props) {
+	        _classCallCheck(this, StockTable);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTable).call(this, props));
+	    }
+
+	    _createClass(StockTable, [{
+	        key: 'handleRowClick',
+	        value: function handleRowClick(id) {
+	            this.props.handleSelectRow(id);
+	        }
+	    }, {
+	        key: 'handleAddItemToCart',
+	        value: function handleAddItemToCart(reference) {
+	            this.props.handleAddItemToCart(reference);
+	        }
+	    }, {
+	        key: 'renderStockTableRows',
+	        value: function renderStockTableRows(rowsToShow) {
+	            var _this2 = this;
+
+	            return rowsToShow.map(function (item, key) {
+	                return _react2.default.createElement(_StockTableRow2.default, { key: item.reference + "-" + key, item: item,
+	                    handleRowClick: _this2.handleRowClick.bind(_this2),
+	                    handleAddItemToCart: _this2.handleAddItemToCart.bind(_this2) });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var rows = this.renderStockTableRows(this.props.data);
+
+	            return _react2.default.createElement(
+	                'table',
+	                { className: 'table' },
+	                _react2.default.createElement(_StockTableHeader2.default, null),
+	                _react2.default.createElement(
+	                    'tbody',
+	                    null,
+	                    rows
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockTable;
+	}(_react2.default.Component);
+
+	exports.default = StockTable;
+
+/***/ },
+/* 553 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockTableHeader = function (_React$Component) {
+	    _inherits(StockTableHeader, _React$Component);
+
+	    function StockTableHeader() {
+	        _classCallCheck(this, StockTableHeader);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTableHeader).apply(this, arguments));
+	    }
+
+	    _createClass(StockTableHeader, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'thead',
+	                null,
+	                _react2.default.createElement(
+	                    'tr',
+	                    null,
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Etat'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Modèle'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Marque'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Reference'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'En Stock'
+	                    ),
+	                    _react2.default.createElement(
+	                        'th',
+	                        null,
+	                        'Actions'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockTableHeader;
+	}(_react2.default.Component);
+
+	exports.default = StockTableHeader;
+
+/***/ },
+/* 554 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockTableRow = function (_React$Component) {
+	    _inherits(StockTableRow, _React$Component);
+
+	    function StockTableRow(props) {
+	        _classCallCheck(this, StockTableRow);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StockTableRow).call(this, props));
+	    }
+
+	    _createClass(StockTableRow, [{
+	        key: "computeState",
+	        value: function computeState(state) {
+	            if (state == "1") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square green" });
+	            } else if (state == "2") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square yellow" });
+	            } else if (state == "3") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square orange" });
+	            } else if (state == "4") {
+	                return _react2.default.createElement("i", { className: "fa fa fa-square red" });
+	            }
+	        }
+	    }, {
+	        key: "handleRowClick",
+	        value: function handleRowClick() {
+	            this.props.handleRowClick(this.props.item.reference);
+	        }
+	    }, {
+	        key: "onAddToCartClick",
+	        value: function onAddToCartClick() {
+	            this.props.handleAddItemToCart(this.props.item.reference);
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+
+	            var item = this.props.item;
+	            var isInStock = item.isInStock ? _react2.default.createElement("i", { className: "fa fa-check" }) : _react2.default.createElement("i", { className: "fa fa-times" });
+	            var state = this.computeState(item.state.severity);
+
+	            return _react2.default.createElement(
+	                "tr",
+	                null,
+	                _react2.default.createElement(
+	                    "td",
+	                    { className: "pointer", onClick: this.handleRowClick.bind(this) },
+	                    state
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    item.model.name
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    item.model.brand.name
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    item.reference
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    isInStock
+	                ),
+	                _react2.default.createElement(
+	                    "td",
+	                    null,
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "row" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "pointer col-md-1", onClick: this.onAddToCartClick.bind(this) },
+	                            _react2.default.createElement("i", { className: "fa fa-cart-plus" })
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockTableRow;
+	}(_react2.default.Component);
+
+	exports.default = StockTableRow;
+
+/***/ },
+/* 555 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _ItemDisplay = __webpack_require__(556);
+
+	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
+
+	var _searchInput = __webpack_require__(557);
+
+	var _searchInput2 = _interopRequireDefault(_searchInput);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var StockNavigationBar = function (_React$Component) {
+	    _inherits(StockNavigationBar, _React$Component);
+
+	    function StockNavigationBar(props) {
+	        _classCallCheck(this, StockNavigationBar);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StockNavigationBar).call(this, props));
+
+	        _this.state = {};
+	        return _this;
+	    }
+
+	    _createClass(StockNavigationBar, [{
+	        key: 'onSearchInputChange',
+	        value: function onSearchInputChange(searchedText) {
+	            this.props.onSearchInputChange(searchedText);
+	        }
+	    }, {
+	        key: 'onKeyDownSearch',
+	        value: function onKeyDownSearch(newTag) {
+	            this.props.onTagSelected(newTag);
+	        }
+	    }, {
+	        key: 'onCLickTag',
+	        value: function onCLickTag(tag) {
+	            this.props.onTagRemoval(tag);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var tagRow = this.props.tags.map(function (element, key) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: key, className: 'tag', onClick: this.onCLickTag.bind(this, element) },
+	                    element
+	                );
+	            }.bind(this));
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-md-12' },
+	                    _react2.default.createElement(_searchInput2.default, { from: 'stock',
+	                        onChange: this.onSearchInputChange.bind(this),
+	                        onKeyDown: this.onKeyDownSearch.bind(this) })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'navigation-sub-row col-md-6' },
+	                    'An other thing'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'navigation-sub-row col-md-6' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-1' },
+	                        'Tags:'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-11' },
+	                        _react2.default.createElement(
+	                            'ul',
+	                            { className: 'inline-ul' },
+	                            tagRow
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return StockNavigationBar;
+	}(_react2.default.Component);
+
+	exports.default = StockNavigationBar;
+
+/***/ },
+/* 556 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemDisplay = function (_React$Component) {
+	    _inherits(ItemDisplay, _React$Component);
+
+	    function ItemDisplay(props) {
+	        _classCallCheck(this, ItemDisplay);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemDisplay).call(this, props));
+	    }
+
+	    _createClass(ItemDisplay, [{
+	        key: "renderItemDomains",
+	        value: function renderItemDomains(modelDomains) {
+
+	            return modelDomains.map(function (elt) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    { key: elt.name, className: "model-tag" },
+	                    elt.name
+	                );
+	            });
+	        }
+	    }, {
+	        key: "renderItemSubCategories",
+	        value: function renderItemSubCategories(modelSubCategories) {
+
+	            return modelSubCategories.map(function (elt) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    { key: elt.name, className: "model-tag" },
+	                    elt.name
+	                );
+	            });
+	        }
+	    }, {
+	        key: "computeStateIcon",
+	        value: function computeStateIcon(state) {
+
+	            if (state == "1") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-up green" });
+	            } else if (state == "2") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-up yellow" });
+	            } else if (state == "3") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-down orange" });
+	            } else if (state == "4") {
+	                return _react2.default.createElement("i", { className: "fa fa-2x fa-thumbs-down red" });
+	            }
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+
+	            var item = this.props.item;
+
+	            var itemDomains = this.renderItemDomains(item.model.domains);
+	            var itemSubCategories = this.renderItemSubCategories(item.model.subCategories);
+
+	            var stateIcon = this.computeStateIcon(item.state.severity);
+
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "panel panel-default" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "panel-heading" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-11" },
+	                                _react2.default.createElement(
+	                                    "h4",
+	                                    null,
+	                                    _react2.default.createElement(
+	                                        "strong",
+	                                        null,
+	                                        item.model.brand.name + ' - ' + item.model.name
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-1" },
+	                                stateIcon
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "panel-body" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "row" },
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-5" },
+	                                _react2.default.createElement(
+	                                    "em",
+	                                    null,
+	                                    "Domaine: "
+	                                ),
+	                                _react2.default.createElement(
+	                                    "ul",
+	                                    null,
+	                                    itemDomains
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-5" },
+	                                _react2.default.createElement(
+	                                    "em",
+	                                    null,
+	                                    "Sous Catégories: "
+	                                ),
+	                                _react2.default.createElement(
+	                                    "ul",
+	                                    null,
+	                                    itemSubCategories
+	                                )
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "p",
+	                            null,
+	                            _react2.default.createElement(
+	                                "em",
+	                                null,
+	                                item.model.description
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ItemDisplay;
+	}(_react2.default.Component);
+
+	exports.default = ItemDisplay;
+
+/***/ },
+/* 557 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SearchComponent = function (_React$Component) {
+	    _inherits(SearchComponent, _React$Component);
+
+	    function SearchComponent(props) {
+	        _classCallCheck(this, SearchComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchComponent).call(this, props));
+
+	        _this.state = { searchedText: "" };
+	        return _this;
+	    }
+
+	    _createClass(SearchComponent, [{
+	        key: 'getSearch',
+	        value: function getSearch(cb) {
+	            cb = arguments[arguments.length - 1];
+	            var searchedText = this.state.searchedText;
+	            if (cb) {
+	                if (searchedText.length > 3) cb(searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'handleSearch',
+	        value: function handleSearch() {
+	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
+	            console.log(searchedText);
+	            this.setState({ searchedText: searchedText });
+	            this.props.onChange(searchedText);
+	        }
+	    }, {
+	        key: 'handlePressEnter',
+	        value: function handlePressEnter(e) {
+	            if (e.keyCode === 13 && this.state.searchedText != "") {
+	                _reactDom2.default.findDOMNode(this.refs.searchInput).value = '';
+	                this.setState({ searchedText: "" });
+	                this.props.onKeyDown(this.state.searchedText);
+	            }
+	        }
+	    }, {
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate() {
+	            return false;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'input-group' },
+	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
+	                _react2.default.createElement('input', { ref: 'searchInput',
+	                    type: 'text',
+	                    className: 'form-control',
+	                    placeholder: 'Search',
+	                    'aria-describedby': 'basic-addon1',
+	                    onChange: this.handleSearch.bind(this),
+	                    onKeyDown: this.handlePressEnter.bind(this) })
+	            );
+	        }
+	    }]);
+
+	    return SearchComponent;
+	}(_react2.default.Component);
+
+	exports.default = SearchComponent;
+
+/***/ },
+/* 558 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _ItemDisplay = __webpack_require__(556);
+
+	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemComponent = function (_React$Component) {
+	    _inherits(ItemComponent, _React$Component);
+
+	    function ItemComponent(props) {
+	        _classCallCheck(this, ItemComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemComponent).call(this, props));
+
+	        _this.state = {};
+	        return _this;
+	    }
+
+	    _createClass(ItemComponent, [{
+	        key: 'render',
+	        value: function render() {
+
+	            var item = this.props.viewer.item;
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'col-md-10 col-md-offset-1' },
+	                _react2.default.createElement(_ItemDisplay2.default, { item: item })
+	            );
+	        }
+	    }]);
+
+	    return ItemComponent;
+	}(_react2.default.Component);
+
+	exports.default = _reactRelay2.default.createContainer(ItemComponent, {
+
+	    initialVariables: {
+	        reference: null
+	    },
+	    prepareVariables: function prepareVariables(_ref) {
+	        var reference = _ref.reference;
+
+
+	        console.log("reference in ItemComponent : " + reference);
+	        return {
+	            reference: reference
+	        };
+	    },
+
+	    fragments: {
+	        viewer: function viewer() {
+	            return function () {
+	                return {
+	                    children: [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'reference',
+	                            value: {
+	                                kind: 'CallVariable',
+	                                callVariableName: 'reference'
+	                            }
+	                        }],
+	                        children: [{
+	                            fieldName: 'reference',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'name',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'description',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'brand',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id'
+	                                },
+	                                type: 'BrandType'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'domains',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isPlural: true
+	                                },
+	                                type: 'DomainType'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'subCategories',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isPlural: true
+	                                },
+	                                type: 'SubCategoryType'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'model',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id'
+	                            },
+	                            type: 'ModelType'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'severity',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'Int'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'state',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id'
+	                            },
+	                            type: 'StateType'
+	                        }, {
+	                            calls: [{
+	                                kind: 'Call',
+	                                metadata: {},
+	                                name: 'first',
+	                                value: {
+	                                    kind: 'CallValue',
+	                                    callValue: 10
+	                                }
+	                            }],
+	                            children: [{
+	                                children: [{
+	                                    children: [{
+	                                        fieldName: 'text',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'node',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id',
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ItemCommentType'
+	                                }, {
+	                                    fieldName: 'cursor',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'String'
+	                                }],
+	                                fieldName: 'edges',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    isPlural: true
+	                                },
+	                                type: 'ItemCommentTypeEdge'
+	                            }, {
+	                                children: [{
+	                                    fieldName: 'hasNextPage',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'Boolean'
+	                                }, {
+	                                    fieldName: 'hasPreviousPage',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'Boolean'
+	                                }],
+	                                fieldName: 'pageInfo',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'PageInfo'
+	                            }],
+	                            fieldName: 'comments',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isConnection: true
+	                            },
+	                            type: 'ItemCommentTypeConnection'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'item',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'ItemType'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'Item_ViewerRelayQL',
+	                    type: 'Viewer'
+	                };
+	            }();
+	        }
+	    }
+	});
+
+/***/ },
 /* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -69683,11 +69200,756 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactAutosuggest = __webpack_require__(560);
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _lodash = __webpack_require__(548);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	var _AutosuggestWrapper = __webpack_require__(560);
+
+	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
+
+	var _Expire = __webpack_require__(584);
+
+	var _Expire2 = _interopRequireDefault(_Expire);
+
+	var _AddModelMutation = __webpack_require__(585);
+
+	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
+
+	var _AddItemMutation = __webpack_require__(586);
+
+	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
+
+	var _ModelQuickForm = __webpack_require__(587);
+
+	var _ModelQuickForm2 = _interopRequireDefault(_ModelQuickForm);
+
+	var _ItemDisplay = __webpack_require__(556);
+
+	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemFormComponent = function (_React$Component) {
+	    _inherits(ItemFormComponent, _React$Component);
+
+	    function ItemFormComponent(props) {
+	        _classCallCheck(this, ItemFormComponent);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemFormComponent).call(this, props));
+
+	        _this.state = {
+	            itemFeatures: { modelName: "", domains: [], subCategories: [] },
+	            alert: undefined
+	        };
+
+	        return _this;
+	    }
+
+	    _createClass(ItemFormComponent, [{
+	        key: 'onFieldChange',
+	        value: function onFieldChange(field, e) {
+	            var newItem = _lodash2.default.set(this.state.item, field, e.target.value);
+	            this.setState({ item: newItem });
+	        }
+	    }, {
+	        key: 'buildSelectedItem',
+	        value: function buildSelectedItem(existingItemFeature, suggestion, suggestionValue) {
+
+	            _lodash2.default.set(existingItemFeature, "modelName", suggestionValue);
+	            _lodash2.default.set(existingItemFeature, "severity", undefined);
+	            console.log("buildSelectedItem: " + JSON.stringify(existingItemFeature));
+	            return existingItemFeature;
+	        }
+	    }, {
+	        key: 'findModelAndBindNewFeatures',
+	        value: function findModelAndBindNewFeatures(itemFeatures) {
+
+	            if (itemFeatures.modelName === "") return { brand: {}, domains: [], subCategories: [] };
+	            var index = _lodash2.default.findIndex(this.props.viewer.models.edges, function (o) {
+	                return o.node.name === itemFeatures.modelName;
+	            });
+	            var model = this.props.viewer.models.edges[index].node;
+
+	            var newDomains = _lodash2.default.unionWith(model.domains, itemFeatures.domains, function (a, b) {
+	                return a === b;
+	            });
+	            _lodash2.default.set(model, "domains", newDomains);
+
+	            var newSubCategories = _lodash2.default.unionWith(model.subCategories, itemFeatures.subCategories, function (a, b) {
+	                return a === b;
+	            });
+	            _lodash2.default.set(model, "subCategories", newSubCategories);
+
+	            return model;
+	        }
+	    }, {
+	        key: 'onSelectStateChange',
+	        value: function onSelectStateChange(event) {
+
+	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
+	            _lodash2.default.set(itemFeatures, "severity", event.target.value);
+
+	            this.setState({ itemFeatures: itemFeatures });
+	        }
+	    }, {
+	        key: 'onFormSubmit',
+	        value: function onFormSubmit() {
+	            var _this2 = this;
+
+	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
+
+	            var domainsToAdd = this.state.itemFeatures.domains.map(function (elt) {
+	                return elt.name;
+	            });
+	            console.log("about to add domains : " + JSON.stringify(domainsToAdd));
+
+	            var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(function (elt) {
+	                return elt.name;
+	            });
+	            console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd));
+
+	            var addItemMutation = new _AddItemMutation2.default({
+	                modelName: this.state.itemFeatures.modelName,
+	                severity: this.state.itemFeatures.severity,
+	                domains: domainsToAdd,
+	                subCategories: subCategoriesToAdd,
+	                viewer: this.props.viewer });
+
+	            var onSuccess = function onSuccess(response) {
+	                return _this2.updateAlert("Item added successfully !", "success");
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                return _this2.updateAlert("An error occurred when adding new item", "error");
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(addItemMutation, { onSuccess: onSuccess, onFailure: onFailure });
+
+	            // TODO Re-initialize all components
+	        }
+	    }, {
+	        key: 'updateAlert',
+	        value: function updateAlert(message, type) {
+	            console.log("updateAlert: " + message);
+	            var alert = { message: message, type: type };
+	            this.setState({ alert: alert });
+	        }
+	    }, {
+	        key: 'onAddNewModel',
+	        value: function onAddNewModel(modelName, brandName) {
+	            var _this3 = this;
+
+	            var addModelMutation = new _AddModelMutation2.default({ modelName: modelName, brandName: brandName, viewer: this.props.viewer });
+
+	            var onSuccess = function onSuccess(response) {
+
+	                _this3.updateAlert("Model added successfully !", "success");
+	                var itemFeatures = _lodash2.default.cloneDeep(_this3.state.itemFeatures);
+	                _lodash2.default.set(itemFeatures, "modelName", response.addModel.modelEdge.node.name);
+	                _this3.setState({ itemFeatures: itemFeatures });
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                _this3.updateAlert("An error occurred when adding new model", "error");
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(addModelMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+
+	        // FILTER //
+
+	    }, {
+	        key: 'buildModelSuggestion',
+	        value: function buildModelSuggestion(models) {
+
+	            var suggestions = [];
+
+	            models.edges.map(function (modelNode) {
+
+	                var model = modelNode.node;
+
+	                var modelSuggestion = { name: model.name, section: model.brand.name };
+
+	                var index = _lodash2.default.findIndex(suggestions, function (o) {
+	                    return o.title == model.brand.name;
+	                });
+	                if (index === -1) {
+	                    suggestions.push({ title: model.brand.name, suggestions: [modelSuggestion] });
+	                } else {
+
+	                    suggestions[index].suggestions.push(modelSuggestion);
+	                }
+	            });
+
+	            return suggestions;
+	        }
+	    }, {
+	        key: 'onModelSuggestionSelected',
+	        value: function onModelSuggestionSelected(event, _ref) {
+	            var suggestion = _ref.suggestion;
+	            var suggestionValue = _ref.suggestionValue;
+	            var method = _ref.method;
+
+
+	            var clonedItemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
+	            var itemFeature = this.buildSelectedItem(clonedItemFeatures, suggestion, suggestionValue);
+
+	            this.setState({ itemFeatures: itemFeature });
+	        }
+	    }, {
+	        key: 'multiSectionSuggestionFilter',
+	        value: function multiSectionSuggestionFilter(value, suggestions) {
+
+	            var inputValue = value.trim().toLowerCase();
+	            var inputLength = inputValue.length;
+
+	            var suggestions = _lodash2.default.cloneDeep(suggestions);
+
+	            var filteredSuggestion = inputLength === 0 ? [] : suggestions.map(function (suggestion) {
+
+	                var itemFiltered = suggestion.suggestions.filter(function (suggest) {
+	                    return suggest.name.toLowerCase().indexOf(inputValue) != -1;
+	                });
+
+	                suggestion.suggestions = itemFiltered;
+	                return suggestion;
+	            });
+	            return filteredSuggestion.filter(function (elt) {
+	                return elt.suggestions.length !== 0;
+	            });
+	        }
+	    }, {
+	        key: 'buildDomainSuggestion',
+	        value: function buildDomainSuggestion(domains) {
+	            var suggestions = domains.map(function (domain) {
+	                return { name: domain.name };
+	            });
+	            return suggestions;
+	        }
+	    }, {
+	        key: 'domainSuggestionFilter',
+	        value: function domainSuggestionFilter(value, suggestions) {
+
+	            var inputValue = value.trim().toLowerCase();
+
+	            return suggestions.filter(function (suggest) {
+	                return suggest.name.toLowerCase().indexOf(inputValue) != -1;
+	            });
+	        }
+	    }, {
+	        key: 'onDomainSuggestionSelected',
+	        value: function onDomainSuggestionSelected(event, _ref2) {
+	            var suggestion = _ref2.suggestion;
+	            var suggestionValue = _ref2.suggestionValue;
+	            var method = _ref2.method;
+
+
+	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
+	            itemFeatures.domains.length == 0 ? _lodash2.default.set(itemFeatures, "domains", [{ name: suggestionValue }]) : itemFeatures.domains.push({ name: suggestionValue });
+
+	            console.log("new itemItemFeatures after addDomain : " + JSON.stringify(itemFeatures));
+
+	            this.setState({ itemFeatures: itemFeatures });
+	        }
+	    }, {
+	        key: 'buildSubCategoriesSuggestion',
+	        value: function buildSubCategoriesSuggestion(subCategories) {
+
+	            var suggestions = [];
+
+	            subCategories.map(function (subCategory) {
+
+	                var modelSuggestion = { name: subCategory.name, section: subCategory.category.name };
+
+	                var index = _lodash2.default.findIndex(suggestions, function (o) {
+	                    return o.title == subCategory.category.name;
+	                });
+	                if (index === -1) {
+	                    suggestions.push({ title: subCategory.category.name, suggestions: [modelSuggestion] });
+	                } else {
+	                    suggestions[index].suggestions.push(modelSuggestion);
+	                }
+	            });
+
+	            return suggestions;
+	        }
+	    }, {
+	        key: 'onSubCategoriesSuggestionSelected',
+	        value: function onSubCategoriesSuggestionSelected(event, _ref3) {
+	            var suggestion = _ref3.suggestion;
+	            var suggestionValue = _ref3.suggestionValue;
+	            var method = _ref3.method;
+
+
+	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
+	            itemFeatures.subCategories.length == 0 ? _lodash2.default.set(itemFeatures, "subCategories", [{ name: suggestionValue }]) : itemFeatures.subCategories.push({ name: suggestionValue });
+
+	            console.log("new itemFeatures after addCategories : " + JSON.stringify(itemFeatures));
+
+	            this.setState({ itemFeatures: itemFeatures });
+	        }
+	    }, {
+	        key: 'onAlertDismiss',
+	        value: function onAlertDismiss() {
+	            this.setState({ alert: undefined });
+	        }
+	    }, {
+	        key: 'renderAlert',
+	        value: function renderAlert() {
+
+	            if (this.state.alert !== undefined) {
+	                console.log("alert");
+
+	                var commonAlert = "alert ";
+	                var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger";
+
+	                return _react2.default.createElement(
+	                    _Expire2.default,
+	                    { delay: 5000, callback: this.onAlertDismiss.bind(this) },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: commonAlert + alertType, role: 'alert' },
+	                        this.state.alert.message
+	                    )
+	                );
+	            }
+	        }
+	    }, {
+	        key: 'renderStateList',
+	        value: function renderStateList(states) {
+	            return states.map(function (state, key) {
+	                return _react2.default.createElement(
+	                    'option',
+	                    { key: "state-list-" + key, value: state.severity },
+	                    state.name
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var models = this.props.viewer.models;
+	            var domains = this.props.viewer.domains;
+	            var subCategories = this.props.viewer.subCategories;
+
+	            var builtModelSuggestion = this.buildModelSuggestion(models);
+	            var builtDomainSuggestion = this.buildDomainSuggestion(domains);
+	            var builtSubCategoriesSuggestion = this.buildSubCategoriesSuggestion(subCategories);
+
+	            var model = this.findModelAndBindNewFeatures(this.state.itemFeatures);
+
+	            var stateList = this.renderStateList(this.props.viewer.states);
+
+	            var alert = this.renderAlert();
+	            var pageTitle = "Create an item";
+
+	            var itemFormDisplay = this.state.itemFeatures.modelName !== "" ? _react2.default.createElement(_ItemDisplay2.default, { item: { model: model, state: { severity: this.state.itemFeatures.severity } } }) : "";
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'col-md-10 col-md-offset-1' },
+	                _react2.default.createElement(
+	                    'h2',
+	                    null,
+	                    pageTitle
+	                ),
+	                alert,
+	                _react2.default.createElement(
+	                    'h3',
+	                    null,
+	                    'Select your model'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-3' },
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a model ...', suggestions: builtModelSuggestion,
+	                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
+	                            onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
+	                            resetInputValue: true, ref: 'inputFormSearchModel' }),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'h5',
+	                            null,
+	                            'or create one ...'
+	                        ),
+	                        _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            'Add State'
+	                        ),
+	                        _react2.default.createElement(
+	                            'select',
+	                            { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
+	                            _react2.default.createElement(
+	                                'option',
+	                                null,
+	                                'Select a state ...'
+	                            ),
+	                            stateList
+	                        ),
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            'Add Domain'
+	                        ),
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a domain ...', suggestions: builtDomainSuggestion,
+	                            multiSection: false, suggestionFilter: this.domainSuggestionFilter.bind(this),
+	                            onSuggestionSelected: this.onDomainSuggestionSelected.bind(this),
+	                            resetInputValue: true, ref: 'inputFormSearchDomain' }),
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            'Add Categories'
+	                        ),
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a category ...', suggestions: builtSubCategoriesSuggestion,
+	                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
+	                            onSuggestionSelected: this.onSubCategoriesSuggestionSelected.bind(this),
+	                            resetInputValue: true, ref: 'inputFormSearchSubCategories' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-8' },
+	                        itemFormDisplay
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-1 col-md-offset-10' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary', onClick: this.onFormSubmit.bind(this) },
+	                            'Submit'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ItemFormComponent;
+	}(_react2.default.Component);
+
+	exports.default = _reactRelay2.default.createContainer(ItemFormComponent, {
+
+	    fragments: {
+	        viewer: function viewer() {
+	            return function (RQL_0, RQL_1, RQL_2) {
+	                return {
+	                    children: [].concat.apply([], [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'brand',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'BrandType'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'domains',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id',
+	                                        isPlural: true
+	                                    },
+	                                    type: 'DomainType'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'subCategories',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id',
+	                                        isPlural: true
+	                                    },
+	                                    type: 'SubCategoryType'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'ModelType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isPlural: true
+	                            },
+	                            type: 'ModelTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'models',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            isConnection: true
+	                        },
+	                        type: 'ModelTypeConnection'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, {
+	                            fieldName: 'severity',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'Int'
+	                        }, {
+	                            fieldName: 'name',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }],
+	                        fieldName: 'states',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'StateType'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, {
+	                            fieldName: 'name',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }],
+	                        fieldName: 'domains',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'DomainType'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'name',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'name',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'category',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id'
+	                            },
+	                            type: 'CategoryType'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'subCategories',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id',
+	                            isPlural: true
+	                        },
+	                        type: 'SubCategoryType'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1), _reactRelay2.default.QL.__frag(RQL_2)]),
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'ItemForm_ViewerRelayQL',
+	                    type: 'Viewer'
+	                };
+	            }(_AddModelMutation2.default.getFragment('viewer'), _AddItemMutation2.default.getFragment('viewer'), _ModelQuickForm2.default.getFragment('viewer'));
+	        }
+	    }
+	});
+
+/***/ },
+/* 560 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactAutosuggest = __webpack_require__(561);
 
 	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
 
-	var _lodash = __webpack_require__(558);
+	var _lodash = __webpack_require__(548);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -69839,15 +70101,15 @@
 	exports.default = AutosuggestWrapper;
 
 /***/ },
-/* 560 */
+/* 561 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(561).default;
+	module.exports = __webpack_require__(562).default;
 
 /***/ },
-/* 561 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69862,15 +70124,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(562);
+	var _redux = __webpack_require__(563);
 
-	var _reactRedux = __webpack_require__(570);
+	var _reactRedux = __webpack_require__(571);
 
-	var _reducerAndActions = __webpack_require__(577);
+	var _reducerAndActions = __webpack_require__(578);
 
 	var _reducerAndActions2 = _interopRequireDefault(_reducerAndActions);
 
-	var _Autosuggest = __webpack_require__(578);
+	var _Autosuggest = __webpack_require__(579);
 
 	var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -70042,7 +70304,7 @@
 	exports.default = AutosuggestContainer;
 
 /***/ },
-/* 562 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70050,27 +70312,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(563);
+	var _createStore = __webpack_require__(564);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(565);
+	var _combineReducers = __webpack_require__(566);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(567);
+	var _bindActionCreators = __webpack_require__(568);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(568);
+	var _applyMiddleware = __webpack_require__(569);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(569);
+	var _compose = __webpack_require__(570);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(566);
+	var _warning = __webpack_require__(567);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -70094,7 +70356,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 563 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70103,7 +70365,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 
-	var _isPlainObject = __webpack_require__(564);
+	var _isPlainObject = __webpack_require__(565);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -70315,7 +70577,7 @@
 	}
 
 /***/ },
-/* 564 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getPrototype = __webpack_require__(517),
@@ -70390,7 +70652,7 @@
 
 
 /***/ },
-/* 565 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70398,13 +70660,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 
-	var _createStore = __webpack_require__(563);
+	var _createStore = __webpack_require__(564);
 
-	var _isPlainObject = __webpack_require__(564);
+	var _isPlainObject = __webpack_require__(565);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(566);
+	var _warning = __webpack_require__(567);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -70523,7 +70785,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 566 */
+/* 567 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70552,7 +70814,7 @@
 	}
 
 /***/ },
-/* 567 */
+/* 568 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70608,7 +70870,7 @@
 	}
 
 /***/ },
-/* 568 */
+/* 569 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70618,7 +70880,7 @@
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 
-	var _compose = __webpack_require__(569);
+	var _compose = __webpack_require__(570);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -70670,7 +70932,7 @@
 	}
 
 /***/ },
-/* 569 */
+/* 570 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -70704,7 +70966,7 @@
 	}
 
 /***/ },
-/* 570 */
+/* 571 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70712,11 +70974,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(571);
+	var _Provider = __webpack_require__(572);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(573);
+	var _connect = __webpack_require__(574);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -70726,7 +70988,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 571 */
+/* 572 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70736,7 +70998,7 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(572);
+	var _storeShape = __webpack_require__(573);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
@@ -70810,7 +71072,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 572 */
+/* 573 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70826,7 +71088,7 @@
 	});
 
 /***/ },
-/* 573 */
+/* 574 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70838,23 +71100,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(572);
+	var _storeShape = __webpack_require__(573);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(574);
+	var _shallowEqual = __webpack_require__(575);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(575);
+	var _wrapActionCreators = __webpack_require__(576);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(564);
+	var _isPlainObject = __webpack_require__(565);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(576);
+	var _hoistNonReactStatics = __webpack_require__(577);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -71154,7 +71416,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 574 */
+/* 575 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71185,7 +71447,7 @@
 	}
 
 /***/ },
-/* 575 */
+/* 576 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71193,7 +71455,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(562);
+	var _redux = __webpack_require__(563);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -71202,7 +71464,7 @@
 	}
 
 /***/ },
-/* 576 */
+/* 577 */
 /***/ function(module, exports) {
 
 	/**
@@ -71248,7 +71510,7 @@
 
 
 /***/ },
-/* 577 */
+/* 578 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71377,7 +71639,7 @@
 	}
 
 /***/ },
-/* 578 */
+/* 579 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71394,11 +71656,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(570);
+	var _reactRedux = __webpack_require__(571);
 
-	var _reducerAndActions = __webpack_require__(577);
+	var _reducerAndActions = __webpack_require__(578);
 
-	var _reactAutowhatever = __webpack_require__(579);
+	var _reactAutowhatever = __webpack_require__(580);
 
 	var _reactAutowhatever2 = _interopRequireDefault(_reactAutowhatever);
 
@@ -71821,7 +72083,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Autosuggest);
 
 /***/ },
-/* 579 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71840,11 +72102,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _sectionIterator = __webpack_require__(580);
+	var _sectionIterator = __webpack_require__(581);
 
 	var _sectionIterator2 = _interopRequireDefault(_sectionIterator);
 
-	var _reactThemeable = __webpack_require__(581);
+	var _reactThemeable = __webpack_require__(582);
 
 	var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
@@ -72144,7 +72406,7 @@
 
 
 /***/ },
-/* 580 */
+/* 581 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72264,7 +72526,7 @@
 
 
 /***/ },
-/* 581 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72277,7 +72539,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _objectAssign = __webpack_require__(582);
+	var _objectAssign = __webpack_require__(583);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -72302,7 +72564,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 582 */
+/* 583 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72347,7 +72609,7 @@
 
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72434,7 +72696,7 @@
 	exports.default = Expire;
 
 /***/ },
-/* 584 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -72661,7 +72923,7 @@
 	exports.default = AddModelMutation;
 
 /***/ },
-/* 585 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -72846,7 +73108,7 @@
 	exports.default = AddItemMutation;
 
 /***/ },
-/* 586 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72869,7 +73131,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _AutosuggestWrapper = __webpack_require__(559);
+	var _AutosuggestWrapper = __webpack_require__(560);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
@@ -73035,7 +73297,7 @@
 	});
 
 /***/ },
-/* 587 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73050,7 +73312,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _searchInput = __webpack_require__(554);
+	var _searchInput = __webpack_require__(557);
 
 	var _searchInput2 = _interopRequireDefault(_searchInput);
 
@@ -73096,7 +73358,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 588 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73164,7 +73426,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 589 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73230,7 +73492,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 590 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73271,7 +73533,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(591);
+	var _useBeforeUnload2 = __webpack_require__(592);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -73291,13 +73553,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(592);
+	var _enableBeforeUnload2 = __webpack_require__(593);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(593);
+	var _enableQueries2 = __webpack_require__(594);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -73306,7 +73568,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 591 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -73423,7 +73685,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 592 */
+/* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73436,7 +73698,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(591);
+	var _useBeforeUnload = __webpack_require__(592);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -73444,7 +73706,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 593 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -1,28 +1,22 @@
 import Relay from 'react-relay';
-import _ from 'lodash'
 
-class AddItemInCartMutation extends Relay.Mutation {
+class RemoveItemFromCartMutation extends Relay.Mutation {
 
     static fragments = {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
-            cart {
-                selectedItems {
-                    reference
-                }
-            }
           }
         `
     };
 
     getMutation() {
-        return Relay.QL`mutation{addItemInCart}`
+        return Relay.QL`mutation{removeItemFromCart}`
     }
 
     getFatQuery() {
         return Relay.QL`
-          fragment on AddItemInCartPayload {
+          fragment on RemoveItemFromCartPayload {
               cart
               viewer
           }
@@ -44,19 +38,19 @@ class AddItemInCartMutation extends Relay.Mutation {
     }
 
     getOptimisticResponse() {
-        console.log("get optimistic responbse : " + JSON.stringify(this.props.viewer.cart))
-
-        var actualCart = _.cloneDeep(this.props.viewer.cart)
-        actualCart.selectedItems.push({reference : this.props.itemReference})
-
-        console.log("modified cart : " + JSON.stringify(actualCart))
+        
+        console.log("getOptimisticResponse : " + JSON.stringify(this.props.viewer.cart))
         
         return {
-            cart: actualCart,
+            cart: {
+                selectedItems: [{
+                    reference : this.props.itemReference
+                }]
+            },
             viewer: this.props.viewer
 
         };
     }
 }
 
-export default AddItemInCartMutation
+export default RemoveItemFromCartMutation
