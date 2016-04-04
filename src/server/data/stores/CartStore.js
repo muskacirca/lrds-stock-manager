@@ -18,13 +18,6 @@ const usersById = {
 };
 
 export function initState(items) {
-
-    //var typedWrecks = wrecks.map((elt) => {
-    //    const todo = new Wreck();
-    //    Object.assign(todo, elt);
-    //    return todo
-    //})
-
     cartStore = items
     return cartStore
 }
@@ -41,8 +34,6 @@ export function getById(id) {
 }
 
 export function getViewer() {
-
-    console.log("getting viewer : " + JSON.stringify(usersById[VIEWER_ID]))
    return usersById[VIEWER_ID]
 }
 
@@ -55,8 +46,6 @@ export function isInitialized() {
 }
 
 export function getCart() {
-
-    console.log("cartStore: " + cartStore.length)
     return cartStore
 }
 
