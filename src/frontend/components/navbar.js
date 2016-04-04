@@ -1,19 +1,13 @@
 import React from 'react'
 import {Link} from 'react-router'
+import Cart from './Cart'
 
 class NavBarBox extends React.Component {
-    
-    renderCart(cart) {
-        
-        return cart.selectedItems.map(item => {
-            return item.reference +  " - "
-        })
-    }
 
     render() {
-        
-        var cartList = this.renderCart(this.props.viewer.cart)
-        
+
+        var cart = this.props.viewer.cart
+
         return (
           <nav className="navbar navbar-inverse navbar-fixed-top">
             <div className="container-fluid">
@@ -42,10 +36,8 @@ class NavBarBox extends React.Component {
                 </ul>
                   <ul className="nav navbar-nav">
                       <li role="presentation">
-                          <Link to="/admin/create" className="navbar-right" activeClassName="link-active">
-                              <i className="fa fa-2x fa-shopping-cart"></i>
-                          </Link>
-                          {cartList}
+
+                          <a><Cart cart={cart} /></a>
                       </li>
                   </ul>
               </div>

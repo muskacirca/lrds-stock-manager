@@ -43,6 +43,9 @@ import {
     pushItemInCart
 } from './CartStore';
 
+
+
+
 /**
  * The first argument defines the way to resolve an ID to its object.
  * The second argument defines the way to resolve a node object to its GraphQL type.
@@ -59,8 +62,8 @@ var { nodeInterface, nodeField } = nodeDefinitions(
             console.log("Im here getting SubCategoryType")
             return getViewer(id);
         } else if (type === "DomainType") {
-                console.log("Im here getting Domain")
-                return getViewer(id);
+            console.log("Im here getting Domain")
+            return getViewer(id);
         } else if (type === "Viewer") {
             console.log("Im here getting viewer")
             return getViewer(id);
@@ -179,7 +182,7 @@ var GraphQLStateType = new GraphQLObjectType({
 var {
     connectionType: ItemCommentConnection
     // ,edgeType: GraphQLSimTypesEdge,
-    } = connectionDefinitions({
+} = connectionDefinitions({
     name: 'ItemCommentType',
     nodeType: GraphQLItemCommentType
 });
@@ -225,7 +228,6 @@ var GraphQLCartType = new GraphQLObjectType({
         selectedItems: {
             type: new GraphQLList(GraphQLItemType),
             resolve: (obj) => {
-                console.log("resolve in cart : " + JSON.stringify(obj))
                 return obj
             }
         }
@@ -235,16 +237,16 @@ var GraphQLCartType = new GraphQLObjectType({
 
 var {
     connectionType: ItemsConnection
-     ,edgeType: GraphQLItemEdge,
-    } = connectionDefinitions({
+    ,edgeType: GraphQLItemEdge,
+} = connectionDefinitions({
     name: 'ItemType',
     nodeType: GraphQLItemType
 });
 
 var {
     connectionType: ModelsConnection
-     ,edgeType: GraphQLModelEdge,
-    } = connectionDefinitions({
+    ,edgeType: GraphQLModelEdge,
+} = connectionDefinitions({
     name: 'ModelType',
     nodeType: GraphQLModelType
 });
@@ -268,9 +270,9 @@ var GraphQLViewer = new GraphQLObjectType({
                 }
             },
             resolve: (_, {reference}) => Database.models.item.findOne({where: {reference : reference}})
-                                            .then((response) => {
-                                                return response
-                                            })
+                .then((response) => {
+                    return response
+                })
         },
         brands: {
             type: new GraphQLList(GraphQLBrandType),
@@ -298,7 +300,7 @@ var GraphQLViewer = new GraphQLObjectType({
         states: {
             type: new GraphQLList(GraphQLStateType),
             resolve: () => Database.models.state.findAll().then(response => response)
-        },        
+        },
         countNextItemId: {
             type: GraphQLInt,
             args: {
@@ -310,10 +312,7 @@ var GraphQLViewer = new GraphQLObjectType({
 
 
                 var searchKey = itemReference + '%'
-                console.log("search key:  " + JSON.stringify(searchKey))
-                console.log("function:  " + JSON.stringify(functionToRetrievedViewerFromCache))
                 return Database.models.item.count({where: {reference: {$like: searchKey}}}).then(response => {
-                    console.log("retrieved count:  " + JSON.stringify(response))
                     return response + 1
                 })
             }
@@ -336,34 +335,6 @@ var GraphQLRoot = new GraphQLObjectType({
         node: nodeField
     }
 });
-
-const AddItemInCartMutation = new mutationWithClientMutationId({
-    name: 'AddItemInCart',
-    description: 'Add one item into the cart',
-    inputFields: {
-        itemReference: {type: GraphQLString}
-    },
-    outputFields: {
-        viewer: {
-            type: GraphQLViewer,
-            resolve: () => getViewer
-        },
-        cart: {
-            type: GraphQLCartType,
-            resolve: (obj) => {
-                console.log("output fields : " + JSON.stringify(obj))
-                return obj
-            }
-        }
-    },
-    mutateAndGetPayload: ({itemReference}) => {
-        return Database.models.item.findOne({where: {reference: itemReference}})
-            .then(item => {
-                pushItemInCart(item)
-                return getCart()
-            })
-    }
-})
 
 const GraphQLAddModelMutation = new mutationWithClientMutationId({
     name: 'AddModel',
@@ -389,17 +360,13 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
                     .then(dataModels => {
                         return Database.models.model.findById(id)
                             .then(dataModel =>  {
-                                console.log("retrieved model after add item: " + JSON.stringify(dataModel))
-
                                 let itemToPass
                                 for (const i of dataModels) {
                                     if (i.id === dataModel.id) {
                                         itemToPass = i;
                                     }
                                 }
-                                console.log("itemToPass : " + JSON.stringify(itemToPass))
                                 var cursor = cursorForObjectInConnection(dataModels, itemToPass);
-                                console.log("cursor : " + JSON.stringify(cursor))
                                 return {
                                     cursor: cursor,
                                     node: itemToPass
@@ -418,7 +385,6 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
 
                 return Database.models.model.create({name: name, brandId: brand.id})
                     .then((model) => {
-                        console.log("return of add item: " + JSON.stringify(model))
                         return {
                             model: {
                                 name: model.name,
@@ -429,6 +395,31 @@ const GraphQLAddModelMutation = new mutationWithClientMutationId({
                         }
                     })
 
+            })
+    }
+})
+
+const AddItemInCartMutation = new mutationWithClientMutationId({
+    name: 'AddItemInCart',
+    description: 'Add one item into the cart',
+    inputFields: {
+        itemReference: {type: GraphQLString}
+    },
+    outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: () => getViewer
+        },
+        cart: {
+            type: GraphQLCartType,
+            resolve: (obj) => obj
+        }
+    },
+    mutateAndGetPayload: ({itemReference}) => {
+        return Database.models.item.findOne({where: {reference: itemReference}})
+            .then(item => {
+                pushItemInCart(item)
+                return getCart()
             })
     }
 })

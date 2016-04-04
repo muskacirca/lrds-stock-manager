@@ -93,14 +93,11 @@ class StockComponent extends React.Component {
     }
 
     selectItem(reference) {
-        console.log("third: " + reference)
         this.context.router.push("/stock/" + reference)
     }
 
     addItemToCart(reference) {
-
-        console.log("third " + reference)
-
+        
         var addItemInCartMutation = new AddItemInCartMutation({
             itemReference: reference,
             viewer: this.props.viewer

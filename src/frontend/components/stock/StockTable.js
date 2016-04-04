@@ -15,7 +15,6 @@ class StockTable extends React.Component {
     }
 
     handleAddItemToCart(reference) {
-        console.log("second " + reference)
         this.props.handleAddItemToCart(reference)
     }
 

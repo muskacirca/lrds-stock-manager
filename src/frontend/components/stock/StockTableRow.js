@@ -20,12 +20,10 @@ class StockTableRow extends React.Component {
     }
 
     handleRowClick() {
-        console.log("first : " + this.props.item.reference)
         this.props.handleRowClick(this.props.item.reference)
     }
 
     onAddToCartClick() {
-        console.log("first")
         this.props.handleAddItemToCart(this.props.item.reference)
     }
 

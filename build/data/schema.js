@@ -254,7 +254,6 @@ var GraphQLCartType = new _graphql.GraphQLObjectType({
         selectedItems: {
             type: new _graphql.GraphQLList(GraphQLItemType),
             resolve: function resolve(obj) {
-                console.log("resolve in cart : " + JSON.stringify(obj));
                 return obj;
             }
         }
@@ -368,10 +367,7 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
 
 
                     var searchKey = itemReference + '%';
-                    console.log("search key:  " + JSON.stringify(searchKey));
-                    console.log("function:  " + JSON.stringify(functionToRetrievedViewerFromCache));
                     return _database2.default.models.item.count({ where: { reference: { $like: searchKey } } }).then(function (response) {
-                        console.log("retrieved count:  " + JSON.stringify(response));
                         return response + 1;
                     });
                 }
@@ -400,37 +396,6 @@ var GraphQLRoot = new _graphql.GraphQLObjectType({
     }
 });
 
-var AddItemInCartMutation = new _graphqlRelay.mutationWithClientMutationId({
-    name: 'AddItemInCart',
-    description: 'Add one item into the cart',
-    inputFields: {
-        itemReference: { type: _graphql.GraphQLString }
-    },
-    outputFields: {
-        viewer: {
-            type: GraphQLViewer,
-            resolve: function resolve() {
-                return _ItemStore.getViewer;
-            }
-        },
-        cart: {
-            type: GraphQLCartType,
-            resolve: function resolve(obj) {
-                console.log("output fields : " + JSON.stringify(obj));
-                return obj;
-            }
-        }
-    },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref6) {
-        var itemReference = _ref6.itemReference;
-
-        return _database2.default.models.item.findOne({ where: { reference: itemReference } }).then(function (item) {
-            (0, _CartStore.pushItemInCart)(item);
-            return (0, _CartStore.getCart)();
-        });
-    }
-});
-
 var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
     name: 'AddModel',
     description: 'Function to create model',
@@ -451,14 +416,12 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
         },
         modelEdge: {
             type: GraphQLModelEdge,
-            resolve: function resolve(_ref7) {
-                var id = _ref7.id;
+            resolve: function resolve(_ref6) {
+                var id = _ref6.id;
 
 
                 return _database2.default.models.model.findAll().then(function (dataModels) {
                     return _database2.default.models.model.findById(id).then(function (dataModel) {
-                        console.log("retrieved model after add item: " + JSON.stringify(dataModel));
-
                         var itemToPass = void 0;
                         var _iteratorNormalCompletion = true;
                         var _didIteratorError = false;
@@ -487,9 +450,7 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
                             }
                         }
 
-                        console.log("itemToPass : " + JSON.stringify(itemToPass));
                         var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, itemToPass);
-                        console.log("cursor : " + JSON.stringify(cursor));
                         return {
                             cursor: cursor,
                             node: itemToPass
@@ -500,16 +461,15 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
         }
 
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref8) {
-        var brandName = _ref8.brandName;
-        var name = _ref8.name;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref7) {
+        var brandName = _ref7.brandName;
+        var name = _ref7.name;
 
 
         return _database2.default.models.brand.findOrCreate({ where: { name: brandName } }).spread(function (brand, wasCreated) {
             // spread is necessary when multiple return value
 
             return _database2.default.models.model.create({ name: name, brandId: brand.id }).then(function (model) {
-                console.log("return of add item: " + JSON.stringify(model));
                 return {
                     model: {
                         name: model.name,
@@ -519,6 +479,36 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
 
                 };
             });
+        });
+    }
+});
+
+var AddItemInCartMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'AddItemInCart',
+    description: 'Add one item into the cart',
+    inputFields: {
+        itemReference: { type: _graphql.GraphQLString }
+    },
+    outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: function resolve() {
+                return _ItemStore.getViewer;
+            }
+        },
+        cart: {
+            type: GraphQLCartType,
+            resolve: function resolve(obj) {
+                return obj;
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref8) {
+        var itemReference = _ref8.itemReference;
+
+        return _database2.default.models.item.findOne({ where: { reference: itemReference } }).then(function (item) {
+            (0, _CartStore.pushItemInCart)(item);
+            return (0, _CartStore.getCart)();
         });
     }
 });
