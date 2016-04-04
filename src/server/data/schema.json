@@ -1485,7 +1485,7 @@
               "deprecationReason": null
             },
             {
-              "name": "addItemsInCart",
+              "name": "addItemInCart",
               "description": null,
               "args": [
                 {
@@ -1496,7 +1496,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "AddItemsInCartInput",
+                      "name": "AddItemInCartInput",
                       "ofType": null
                     }
                   },
@@ -1505,7 +1505,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "AddItemsInCartPayload",
+                "name": "AddItemInCartPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1755,21 +1755,17 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "AddItemsInCartInput",
+          "name": "AddItemInCartInput",
           "description": null,
           "fields": null,
           "inputFields": [
             {
-              "name": "items",
+              "name": "itemReference",
               "description": null,
               "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "defaultValue": null
             },
@@ -1794,9 +1790,21 @@
         },
         {
           "kind": "OBJECT",
-          "name": "AddItemsInCartPayload",
+          "name": "AddItemInCartPayload",
           "description": null,
           "fields": [
+            {
+              "name": "viewer",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Viewer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "cart",
               "description": null,

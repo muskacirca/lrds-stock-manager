@@ -15,7 +15,7 @@ class MainApp extends React.Component{
 
         return (
             <div>
-                <NavBarBox />
+                <NavBarBox viewer={this.props.viewer} />
                 <div>
                     {this.props.children}
                 </div>
@@ -29,6 +29,11 @@ export default Relay.createContainer(MainApp, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
+            cart {
+                selectedItems {
+                    reference
+                }
+            }
           }
         `
     }

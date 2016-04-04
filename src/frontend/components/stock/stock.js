@@ -5,6 +5,8 @@ import Link from 'react-router'
 import StockTable from './StockTable'
 import StockNavigationBar from './StockNavigationBar'
 
+import AddItemInCartMutation from '../../mutations/AddItemInCartMutation'
+
 class StockComponent extends React.Component {
 
     constructor(props) {
@@ -95,6 +97,22 @@ class StockComponent extends React.Component {
         this.context.router.push("/stock/" + reference)
     }
 
+    addItemToCart(reference) {
+
+        console.log("third " + reference)
+
+        var addItemInCartMutation = new AddItemInCartMutation({
+            itemReference: reference,
+            viewer: this.props.viewer
+        });
+
+        var onSuccess = (response) => console.log("Item added to cart");
+
+        var onFailure = (transaction) => console.log("Item added to cart");
+
+        Relay.Store.commitUpdate(addItemInCartMutation, {onSuccess, onFailure})
+    }
+
     render() {
 
 
@@ -122,7 +140,9 @@ class StockComponent extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-10 col-md-offset-1">
-                        <StockTable data={filteredItems} handleSelectRow={this.selectItem.bind(this)}/>
+                        <StockTable data={filteredItems} 
+                                    handleSelectRow={this.selectItem.bind(this)}
+                                    handleAddItemToCart={this.addItemToCart.bind(this)} />
                     </div>
                 </div>
             </div>
@@ -136,34 +156,11 @@ StockComponent.contextTypes = {
     router: React.PropTypes.object.isRequired
 }
 
-//
-//<div className="container-fluid">
-//    <div className="row">
-//        <div className="col-sm-3 col-md-2 sidebar">
-//            <SearchComponent from="stock"
-//                             onChange={this.onSearchInputChange.bind(this)}
-//                             onKeyDown={this.onKeyDownSearch.bind(this)} />
-//            <br />
-//            <ul>
-//                {tagRow}
-//            </ul>
-//            <div className="list-group">
-//                <a className="list-group-item" href="#"><i className="fa fa-plus-circle fa-fw"></i>&nbsp; Add item</a>
-//                <a className="list-group-item" href="#"><i className="fa fa-bookmark fa-fw"></i>&nbsp; Book item</a>
-//                <a className="list-group-item" href="#"><i className="fa fa-pencil fa-fw"></i>&nbsp; Applications</a>
-//                <a className="list-group-item" href="#"><i className="fa fa-cog fa-fw"></i>&nbsp; Settings</a>
-//            </div>
-//        </div>
-//
-//    </div>
-//</div>
-
-
-
 export default Relay.createContainer(StockComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
+             ${AddItemInCartMutation.getFragment('viewer')}
              items(first: 100) {
               edges {
                 node {

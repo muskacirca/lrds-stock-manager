@@ -1,3 +1,14 @@
+input AddItemInCartInput {
+  itemReference: String
+  clientMutationId: String!
+}
+
+type AddItemInCartPayload {
+  viewer: Viewer
+  cart: CartType
+  clientMutationId: String!
+}
+
 input AddItemInput {
   modelName: String!
   severity: String!
@@ -9,16 +20,6 @@ input AddItemInput {
 type AddItemPayload {
   viewer: Viewer
   itemEdge: ItemType
-  clientMutationId: String!
-}
-
-input AddItemsInCartInput {
-  items: [String]
-  clientMutationId: String!
-}
-
-type AddItemsInCartPayload {
-  cart: CartType
   clientMutationId: String!
 }
 
@@ -115,7 +116,7 @@ type ModelTypeEdge {
 type Mutation {
   addModel(input: AddModelInput!): AddModelPayload
   addItem(input: AddItemInput!): AddItemPayload
-  addItemsInCart(input: AddItemsInCartInput!): AddItemsInCartPayload
+  addItemInCart(input: AddItemInCartInput!): AddItemInCartPayload
 }
 
 interface Node {

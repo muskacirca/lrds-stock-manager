@@ -254,7 +254,8 @@ var GraphQLCartType = new _graphql.GraphQLObjectType({
         selectedItems: {
             type: new _graphql.GraphQLList(GraphQLItemType),
             resolve: function resolve(obj) {
-                return ["hello cart"];
+                console.log("resolve in cart : " + JSON.stringify(obj));
+                return obj;
             }
         }
     },
@@ -378,7 +379,7 @@ var GraphQLViewer = new _graphql.GraphQLObjectType({
             cart: {
                 type: GraphQLCartType,
                 resolve: function resolve() {
-                    return _CartStore.getCart;
+                    return (0, _CartStore.getCart)();
                 }
             }
         };
@@ -399,13 +400,19 @@ var GraphQLRoot = new _graphql.GraphQLObjectType({
     }
 });
 
-var AddItemsInCartMutation = new _graphqlRelay.mutationWithClientMutationId({
-    name: 'AddItemsInCart',
-    description: 'Add one or more item(s) into the cart',
+var AddItemInCartMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'AddItemInCart',
+    description: 'Add one item into the cart',
     inputFields: {
-        items: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+        itemReference: { type: _graphql.GraphQLString }
     },
     outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: function resolve() {
+                return _ItemStore.getViewer;
+            }
+        },
         cart: {
             type: GraphQLCartType,
             resolve: function resolve(obj) {
@@ -415,13 +422,12 @@ var AddItemsInCartMutation = new _graphqlRelay.mutationWithClientMutationId({
         }
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref6) {
-        var items = _ref6.items;
+        var itemReference = _ref6.itemReference;
 
-        items.forEach(function (item) {
+        return _database2.default.models.item.findOne({ where: { reference: itemReference } }).then(function (item) {
             (0, _CartStore.pushItemInCart)(item);
+            return (0, _CartStore.getCart)();
         });
-
-        return (0, _CartStore.getCart)();
     }
 });
 
@@ -453,7 +459,7 @@ var GraphQLAddModelMutation = new _graphqlRelay.mutationWithClientMutationId({
                     return _database2.default.models.model.findById(id).then(function (dataModel) {
                         console.log("retrieved model after add item: " + JSON.stringify(dataModel));
 
-                        var itemToPass = undefined;
+                        var itemToPass = void 0;
                         var _iteratorNormalCompletion = true;
                         var _didIteratorError = false;
                         var _iteratorError = undefined;
@@ -586,7 +592,7 @@ var Mutation = new _graphql.GraphQLObjectType({
     fields: {
         addModel: GraphQLAddModelMutation,
         addItem: AddItemMutation,
-        addItemsInCart: AddItemsInCartMutation
+        addItemInCart: AddItemInCartMutation
     }
 });
 

@@ -224,7 +224,10 @@ var GraphQLCartType = new GraphQLObjectType({
         id: globalIdField('CartType'),
         selectedItems: {
             type: new GraphQLList(GraphQLItemType),
-            resolve: (obj) => ["hello cart"]
+            resolve: (obj) => {
+                console.log("resolve in cart : " + JSON.stringify(obj))
+                return obj
+            }
         }
     },
     interfaces: [nodeInterface]
@@ -317,7 +320,7 @@ var GraphQLViewer = new GraphQLObjectType({
         },
         cart: {
             type: GraphQLCartType,
-            resolve: () => getCart
+            resolve: () => getCart()
         }
     }),
     interfaces: [nodeInterface]
@@ -334,13 +337,17 @@ var GraphQLRoot = new GraphQLObjectType({
     }
 });
 
-const AddItemsInCartMutation = new mutationWithClientMutationId({
-    name: 'AddItemsInCart',
-    description: 'Add one or more item(s) into the cart',
+const AddItemInCartMutation = new mutationWithClientMutationId({
+    name: 'AddItemInCart',
+    description: 'Add one item into the cart',
     inputFields: {
-        itemReferences: {type: new GraphQLList(GraphQLString)}
+        itemReference: {type: GraphQLString}
     },
     outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: () => getViewer
+        },
         cart: {
             type: GraphQLCartType,
             resolve: (obj) => {
@@ -349,12 +356,12 @@ const AddItemsInCartMutation = new mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({itemReferences}) => {
-        itemReferences.forEach(item => {
-            pushItemInCart(item);
-        })
-        
-        return getCart()
+    mutateAndGetPayload: ({itemReference}) => {
+        return Database.models.item.findOne({where: {reference: itemReference}})
+            .then(item => {
+                pushItemInCart(item)
+                return getCart()
+            })
     }
 })
 
@@ -494,7 +501,7 @@ var Mutation = new GraphQLObjectType({
     fields: {
         addModel: GraphQLAddModelMutation,
         addItem: AddItemMutation,
-        addItemsInCart: AddItemsInCartMutation
+        addItemInCart: AddItemInCartMutation
     }
 });
 

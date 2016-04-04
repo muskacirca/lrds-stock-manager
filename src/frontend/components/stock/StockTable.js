@@ -14,11 +14,17 @@ class StockTable extends React.Component {
         this.props.handleSelectRow(id)
     }
 
+    handleAddItemToCart(reference) {
+        console.log("second " + reference)
+        this.props.handleAddItemToCart(reference)
+    }
+
     renderStockTableRows(rowsToShow) {
 
        return rowsToShow.map((item, key) => {
             return <StockTableRow key={item.reference + "-" + key} item={item}
-                                  handleRowClick={this.handleRowClick.bind(this)} />
+                                  handleRowClick={this.handleRowClick.bind(this)}
+                                  handleAddItemToCart={this.handleAddItemToCart.bind(this)} />
         })
     }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 class StockTableRow extends React.Component {
 
     constructor(props) {
@@ -23,24 +24,26 @@ class StockTableRow extends React.Component {
         this.props.handleRowClick(this.props.item.reference)
     }
 
+    onAddToCartClick() {
+        console.log("first")
+        this.props.handleAddItemToCart(this.props.item.reference)
+    }
+
     render() {
 
         var item = this.props.item;
         var isInStock = item.isInStock ? <i className="fa fa-check" /> : <i className="fa fa-times" />
         var state = this.computeState(item.state.severity)
 
-        return  <tr className="pointer" onClick={this.handleRowClick.bind(this)}>
-                    <td>{state}</td>
+        return  <tr>
+                    <td className="pointer" onClick={this.handleRowClick.bind(this)}>{state}</td>
                     <td>{item.model.name}</td>
                     <td>{item.model.brand.name}</td>
                     <td>{item.reference}</td>
                     <td>{isInStock}</td>
                     <td>
                         <div className="row">
-                            <div className="col-md-1">
-                                <i className="fa fa-cart-plus"></i>
-                            </div>
-                            <div className="col-md-1">
+                            <div className="pointer col-md-1" onClick={this.onAddToCartClick.bind(this)}>
                                 <i className="fa fa-cart-plus"></i>
                             </div>
                         </div>
