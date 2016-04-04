@@ -69,7 +69,6 @@ export function pushItemInCart(item) {
     })
 
     if(!itemFiltered[0]) {
-        console.log("really pushing item into cart : " + JSON.stringify(item))
         cartStore.push(item)
     }
 }
@@ -77,7 +76,6 @@ export function pushItemInCart(item) {
 export function removeItemFromCart(reference) {
 
     return _.remove(cartStore, (item) => {
-        console.log("removing " + item.reference == reference)
         return item.reference == reference
     })
 }
