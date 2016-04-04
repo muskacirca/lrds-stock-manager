@@ -12,6 +12,16 @@ type AddItemPayload {
   clientMutationId: String!
 }
 
+input AddItemsInCartInput {
+  items: [String]
+  clientMutationId: String!
+}
+
+type AddItemsInCartPayload {
+  cart: CartType
+  clientMutationId: String!
+}
+
 input AddModelInput {
   brandName: String!
   name: String!
@@ -28,6 +38,11 @@ type BrandType implements Node {
   id: ID!
   name: String
   description: String
+}
+
+type CartType implements Node {
+  id: ID!
+  selectedItems: [ItemType]
 }
 
 type CategoryType implements Node {
@@ -100,6 +115,7 @@ type ModelTypeEdge {
 type Mutation {
   addModel(input: AddModelInput!): AddModelPayload
   addItem(input: AddItemInput!): AddItemPayload
+  addItemsInCart(input: AddItemsInCartInput!): AddItemsInCartPayload
 }
 
 interface Node {
@@ -142,4 +158,5 @@ type Viewer implements Node {
   categories: [CategoryType]
   states: [StateType]
   countNextItemId(itemReference: String!): Int
+  cart: CartType
 }

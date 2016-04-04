@@ -38,6 +38,11 @@ import {
     isInitialized
 } from './ItemStore';
 
+import {
+    getCart,
+    pushItemInCart
+} from './CartStore';
+
 /**
  * The first argument defines the way to resolve an ID to its object.
  * The second argument defines the way to resolve a node object to its GraphQL type.
@@ -212,6 +217,19 @@ var GraphQLItemType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var GraphQLCartType = new GraphQLObjectType({
+    name: 'CartType',
+    description: 'It display item selected in a cart',
+    fields: {
+        id: globalIdField('CartType'),
+        selectedItems: {
+            type: new GraphQLList(GraphQLItemType),
+            resolve: (obj) => ["hello cart"]
+        }
+    },
+    interfaces: [nodeInterface]
+})
+
 var {
     connectionType: ItemsConnection
      ,edgeType: GraphQLItemEdge,
@@ -269,8 +287,7 @@ var GraphQLViewer = new GraphQLObjectType({
         subCategories: {
             type: new GraphQLList(GraphQLSubCategoryType),
             resolve: () => Database.models.subCategory.findAll().then((response) => response)
-        }
-        ,
+        },
         categories: {
             type: new GraphQLList(GraphQLCategoryType),
             resolve: () => Database.models.category.findAll().then((response) => response)
@@ -297,6 +314,10 @@ var GraphQLViewer = new GraphQLObjectType({
                     return response + 1
                 })
             }
+        },
+        cart: {
+            type: GraphQLCartType,
+            resolve: () => getCart
         }
     }),
     interfaces: [nodeInterface]
@@ -312,6 +333,30 @@ var GraphQLRoot = new GraphQLObjectType({
         node: nodeField
     }
 });
+
+const AddItemsInCartMutation = new mutationWithClientMutationId({
+    name: 'AddItemsInCart',
+    description: 'Add one or more item(s) into the cart',
+    inputFields: {
+        itemReferences: {type: new GraphQLList(GraphQLString)}
+    },
+    outputFields: {
+        cart: {
+            type: GraphQLCartType,
+            resolve: (obj) => {
+                console.log("output fields : " + JSON.stringify(obj))
+                return obj
+            }
+        }
+    },
+    mutateAndGetPayload: ({itemReferences}) => {
+        itemReferences.forEach(item => {
+            pushItemInCart(item);
+        })
+        
+        return getCart()
+    }
+})
 
 const GraphQLAddModelMutation = new mutationWithClientMutationId({
     name: 'AddModel',
@@ -408,25 +453,14 @@ const AddItemMutation = mutationWithClientMutationId({
             .then(model => {
 
                 domains.forEach(domain => {
-
                     Database.models.domain.findOrCreate({where: {name: domain}})
-                        .then(domain => {
-                            console.log("domain to create : " + JSON.stringify(domain))
-                            model.addDomain(domain[0])
-                        })
+                        .then(domain => model.addDomain(domain[0]))
                 })
 
                 subCategories.forEach(subCategory => {
-
                     Database.models.subCategory.findOne({where: {name: subCategory}})
-                        .then(retrievedSubCategory => {
-                            console.log("subCategory to create : " + JSON.stringify(retrievedSubCategory))
-                            model.addSubCategory(retrievedSubCategory)
-                        })
+                        .then(retrievedSubCategory => model.addSubCategory(retrievedSubCategory))
                 })
-
-
-                console.log("model : " + JSON.stringify(model))
 
                 return Database.models.brand.findById(model.brandId)
                     .then(brand => {
@@ -439,11 +473,8 @@ const AddItemMutation = mutationWithClientMutationId({
                             .then(id => {
                                 var nextId = id + 1
                                 reference = reference  + "-" + nextId
-                                console.log("createReference: " + reference)
-
                                 return Database.models.state.findOne({where: {severity: severity}})
                                     .then(state => {
-                                        console.log("found state: " + JSON.stringify(state))
                                         return model.createItem({stateId: state.id, reference: reference})
                                             .then(item => {
                                                 return item
@@ -462,7 +493,8 @@ var Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
         addModel: GraphQLAddModelMutation,
-        addItem: AddItemMutation
+        addItem: AddItemMutation,
+        addItemsInCart: AddItemsInCartMutation
     }
 });
 
