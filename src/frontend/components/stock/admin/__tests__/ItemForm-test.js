@@ -5,7 +5,7 @@ import TestUtils from 'react-addons-test-utils'
 import ItemForm from '../ItemForm'
 import AutosuggestWrapper from '../../../utils/AutosuggestWrapper';
 
-import ItemFormDisplay from '../../ItemFormDisplay'
+import ItemFormDisplay from '../../ItemDisplay'
 
 describe('ItemForm', () => {
 

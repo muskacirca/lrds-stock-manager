@@ -38,12 +38,13 @@ describe('StockTableRow', () => {
         expect(TestUtils.isCompositeComponent(instance)).toBeTruthy() ;
 
         var columns = TestUtils.scryRenderedDOMComponentsWithTag(instance, 'td');
-        expect(columns.length).toEqual(5);
+        expect(columns.length).toEqual(6);
         expect(columns[0].innerHTML).toContain("fa fa fa-square green");
         expect(columns[1].textContent).toEqual("SM 58");
         expect(columns[2].textContent).toEqual("Shure");
         expect(columns[3].textContent).toEqual("SHUSM58-1");
         expect(columns[4].innerHTML).toContain("fa fa-check");
+        expect(columns[5].innerHTML).toContain("fa fa-cart-plus");
 
     });
 
