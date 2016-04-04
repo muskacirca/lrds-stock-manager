@@ -15,9 +15,9 @@ var _database = require('../database');
 
 var _database2 = _interopRequireDefault(_database);
 
-var _ItemStore = require('../ItemStore');
+var _ItemStore = require('../stores/ItemStore');
 
-var _CartStore = require('../CartStore');
+var _CartStore = require('../stores/CartStore');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

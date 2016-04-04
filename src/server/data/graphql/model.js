@@ -29,19 +29,13 @@ import {
     Viewer,
     SubCategory,
     Domain,
-    initState,
     getById,
-    getSubCategoryById,
     getViewer,
-    getItems,
-    pushItem,
-    isInitialized
-} from '../ItemStore';
+} from '../stores/ItemStore';
 
 import {
     getCart,
-    pushItemInCart
-} from '../CartStore';
+} from '../stores/CartStore';
 
 /**
  * The first argument defines the way to resolve an ID to its object.

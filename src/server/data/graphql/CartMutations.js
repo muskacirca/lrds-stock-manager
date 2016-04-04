@@ -1,5 +1,6 @@
 import {
-    GraphQLString
+    GraphQLString,
+    GraphQLNonNull
 } from 'graphql'
 
 import {
@@ -15,18 +16,19 @@ import {
 
 import {
     getViewer,
-} from '../ItemStore';
+} from '../stores/ItemStore';
 
 import {
     getCart,
-    pushItemInCart
-} from '../CartStore';
+    pushItemInCart,
+    removeItemFromCart
+} from '../stores/CartStore';
 
 export const AddItemInCartMutation = new mutationWithClientMutationId({
     name: 'AddItemInCart',
     description: 'Add one item into the cart',
     inputFields: {
-        itemReference: {type: GraphQLString}
+        itemReference: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
         viewer: {
@@ -44,5 +46,27 @@ export const AddItemInCartMutation = new mutationWithClientMutationId({
                 pushItemInCart(item)
                 return getCart()
             })
+    }
+});
+
+export const RemoveItemFromCartMutation = new mutationWithClientMutationId({
+    name: 'RemoveItemFromCart',
+    description: 'Remove one item into the cart',
+    inputFields: {
+        itemReference: {type: new GraphQLNonNull(GraphQLString)}
+    },
+    outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: () => getViewer
+        },
+        cart: {
+            type: GraphQLCartType,
+            resolve: (obj) => obj
+        }
+    },
+    mutateAndGetPayload: ({itemReference}) => {
+        removeItemFromCart(itemReference)
+        return getCart()
     }
 })

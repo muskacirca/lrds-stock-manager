@@ -73,3 +73,11 @@ export function pushItemInCart(item) {
         cartStore.push(item)
     }
 }
+
+export function removeItemFromCart(reference) {
+
+    return _.remove(cartStore, (item) => {
+        console.log("removing " + item.reference == reference)
+        return item.reference == reference
+    })
+}

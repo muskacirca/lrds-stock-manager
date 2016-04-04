@@ -9,7 +9,8 @@ import {
 } from './graphql/StockMutations'
 
 import {
-    AddItemInCartMutation
+    AddItemInCartMutation,
+    RemoveItemFromCartMutation
 } from './graphql/CartMutations'
 
 import {
@@ -22,7 +23,8 @@ var Mutation = new GraphQLObjectType({
     fields: {
         addModel: AddModelMutation,
         addItem: AddItemMutation,
-        addItemInCart: AddItemInCartMutation
+        addItemInCart: AddItemInCartMutation,
+        removeItemFromCart: RemoveItemFromCartMutation
     }
 });
 

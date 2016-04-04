@@ -1,5 +1,5 @@
 input AddItemInCartInput {
-  itemReference: String
+  itemReference: String!
   clientMutationId: String!
 }
 
@@ -117,6 +117,7 @@ type Mutation {
   addModel(input: AddModelInput!): AddModelPayload
   addItem(input: AddItemInput!): AddItemPayload
   addItemInCart(input: AddItemInCartInput!): AddItemInCartPayload
+  removeItemFromCart(input: RemoveItemFromCartInput!): RemoveItemFromCartPayload
 }
 
 interface Node {
@@ -128,6 +129,17 @@ type PageInfo {
   hasPreviousPage: Boolean!
   startCursor: String
   endCursor: String
+}
+
+input RemoveItemFromCartInput {
+  itemReference: String!
+  clientMutationId: String!
+}
+
+type RemoveItemFromCartPayload {
+  viewer: Viewer
+  cart: CartType
+  clientMutationId: String!
 }
 
 type Root {
