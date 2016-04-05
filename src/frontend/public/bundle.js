@@ -50828,7 +50828,7 @@
 	exports.default = _reactRelay2.default.createContainer(MainApp, {
 	    fragments: {
 	        viewer: function viewer() {
-	            return function (RQL_0, RQL_1) {
+	            return function (RQL_0) {
 	                return {
 	                    children: [].concat.apply([], [{
 	                        fieldName: 'id',
@@ -50837,14 +50837,14 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1)]),
+	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'MainApp_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }(_Cart2.default.getFragment('viewer'), _AddItemInCartMutation2.default.getFragment('viewer'));
+	            }(_Cart2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -50872,6 +50872,10 @@
 	var _RemoveItemFromCartMutation = __webpack_require__(546);
 
 	var _RemoveItemFromCartMutation2 = _interopRequireDefault(_RemoveItemFromCartMutation);
+
+	var _AddItemInCartMutation = __webpack_require__(547);
+
+	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50906,7 +50910,7 @@
 	            console.log("removing item from cart: " + reference);
 	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
 	                itemReference: reference,
-	                viewer: this.props.viewer
+	                cart: this.props.viewer.cart
 	            });
 
 	            var onSuccess = function onSuccess(response) {
@@ -50949,6 +50953,7 @@
 	        key: 'render',
 	        value: function render() {
 
+	            var cartCount = this.props.viewer.cart.count;
 	            var cartItems = this.renderCart(this.props.viewer.cart);
 	            var styles = {
 	                display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
@@ -50956,14 +50961,14 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'navbar-link-color' },
+	                { className: 'navbar-element navbar-link-color' },
 	                _react2.default.createElement(
 	                    'i',
 	                    { className: 'fa fa-2x fa-shopping-cart pointer', onClick: this.toggleCartDisplay.bind(this) },
 	                    _react2.default.createElement(
 	                        'span',
 	                        { className: 'badge' },
-	                        cartItems.length
+	                        cartCount
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -50988,8 +50993,13 @@
 	        viewer: function viewer() {
 	            return function (RQL_0) {
 	                return {
-	                    children: [].concat.apply([], [{
-	                        children: [{
+	                    children: [{
+	                        children: [].concat.apply([], [{
+	                            fieldName: 'count',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'Int'
+	                        }, {
 	                            children: [{
 	                                fieldName: 'reference',
 	                                kind: 'Field',
@@ -51021,7 +51031,7 @@
 	                                isRequisite: true
 	                            },
 	                            type: 'ID'
-	                        }],
+	                        }, _reactRelay2.default.QL.__frag(RQL_0)]),
 	                        fieldName: 'cart',
 	                        kind: 'Field',
 	                        metadata: {
@@ -51038,14 +51048,14 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'Cart_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }(_RemoveItemFromCartMutation2.default.getFragment('viewer'));
+	            }(_RemoveItemFromCartMutation2.default.getFragment('cart'));
 	        }
 	    }
 	});
@@ -51138,24 +51148,6 @@
 	                            inferredPrimaryKey: 'id'
 	                        },
 	                        type: 'CartType'
-	                    }, {
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'viewer',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id'
-	                        },
-	                        type: 'Viewer'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -51171,7 +51163,7 @@
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
-	                    viewer: this.props.viewer.id
+	                    cart: this.props.cart.id
 	                }
 	            }];
 	        }
@@ -51186,15 +51178,11 @@
 	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
 
-	            console.log("getOptimisticResponse : " + JSON.stringify(this.props.viewer.cart));
+	            console.log("getOptimisticResponse : " + JSON.stringify(this.props.cart));
 
 	            return {
-	                cart: {
-	                    selectedItems: [{
-	                        reference: this.props.itemReference
-	                    }]
-	                },
-	                viewer: this.props.viewer
+	                id: this.props.cart.id,
+	                count: this.props.cart.count - 1
 
 	            };
 	        }
@@ -51204,7 +51192,7 @@
 	}(_reactRelay2.default.Mutation);
 
 	RemoveItemFromCartMutation.fragments = {
-	    viewer: function viewer() {
+	    cart: function cart() {
 	        return function () {
 	            return {
 	                children: [{
@@ -51214,12 +51202,41 @@
 	                        isRequisite: true
 	                    },
 	                    type: 'ID'
+	                }, {
+	                    fieldName: 'count',
+	                    kind: 'Field',
+	                    metadata: {},
+	                    type: 'Int'
+	                }, {
+	                    children: [{
+	                        fieldName: 'reference',
+	                        kind: 'Field',
+	                        metadata: {},
+	                        type: 'String'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    fieldName: 'selectedItems',
+	                    kind: 'Field',
+	                    metadata: {
+	                        canHaveSubselections: true,
+	                        inferredRootCallName: 'node',
+	                        inferredPrimaryKey: 'id',
+	                        isPlural: true
+	                    },
+	                    type: 'ItemType'
 	                }],
 	                id: _reactRelay2.default.QL.__id(),
 	                kind: 'Fragment',
 	                metadata: {},
-	                name: 'RemoveItemFromCartMutation_ViewerRelayQL',
-	                type: 'Viewer'
+	                name: 'RemoveItemFromCartMutation_CartRelayQL',
+	                type: 'CartType'
 	            };
 	        }();
 	    }
@@ -51318,24 +51335,6 @@
 	                            inferredPrimaryKey: 'id'
 	                        },
 	                        type: 'CartType'
-	                    }, {
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'viewer',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id'
-	                        },
-	                        type: 'Viewer'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -51351,7 +51350,7 @@
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
-	                    viewer: this.props.viewer.id
+	                    cart: this.props.cart.id
 	                }
 	            }];
 	        }
@@ -51365,16 +51364,17 @@
 	    }, {
 	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
-	            console.log("get optimistic responbse : " + JSON.stringify(this.props.viewer.cart));
+	            console.log("get optimistic responbse : " + JSON.stringify(this.props.cart));
 
-	            var actualCart = _lodash2.default.cloneDeep(this.props.viewer.cart);
+	            var actualCart = _lodash2.default.cloneDeep(this.props.cart);
 	            actualCart.selectedItems.push({ reference: this.props.itemReference });
 
 	            console.log("modified cart : " + JSON.stringify(actualCart));
 
 	            return {
-	                cart: actualCart,
-	                viewer: this.props.viewer
+	                count: this.props.cart.count + 1,
+	                selectedItems: actualCart.selectedItems,
+	                id: this.props.cart.id
 
 	            };
 	        }
@@ -51384,7 +51384,7 @@
 	}(_reactRelay2.default.Mutation);
 
 	AddItemInCartMutation.fragments = {
-	    viewer: function viewer() {
+	    cart: function cart() {
 	        return function () {
 	            return {
 	                children: [{
@@ -51395,30 +51395,16 @@
 	                    },
 	                    type: 'ID'
 	                }, {
+	                    fieldName: 'count',
+	                    kind: 'Field',
+	                    metadata: {},
+	                    type: 'Int'
+	                }, {
 	                    children: [{
-	                        children: [{
-	                            fieldName: 'reference',
-	                            kind: 'Field',
-	                            metadata: {},
-	                            type: 'String'
-	                        }, {
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'selectedItems',
+	                        fieldName: 'reference',
 	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id',
-	                            isPlural: true
-	                        },
-	                        type: 'ItemType'
+	                        metadata: {},
+	                        type: 'String'
 	                    }, {
 	                        fieldName: 'id',
 	                        kind: 'Field',
@@ -51428,20 +51414,21 @@
 	                        },
 	                        type: 'ID'
 	                    }],
-	                    fieldName: 'cart',
+	                    fieldName: 'selectedItems',
 	                    kind: 'Field',
 	                    metadata: {
 	                        canHaveSubselections: true,
 	                        inferredRootCallName: 'node',
-	                        inferredPrimaryKey: 'id'
+	                        inferredPrimaryKey: 'id',
+	                        isPlural: true
 	                    },
-	                    type: 'CartType'
+	                    type: 'ItemType'
 	                }],
 	                id: _reactRelay2.default.QL.__id(),
 	                kind: 'Fragment',
 	                metadata: {},
-	                name: 'AddItemInCartMutation_ViewerRelayQL',
-	                type: 'Viewer'
+	                name: 'AddItemInCartMutation_CartRelayQL',
+	                type: 'CartType'
 	            };
 	        }();
 	    }
@@ -67775,7 +67762,7 @@
 
 	            var addItemInCartMutation = new _AddItemInCartMutation2.default({
 	                itemReference: reference,
-	                viewer: this.props.viewer
+	                cart: this.props.viewer.cart
 	            });
 
 	            var onSuccess = function onSuccess(response) {
@@ -67847,7 +67834,25 @@
 	        viewer: function viewer() {
 	            return function (RQL_0) {
 	                return {
-	                    children: [].concat.apply([], [{
+	                    children: [{
+	                        children: [].concat.apply([], [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                        fieldName: 'cart',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'CartType'
+	                    }, {
 	                        calls: [{
 	                            kind: 'Call',
 	                            metadata: {},
@@ -68167,14 +68172,14 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'Stock_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }(_AddItemInCartMutation2.default.getFragment('viewer'));
+	            }(_AddItemInCartMutation2.default.getFragment('cart'));
 	        }
 	    }
 	});

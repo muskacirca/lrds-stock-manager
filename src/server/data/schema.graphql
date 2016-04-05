@@ -43,6 +43,7 @@ type BrandType implements Node {
 
 type CartType implements Node {
   id: ID!
+  count: Int
   selectedItems: [ItemType]
 }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import Relay from 'react-relay'
 
 import RemoveItemFromCartMutation from '../mutations/RemoveItemFromCartMutation'
+import AddItemInCartMutation from '../mutations/AddItemInCartMutation'
 
 class CartComponent extends React.Component {
 
@@ -20,7 +21,7 @@ class CartComponent extends React.Component {
         console.log("removing item from cart: " + reference)
         var removeItemFromCartMutation = new RemoveItemFromCartMutation({
             itemReference: reference,
-            viewer: this.props.viewer
+            cart: this.props.viewer.cart
         });
 
         var onSuccess = (response) => console.log("Remove item from cart");
@@ -47,14 +48,15 @@ class CartComponent extends React.Component {
 
     render() {
 
+        var cartCount = this.props.viewer.cart.count
         var cartItems = this.renderCart(this.props.viewer.cart)
         let styles = {
             display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
         };
 
-        return  <div className="navbar-link-color">
+        return  <div className="navbar-element navbar-link-color">
                     <i className="fa fa-2x fa-shopping-cart pointer" onClick={this.toggleCartDisplay.bind(this)}>
-                        <span className="badge">{cartItems.length}</span>
+                        <span className="badge">{cartCount}</span>
                     </i>
                     <div className="cart-dropdown" style={styles}>
                         {cartItems}
@@ -68,8 +70,9 @@ export default Relay.createContainer(CartComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            ${RemoveItemFromCartMutation.getFragment('viewer')}
             cart {
+                ${RemoveItemFromCartMutation.getFragment('cart')}
+                count
                 selectedItems {
                     reference
                 }

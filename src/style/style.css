@@ -144,8 +144,9 @@ span.inline {
 
 .cart-dropdown {
   position: absolute;
-  top: 51px;
-  width: 280px;
+  top: 35px;
+  width: 250px;
+  right: 0.25em;
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -157,6 +158,12 @@ span.inline {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   z-index: 2;
+}
+
+.navbar-element {
+  position: absolute;
+  top: 5em;
+  right: 5em;
 }
 
 /*.sidebar {

@@ -4,13 +4,12 @@ import _ from 'lodash'
 class AddItemInCartMutation extends Relay.Mutation {
 
     static fragments = {
-        viewer: () => Relay.QL`
-          fragment on Viewer {
+        cart: () => Relay.QL`
+          fragment on CartType {
             id
-            cart {
-                selectedItems {
-                    reference
-                }
+            count
+            selectedItems {
+                reference
             }
           }
         `
@@ -24,7 +23,6 @@ class AddItemInCartMutation extends Relay.Mutation {
         return Relay.QL`
           fragment on AddItemInCartPayload {
               cart
-              viewer
           }
         `
     }
@@ -33,7 +31,7 @@ class AddItemInCartMutation extends Relay.Mutation {
             {
                 type: 'FIELDS_CHANGE',
                 fieldIDs: {
-                    viewer: this.props.viewer.id
+                    cart: this.props.cart.id
                 }
             }]
     }
@@ -44,16 +42,17 @@ class AddItemInCartMutation extends Relay.Mutation {
     }
 
     getOptimisticResponse() {
-        console.log("get optimistic responbse : " + JSON.stringify(this.props.viewer.cart))
+        console.log("get optimistic responbse : " + JSON.stringify(this.props.cart))
 
-        var actualCart = _.cloneDeep(this.props.viewer.cart)
+        var actualCart = _.cloneDeep(this.props.cart)
         actualCart.selectedItems.push({reference : this.props.itemReference})
 
         console.log("modified cart : " + JSON.stringify(actualCart))
         
         return {
-            cart: actualCart,
-            viewer: this.props.viewer
+                count: this.props.cart.count + 1,
+                selectedItems: actualCart.selectedItems,
+            id: this.props.cart.id
 
         };
     }

@@ -213,6 +213,10 @@ export var GraphQLCartType = new GraphQLObjectType({
     description: 'It display item selected in a cart',
     fields: {
         id: globalIdField('CartType'),
+        count: {
+            type: GraphQLInt,
+            resolve: (obj) => obj.length
+        },
         selectedItems: {
             type: new GraphQLList(GraphQLItemType),
             resolve: (obj) => {

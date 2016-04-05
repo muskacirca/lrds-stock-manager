@@ -100,7 +100,7 @@ class StockComponent extends React.Component {
         
         var addItemInCartMutation = new AddItemInCartMutation({
             itemReference: reference,
-            viewer: this.props.viewer
+            cart: this.props.viewer.cart
         });
 
         var onSuccess = (response) => console.log("Item added to cart");
@@ -157,7 +157,9 @@ export default Relay.createContainer(StockComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-             ${AddItemInCartMutation.getFragment('viewer')}
+             cart {
+                ${AddItemInCartMutation.getFragment('cart')}
+             }
              items(first: 100) {
               edges {
                 node {

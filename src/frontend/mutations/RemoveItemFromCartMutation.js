@@ -3,9 +3,13 @@ import Relay from 'react-relay';
 class RemoveItemFromCartMutation extends Relay.Mutation {
 
     static fragments = {
-        viewer: () => Relay.QL`
-          fragment on Viewer {
-            id
+        cart: () => Relay.QL`
+          fragment on CartType {
+                id
+                count
+                selectedItems {
+                    reference
+                }
           }
         `
     };
@@ -17,8 +21,7 @@ class RemoveItemFromCartMutation extends Relay.Mutation {
     getFatQuery() {
         return Relay.QL`
           fragment on RemoveItemFromCartPayload {
-              cart
-              viewer
+              cart  
           }
         `
     }
@@ -27,7 +30,7 @@ class RemoveItemFromCartMutation extends Relay.Mutation {
             {
                 type: 'FIELDS_CHANGE',
                 fieldIDs: {
-                    viewer: this.props.viewer.id
+                    cart: this.props.cart.id
                 }
             }]
     }
@@ -39,15 +42,11 @@ class RemoveItemFromCartMutation extends Relay.Mutation {
 
     getOptimisticResponse() {
         
-        console.log("getOptimisticResponse : " + JSON.stringify(this.props.viewer.cart))
+        console.log("getOptimisticResponse : " + JSON.stringify(this.props.cart))
         
         return {
-            cart: {
-                selectedItems: [{
-                    reference : this.props.itemReference
-                }]
-            },
-            viewer: this.props.viewer
+            id: this.props.cart.id,
+            count: this.props.cart.count - 1
 
         };
     }
