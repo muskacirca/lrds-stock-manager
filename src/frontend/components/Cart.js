@@ -54,7 +54,7 @@ class CartComponent extends React.Component {
             display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
         };
 
-        return  <div className="navbar-element navbar-link-color">
+        return  <div className="">
                     <i className="fa fa-2x fa-shopping-cart pointer" onClick={this.toggleCartDisplay.bind(this)}>
                         <span className="badge">{cartCount}</span>
                     </i>

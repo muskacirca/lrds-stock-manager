@@ -23,10 +23,13 @@ class MainApp extends React.Component{
     render() {
 
         console.log("Main app render: " + this.props.viewer.id);
-        // <Cart viewer={this.props.viewer} />
+        
+        var cart =  <Cart viewer={this.props.viewer} />
+        
         return (
             <div className="site-pusher">
-                <NavBarBox />
+                <NavBarBox shoppingCart={cart}/>
+               
                 <div className="site-content">
                     <div className="container">
                         {this.props.children}

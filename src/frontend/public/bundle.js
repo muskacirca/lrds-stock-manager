@@ -50811,11 +50811,13 @@
 	        value: function render() {
 
 	            console.log("Main app render: " + this.props.viewer.id);
-	            // <Cart viewer={this.props.viewer} />
+
+	            var cart = _react2.default.createElement(_Cart2.default, { viewer: this.props.viewer });
+
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'site-pusher' },
-	                _react2.default.createElement(_navbar2.default, null),
+	                _react2.default.createElement(_navbar2.default, { shoppingCart: cart }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'site-content' },
@@ -50969,7 +50971,7 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'navbar-element navbar-link-color' },
+	                { className: '' },
 	                _react2.default.createElement(
 	                    'i',
 	                    { className: 'fa fa-2x fa-shopping-cart pointer', onClick: this.toggleCartDisplay.bind(this) },
@@ -67376,6 +67378,8 @@
 	        key: 'render',
 	        value: function render() {
 
+	            var cart = this.props.shoppingCart;
+
 	            return _react2.default.createElement(
 	                'header',
 	                { className: 'header' },
@@ -67404,6 +67408,11 @@
 	                        { to: '/admin/create', activeClassName: 'link-active' },
 	                        'Admin'
 	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'menu-right' },
+	                    cart
 	                )
 	            );
 	        }
@@ -68606,15 +68615,15 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'navigation-sub-row col-md-6 col-sm-12 col-xs-12' },
+	                    { className: 'navigation-sub-row col-md-6 col-xs-12' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1 col-sm-2 col-xs-2' },
+	                        { className: 'col-md-1 col-xs-2' },
 	                        'Tags:'
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-11 col-sm-10 col-xs-10' },
+	                        { className: 'col-md-11 col-xs-10' },
 	                        _react2.default.createElement(
 	                            'ul',
 	                            { className: 'inline-ul' },

@@ -19,6 +19,8 @@ class NavBarBox extends React.Component {
 
     render() {
 
+        var cart = this.props.shoppingCart
+        
         return  <header className="header">
                     <a href="#" className="header__icon" id="header__icon"
                        onClick={this.handleClick.bind(this)} href="#"></a>
@@ -31,6 +33,9 @@ class NavBarBox extends React.Component {
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
                         <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                     </nav>
+                    <div className="menu-right">
+                        {cart}
+                    </div>
                 </header>
 
 
