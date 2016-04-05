@@ -68601,20 +68601,20 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'navigation-sub-row col-md-6' },
+	                    { className: 'navigation-sub-row col-md-6 mobile-hide' },
 	                    'An other thing'
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'navigation-sub-row col-md-6' },
+	                    { className: 'navigation-sub-row col-md-6 col-xs-12' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1' },
+	                        { className: 'col-md-1 col-xs-2' },
 	                        'Tags:'
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-11' },
+	                        { className: 'col-md-11 col-xs-10' },
 	                        _react2.default.createElement(
 	                            'ul',
 	                            { className: 'inline-ul' },
@@ -68877,7 +68877,11 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'input-group' },
-	                _react2.default.createElement('span', { className: 'input-group-addon glyphicon glyphicon-search', 'aria-hidden': 'true', id: 'basic-addon1' }),
+	                _react2.default.createElement(
+	                    'span',
+	                    { className: 'input-group-addon', 'aria-hidden': 'true', id: 'basic-addon1' },
+	                    _react2.default.createElement('i', { className: 'fa fa-search' })
+	                ),
 	                _react2.default.createElement('input', { ref: 'searchInput',
 	                    type: 'text',
 	                    className: 'form-control',

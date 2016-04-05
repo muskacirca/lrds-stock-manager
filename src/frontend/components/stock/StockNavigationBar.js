@@ -37,12 +37,12 @@ class StockNavigationBar extends React.Component {
                                      onChange={this.onSearchInputChange.bind(this)}
                                      onKeyDown={this.onKeyDownSearch.bind(this)} />
                     </div>
-                    <div className="navigation-sub-row col-md-6">
+                    <div className="navigation-sub-row col-md-6 mobile-hide">
                         An other thing
                     </div>
-                    <div className="navigation-sub-row col-md-6">
-                        <div className="col-md-1">Tags:</div>
-                        <div className="col-md-11">
+                    <div className="navigation-sub-row col-md-6 col-xs-12">
+                        <div className="col-md-1 col-xs-2">Tags:</div>
+                        <div className="col-md-11 col-xs-10">
                             <ul className="inline-ul">{tagRow}</ul>
                         </div>
                     </div>

@@ -37,7 +37,9 @@ class SearchComponent extends React.Component {
 
     render() {
         return  <div className="input-group">
-                    <span className="input-group-addon glyphicon glyphicon-search" aria-hidden="true" id="basic-addon1" />
+                    <span className="input-group-addon" aria-hidden="true" id="basic-addon1">
+                        <i className="fa fa-search"></i>
+                    </span>
                     <input ref="searchInput"
                            type="text"
                            className="form-control"

@@ -18,7 +18,7 @@ a {
 
 #app {
     height: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .container {
@@ -27,7 +27,14 @@ a {
 }
 
 .site-content {
-    padding-top: 66px;
+    position: absolute;
+    top: 66px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-top: 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .link-active {
@@ -164,6 +171,8 @@ a {
         right:  0;
         background-color: rgba(0,0,0,0.6);
     }
+
+    .mobile-hide{ display: none; }
 }
 
 /*
