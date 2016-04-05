@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(591);
+	var _history = __webpack_require__(592);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50561,31 +50561,31 @@
 
 	var _MainApp2 = _interopRequireDefault(_MainApp);
 
-	var _login = __webpack_require__(550);
+	var _login = __webpack_require__(551);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _stock = __webpack_require__(551);
+	var _stock = __webpack_require__(552);
 
 	var _stock2 = _interopRequireDefault(_stock);
 
-	var _Item = __webpack_require__(558);
+	var _Item = __webpack_require__(559);
 
 	var _Item2 = _interopRequireDefault(_Item);
 
-	var _ItemForm = __webpack_require__(559);
+	var _ItemForm = __webpack_require__(560);
 
 	var _ItemForm2 = _interopRequireDefault(_ItemForm);
 
-	var _product = __webpack_require__(588);
+	var _product = __webpack_require__(589);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(589);
+	var _profile = __webpack_require__(590);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(590);
+	var _event = __webpack_require__(591);
 
 	var _event2 = _interopRequireDefault(_event);
 
@@ -50777,13 +50777,11 @@
 
 	var _Cart2 = _interopRequireDefault(_Cart);
 
-	var _AddItemInCartMutation = __webpack_require__(547);
-
-	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
-
 	var _navbar = __webpack_require__(549);
 
 	var _navbar2 = _interopRequireDefault(_navbar);
+
+	var _utils = __webpack_require__(550);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50803,21 +50801,31 @@
 	    }
 
 	    _createClass(MainApp, [{
+	        key: 'onHiddenSiteCLick',
+	        value: function onHiddenSiteCLick() {
+	            var className = 'with--sidebar';
+	            (0, _utils.toggleClassInBody)(className);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            console.log("Main app render: " + this.props.viewer.id);
-
+	            // <Cart viewer={this.props.viewer} />
 	            return _react2.default.createElement(
 	                'div',
-	                null,
+	                { className: 'site-pusher' },
 	                _react2.default.createElement(_navbar2.default, null),
-	                _react2.default.createElement(_Cart2.default, { viewer: this.props.viewer }),
 	                _react2.default.createElement(
 	                    'div',
-	                    null,
-	                    this.props.children
-	                )
+	                    { className: 'site-content' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'container' },
+	                        this.props.children
+	                    )
+	                ),
+	                _react2.default.createElement('div', { className: 'site-cache', onClick: this.onHiddenSiteCLick.bind(this) })
 	            );
 	        }
 	    }]);
@@ -67317,7 +67325,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -67326,13 +67334,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _reactRouter = __webpack_require__(191);
 
 	var _Cart = __webpack_require__(545);
 
 	var _Cart2 = _interopRequireDefault(_Cart);
 
+	var _utils = __webpack_require__(550);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -67341,94 +67357,122 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var NavBarBox = function (_React$Component) {
-	  _inherits(NavBarBox, _React$Component);
+	    _inherits(NavBarBox, _React$Component);
 
-	  function NavBarBox() {
-	    _classCallCheck(this, NavBarBox);
+	    function NavBarBox() {
+	        _classCallCheck(this, NavBarBox);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NavBarBox).apply(this, arguments));
-	  }
-
-	  _createClass(NavBarBox, [{
-	    key: 'render',
-	    value: function render() {
-
-	      return _react2.default.createElement(
-	        'nav',
-	        { className: 'navbar navbar-inverse navbar-fixed-top' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'container-fluid' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'navbar-header' },
-	            _react2.default.createElement(
-	              'button',
-	              { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse',
-	                'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
-	              _react2.default.createElement(
-	                'span',
-	                { className: 'sr-only' },
-	                'Toggle navigation'
-	              ),
-	              _react2.default.createElement('span', { className: 'icon-bar' }),
-	              _react2.default.createElement('span', { className: 'icon-bar' }),
-	              _react2.default.createElement('span', { className: 'icon-bar' })
-	            ),
-	            _react2.default.createElement(
-	              'a',
-	              { className: 'navbar-brand', href: '#' },
-	              'LRDS'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
-	            _react2.default.createElement(
-	              'ul',
-	              { className: 'nav navbar-nav' },
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/', activeClassName: 'link-active' },
-	                  'Home'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/stock', activeClassName: 'link-active' },
-	                  'Stock'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'li',
-	                { role: 'presentation' },
-	                _react2.default.createElement(
-	                  _reactRouter.Link,
-	                  { to: '/admin/create', activeClassName: 'link-active' },
-	                  'Admin'
-	                )
-	              )
-	            )
-	          ),
-	          _react2.default.createElement('div', { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' })
-	        )
-	      );
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(NavBarBox).apply(this, arguments));
 	    }
-	  }]);
 
-	  return NavBarBox;
+	    _createClass(NavBarBox, [{
+	        key: 'handleClick',
+	        value: function handleClick(e) {
+	            e.preventDefault();
+	            var className = 'with--sidebar';
+	            (0, _utils.toggleClassInBody)(className);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            return _react2.default.createElement(
+	                'header',
+	                { className: 'header' },
+	                _react2.default.createElement('a', _defineProperty({ href: '#', className: 'header__icon', id: 'header__icon',
+	                    onClick: this.handleClick.bind(this) }, 'href', '#')),
+	                _react2.default.createElement(
+	                    'a',
+	                    _defineProperty({ href: '#', className: 'header__logo' }, 'href', '#'),
+	                    'LRDS'
+	                ),
+	                _react2.default.createElement(
+	                    'nav',
+	                    { className: 'menu' },
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/', activeClassName: 'link-active' },
+	                        'Home'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/stock', activeClassName: 'link-active' },
+	                        'Stock'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/admin/create', activeClassName: 'link-active' },
+	                        'Admin'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return NavBarBox;
 	}(_react2.default.Component);
 
 	exports.default = NavBarBox;
 
+	// <nav className="navbar navbar-inverse navbar-fixed-top">
+	//     <div className="container-fluid">
+	//     <div className="header__icon navbar-header">
+	//     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
+	// data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	//     <span className="sr-only">Toggle navigation</span>
+	// <span className="icon-bar"></span>
+	//     <span className="icon-bar"></span>
+	//     <span className="icon-bar"></span>
+	//     </button>
+	//     </div>
+	//     <a className="navbar-brand" href="#">LRDS</a>
+	//
+	//     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	//     <ul className="nav navbar-nav">
+	//     <li role="presentation">
+	//     <Link to="/" activeClassName="link-active">Home</Link>
+	//     </li>
+	//     <li role="presentation">
+	//     <Link to="/stock" activeClassName="link-active">Stock</Link>
+	//     </li>
+	//     <li role="presentation">
+	//     <Link to="/admin/create" activeClassName="link-active">Admin</Link>
+	//     </li>
+	//     </ul>
+	//     </div>
+	//     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	//
+	//     </div>
+	//     </div>
+	//     </nav>
+
 /***/ },
 /* 550 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.toggleClassInBody = toggleClassInBody;
+
+	var _lodash = __webpack_require__(548);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function toggleClassInBody(className) {
+
+	    var bodyClass = document.body.className;
+	    var bodyClass = bodyClass.indexOf(className) == -1 ? bodyClass + className : _lodash2.default.replace(bodyClass, className, '');
+
+	    document.body.className = bodyClass;
+	}
+
+/***/ },
+/* 551 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67614,7 +67658,7 @@
 	exports.default = LoginBox;
 
 /***/ },
-/* 551 */
+/* 552 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67637,11 +67681,11 @@
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _StockTable = __webpack_require__(552);
+	var _StockTable = __webpack_require__(553);
 
 	var _StockTable2 = _interopRequireDefault(_StockTable);
 
-	var _StockNavigationBar = __webpack_require__(555);
+	var _StockNavigationBar = __webpack_require__(556);
 
 	var _StockNavigationBar2 = _interopRequireDefault(_StockNavigationBar);
 
@@ -67793,13 +67837,13 @@
 	                null,
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'row sub-bar' },
+	                    { className: 'sub-bar row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1' },
+	                        { className: 'sub-bar-component' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'sub-bar-component' },
+	                            { className: 'col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1' },
 	                            _react2.default.createElement(_StockNavigationBar2.default, { onTagSelected: this.onTagSelected.bind(this),
 	                                onSearchInputChange: this.onSearchInputChange.bind(this),
 	                                onTagRemoval: this.onCLickTag.bind(this),
@@ -68185,7 +68229,7 @@
 	});
 
 /***/ },
-/* 552 */
+/* 553 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68204,11 +68248,11 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _StockTableHeader = __webpack_require__(553);
+	var _StockTableHeader = __webpack_require__(554);
 
 	var _StockTableHeader2 = _interopRequireDefault(_StockTableHeader);
 
-	var _StockTableRow = __webpack_require__(554);
+	var _StockTableRow = __webpack_require__(555);
 
 	var _StockTableRow2 = _interopRequireDefault(_StockTableRow);
 
@@ -68275,7 +68319,7 @@
 	exports.default = StockTable;
 
 /***/ },
-/* 553 */
+/* 554 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68357,7 +68401,7 @@
 	exports.default = StockTableHeader;
 
 /***/ },
-/* 554 */
+/* 555 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68471,7 +68515,7 @@
 	exports.default = StockTableRow;
 
 /***/ },
-/* 555 */
+/* 556 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68490,11 +68534,11 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _ItemDisplay = __webpack_require__(556);
+	var _ItemDisplay = __webpack_require__(557);
 
 	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
 
-	var _searchInput = __webpack_require__(557);
+	var _searchInput = __webpack_require__(558);
 
 	var _searchInput2 = _interopRequireDefault(_searchInput);
 
@@ -68588,7 +68632,7 @@
 	exports.default = StockNavigationBar;
 
 /***/ },
-/* 556 */
+/* 557 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -68757,7 +68801,7 @@
 	exports.default = ItemDisplay;
 
 /***/ },
-/* 557 */
+/* 558 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68851,7 +68895,7 @@
 	exports.default = SearchComponent;
 
 /***/ },
-/* 558 */
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68870,7 +68914,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _ItemDisplay = __webpack_require__(556);
+	var _ItemDisplay = __webpack_require__(557);
 
 	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
 
@@ -69190,7 +69234,7 @@
 	});
 
 /***/ },
-/* 559 */
+/* 560 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69213,27 +69257,27 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _AutosuggestWrapper = __webpack_require__(560);
+	var _AutosuggestWrapper = __webpack_require__(561);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _Expire = __webpack_require__(584);
+	var _Expire = __webpack_require__(585);
 
 	var _Expire2 = _interopRequireDefault(_Expire);
 
-	var _AddModelMutation = __webpack_require__(585);
+	var _AddModelMutation = __webpack_require__(586);
 
 	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
 
-	var _AddItemMutation = __webpack_require__(586);
+	var _AddItemMutation = __webpack_require__(587);
 
 	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
-	var _ModelQuickForm = __webpack_require__(587);
+	var _ModelQuickForm = __webpack_require__(588);
 
 	var _ModelQuickForm2 = _interopRequireDefault(_ModelQuickForm);
 
-	var _ItemDisplay = __webpack_require__(556);
+	var _ItemDisplay = __webpack_require__(557);
 
 	var _ItemDisplay2 = _interopRequireDefault(_ItemDisplay);
 
@@ -69935,7 +69979,7 @@
 	});
 
 /***/ },
-/* 560 */
+/* 561 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69950,7 +69994,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactAutosuggest = __webpack_require__(561);
+	var _reactAutosuggest = __webpack_require__(562);
 
 	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
 
@@ -70106,15 +70150,15 @@
 	exports.default = AutosuggestWrapper;
 
 /***/ },
-/* 561 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(562).default;
+	module.exports = __webpack_require__(563).default;
 
 /***/ },
-/* 562 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70129,15 +70173,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(563);
+	var _redux = __webpack_require__(564);
 
-	var _reactRedux = __webpack_require__(571);
+	var _reactRedux = __webpack_require__(572);
 
-	var _reducerAndActions = __webpack_require__(578);
+	var _reducerAndActions = __webpack_require__(579);
 
 	var _reducerAndActions2 = _interopRequireDefault(_reducerAndActions);
 
-	var _Autosuggest = __webpack_require__(579);
+	var _Autosuggest = __webpack_require__(580);
 
 	var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -70309,7 +70353,7 @@
 	exports.default = AutosuggestContainer;
 
 /***/ },
-/* 563 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70317,27 +70361,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(564);
+	var _createStore = __webpack_require__(565);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(566);
+	var _combineReducers = __webpack_require__(567);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(568);
+	var _bindActionCreators = __webpack_require__(569);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(569);
+	var _applyMiddleware = __webpack_require__(570);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(570);
+	var _compose = __webpack_require__(571);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(567);
+	var _warning = __webpack_require__(568);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -70361,7 +70405,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 564 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70370,7 +70414,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 
-	var _isPlainObject = __webpack_require__(565);
+	var _isPlainObject = __webpack_require__(566);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -70582,7 +70626,7 @@
 	}
 
 /***/ },
-/* 565 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getPrototype = __webpack_require__(517),
@@ -70657,7 +70701,7 @@
 
 
 /***/ },
-/* 566 */
+/* 567 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70665,13 +70709,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 
-	var _createStore = __webpack_require__(564);
+	var _createStore = __webpack_require__(565);
 
-	var _isPlainObject = __webpack_require__(565);
+	var _isPlainObject = __webpack_require__(566);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(567);
+	var _warning = __webpack_require__(568);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -70790,7 +70834,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 567 */
+/* 568 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70819,7 +70863,7 @@
 	}
 
 /***/ },
-/* 568 */
+/* 569 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70875,7 +70919,7 @@
 	}
 
 /***/ },
-/* 569 */
+/* 570 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70885,7 +70929,7 @@
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 
-	var _compose = __webpack_require__(570);
+	var _compose = __webpack_require__(571);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -70937,7 +70981,7 @@
 	}
 
 /***/ },
-/* 570 */
+/* 571 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -70971,7 +71015,7 @@
 	}
 
 /***/ },
-/* 571 */
+/* 572 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70979,11 +71023,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(572);
+	var _Provider = __webpack_require__(573);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(574);
+	var _connect = __webpack_require__(575);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -70993,7 +71037,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 572 */
+/* 573 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -71003,7 +71047,7 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(573);
+	var _storeShape = __webpack_require__(574);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
@@ -71077,7 +71121,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 573 */
+/* 574 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71093,7 +71137,7 @@
 	});
 
 /***/ },
-/* 574 */
+/* 575 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -71105,23 +71149,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(573);
+	var _storeShape = __webpack_require__(574);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(575);
+	var _shallowEqual = __webpack_require__(576);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(576);
+	var _wrapActionCreators = __webpack_require__(577);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(565);
+	var _isPlainObject = __webpack_require__(566);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(577);
+	var _hoistNonReactStatics = __webpack_require__(578);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -71421,7 +71465,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 575 */
+/* 576 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71452,7 +71496,7 @@
 	}
 
 /***/ },
-/* 576 */
+/* 577 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71460,7 +71504,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(563);
+	var _redux = __webpack_require__(564);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -71469,7 +71513,7 @@
 	}
 
 /***/ },
-/* 577 */
+/* 578 */
 /***/ function(module, exports) {
 
 	/**
@@ -71515,7 +71559,7 @@
 
 
 /***/ },
-/* 578 */
+/* 579 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71644,7 +71688,7 @@
 	}
 
 /***/ },
-/* 579 */
+/* 580 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71661,11 +71705,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(571);
+	var _reactRedux = __webpack_require__(572);
 
-	var _reducerAndActions = __webpack_require__(578);
+	var _reducerAndActions = __webpack_require__(579);
 
-	var _reactAutowhatever = __webpack_require__(580);
+	var _reactAutowhatever = __webpack_require__(581);
 
 	var _reactAutowhatever2 = _interopRequireDefault(_reactAutowhatever);
 
@@ -72088,7 +72132,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Autosuggest);
 
 /***/ },
-/* 580 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72107,11 +72151,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _sectionIterator = __webpack_require__(581);
+	var _sectionIterator = __webpack_require__(582);
 
 	var _sectionIterator2 = _interopRequireDefault(_sectionIterator);
 
-	var _reactThemeable = __webpack_require__(582);
+	var _reactThemeable = __webpack_require__(583);
 
 	var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
@@ -72411,7 +72455,7 @@
 
 
 /***/ },
-/* 581 */
+/* 582 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72531,7 +72575,7 @@
 
 
 /***/ },
-/* 582 */
+/* 583 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72544,7 +72588,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _objectAssign = __webpack_require__(583);
+	var _objectAssign = __webpack_require__(584);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -72569,7 +72613,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72614,7 +72658,7 @@
 
 
 /***/ },
-/* 584 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72701,7 +72745,7 @@
 	exports.default = Expire;
 
 /***/ },
-/* 585 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -72928,7 +72972,7 @@
 	exports.default = AddModelMutation;
 
 /***/ },
-/* 586 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73113,7 +73157,7 @@
 	exports.default = AddItemMutation;
 
 /***/ },
-/* 587 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73136,7 +73180,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _AutosuggestWrapper = __webpack_require__(560);
+	var _AutosuggestWrapper = __webpack_require__(561);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
@@ -73302,7 +73346,7 @@
 	});
 
 /***/ },
-/* 588 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73317,7 +73361,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _searchInput = __webpack_require__(557);
+	var _searchInput = __webpack_require__(558);
 
 	var _searchInput2 = _interopRequireDefault(_searchInput);
 
@@ -73363,7 +73407,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 589 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73431,7 +73475,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 590 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73497,7 +73541,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 591 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73538,7 +73582,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(592);
+	var _useBeforeUnload2 = __webpack_require__(593);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -73558,13 +73602,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(593);
+	var _enableBeforeUnload2 = __webpack_require__(594);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(594);
+	var _enableQueries2 = __webpack_require__(595);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -73573,7 +73617,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 592 */
+/* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -73690,7 +73734,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 593 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73703,7 +73747,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(592);
+	var _useBeforeUnload = __webpack_require__(593);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -73711,7 +73755,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 594 */
+/* 595 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

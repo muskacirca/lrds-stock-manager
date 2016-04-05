@@ -125,9 +125,9 @@ class StockComponent extends React.Component {
 
         return (
             <div>
-                <div className="row sub-bar">
-                    <div className="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1">
-                        <div className="sub-bar-component">
+                <div className="sub-bar row">
+                    <div className="sub-bar-component">
+                        <div className="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1">
                             <StockNavigationBar onTagSelected={this.onTagSelected.bind(this)}
                                                 onSearchInputChange={this.onSearchInputChange.bind(this)}
                                                 onTagRemoval={this.onCLickTag.bind(this)}

@@ -1,9 +1,12 @@
 import React from 'react'
 import Relay from 'react-relay'
 import Cart from './Cart'
-import AddItemInCartMutation from '../mutations/AddItemInCartMutation'
 
 import NavBarBox from './navbar'
+
+import {
+    toggleClassInBody
+} from '../../utils/utils'
 
 class MainApp extends React.Component{
 
@@ -11,17 +14,25 @@ class MainApp extends React.Component{
         super(props);
     }
 
+    onHiddenSiteCLick() {
+        var className = 'with--sidebar'
+        toggleClassInBody(className)
+
+    }
+
     render() {
 
         console.log("Main app render: " + this.props.viewer.id);
-
+        // <Cart viewer={this.props.viewer} />
         return (
-            <div>
+            <div className="site-pusher">
                 <NavBarBox />
-                <Cart viewer={this.props.viewer} />
-                <div>
-                    {this.props.children}
+                <div className="site-content">
+                    <div className="container">
+                        {this.props.children}
+                    </div>
                 </div>
+                <div className="site-cache" onClick={this.onHiddenSiteCLick.bind(this)}></div>
             </div>
         );
     }
