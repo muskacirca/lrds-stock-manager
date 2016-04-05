@@ -49,6 +49,7 @@ a {
 /*
     COLORS
 */
+.site-color{color: #D32F2F;}
 .green {color: #4CAF50;}
 .yellow {color: #ffc107;}
 .orange {color: #ff9800;}
@@ -71,9 +72,16 @@ a {
 }
 
 .header__logo {
+    color: #D32F2F;
     font-weight: bold;
+    font-size: 1.4em;
     padding: 0 25px;
     float: left;
+}
+
+.header__logo a {
+   text-decoration: none;
+    color: #9d9d9d;
 }
 
 .menu {
@@ -82,6 +90,7 @@ a {
 
 .menu a {
     padding: 0 10px;
+    text-decoration: none;
     color: #9d9d9d;
 }
 
@@ -245,13 +254,13 @@ li.tag {
     padding: 0.25rem 0.75rem;
     margin: 2px;
     border-radius: 3px;
-    background: #a0cfee;
-    color: #16527a;
+    background: #4CAF50;
+    color: #E8F5E9;
 }
 
 li.tag:hover {
     cursor: pointer;
-    background: #8bc4ea;
+    background: #43A047;
 }
 
 li.model-tag {

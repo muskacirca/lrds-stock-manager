@@ -67382,8 +67382,8 @@
 	                _react2.default.createElement('a', _defineProperty({ href: '#', className: 'header__icon', id: 'header__icon',
 	                    onClick: this.handleClick.bind(this) }, 'href', '#')),
 	                _react2.default.createElement(
-	                    'a',
-	                    _defineProperty({ href: '#', className: 'header__logo' }, 'href', '#'),
+	                    'div',
+	                    _defineProperty({ href: '#', className: 'header__logo link-active' }, 'href', '#'),
 	                    'LRDS'
 	                ),
 	                _react2.default.createElement(
@@ -68606,15 +68606,15 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'navigation-sub-row col-md-6 col-xs-12' },
+	                    { className: 'navigation-sub-row col-md-6 col-sm-12 col-xs-12' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1 col-xs-2' },
+	                        { className: 'col-md-1 col-sm-2 col-xs-2' },
 	                        'Tags:'
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-11 col-xs-10' },
+	                        { className: 'col-md-11 col-sm-10 col-xs-10' },
 	                        _react2.default.createElement(
 	                            'ul',
 	                            { className: 'inline-ul' },

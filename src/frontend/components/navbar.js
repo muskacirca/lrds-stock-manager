@@ -14,7 +14,7 @@ class NavBarBox extends React.Component {
         e.preventDefault()
         var className = 'with--sidebar'
         toggleClassInBody(className)
-        
+
     }
 
     render() {
@@ -22,8 +22,10 @@ class NavBarBox extends React.Component {
         return  <header className="header">
                     <a href="#" className="header__icon" id="header__icon"
                        onClick={this.handleClick.bind(this)} href="#"></a>
-        
-                    <a href="#" className="header__logo" href="#">LRDS</a>
+
+                    <div href="#" className="header__logo link-active" href="#">
+                        LRDS
+                    </div>
                     <nav className="menu">
                         <Link to="/" activeClassName="link-active">Home</Link>
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
