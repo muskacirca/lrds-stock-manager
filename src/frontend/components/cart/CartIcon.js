@@ -15,10 +15,7 @@ class CartComponent extends React.Component {
     }
 
     toggleCartDisplay() {
-        if(this.props.viewer.cart.count != 0) {
-            console.log("toggle display cart")
-            toggleClassInBody('with--cart')
-        }
+        toggleClassInBody('with--cart')
     }
 
     render() {

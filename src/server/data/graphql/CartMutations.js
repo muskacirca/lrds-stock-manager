@@ -12,7 +12,7 @@ import Database from '../database'
 import {
     GraphQLViewer,
     GraphQLCartType
-} from './model.js'
+} from './Model'
 
 import {
     getViewer,

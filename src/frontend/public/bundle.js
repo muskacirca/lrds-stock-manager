@@ -50911,10 +50911,7 @@
 	    _createClass(CartComponent, [{
 	        key: 'toggleCartDisplay',
 	        value: function toggleCartDisplay() {
-	            if (this.props.viewer.cart.count != 0) {
-	                console.log("toggle display cart");
-	                (0, _utils.toggleClassInBody)('with--cart');
-	            }
+	            (0, _utils.toggleClassInBody)('with--cart');
 	        }
 	    }, {
 	        key: 'render',
