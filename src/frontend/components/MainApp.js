@@ -21,12 +21,8 @@ class MainApp extends React.Component{
 
     }
 
-    render() {
-
-        console.log("Main app render: " + this.props.viewer.id);
-        
+    render() {        
         var cart =  <CartIcon viewer={this.props.viewer} />
-        
         return (
             <div className="site-pusher">
                 <NavBarBox shoppingCart={cart}/>

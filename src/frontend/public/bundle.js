@@ -50813,11 +50813,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-
-	            console.log("Main app render: " + this.props.viewer.id);
-
 	            var cart = _react2.default.createElement(_CartIcon2.default, { viewer: this.props.viewer });
-
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'site-pusher' },
