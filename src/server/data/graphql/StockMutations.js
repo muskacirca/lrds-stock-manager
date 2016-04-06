@@ -15,7 +15,7 @@ import {
     GraphQLViewer,
     GraphQLModelEdge,
     GraphQLItemType
-} from './Model'
+} from './model.js'
 
 import {
     getViewer,
