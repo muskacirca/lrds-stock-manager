@@ -27,7 +27,6 @@ class NavBarBox extends React.Component {
                         LRDS
                     </div>
                     <nav className="menu">
-                        <Link to="/" activeClassName="link-active">Home</Link>
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
                         <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                     </nav>
