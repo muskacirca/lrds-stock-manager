@@ -41,7 +41,7 @@ class StockTableRow extends React.Component {
                     <td>{isInStock}</td>
                     <td>
                         <div className="row">
-                            <div className="pointer col-md-1" onClick={this.onAddToCartClick.bind(this)}>
+                            <div className="pointer" onClick={this.onAddToCartClick.bind(this)}>
                                 <i className="fa fa-cart-plus"></i>
                             </div>
                         </div>

@@ -42,11 +42,9 @@ class CartDropdownComponent extends React.Component {
         
         var cartItems = this.renderCart(this.props.viewer.cart)
 
-        return  <div className="">
-                    <div className="cart-dropdown">
-                        {cartItems}
-                        <div>Empty cart</div>
-                    </div>
+        return  <div className="cart-dropdown">
+                    {cartItems}
+                    <div>Empty cart</div>
                 </div>
     }
 }

@@ -67109,16 +67109,12 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: '' },
+	                { className: 'cart-dropdown' },
+	                cartItems,
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'cart-dropdown' },
-	                    cartItems,
-	                    _react2.default.createElement(
-	                        'div',
-	                        null,
-	                        'Empty cart'
-	                    )
+	                    null,
+	                    'Empty cart'
 	                )
 	            );
 	        }
@@ -68406,7 +68402,7 @@
 	                        { className: "row" },
 	                        _react2.default.createElement(
 	                            "div",
-	                            { className: "pointer col-md-1", onClick: this.onAddToCartClick.bind(this) },
+	                            { className: "pointer", onClick: this.onAddToCartClick.bind(this) },
 	                            _react2.default.createElement("i", { className: "fa fa-cart-plus" })
 	                        )
 	                    )
