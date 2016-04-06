@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(592);
+	var _history = __webpack_require__(593);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50569,27 +50569,27 @@
 
 	var _stock2 = _interopRequireDefault(_stock);
 
-	var _Item = __webpack_require__(559);
+	var _Item = __webpack_require__(560);
 
 	var _Item2 = _interopRequireDefault(_Item);
 
-	var _ItemForm = __webpack_require__(560);
+	var _ItemForm = __webpack_require__(561);
 
 	var _ItemForm2 = _interopRequireDefault(_ItemForm);
 
-	var _product = __webpack_require__(589);
+	var _product = __webpack_require__(590);
 
 	var _product2 = _interopRequireDefault(_product);
 
-	var _profile = __webpack_require__(590);
+	var _profile = __webpack_require__(591);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _event = __webpack_require__(591);
+	var _event = __webpack_require__(592);
 
 	var _event2 = _interopRequireDefault(_event);
 
-	var _navbar = __webpack_require__(549);
+	var _navbar = __webpack_require__(548);
 
 	var _navbar2 = _interopRequireDefault(_navbar);
 
@@ -50773,15 +50773,19 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _Cart = __webpack_require__(545);
+	var _CartIcon = __webpack_require__(545);
 
-	var _Cart2 = _interopRequireDefault(_Cart);
+	var _CartIcon2 = _interopRequireDefault(_CartIcon);
 
-	var _navbar = __webpack_require__(549);
+	var _navbar = __webpack_require__(548);
 
 	var _navbar2 = _interopRequireDefault(_navbar);
 
-	var _utils = __webpack_require__(550);
+	var _CartDropdown = __webpack_require__(549);
+
+	var _CartDropdown2 = _interopRequireDefault(_CartDropdown);
+
+	var _utils = __webpack_require__(546);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50812,7 +50816,7 @@
 
 	            console.log("Main app render: " + this.props.viewer.id);
 
-	            var cart = _react2.default.createElement(_Cart2.default, { viewer: this.props.viewer });
+	            var cart = _react2.default.createElement(_CartIcon2.default, { viewer: this.props.viewer });
 
 	            return _react2.default.createElement(
 	                'div',
@@ -50827,6 +50831,11 @@
 	                        this.props.children
 	                    )
 	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'cart-pusher' },
+	                    _react2.default.createElement(_CartDropdown2.default, { viewer: this.props.viewer })
+	                ),
 	                _react2.default.createElement('div', { className: 'site-cache', onClick: this.onHiddenSiteCLick.bind(this) })
 	            );
 	        }
@@ -50838,7 +50847,7 @@
 	exports.default = _reactRelay2.default.createContainer(MainApp, {
 	    fragments: {
 	        viewer: function viewer() {
-	            return function (RQL_0) {
+	            return function (RQL_0, RQL_1) {
 	                return {
 	                    children: [].concat.apply([], [{
 	                        fieldName: 'id',
@@ -50847,14 +50856,14 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1)]),
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'MainApp_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }(_Cart2.default.getFragment('viewer'));
+	            }(_CartIcon2.default.getFragment('viewer'), _CartDropdown2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -50879,13 +50888,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _RemoveItemFromCartMutation = __webpack_require__(546);
-
-	var _RemoveItemFromCartMutation2 = _interopRequireDefault(_RemoveItemFromCartMutation);
-
-	var _AddItemInCartMutation = __webpack_require__(547);
-
-	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
+	var _utils = __webpack_require__(546);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50912,83 +50915,27 @@
 	    _createClass(CartComponent, [{
 	        key: 'toggleCartDisplay',
 	        value: function toggleCartDisplay() {
-	            if (this.props.viewer.cart.selectedItems.length != 0) this.setState({ toggleCart: !this.state.toggleCart });
-	        }
-	    }, {
-	        key: 'onRemoveItemFromCart',
-	        value: function onRemoveItemFromCart(reference) {
-	            console.log("removing item from cart: " + reference);
-	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
-	                itemReference: reference,
-	                cart: this.props.viewer.cart
-	            });
-
-	            var onSuccess = function onSuccess(response) {
-	                return console.log("Remove item from cart");
-	            };
-
-	            var onFailure = function onFailure(transaction) {
-	                return console.log("Remove item from cart failed");
-	            };
-
-	            _reactRelay2.default.Store.commitUpdate(removeItemFromCartMutation, { onSuccess: onSuccess, onFailure: onFailure });
-	        }
-	    }, {
-	        key: 'renderCart',
-	        value: function renderCart(cart) {
-	            var _this2 = this;
-
-	            return cart.selectedItems.map(function (item) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-10' },
-	                        _react2.default.createElement(
-	                            'div',
-	                            { key: "cart-" + item.reference },
-	                            item.reference
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-2' },
-	                        _react2.default.createElement('i', { className: 'fa fa-times red', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) })
-	                    )
-	                );
-	            });
+	            if (this.props.viewer.cart.count != 0) {
+	                console.log("toggle display cart");
+	                (0, _utils.toggleClassInBody)('with--cart');
+	            }
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var cartCount = this.props.viewer.cart.count;
-	            var cartItems = this.renderCart(this.props.viewer.cart);
-	            var styles = {
-	                display: this.state.toggleCart && cartItems.length > 0 ? 'block' : 'none'
-	            };
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: '' },
+	                { onClick: this.toggleCartDisplay.bind(this) },
 	                _react2.default.createElement(
 	                    'i',
-	                    { className: 'fa fa-2x fa-shopping-cart pointer', onClick: this.toggleCartDisplay.bind(this) },
+	                    { className: 'fa fa-2x fa-shopping-cart pointer' },
 	                    _react2.default.createElement(
 	                        'span',
 	                        { className: 'badge' },
 	                        cartCount
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'cart-dropdown', style: styles },
-	                    cartItems,
-	                    _react2.default.createElement(
-	                        'div',
-	                        null,
-	                        'Empty cart'
 	                    )
 	                )
 	            );
@@ -51001,38 +50948,14 @@
 	exports.default = _reactRelay2.default.createContainer(CartComponent, {
 	    fragments: {
 	        viewer: function viewer() {
-	            return function (RQL_0) {
+	            return function () {
 	                return {
 	                    children: [{
-	                        children: [].concat.apply([], [{
+	                        children: [{
 	                            fieldName: 'count',
 	                            kind: 'Field',
 	                            metadata: {},
 	                            type: 'Int'
-	                        }, {
-	                            children: [{
-	                                fieldName: 'reference',
-	                                kind: 'Field',
-	                                metadata: {},
-	                                type: 'String'
-	                            }, {
-	                                fieldName: 'id',
-	                                kind: 'Field',
-	                                metadata: {
-	                                    isGenerated: true,
-	                                    isRequisite: true
-	                                },
-	                                type: 'ID'
-	                            }],
-	                            fieldName: 'selectedItems',
-	                            kind: 'Field',
-	                            metadata: {
-	                                canHaveSubselections: true,
-	                                inferredRootCallName: 'node',
-	                                inferredPrimaryKey: 'id',
-	                                isPlural: true
-	                            },
-	                            type: 'ItemType'
 	                        }, {
 	                            fieldName: 'id',
 	                            kind: 'Field',
@@ -51041,7 +50964,7 @@
 	                                isRequisite: true
 	                            },
 	                            type: 'ID'
-	                        }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                        }],
 	                        fieldName: 'cart',
 	                        kind: 'Field',
 	                        metadata: {
@@ -51062,10 +50985,10 @@
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: 'Cart_ViewerRelayQL',
+	                    name: 'CartIcon_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }(_RemoveItemFromCartMutation2.default.getFragment('cart'));
+	            }();
 	        }
 	    }
 	});
@@ -51079,374 +51002,24 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.toggleClassInBody = toggleClassInBody;
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var RemoveItemFromCartMutation = function (_Relay$Mutation) {
-	    _inherits(RemoveItemFromCartMutation, _Relay$Mutation);
-
-	    function RemoveItemFromCartMutation() {
-	        _classCallCheck(this, RemoveItemFromCartMutation);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(RemoveItemFromCartMutation).apply(this, arguments));
-	    }
-
-	    _createClass(RemoveItemFromCartMutation, [{
-	        key: 'getMutation',
-	        value: function getMutation() {
-	            return function () {
-	                return {
-	                    calls: [{
-	                        kind: 'Call',
-	                        metadata: {},
-	                        name: 'removeItemFromCart',
-	                        value: {
-	                            kind: 'CallVariable',
-	                            callVariableName: 'input'
-	                        }
-	                    }],
-	                    children: [{
-	                        fieldName: 'clientMutationId',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'String'
-	                    }],
-	                    kind: 'Mutation',
-	                    metadata: {
-	                        inputType: 'RemoveItemFromCartInput!'
-	                    },
-	                    name: 'RemoveItemFromCartMutation',
-	                    responseType: 'RemoveItemFromCartPayload'
-	                };
-	            }();
-	        }
-	    }, {
-	        key: 'getFatQuery',
-	        value: function getFatQuery() {
-	            return function () {
-	                return {
-	                    children: [{
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'cart',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id'
-	                        },
-	                        type: 'CartType'
-	                    }],
-	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: 'Fragment',
-	                    metadata: {},
-	                    name: 'RemoveItemFromCartMutation_ValueRelayQL',
-	                    type: 'RemoveItemFromCartPayload'
-	                };
-	            }();
-	        }
-	    }, {
-	        key: 'getConfigs',
-	        value: function getConfigs() {
-	            return [{
-	                type: 'FIELDS_CHANGE',
-	                fieldIDs: {
-	                    cart: this.props.cart.id
-	                }
-	            }];
-	        }
-	    }, {
-	        key: 'getVariables',
-	        value: function getVariables() {
-	            return {
-	                itemReference: this.props.itemReference
-	            };
-	        }
-	    }, {
-	        key: 'getOptimisticResponse',
-	        value: function getOptimisticResponse() {
-
-	            console.log("getOptimisticResponse : " + JSON.stringify(this.props.cart));
-
-	            return {
-	                id: this.props.cart.id,
-	                count: this.props.cart.count - 1
-
-	            };
-	        }
-	    }]);
-
-	    return RemoveItemFromCartMutation;
-	}(_reactRelay2.default.Mutation);
-
-	RemoveItemFromCartMutation.fragments = {
-	    cart: function cart() {
-	        return function () {
-	            return {
-	                children: [{
-	                    fieldName: 'id',
-	                    kind: 'Field',
-	                    metadata: {
-	                        isRequisite: true
-	                    },
-	                    type: 'ID'
-	                }, {
-	                    fieldName: 'count',
-	                    kind: 'Field',
-	                    metadata: {},
-	                    type: 'Int'
-	                }, {
-	                    children: [{
-	                        fieldName: 'reference',
-	                        kind: 'Field',
-	                        metadata: {},
-	                        type: 'String'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }],
-	                    fieldName: 'selectedItems',
-	                    kind: 'Field',
-	                    metadata: {
-	                        canHaveSubselections: true,
-	                        inferredRootCallName: 'node',
-	                        inferredPrimaryKey: 'id',
-	                        isPlural: true
-	                    },
-	                    type: 'ItemType'
-	                }],
-	                id: _reactRelay2.default.QL.__id(),
-	                kind: 'Fragment',
-	                metadata: {},
-	                name: 'RemoveItemFromCartMutation_CartRelayQL',
-	                type: 'CartType'
-	            };
-	        }();
-	    }
-	};
-	exports.default = RemoveItemFromCartMutation;
-
-/***/ },
-/* 547 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	var _lodash = __webpack_require__(548);
+	var _lodash = __webpack_require__(547);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	function toggleClassInBody(className) {
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	    var bodyClass = document.body.className;
+	    var bodyClass = bodyClass.indexOf(className) == -1 ? bodyClass + className : _lodash2.default.replace(bodyClass, className, '');
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AddItemInCartMutation = function (_Relay$Mutation) {
-	    _inherits(AddItemInCartMutation, _Relay$Mutation);
-
-	    function AddItemInCartMutation() {
-	        _classCallCheck(this, AddItemInCartMutation);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemInCartMutation).apply(this, arguments));
-	    }
-
-	    _createClass(AddItemInCartMutation, [{
-	        key: 'getMutation',
-	        value: function getMutation() {
-	            return function () {
-	                return {
-	                    calls: [{
-	                        kind: 'Call',
-	                        metadata: {},
-	                        name: 'addItemInCart',
-	                        value: {
-	                            kind: 'CallVariable',
-	                            callVariableName: 'input'
-	                        }
-	                    }],
-	                    children: [{
-	                        fieldName: 'clientMutationId',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'String'
-	                    }],
-	                    kind: 'Mutation',
-	                    metadata: {
-	                        inputType: 'AddItemInCartInput!'
-	                    },
-	                    name: 'AddItemInCartMutation',
-	                    responseType: 'AddItemInCartPayload'
-	                };
-	            }();
-	        }
-	    }, {
-	        key: 'getFatQuery',
-	        value: function getFatQuery() {
-	            return function () {
-	                return {
-	                    children: [{
-	                        children: [{
-	                            fieldName: 'id',
-	                            kind: 'Field',
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: 'ID'
-	                        }],
-	                        fieldName: 'cart',
-	                        kind: 'Field',
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: 'node',
-	                            inferredPrimaryKey: 'id'
-	                        },
-	                        type: 'CartType'
-	                    }],
-	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: 'Fragment',
-	                    metadata: {},
-	                    name: 'AddItemInCartMutation_ValueRelayQL',
-	                    type: 'AddItemInCartPayload'
-	                };
-	            }();
-	        }
-	    }, {
-	        key: 'getConfigs',
-	        value: function getConfigs() {
-	            return [{
-	                type: 'FIELDS_CHANGE',
-	                fieldIDs: {
-	                    cart: this.props.cart.id
-	                }
-	            }];
-	        }
-	    }, {
-	        key: 'getVariables',
-	        value: function getVariables() {
-	            return {
-	                itemReference: this.props.itemReference
-	            };
-	        }
-	    }, {
-	        key: 'getOptimisticResponse',
-	        value: function getOptimisticResponse() {
-	            console.log("get optimistic responbse : " + JSON.stringify(this.props.cart));
-
-	            var actualCart = _lodash2.default.cloneDeep(this.props.cart);
-	            actualCart.selectedItems.push({ reference: this.props.itemReference });
-
-	            console.log("modified cart : " + JSON.stringify(actualCart));
-
-	            return {
-	                count: this.props.cart.count + 1,
-	                selectedItems: actualCart.selectedItems,
-	                id: this.props.cart.id
-
-	            };
-	        }
-	    }]);
-
-	    return AddItemInCartMutation;
-	}(_reactRelay2.default.Mutation);
-
-	AddItemInCartMutation.fragments = {
-	    cart: function cart() {
-	        return function () {
-	            return {
-	                children: [{
-	                    fieldName: 'id',
-	                    kind: 'Field',
-	                    metadata: {
-	                        isRequisite: true
-	                    },
-	                    type: 'ID'
-	                }, {
-	                    fieldName: 'count',
-	                    kind: 'Field',
-	                    metadata: {},
-	                    type: 'Int'
-	                }, {
-	                    children: [{
-	                        fieldName: 'reference',
-	                        kind: 'Field',
-	                        metadata: {},
-	                        type: 'String'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }],
-	                    fieldName: 'selectedItems',
-	                    kind: 'Field',
-	                    metadata: {
-	                        canHaveSubselections: true,
-	                        inferredRootCallName: 'node',
-	                        inferredPrimaryKey: 'id',
-	                        isPlural: true
-	                    },
-	                    type: 'ItemType'
-	                }],
-	                id: _reactRelay2.default.QL.__id(),
-	                kind: 'Fragment',
-	                metadata: {},
-	                name: 'AddItemInCartMutation_CartRelayQL',
-	                type: 'CartType'
-	            };
-	        }();
-	    }
-	};
-	exports.default = AddItemInCartMutation;
+	    document.body.className = bodyClass;
+	}
 
 /***/ },
-/* 548 */
+/* 547 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -67321,7 +66894,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(496)(module), (function() { return this; }())))
 
 /***/ },
-/* 549 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67336,17 +66909,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
 	var _reactRouter = __webpack_require__(191);
 
-	var _Cart = __webpack_require__(545);
-
-	var _Cart2 = _interopRequireDefault(_Cart);
-
-	var _utils = __webpack_require__(550);
+	var _utils = __webpack_require__(546);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -67456,6 +67021,185 @@
 	//     </nav>
 
 /***/ },
+/* 549 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _RemoveItemFromCartMutation = __webpack_require__(550);
+
+	var _RemoveItemFromCartMutation2 = _interopRequireDefault(_RemoveItemFromCartMutation);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CartDropdownComponent = function (_React$Component) {
+	    _inherits(CartDropdownComponent, _React$Component);
+
+	    function CartDropdownComponent(props) {
+	        _classCallCheck(this, CartDropdownComponent);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(CartDropdownComponent).call(this, props));
+	    }
+
+	    _createClass(CartDropdownComponent, [{
+	        key: 'onRemoveItemFromCart',
+	        value: function onRemoveItemFromCart(reference) {
+	            console.log("removing item from cart: " + reference);
+	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
+	                itemReference: reference,
+	                cart: this.props.viewer.cart
+	            });
+
+	            var onSuccess = function onSuccess(response) {
+	                return console.log("Remove item from cart");
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                return console.log("Remove item from cart failed");
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(removeItemFromCartMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+	    }, {
+	        key: 'renderCart',
+	        value: function renderCart(cart) {
+	            var _this2 = this;
+
+	            return cart.selectedItems.map(function (item) {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-10' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { key: "cart-" + item.reference },
+	                            item.reference
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-2' },
+	                        _react2.default.createElement('i', { className: 'fa fa-times red', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) })
+	                    )
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var cartItems = this.renderCart(this.props.viewer.cart);
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: '' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'cart-dropdown' },
+	                    cartItems,
+	                    _react2.default.createElement(
+	                        'div',
+	                        null,
+	                        'Empty cart'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CartDropdownComponent;
+	}(_react2.default.Component);
+
+	exports.default = _reactRelay2.default.createContainer(CartDropdownComponent, {
+	    fragments: {
+	        viewer: function viewer() {
+	            return function (RQL_0) {
+	                return {
+	                    children: [{
+	                        children: [].concat.apply([], [{
+	                            children: [{
+	                                fieldName: 'reference',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'selectedItems',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
+	                                isPlural: true
+	                            },
+	                            type: 'ItemType'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }, _reactRelay2.default.QL.__frag(RQL_0)]),
+	                        fieldName: 'cart',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'CartType'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'CartDropdown_ViewerRelayQL',
+	                    type: 'Viewer'
+	                };
+	            }(_RemoveItemFromCartMutation2.default.getFragment('cart'));
+	        }
+	    }
+	});
+
+/***/ },
 /* 550 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -67464,21 +67208,179 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.toggleClassInBody = toggleClassInBody;
 
-	var _lodash = __webpack_require__(548);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function toggleClassInBody(className) {
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	    var bodyClass = document.body.className;
-	    var bodyClass = bodyClass.indexOf(className) == -1 ? bodyClass + className : _lodash2.default.replace(bodyClass, className, '');
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	    document.body.className = bodyClass;
-	}
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RemoveItemFromCartMutation = function (_Relay$Mutation) {
+	    _inherits(RemoveItemFromCartMutation, _Relay$Mutation);
+
+	    function RemoveItemFromCartMutation() {
+	        _classCallCheck(this, RemoveItemFromCartMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(RemoveItemFromCartMutation).apply(this, arguments));
+	    }
+
+	    _createClass(RemoveItemFromCartMutation, [{
+	        key: 'getMutation',
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: 'Call',
+	                        metadata: {},
+	                        name: 'removeItemFromCart',
+	                        value: {
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'String'
+	                    }],
+	                    kind: 'Mutation',
+	                    metadata: {
+	                        inputType: 'RemoveItemFromCartInput!'
+	                    },
+	                    name: 'RemoveItemFromCartMutation',
+	                    responseType: 'RemoveItemFromCartPayload'
+	                };
+	            }();
+	        }
+	    }, {
+	        key: 'getFatQuery',
+	        value: function getFatQuery() {
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'cart',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'CartType'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'RemoveItemFromCartMutation_ValueRelayQL',
+	                    type: 'RemoveItemFromCartPayload'
+	                };
+	            }();
+	        }
+	    }, {
+	        key: 'getConfigs',
+	        value: function getConfigs() {
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    cart: this.props.cart.id
+	                }
+	            }];
+	        }
+	    }, {
+	        key: 'getVariables',
+	        value: function getVariables() {
+	            return {
+	                itemReference: this.props.itemReference
+	            };
+	        }
+	    }, {
+	        key: 'getOptimisticResponse',
+	        value: function getOptimisticResponse() {
+
+	            console.log("getOptimisticResponse : " + JSON.stringify(this.props.cart));
+
+	            return {
+	                id: this.props.cart.id,
+	                count: this.props.cart.count - 1
+
+	            };
+	        }
+	    }]);
+
+	    return RemoveItemFromCartMutation;
+	}(_reactRelay2.default.Mutation);
+
+	RemoveItemFromCartMutation.fragments = {
+	    cart: function cart() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: 'id',
+	                    kind: 'Field',
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: 'ID'
+	                }, {
+	                    fieldName: 'count',
+	                    kind: 'Field',
+	                    metadata: {},
+	                    type: 'Int'
+	                }, {
+	                    children: [{
+	                        fieldName: 'reference',
+	                        kind: 'Field',
+	                        metadata: {},
+	                        type: 'String'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    fieldName: 'selectedItems',
+	                    kind: 'Field',
+	                    metadata: {
+	                        canHaveSubselections: true,
+	                        inferredRootCallName: 'node',
+	                        inferredPrimaryKey: 'id',
+	                        isPlural: true
+	                    },
+	                    type: 'ItemType'
+	                }],
+	                id: _reactRelay2.default.QL.__id(),
+	                kind: 'Fragment',
+	                metadata: {},
+	                name: 'RemoveItemFromCartMutation_CartRelayQL',
+	                type: 'CartType'
+	            };
+	        }();
+	    }
+	};
+	exports.default = RemoveItemFromCartMutation;
 
 /***/ },
 /* 551 */
@@ -67698,7 +67600,7 @@
 
 	var _StockNavigationBar2 = _interopRequireDefault(_StockNavigationBar);
 
-	var _AddItemInCartMutation = __webpack_require__(547);
+	var _AddItemInCartMutation = __webpack_require__(559);
 
 	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
 
@@ -68919,6 +68821,198 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _lodash = __webpack_require__(547);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddItemInCartMutation = function (_Relay$Mutation) {
+	    _inherits(AddItemInCartMutation, _Relay$Mutation);
+
+	    function AddItemInCartMutation() {
+	        _classCallCheck(this, AddItemInCartMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemInCartMutation).apply(this, arguments));
+	    }
+
+	    _createClass(AddItemInCartMutation, [{
+	        key: 'getMutation',
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: 'Call',
+	                        metadata: {},
+	                        name: 'addItemInCart',
+	                        value: {
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'String'
+	                    }],
+	                    kind: 'Mutation',
+	                    metadata: {
+	                        inputType: 'AddItemInCartInput!'
+	                    },
+	                    name: 'AddItemInCartMutation',
+	                    responseType: 'AddItemInCartPayload'
+	                };
+	            }();
+	        }
+	    }, {
+	        key: 'getFatQuery',
+	        value: function getFatQuery() {
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'cart',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'CartType'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'AddItemInCartMutation_ValueRelayQL',
+	                    type: 'AddItemInCartPayload'
+	                };
+	            }();
+	        }
+	    }, {
+	        key: 'getConfigs',
+	        value: function getConfigs() {
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    cart: this.props.cart.id
+	                }
+	            }];
+	        }
+	    }, {
+	        key: 'getVariables',
+	        value: function getVariables() {
+	            return {
+	                itemReference: this.props.itemReference
+	            };
+	        }
+	    }, {
+	        key: 'getOptimisticResponse',
+	        value: function getOptimisticResponse() {
+	            console.log("get optimistic responbse : " + JSON.stringify(this.props.cart));
+
+	            var actualCart = _lodash2.default.cloneDeep(this.props.cart);
+	            actualCart.selectedItems.push({ reference: this.props.itemReference });
+
+	            console.log("modified cart : " + JSON.stringify(actualCart));
+
+	            return {
+	                count: this.props.cart.count + 1,
+	                selectedItems: actualCart.selectedItems,
+	                id: this.props.cart.id
+
+	            };
+	        }
+	    }]);
+
+	    return AddItemInCartMutation;
+	}(_reactRelay2.default.Mutation);
+
+	AddItemInCartMutation.fragments = {
+	    cart: function cart() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: 'id',
+	                    kind: 'Field',
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: 'ID'
+	                }, {
+	                    fieldName: 'count',
+	                    kind: 'Field',
+	                    metadata: {},
+	                    type: 'Int'
+	                }, {
+	                    children: [{
+	                        fieldName: 'reference',
+	                        kind: 'Field',
+	                        metadata: {},
+	                        type: 'String'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    fieldName: 'selectedItems',
+	                    kind: 'Field',
+	                    metadata: {
+	                        canHaveSubselections: true,
+	                        inferredRootCallName: 'node',
+	                        inferredPrimaryKey: 'id',
+	                        isPlural: true
+	                    },
+	                    type: 'ItemType'
+	                }],
+	                id: _reactRelay2.default.QL.__id(),
+	                kind: 'Fragment',
+	                metadata: {},
+	                name: 'AddItemInCartMutation_CartRelayQL',
+	                type: 'CartType'
+	            };
+	        }();
+	    }
+	};
+	exports.default = AddItemInCartMutation;
+
+/***/ },
+/* 560 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -69247,7 +69341,7 @@
 	});
 
 /***/ },
-/* 560 */
+/* 561 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -69266,27 +69360,27 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _lodash = __webpack_require__(548);
+	var _lodash = __webpack_require__(547);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _AutosuggestWrapper = __webpack_require__(561);
+	var _AutosuggestWrapper = __webpack_require__(562);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _Expire = __webpack_require__(585);
+	var _Expire = __webpack_require__(586);
 
 	var _Expire2 = _interopRequireDefault(_Expire);
 
-	var _AddModelMutation = __webpack_require__(586);
+	var _AddModelMutation = __webpack_require__(587);
 
 	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
 
-	var _AddItemMutation = __webpack_require__(587);
+	var _AddItemMutation = __webpack_require__(588);
 
 	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
-	var _ModelQuickForm = __webpack_require__(588);
+	var _ModelQuickForm = __webpack_require__(589);
 
 	var _ModelQuickForm2 = _interopRequireDefault(_ModelQuickForm);
 
@@ -69992,7 +70086,7 @@
 	});
 
 /***/ },
-/* 561 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70007,11 +70101,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactAutosuggest = __webpack_require__(562);
+	var _reactAutosuggest = __webpack_require__(563);
 
 	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
 
-	var _lodash = __webpack_require__(548);
+	var _lodash = __webpack_require__(547);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -70163,15 +70257,15 @@
 	exports.default = AutosuggestWrapper;
 
 /***/ },
-/* 562 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(563).default;
+	module.exports = __webpack_require__(564).default;
 
 /***/ },
-/* 563 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70186,15 +70280,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(564);
+	var _redux = __webpack_require__(565);
 
-	var _reactRedux = __webpack_require__(572);
+	var _reactRedux = __webpack_require__(573);
 
-	var _reducerAndActions = __webpack_require__(579);
+	var _reducerAndActions = __webpack_require__(580);
 
 	var _reducerAndActions2 = _interopRequireDefault(_reducerAndActions);
 
-	var _Autosuggest = __webpack_require__(580);
+	var _Autosuggest = __webpack_require__(581);
 
 	var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -70366,7 +70460,7 @@
 	exports.default = AutosuggestContainer;
 
 /***/ },
-/* 564 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70374,27 +70468,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(565);
+	var _createStore = __webpack_require__(566);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(567);
+	var _combineReducers = __webpack_require__(568);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(569);
+	var _bindActionCreators = __webpack_require__(570);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(570);
+	var _applyMiddleware = __webpack_require__(571);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(571);
+	var _compose = __webpack_require__(572);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(568);
+	var _warning = __webpack_require__(569);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -70418,7 +70512,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 565 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70427,7 +70521,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 
-	var _isPlainObject = __webpack_require__(566);
+	var _isPlainObject = __webpack_require__(567);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -70639,7 +70733,7 @@
 	}
 
 /***/ },
-/* 566 */
+/* 567 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getPrototype = __webpack_require__(517),
@@ -70714,7 +70808,7 @@
 
 
 /***/ },
-/* 567 */
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -70722,13 +70816,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 
-	var _createStore = __webpack_require__(565);
+	var _createStore = __webpack_require__(566);
 
-	var _isPlainObject = __webpack_require__(566);
+	var _isPlainObject = __webpack_require__(567);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(568);
+	var _warning = __webpack_require__(569);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -70847,7 +70941,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 568 */
+/* 569 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70876,7 +70970,7 @@
 	}
 
 /***/ },
-/* 569 */
+/* 570 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -70932,7 +71026,7 @@
 	}
 
 /***/ },
-/* 570 */
+/* 571 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70942,7 +71036,7 @@
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 
-	var _compose = __webpack_require__(571);
+	var _compose = __webpack_require__(572);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -70994,7 +71088,7 @@
 	}
 
 /***/ },
-/* 571 */
+/* 572 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71028,7 +71122,7 @@
 	}
 
 /***/ },
-/* 572 */
+/* 573 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71036,11 +71130,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(573);
+	var _Provider = __webpack_require__(574);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(575);
+	var _connect = __webpack_require__(576);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -71050,7 +71144,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 573 */
+/* 574 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -71060,7 +71154,7 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(574);
+	var _storeShape = __webpack_require__(575);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
@@ -71134,7 +71228,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 574 */
+/* 575 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71150,7 +71244,7 @@
 	});
 
 /***/ },
-/* 575 */
+/* 576 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -71162,23 +71256,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(574);
+	var _storeShape = __webpack_require__(575);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(576);
+	var _shallowEqual = __webpack_require__(577);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(577);
+	var _wrapActionCreators = __webpack_require__(578);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(566);
+	var _isPlainObject = __webpack_require__(567);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(578);
+	var _hoistNonReactStatics = __webpack_require__(579);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -71478,7 +71572,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 576 */
+/* 577 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -71509,7 +71603,7 @@
 	}
 
 /***/ },
-/* 577 */
+/* 578 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71517,7 +71611,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(564);
+	var _redux = __webpack_require__(565);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -71526,7 +71620,7 @@
 	}
 
 /***/ },
-/* 578 */
+/* 579 */
 /***/ function(module, exports) {
 
 	/**
@@ -71572,7 +71666,7 @@
 
 
 /***/ },
-/* 579 */
+/* 580 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -71701,7 +71795,7 @@
 	}
 
 /***/ },
-/* 580 */
+/* 581 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71718,11 +71812,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(572);
+	var _reactRedux = __webpack_require__(573);
 
-	var _reducerAndActions = __webpack_require__(579);
+	var _reducerAndActions = __webpack_require__(580);
 
-	var _reactAutowhatever = __webpack_require__(581);
+	var _reactAutowhatever = __webpack_require__(582);
 
 	var _reactAutowhatever2 = _interopRequireDefault(_reactAutowhatever);
 
@@ -72145,7 +72239,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Autosuggest);
 
 /***/ },
-/* 581 */
+/* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72164,11 +72258,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _sectionIterator = __webpack_require__(582);
+	var _sectionIterator = __webpack_require__(583);
 
 	var _sectionIterator2 = _interopRequireDefault(_sectionIterator);
 
-	var _reactThemeable = __webpack_require__(583);
+	var _reactThemeable = __webpack_require__(584);
 
 	var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
@@ -72468,7 +72562,7 @@
 
 
 /***/ },
-/* 582 */
+/* 583 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72588,7 +72682,7 @@
 
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72601,7 +72695,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _objectAssign = __webpack_require__(584);
+	var _objectAssign = __webpack_require__(585);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -72626,7 +72720,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 584 */
+/* 585 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72671,7 +72765,7 @@
 
 
 /***/ },
-/* 585 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72758,7 +72852,7 @@
 	exports.default = Expire;
 
 /***/ },
-/* 586 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -72985,7 +73079,7 @@
 	exports.default = AddModelMutation;
 
 /***/ },
-/* 587 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73170,7 +73264,7 @@
 	exports.default = AddItemMutation;
 
 /***/ },
-/* 588 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73193,7 +73287,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _AutosuggestWrapper = __webpack_require__(561);
+	var _AutosuggestWrapper = __webpack_require__(562);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
@@ -73359,7 +73453,7 @@
 	});
 
 /***/ },
-/* 589 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73420,7 +73514,7 @@
 	exports.default = ProductComponent;
 
 /***/ },
-/* 590 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73488,7 +73582,7 @@
 	exports.default = ProfileBox;
 
 /***/ },
-/* 591 */
+/* 592 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -73554,7 +73648,7 @@
 	exports.default = EventBox;
 
 /***/ },
-/* 592 */
+/* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73595,7 +73689,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(593);
+	var _useBeforeUnload2 = __webpack_require__(594);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -73615,13 +73709,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(594);
+	var _enableBeforeUnload2 = __webpack_require__(595);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(595);
+	var _enableQueries2 = __webpack_require__(596);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -73630,7 +73724,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 593 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -73747,7 +73841,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 594 */
+/* 595 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73760,7 +73854,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(593);
+	var _useBeforeUnload = __webpack_require__(594);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -73768,7 +73862,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 595 */
+/* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

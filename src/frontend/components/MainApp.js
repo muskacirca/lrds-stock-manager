@@ -1,8 +1,9 @@
 import React from 'react'
 import Relay from 'react-relay'
-import Cart from './Cart'
+import CartIcon from './cart/CartIcon'
 
 import NavBarBox from './navbar'
+import CartDropdown from './cart/CartDropdown'
 
 import {
     toggleClassInBody
@@ -24,7 +25,7 @@ class MainApp extends React.Component{
 
         console.log("Main app render: " + this.props.viewer.id);
         
-        var cart =  <Cart viewer={this.props.viewer} />
+        var cart =  <CartIcon viewer={this.props.viewer} />
         
         return (
             <div className="site-pusher">
@@ -34,6 +35,9 @@ class MainApp extends React.Component{
                     <div className="container">
                         {this.props.children}
                     </div>
+                </div>
+                <div className="cart-pusher">
+                    <CartDropdown viewer={this.props.viewer}/>
                 </div>
                 <div className="site-cache" onClick={this.onHiddenSiteCLick.bind(this)}></div>
             </div>
@@ -46,7 +50,8 @@ export default Relay.createContainer(MainApp, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
-            ${Cart.getFragment('viewer')}
+            ${CartIcon.getFragment('viewer')}
+            ${CartDropdown.getFragment('viewer')}
           }
         `
     }
