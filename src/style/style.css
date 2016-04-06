@@ -314,23 +314,22 @@ span.inline {
     /*z-index: 3;*/
 
     /*background-color: red;*/
-
-    /*transform : translateX(500px);*/
 }
 
 .cart-pusher {
+    overflow-x: hidden;
     height: 100%;
     transition-duration: 0.3s;
-    overflow-x: hidden;
+    transform: translateX(300px);
 }
 
-.with--cart .cart-pusher {
+.with--cart {
 
-    -webkit-animation: cart-pusher 300ms ease-in-out;
+    -webkit-animation: cart-pusher2 300ms ease-in-out;
     -webkit-animation-fill-mode: forwards;
     -webkit-transform: translateX(0);
 }
-@-webkit-keyframes cart-pusher {
+@-webkit-keyframes cart-pusher2 {
     to {
         -webkit-transform: translateX(-300px);
     }
