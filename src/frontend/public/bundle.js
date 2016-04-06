@@ -50604,7 +50604,7 @@
 	exports.default = _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: _MainApp2.default, queries: _ViewerQueries2.default },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _MainApp2.default, queries: _ViewerQueries2.default }),
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _stock2.default, queries: _ViewerQueries2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'profile', component: _profile2.default, queries: _ViewerQueries2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'events', component: _event2.default, queries: _ViewerQueries2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'stock', component: _stock2.default, queries: _ViewerQueries2.default }),
@@ -66958,11 +66958,6 @@
 	                _react2.default.createElement(
 	                    'nav',
 	                    { className: 'menu' },
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/', activeClassName: 'link-active' },
-	                        'Home'
-	                    ),
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
 	                        { to: '/stock', activeClassName: 'link-active' },

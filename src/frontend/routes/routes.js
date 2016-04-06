@@ -25,7 +25,7 @@ function prepareItemParam(params, route) {
 
 
 export default  <Route path="/" component={MainApp} queries={ViewerQuery}>
-                    <IndexRoute component={MainApp} queries={ViewerQuery}/>
+                    <IndexRoute component={Stock} queries={ViewerQuery}/>
                     <Route path="profile" component={Profile} queries={ViewerQuery}/>
                     <Route path="events" component={Event} queries={ViewerQuery}/>
 
