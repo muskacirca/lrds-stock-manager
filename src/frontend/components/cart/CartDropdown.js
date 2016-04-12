@@ -27,13 +27,13 @@ class CartDropdownComponent extends React.Component {
 
         return cart.selectedItems.map(item => {
             return  <div className="row">
-                <div className="col-md-10">
-                    <div key={"cart-" + item.reference}>{item.reference}</div>
-                </div>
-                <div className="col-md-2">
-                    <i className="fa fa-times red" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}/>
-                </div>
-            </div>
+                        <div className="col-md-10">
+                            <div key={"cart-" + item.reference}>{item.reference}</div>
+                        </div>
+                        <div className="col-md-2 pointer" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}>
+                            <i className="fa fa-times red" />
+                        </div>
+                    </div>
 
         })
     }

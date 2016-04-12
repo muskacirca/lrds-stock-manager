@@ -67098,8 +67098,8 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-2' },
-	                        _react2.default.createElement('i', { className: 'fa fa-times red', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) })
+	                        { className: 'col-md-2 pointer', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) },
+	                        _react2.default.createElement('i', { className: 'fa fa-times red' })
 	                    )
 	                );
 	            });

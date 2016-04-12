@@ -289,13 +289,15 @@ span.inline {
     top: 66px;
     bottom: 0;
 
+    padding: 15px;
+
     background-color: #ECEFF1;
 
     width: 250px;
     height: 100%;
     z-index: 10;
 
-        transform : translateX(300px);
+    transform : translateX(300px);
 
     /*position: absolute;*/
     /*top: 0;*/
@@ -303,7 +305,7 @@ span.inline {
     /*right: 0;*/
     /*width: 250px;*/
     /*margin: 0;*/
-    /*padding: 0;*/
+
     /*list-style-type: none;*/
     /*border: 1px solid #aaa;*/
     /*font-family: Helvetica, sans-serif;*/
