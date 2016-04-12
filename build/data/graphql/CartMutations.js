@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.RemoveItemFromCartMutation = exports.AddItemInCartMutation = undefined;
+exports.EmptyCartMutation = exports.RemoveItemFromCartMutation = exports.AddItemInCartMutation = undefined;
 
 var _graphql = require('graphql');
 
@@ -75,6 +75,32 @@ var RemoveItemFromCartMutation = exports.RemoveItemFromCartMutation = new _graph
         var itemReference = _ref2.itemReference;
 
         (0, _CartStore.removeItemFromCart)(itemReference);
+        return (0, _CartStore.getCart)();
+    }
+});
+
+var EmptyCartMutation = exports.EmptyCartMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'EmptyCart',
+    description: 'Empty cart',
+    inputFields: {},
+    outputFields: {
+        viewer: {
+            type: _Model.GraphQLViewer,
+            resolve: function resolve() {
+                return _ItemStore.getViewer;
+            }
+        },
+        cart: {
+            type: _Model.GraphQLCartType,
+            resolve: function resolve(obj) {
+                return obj;
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
+        var itemReference = _ref3.itemReference;
+
+        (0, _CartStore.emptyCart)(1);
         return (0, _CartStore.getCart)();
     }
 });

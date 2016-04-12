@@ -2,6 +2,7 @@ import React from 'react'
 import Relay from 'react-relay'
 
 import RemoveItemFromCartMutation from '../../mutations/RemoveItemFromCartMutation'
+import EmptyCartMutation from '../../mutations/EmptyCartMutation'
 
 class CartDropdownComponent extends React.Component {
 
@@ -21,6 +22,17 @@ class CartDropdownComponent extends React.Component {
         var onFailure = (transaction) => console.log("Remove item from cart failed");
 
         Relay.Store.commitUpdate(removeItemFromCartMutation, {onSuccess, onFailure})
+    }
+
+    emptyCart() {
+
+        var emptyCartMutation = new RemoveItemFromCartMutation();
+
+        var onSuccess = (response) => console.log("successfully empty cart");
+
+        var onFailure = (transaction) => console.log("error when empty cart");
+
+        Relay.Store.commitUpdate(emptyCartMutation, {onSuccess, onFailure})
     }
 
     renderCart(cart) {
@@ -44,7 +56,7 @@ class CartDropdownComponent extends React.Component {
 
         return  <div className="cart-dropdown">
                     {cartItems}
-                    <div>Empty cart</div>
+                    <div className="pointer" onClick={this.emptyCart.bind(this)}>Empty cart</div>
                 </div>
     }
 }

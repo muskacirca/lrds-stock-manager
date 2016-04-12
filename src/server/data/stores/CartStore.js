@@ -68,3 +68,8 @@ export function removeItemFromCart(reference) {
         return item.reference == reference
     })
 }
+
+export function emptyCart(viewerId) {
+
+    cartStore = []
+}

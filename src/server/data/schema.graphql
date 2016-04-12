@@ -59,6 +59,16 @@ type DomainType implements Node {
   description: String
 }
 
+input EmptyCartInput {
+  clientMutationId: String!
+}
+
+type EmptyCartPayload {
+  viewer: Viewer
+  cart: CartType
+  clientMutationId: String!
+}
+
 type ItemCommentType implements Node {
   id: ID!
   text: String
@@ -119,6 +129,7 @@ type Mutation {
   addItem(input: AddItemInput!): AddItemPayload
   addItemInCart(input: AddItemInCartInput!): AddItemInCartPayload
   removeItemFromCart(input: RemoveItemFromCartInput!): RemoveItemFromCartPayload
+  emptyCart(input: EmptyCartInput!): EmptyCartPayload
 }
 
 interface Node {

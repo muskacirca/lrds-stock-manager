@@ -11,6 +11,7 @@ exports.isInitialized = isInitialized;
 exports.getCart = getCart;
 exports.pushItemInCart = pushItemInCart;
 exports.removeItemFromCart = removeItemFromCart;
+exports.emptyCart = emptyCart;
 
 var _lodash = require('lodash');
 
@@ -145,4 +146,9 @@ function removeItemFromCart(reference) {
     return _lodash2.default.remove(cartStore, function (item) {
         return item.reference == reference;
     });
+}
+
+function emptyCart(viewerId) {
+
+    cartStore = [];
 }

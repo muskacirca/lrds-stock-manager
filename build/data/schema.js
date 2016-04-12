@@ -19,7 +19,8 @@ var Mutation = new _graphql.GraphQLObjectType({
         addModel: _StockMutations.AddModelMutation,
         addItem: _StockMutations.AddItemMutation,
         addItemInCart: _CartMutations.AddItemInCartMutation,
-        removeItemFromCart: _CartMutations.RemoveItemFromCartMutation
+        removeItemFromCart: _CartMutations.RemoveItemFromCartMutation,
+        emptyCart: _CartMutations.EmptyCartMutation
     }
 });
 

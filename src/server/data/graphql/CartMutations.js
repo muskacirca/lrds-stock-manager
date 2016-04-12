@@ -21,7 +21,8 @@ import {
 import {
     getCart,
     pushItemInCart,
-    removeItemFromCart
+    removeItemFromCart,
+    emptyCart
 } from '../stores/CartStore';
 
 export const AddItemInCartMutation = new mutationWithClientMutationId({
@@ -67,6 +68,30 @@ export const RemoveItemFromCartMutation = new mutationWithClientMutationId({
     },
     mutateAndGetPayload: ({itemReference}) => {
         removeItemFromCart(itemReference)
+        return getCart()
+    }
+})
+
+
+
+export const EmptyCartMutation = new mutationWithClientMutationId({
+    name: 'EmptyCart',
+    description: 'Empty cart',
+    inputFields: {
+
+    },
+    outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: () => getViewer
+        },
+        cart: {
+            type: GraphQLCartType,
+            resolve: (obj) => obj
+        }
+    },
+    mutateAndGetPayload: ({itemReference}) => {
+        emptyCart(1)
         return getCart()
     }
 })
