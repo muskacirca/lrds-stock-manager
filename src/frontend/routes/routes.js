@@ -32,7 +32,7 @@ function requireAuth(nextState, replace) {
 
 function logout(nextState, replace) {
     authService.logout()
-    replace('/')
+    replace('/login')
 }
 
 export default  <Route path="/" component={MainApp} queries={ViewerQuery}>

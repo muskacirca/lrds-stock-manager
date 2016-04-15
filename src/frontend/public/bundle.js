@@ -50609,7 +50609,7 @@
 
 	function logout(nextState, replace) {
 	    _Auth2.default.logout();
-	    replace('/');
+	    replace('/login');
 	}
 
 	exports.default = _react2.default.createElement(
@@ -67087,6 +67087,7 @@
 	        value: function onRemoveItemFromCart(reference) {
 	            console.log("removing item from cart: " + reference);
 	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
+	                viewerId: this.props.viewer.id,
 	                itemReference: reference,
 	                cart: this.props.viewer.cart
 	            });
@@ -67125,13 +67126,13 @@
 	            return cart.selectedItems.map(function (item) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { key: "cart-" + item.reference, className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-10' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { key: "cart-" + item.reference },
+	                            null,
 	                            item.reference
 	                        )
 	                    ),
@@ -67171,6 +67172,13 @@
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, {
 	                        calls: [{
 	                            kind: 'Call',
 	                            metadata: {},
@@ -67221,14 +67229,6 @@
 	                            inferredPrimaryKey: 'id'
 	                        },
 	                        type: 'CartType'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -67352,6 +67352,7 @@
 	        key: 'getVariables',
 	        value: function getVariables() {
 	            return {
+	                viewerId: this.props.viewerId,
 	                itemReference: this.props.itemReference
 	            };
 	        }
@@ -67687,16 +67688,12 @@
 	            var email = _reactDom2.default.findDOMNode(this.refs.loginField).value;
 	            var pass = _reactDom2.default.findDOMNode(this.refs.passwordField).value;
 
-	            console.log("email: " + email);
-	            console.log("pass: " + pass);
-
 	            _Auth2.default.login(email, pass, function (loggedIn) {
 	                if (!loggedIn) {
 	                    console.log("not authenticated");
 	                    return _this4.setState({ error: true });
 	                }
 
-	                console.log("authenticated, redirecting to profile");
 	                _this4.context.router.push("/");
 	            });
 
@@ -67941,7 +67938,10 @@
 	        key: 'addItemToCart',
 	        value: function addItemToCart(reference) {
 
+	            console.log("addIrmToCart : " + this.props.viewer.id);
+
 	            var addItemInCartMutation = new _AddItemInCartMutation2.default({
+	                viewerId: this.props.viewer.id,
 	                itemReference: reference,
 	                cart: this.props.viewer.cart
 	            });
@@ -68016,6 +68016,13 @@
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, {
 	                        calls: [{
 	                            kind: 'Call',
 	                            metadata: {},
@@ -68354,14 +68361,6 @@
 	                            isConnection: true
 	                        },
 	                        type: 'ItemTypeConnection'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -69159,6 +69158,7 @@
 	        key: 'getVariables',
 	        value: function getVariables() {
 	            return {
+	                viewerId: this.props.viewerId,
 	                itemReference: this.props.itemReference
 	            };
 	        }

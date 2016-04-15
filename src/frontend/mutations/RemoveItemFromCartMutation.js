@@ -36,6 +36,7 @@ class RemoveItemFromCartMutation extends Relay.Mutation {
     }
     getVariables() {
         return {
+            viewerId: this.props.viewerId,
             itemReference: this.props.itemReference
         };
     }

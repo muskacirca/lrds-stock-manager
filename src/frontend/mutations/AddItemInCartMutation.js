@@ -37,6 +37,7 @@ class AddItemInCartMutation extends Relay.Mutation {
     }
     getVariables() {
         return {
+            viewerId: this.props.viewerId,
             itemReference: this.props.itemReference
         };
     }
@@ -52,7 +53,7 @@ class AddItemInCartMutation extends Relay.Mutation {
         return {
                 count: this.props.cart.count + 1,
                 selectedItems: actualCart.selectedItems,
-            id: this.props.cart.id
+                id: this.props.cart.id
 
         };
     }

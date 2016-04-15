@@ -13,6 +13,7 @@ class CartDropdownComponent extends React.Component {
     onRemoveItemFromCart(reference) {
         console.log("removing item from cart: " + reference)
         var removeItemFromCartMutation = new RemoveItemFromCartMutation({
+            viewerId: this.props.viewer.id,
             itemReference: reference,
             cart: this.props.viewer.cart
         });
@@ -38,9 +39,9 @@ class CartDropdownComponent extends React.Component {
     renderCart(cart) {
 
         return cart.selectedItems.map(item => {
-            return  <div className="row">
+            return  <div key={"cart-" + item.reference} className="row">
                         <div className="col-md-10">
-                            <div key={"cart-" + item.reference}>{item.reference}</div>
+                            <div>{item.reference}</div>
                         </div>
                         <div className="col-md-2 pointer" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}>
                             <i className="fa fa-times red" />
@@ -65,6 +66,7 @@ export default Relay.createContainer(CartDropdownComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
+            id
             cart(viewerId: "Vmlld2VyOg==") {
                 ${RemoveItemFromCartMutation.getFragment('cart')}
                 selectedItems {

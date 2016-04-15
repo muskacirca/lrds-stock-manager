@@ -97,8 +97,11 @@ class StockComponent extends React.Component {
     }
 
     addItemToCart(reference) {
+
+        console.log("addIrmToCart : " + this.props.viewer.id)
         
         var addItemInCartMutation = new AddItemInCartMutation({
+            viewerId: this.props.viewer.id,
             itemReference: reference,
             cart: this.props.viewer.cart
         });
@@ -111,8 +114,6 @@ class StockComponent extends React.Component {
     }
 
     render() {
-
-
 
         var items = this.props.viewer.items.edges;
         var filterText = this.state.searchedText.toLowerCase()
@@ -157,6 +158,7 @@ export default Relay.createContainer(StockComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
+             id
              cart(viewerId: "Vmlld2VyOg==") {
                 ${AddItemInCartMutation.getFragment('cart')}
              }
