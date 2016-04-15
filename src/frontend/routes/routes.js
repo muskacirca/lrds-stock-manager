@@ -24,15 +24,15 @@ function prepareItemParam(params, route) {
     }
 }
 
-function requireAuth(nextState, replaceState) {
+function requireAuth(nextState, replace) {
     if(!authService.loggedIn()) {
-        replaceState({ nextPathname: nextState.location.pathname }, '/login')
+        replace('/login')
     }
 }
 
-function logout(nextState, replaceState) {
+function logout(nextState, replace) {
     authService.logout()
-    replaceState({ nextPathname: nextState.location.pathname }, '/')
+    replace('/')
 }
 
 export default  <Route path="/" component={MainApp} queries={ViewerQuery}>

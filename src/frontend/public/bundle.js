@@ -50601,15 +50601,15 @@
 	    });
 	}
 
-	function requireAuth(nextState, replaceState) {
+	function requireAuth(nextState, replace) {
 	    if (!_Auth2.default.loggedIn()) {
-	        replaceState({ nextPathname: nextState.location.pathname }, '/login');
+	        replace('/login');
 	    }
 	}
 
-	function logout(nextState, replaceState) {
+	function logout(nextState, replace) {
 	    _Auth2.default.logout();
-	    replaceState({ nextPathname: nextState.location.pathname }, '/');
+	    replace('/');
 	}
 
 	exports.default = _react2.default.createElement(
@@ -67591,6 +67591,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	var _reactRelay = __webpack_require__(249);
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
@@ -67620,7 +67624,6 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginBox).call(this, props));
 
 	        console.log(props);
-	        _this.history = props.history;
 	        return _this;
 	    }
 
@@ -67631,7 +67634,7 @@
 	                'div',
 	                { className: 'col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main' },
 	                _react2.default.createElement(Header, { label: 'Please login' }),
-	                _react2.default.createElement(LoginForm, { history: this.history })
+	                _react2.default.createElement(LoginForm, null)
 	            );
 	        }
 	    }]);
@@ -67670,7 +67673,7 @@
 
 	        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginForm).call(this, props));
 
-	        _this3.history = props.history, _this3.state = { error: false };
+	        _this3.state = { error: false };
 	        return _this3;
 	    }
 
@@ -67681,8 +67684,8 @@
 
 	            e.preventDefault();
 
-	            var email = _react2.default.findDOMNode(this.refs.loginField).value;
-	            var pass = _react2.default.findDOMNode(this.refs.passwordField).value;
+	            var email = _reactDom2.default.findDOMNode(this.refs.loginField).value;
+	            var pass = _reactDom2.default.findDOMNode(this.refs.passwordField).value;
 
 	            console.log("email: " + email);
 	            console.log("pass: " + pass);
@@ -67694,7 +67697,7 @@
 	                }
 
 	                console.log("authenticated, redirecting to profile");
-	                _this4.history.replaceState(null, '/');
+	                _this4.context.router.push("/");
 	            });
 
 	            return;
@@ -67762,6 +67765,10 @@
 
 	    return SubmitButton;
 	}(_react2.default.Component);
+
+	LoginForm.contextTypes = {
+	    router: _react2.default.PropTypes.object.isRequired
+	};
 
 	exports.default = _reactRelay2.default.createContainer(LoginBox, {
 	    fragments: {

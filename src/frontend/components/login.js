@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import Relay from 'react-relay'
 import Router from 'react-router'
 import auth from './utils/Auth.js'
@@ -8,14 +9,13 @@ class LoginBox extends React.Component {
     constructor(props) {
         super(props)
         console.log(props)
-        this.history = props.history
     }
 
     render() {
         return (
             <div className="col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main">
                 <Header label="Please login"/>
-                <LoginForm history={this.history}/>
+                <LoginForm />
             </div>);
     }
 }
@@ -31,15 +31,14 @@ class LoginForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.history = props.history,
         this.state = {error: false}
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
-        var email = React.findDOMNode(this.refs.loginField).value
-        var pass = React.findDOMNode(this.refs.passwordField).value
+        var email = ReactDOM.findDOMNode(this.refs.loginField).value
+        var pass = ReactDOM.findDOMNode(this.refs.passwordField).value
 
         console.log("email: " + email)
         console.log("pass: " + pass)
@@ -51,7 +50,7 @@ class LoginForm extends React.Component {
             }
 
             console.log("authenticated, redirecting to profile");
-            this.history.replaceState(null, '/')
+            this.context.router.push("/")
         })
 
         return;
@@ -83,6 +82,10 @@ class SubmitButton extends React.Component {
     render() {
         return <button type="submit" className="btn btn-default primary">{this.props.label}</button>
     }
+}
+
+LoginForm.contextTypes = {
+    router: React.PropTypes.object.isRequired
 }
 
 export default Relay.createContainer(LoginBox, {
