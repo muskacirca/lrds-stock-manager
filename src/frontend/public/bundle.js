@@ -50549,9 +50549,9 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _auth = __webpack_require__(542);
+	var _Auth = __webpack_require__(542);
 
-	var _auth2 = _interopRequireDefault(_auth);
+	var _Auth2 = _interopRequireDefault(_Auth);
 
 	var _ViewerQueries = __webpack_require__(543);
 
@@ -50601,16 +50601,29 @@
 	    });
 	}
 
+	function requireAuth(nextState, replaceState) {
+	    if (!_Auth2.default.loggedIn()) {
+	        replaceState({ nextPathname: nextState.location.pathname }, '/login');
+	    }
+	}
+
+	function logout(nextState, replaceState) {
+	    _Auth2.default.logout();
+	    replaceState({ nextPathname: nextState.location.pathname }, '/');
+	}
+
 	exports.default = _react2.default.createElement(
 	    _reactRouter.Route,
 	    { path: '/', component: _MainApp2.default, queries: _ViewerQueries2.default },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _stock2.default, queries: _ViewerQueries2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'profile', component: _profile2.default, queries: _ViewerQueries2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'events', component: _event2.default, queries: _ViewerQueries2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'stock', component: _stock2.default, queries: _ViewerQueries2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'stock/:reference', component: _Item2.default, queries: _ViewerQueries2.default, prepareParams: prepareItemParam }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'admin/create', component: _ItemForm2.default, queries: _ViewerQueries2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'admin/edit/:reference', component: _ItemForm2.default, queries: _ViewerQueries2.default, prepareParams: prepareItemParam })
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _stock2.default, queries: _ViewerQueries2.default, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _login2.default, queries: _ViewerQueries2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'logout', component: _login2.default, onEnter: logout }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'stock', component: _stock2.default, queries: _ViewerQueries2.default, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'stock/:reference', component: _Item2.default, queries: _ViewerQueries2.default,
+	        prepareParams: prepareItemParam, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'admin/create', component: _ItemForm2.default, queries: _ViewerQueries2.default, onEnter: requireAuth }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'admin/edit/:reference', component: _ItemForm2.default, queries: _ViewerQueries2.default,
+	        prepareParams: prepareItemParam, onEnter: requireAuth })
 	);
 
 	//function prepareWidgetListParams(params, route) {
@@ -50620,16 +50633,8 @@
 	//    }
 	//}
 	//
-	//function requireAuth(nextState, replaceState) {
-	//    if(!authService.loggedIn()) {
-	//        replaceState({ nextPathname: nextState.location.pathname }, '/jeestock/login')
-	//    }
-	//}
+
 	//
-	//function logout(nextState, replaceState) {
-	//    authService.logout()
-	//    replaceState({ nextPathname: nextState.location.pathname }, '/')
-	//}
 
 	//export default <Route path="/jeestock" component={MainApp}>
 	//    <IndexRoute component={MainApp} />
@@ -50944,6 +50949,15 @@
 	            return function () {
 	                return {
 	                    children: [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'viewerId',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 'Vmlld2VyOg=='
+	                            }
+	                        }],
 	                        children: [{
 	                            fieldName: 'count',
 	                            kind: 'Field',
@@ -66970,6 +66984,11 @@
 	                        _reactRouter.Link,
 	                        { to: '/admin/create', activeClassName: 'link-active' },
 	                        'Admin'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/logout', activeClassName: 'link-active' },
+	                        'Logout'
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -67152,6 +67171,15 @@
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'viewerId',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 'Vmlld2VyOg=='
+	                            }
+	                        }],
 	                        children: [].concat.apply([], [{
 	                            children: [{
 	                                fieldName: 'reference',
@@ -67497,10 +67525,8 @@
 	        key: 'getConfigs',
 	        value: function getConfigs() {
 	            return [{
-	                type: 'FIELDS_CHANGE',
-	                fieldIDs: {
-	                    cart: this.props.cart.id
-	                }
+	                type: 'FIELDS_CHANGE'
+
 	            }];
 	        }
 	    }, {
@@ -67512,7 +67538,6 @@
 	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
 	            return {
-	                id: this.props.cart.id,
 	                count: 0
 
 	            };
@@ -67566,13 +67591,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
 	var _reactRouter = __webpack_require__(191);
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _auth = __webpack_require__(542);
+	var _Auth = __webpack_require__(542);
 
-	var _auth2 = _interopRequireDefault(_auth);
+	var _Auth2 = _interopRequireDefault(_Auth);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -67658,14 +67687,14 @@
 	            console.log("email: " + email);
 	            console.log("pass: " + pass);
 
-	            _auth2.default.login(email, pass, function (loggedIn) {
+	            _Auth2.default.login(email, pass, function (loggedIn) {
 	                if (!loggedIn) {
 	                    console.log("not authenticated");
 	                    return _this4.setState({ error: true });
 	                }
 
 	                console.log("authenticated, redirecting to profile");
-	                _this4.history.replaceState(null, '/jeestock/profile');
+	                _this4.history.replaceState(null, '/');
 	            });
 
 	            return;
@@ -67734,7 +67763,29 @@
 	    return SubmitButton;
 	}(_react2.default.Component);
 
-	exports.default = LoginBox;
+	exports.default = _reactRelay2.default.createContainer(LoginBox, {
+	    fragments: {
+	        viewer: function viewer() {
+	            return function () {
+	                return {
+	                    children: [{
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: 'Fragment',
+	                    metadata: {},
+	                    name: 'Login_ViewerRelayQL',
+	                    type: 'Viewer'
+	                };
+	            }();
+	        }
+	    }
+	});
 
 /***/ },
 /* 553 */
@@ -67958,6 +68009,15 @@
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'viewerId',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 'Vmlld2VyOg=='
+	                            }
+	                        }],
 	                        children: [].concat.apply([], [{
 	                            fieldName: 'id',
 	                            kind: 'Field',

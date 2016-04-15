@@ -1,7 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
-import authService from '../components/controllers/auth'
+import authService from '../components/utils/Auth'
 
 import ViewerQuery from '../queries/ViewerQueries'
 
@@ -14,6 +14,7 @@ import Product from '../components/product'
 import Profile from '../components/profile'
 import Event from '../components/event'
 import NavBarBox from '../components/navbar'
+import Login from '../components/login'
 
 
 function prepareItemParam(params, route) {
@@ -23,16 +24,33 @@ function prepareItemParam(params, route) {
     }
 }
 
+function requireAuth(nextState, replaceState) {
+    if(!authService.loggedIn()) {
+        replaceState({ nextPathname: nextState.location.pathname }, '/login')
+    }
+}
+
+function logout(nextState, replaceState) {
+    authService.logout()
+    replaceState({ nextPathname: nextState.location.pathname }, '/')
+}
 
 export default  <Route path="/" component={MainApp} queries={ViewerQuery}>
-                    <IndexRoute component={Stock} queries={ViewerQuery}/>
-                    <Route path="profile" component={Profile} queries={ViewerQuery}/>
-                    <Route path="events" component={Event} queries={ViewerQuery}/>
 
-                    <Route path="stock" component={Stock} queries={ViewerQuery}/>
-                    <Route path="stock/:reference" component={Item} queries={ViewerQuery} prepareParams={prepareItemParam}/>
-                    <Route path="admin/create" component={ItemForm} queries={ViewerQuery}/>
-                    <Route path="admin/edit/:reference" component={ItemForm} queries={ViewerQuery} prepareParams={prepareItemParam}/>
+                    <IndexRoute component={Stock} queries={ViewerQuery} onEnter={requireAuth}/>
+
+                    <Route path="login" component={Login} queries={ViewerQuery}/>
+                    <Route path="logout" component={Login} onEnter={logout} />
+
+                    <Route path="stock" component={Stock} queries={ViewerQuery} onEnter={requireAuth}/>
+
+                    <Route path="stock/:reference" component={Item} queries={ViewerQuery}
+                           prepareParams={prepareItemParam} onEnter={requireAuth}/>
+
+                    <Route path="admin/create" component={ItemForm} queries={ViewerQuery} onEnter={requireAuth}/>
+
+                    <Route path="admin/edit/:reference" component={ItemForm} queries={ViewerQuery}
+                           prepareParams={prepareItemParam} onEnter={requireAuth}/>
 
                 </Route>
 
@@ -43,16 +61,9 @@ export default  <Route path="/" component={MainApp} queries={ViewerQuery}>
 //    }
 //}
 //
-//function requireAuth(nextState, replaceState) {
-//    if(!authService.loggedIn()) {
-//        replaceState({ nextPathname: nextState.location.pathname }, '/jeestock/login')
-//    }
-//}
+
 //
-//function logout(nextState, replaceState) {
-//    authService.logout()
-//    replaceState({ nextPathname: nextState.location.pathname }, '/')
-//}
+
 
 
 

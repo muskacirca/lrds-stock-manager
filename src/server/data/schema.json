@@ -323,7 +323,22 @@
             {
               "name": "cart",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "viewerId",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "CartType",
@@ -1826,6 +1841,20 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "viewerId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "itemReference",
               "description": null,
               "type": {
@@ -1916,6 +1945,20 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "viewerId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "itemReference",
               "description": null,
               "type": {
@@ -2005,6 +2048,20 @@
           "description": null,
           "fields": null,
           "inputFields": [
+            {
+              "name": "viewerId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
             {
               "name": "clientMutationId",
               "description": null,

@@ -92,7 +92,7 @@ var VIEWER_ID = 'me';
 var viewer = new Viewer();
 viewer.id = VIEWER_ID;
 
-var cartStore = [];
+var cartStore = {};
 
 var usersById = _defineProperty({}, VIEWER_ID, viewer);
 
@@ -124,26 +124,42 @@ function isInitialized() {
     }
 }
 
-function getCart() {
-    return cartStore;
+function getCart(viewerId) {
+    return cartStore[viewerId] == undefined ? [] : cartStore[viewerId];
 }
 
-function pushItemInCart(item) {
+function pushItemInCart(viewerId, item) {
 
-    var itemFiltered = cartStore.filter(function (elt) {
-        if (elt == item) {
-            return elt;
+    console.log("pushItemInCart : " + JSON.stringify(cartStore));
+
+    var cart = cartStore[viewerId];
+
+    if (cart == undefined) {
+        console.log("cart is undefined : " + JSON.stringify(cartStore));
+
+        cartStore[viewerId] = [item];
+        console.log("cart is undefined : " + JSON.stringify(cartStore));
+    } else {
+
+        console.log("cart is defined : " + JSON.stringify(cartStore));
+        var itemFiltered = cart.filter(function (elt) {
+            if (elt == item) {
+                return elt;
+            }
+        });
+
+        console.log("itemFiltered : " + JSON.stringify(itemFiltered));
+        if (!itemFiltered[0]) {
+            cartStore[viewerId].push(item);
         }
-    });
-
-    if (!itemFiltered[0]) {
-        cartStore.push(item);
     }
+
+    console.log("end of pushItemInCart : " + JSON.stringify(cartStore));
 }
 
-function removeItemFromCart(reference) {
+function removeItemFromCart(viewerId, reference) {
 
-    return _lodash2.default.remove(cartStore, function (item) {
+    return _lodash2.default.remove(cartStore.get(viewerId), function (item) {
         return item.reference == reference;
     });
 }

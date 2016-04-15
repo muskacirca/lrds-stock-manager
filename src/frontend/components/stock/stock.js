@@ -157,7 +157,7 @@ export default Relay.createContainer(StockComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-             cart {
+             cart(viewerId: "Vmlld2VyOg==") {
                 ${AddItemInCartMutation.getFragment('cart')}
              }
              items(first: 100) {

@@ -25,6 +25,7 @@ var AddItemInCartMutation = exports.AddItemInCartMutation = new _graphqlRelay.mu
     name: 'AddItemInCart',
     description: 'Add one item into the cart',
     inputFields: {
+        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         itemReference: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
     },
     outputFields: {
@@ -42,11 +43,12 @@ var AddItemInCartMutation = exports.AddItemInCartMutation = new _graphqlRelay.mu
         }
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref) {
+        var viewerId = _ref.viewerId;
         var itemReference = _ref.itemReference;
 
         return _database2.default.models.item.findOne({ where: { reference: itemReference } }).then(function (item) {
-            (0, _CartStore.pushItemInCart)(item);
-            return (0, _CartStore.getCart)();
+            (0, _CartStore.pushItemInCart)(viewerId, item);
+            return (0, _CartStore.getCart)(viewerId);
         });
     }
 });
@@ -55,6 +57,7 @@ var RemoveItemFromCartMutation = exports.RemoveItemFromCartMutation = new _graph
     name: 'RemoveItemFromCart',
     description: 'Remove one item into the cart',
     inputFields: {
+        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         itemReference: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
     },
     outputFields: {
@@ -72,17 +75,20 @@ var RemoveItemFromCartMutation = exports.RemoveItemFromCartMutation = new _graph
         }
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref2) {
+        var viewerId = _ref2.viewerId;
         var itemReference = _ref2.itemReference;
 
-        (0, _CartStore.removeItemFromCart)(itemReference);
-        return (0, _CartStore.getCart)();
+        (0, _CartStore.removeItemFromCart)(viewerId, itemReference);
+        return (0, _CartStore.getCart)(viewerId);
     }
 });
 
 var EmptyCartMutation = exports.EmptyCartMutation = new _graphqlRelay.mutationWithClientMutationId({
     name: 'EmptyCart',
     description: 'Empty cart',
-    inputFields: {},
+    inputFields: {
+        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+    },
     outputFields: {
         viewer: {
             type: _Model.GraphQLViewer,
@@ -98,9 +104,9 @@ var EmptyCartMutation = exports.EmptyCartMutation = new _graphqlRelay.mutationWi
         }
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
-        var itemReference = _ref3.itemReference;
+        var viewerId = _ref3.viewerId;
 
-        (0, _CartStore.emptyCart)(1);
-        return (0, _CartStore.getCart)();
+        (0, _CartStore.emptyCart)(viewerId);
+        return (0, _CartStore.getCart)(viewerId);
     }
 });

@@ -29,6 +29,7 @@ export const AddItemInCartMutation = new mutationWithClientMutationId({
     name: 'AddItemInCart',
     description: 'Add one item into the cart',
     inputFields: {
+        viewerId: {type: new GraphQLNonNull(GraphQLString)},
         itemReference: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
@@ -41,11 +42,11 @@ export const AddItemInCartMutation = new mutationWithClientMutationId({
             resolve: (obj) => obj
         }
     },
-    mutateAndGetPayload: ({itemReference}) => {
+    mutateAndGetPayload: ({viewerId, itemReference}) => {
         return Database.models.item.findOne({where: {reference: itemReference}})
             .then(item => {
-                pushItemInCart(item)
-                return getCart()
+                pushItemInCart(viewerId, item)
+                return getCart(viewerId)
             })
     }
 });
@@ -54,6 +55,7 @@ export const RemoveItemFromCartMutation = new mutationWithClientMutationId({
     name: 'RemoveItemFromCart',
     description: 'Remove one item into the cart',
     inputFields: {
+        viewerId: {type: new GraphQLNonNull(GraphQLString)},
         itemReference: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
@@ -66,9 +68,9 @@ export const RemoveItemFromCartMutation = new mutationWithClientMutationId({
             resolve: (obj) => obj
         }
     },
-    mutateAndGetPayload: ({itemReference}) => {
-        removeItemFromCart(itemReference)
-        return getCart()
+    mutateAndGetPayload: ({viewerId, itemReference}) => {
+        removeItemFromCart(viewerId, itemReference)
+        return getCart(viewerId)
     }
 })
 
@@ -78,7 +80,7 @@ export const EmptyCartMutation = new mutationWithClientMutationId({
     name: 'EmptyCart',
     description: 'Empty cart',
     inputFields: {
-
+        viewerId: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
         viewer: {
@@ -90,8 +92,8 @@ export const EmptyCartMutation = new mutationWithClientMutationId({
             resolve: (obj) => obj
         }
     },
-    mutateAndGetPayload: ({itemReference}) => {
-        emptyCart(1)
-        return getCart()
+    mutateAndGetPayload: ({viewerId}) => {
+        emptyCart(viewerId)
+        return getCart(viewerId)
     }
 })

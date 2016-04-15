@@ -34,7 +34,7 @@ export default Relay.createContainer(CartComponent, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            cart {
+            cart(viewerId: "Vmlld2VyOg==") {
                 count
             }
           }

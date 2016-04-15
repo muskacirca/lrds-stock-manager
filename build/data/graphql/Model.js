@@ -51,13 +51,13 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     }
     return null;
 }, function (obj) {
-    if (obj instanceof _ItemStore.Item) {
+    if (obj instanceof Item) {
         console.log("getting by object ItemType");
         return GraphQLItemType;
-    } else if (obj instanceof _ItemStore.SubCategory) {
+    } else if (obj instanceof SubCategory) {
         console.log("getting by object SubCategoryType");
         return GraphQLItemType;
-    } else if (obj instanceof _ItemStore.Domain) {
+    } else if (obj instanceof Domain) {
         console.log("getting by object SubCategoryType");
         return GraphQLDomainType;
     } else if (obj instanceof _ItemStore.Viewer) {
@@ -376,8 +376,12 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             },
             cart: {
                 type: GraphQLCartType,
-                resolve: function resolve() {
-                    return (0, _CartStore.getCart)();
+                args: { viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) } },
+                resolve: function resolve(obj, _ref6) {
+                    var viewerId = _ref6.viewerId;
+
+                    console.log('cart type resolve: ' + JSON.stringify((0, _CartStore.getCart)(viewerId)));
+                    return (0, _CartStore.getCart)(viewerId);
                 }
             }
         };

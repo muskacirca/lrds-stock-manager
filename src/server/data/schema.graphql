@@ -1,4 +1,5 @@
 input AddItemInCartInput {
+  viewerId: String!
   itemReference: String!
   clientMutationId: String!
 }
@@ -60,6 +61,7 @@ type DomainType implements Node {
 }
 
 input EmptyCartInput {
+  viewerId: String!
   clientMutationId: String!
 }
 
@@ -144,6 +146,7 @@ type PageInfo {
 }
 
 input RemoveItemFromCartInput {
+  viewerId: String!
   itemReference: String!
   clientMutationId: String!
 }
@@ -183,5 +186,5 @@ type Viewer implements Node {
   categories: [CategoryType]
   states: [StateType]
   countNextItemId(itemReference: String!): Int
-  cart: CartType
+  cart(viewerId: String!): CartType
 }

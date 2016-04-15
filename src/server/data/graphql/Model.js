@@ -25,10 +25,7 @@ import {
 import Database from '../database'
 
 import {
-    Item,
     Viewer,
-    SubCategory,
-    Domain,
     getById,
     getViewer,
 } from '../stores/ItemStore';
@@ -311,7 +308,11 @@ export var GraphQLViewer = new GraphQLObjectType({
         },
         cart: {
             type: GraphQLCartType,
-            resolve: () => getCart()
+            args: {viewerId: {type: new GraphQLNonNull(GraphQLString)}},
+            resolve: (obj, {viewerId}) => {
+                console.log('cart type resolve: ' + JSON.stringify(getCart(viewerId)))
+                return getCart(viewerId)
+            }
         }
     }),
     interfaces: [nodeInterface]

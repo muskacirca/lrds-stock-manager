@@ -1,6 +1,7 @@
 import React from 'react'
+import Relay from 'react-relay'
 import Router from 'react-router'
-import auth from './controllers/auth.js'
+import auth from './utils/Auth.js'
 
 class LoginBox extends React.Component {
 
@@ -50,7 +51,7 @@ class LoginForm extends React.Component {
             }
 
             console.log("authenticated, redirecting to profile");
-            this.history.replaceState(null, '/jeestock/profile')
+            this.history.replaceState(null, '/')
         })
 
         return;
@@ -84,4 +85,12 @@ class SubmitButton extends React.Component {
     }
 }
 
-export default LoginBox
+export default Relay.createContainer(LoginBox, {
+    fragments: {
+        viewer: () => Relay.QL`
+          fragment on Viewer {
+            id
+          }
+        `
+    }
+})

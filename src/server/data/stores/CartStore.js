@@ -11,7 +11,7 @@ const VIEWER_ID = 'me';
 var viewer = new Viewer();
 viewer.id = VIEWER_ID;
 
-var cartStore = []
+var cartStore = {}
 
 const usersById = {
     [VIEWER_ID]: viewer
@@ -45,26 +45,43 @@ export function isInitialized() {
     }
 }
 
-export function getCart() {
-    return cartStore
+export function getCart(viewerId) {
+    return cartStore[viewerId] == undefined ? [] : cartStore[viewerId]
 }
 
-export function pushItemInCart(item) {
+export function pushItemInCart(viewerId, item) {
 
-    var itemFiltered = cartStore.filter((elt) => {
-        if(elt == item) {
-            return elt
+    console.log("pushItemInCart : " + JSON.stringify(cartStore))
+
+    var cart = cartStore[viewerId]
+
+    if(cart == undefined) {
+        console.log("cart is undefined : " + JSON.stringify(cartStore))
+
+        cartStore[viewerId] = [item]
+        console.log("cart is undefined : " + JSON.stringify(cartStore))
+
+    } else {
+
+        console.log("cart is defined : " + JSON.stringify(cartStore))
+        var itemFiltered = cart.filter((elt) => {
+            if(elt == item) {
+                return elt
+            }
+        })
+
+        console.log("itemFiltered : " + JSON.stringify(itemFiltered))
+        if(!itemFiltered[0]) {
+            cartStore[viewerId].push(item)
         }
-    })
-
-    if(!itemFiltered[0]) {
-        cartStore.push(item)
     }
+
+    console.log("end of pushItemInCart : " + JSON.stringify(cartStore))
 }
 
-export function removeItemFromCart(reference) {
+export function removeItemFromCart(viewerId, reference) {
 
-    return _.remove(cartStore, (item) => {
+    return _.remove(cartStore.get(viewerId), (item) => {
         return item.reference == reference
     })
 }

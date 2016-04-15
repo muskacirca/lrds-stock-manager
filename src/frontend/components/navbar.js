@@ -29,6 +29,7 @@ class NavBarBox extends React.Component {
                     <nav className="menu">
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
                         <Link to="/admin/create" activeClassName="link-active">Admin</Link>
+                        <Link to="/logout" activeClassName="link-active">Logout</Link>
                     </nav>
                     <div className="menu-right">
                         {cart}
