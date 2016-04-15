@@ -40,16 +40,12 @@ class LoginForm extends React.Component {
         var email = ReactDOM.findDOMNode(this.refs.loginField).value
         var pass = ReactDOM.findDOMNode(this.refs.passwordField).value
 
-        console.log("email: " + email)
-        console.log("pass: " + pass)
-
         auth.login(email, pass, (loggedIn) => {
             if (!loggedIn) {
                 console.log("not authenticated")
                 return this.setState({error: true})
             }
 
-            console.log("authenticated, redirecting to profile");
             this.context.router.push("/")
         })
 
