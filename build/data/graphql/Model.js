@@ -394,8 +394,15 @@ var GraphQLRoot = exports.GraphQLRoot = new _graphql.GraphQLObjectType({
     fields: {
         viewer: {
             type: GraphQLViewer,
-            resolve: function resolve() {
-                return _ItemStore.getViewer;
+            args: {
+                viewerId: {
+                    name: 'viewerId',
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
+                }
+            },
+            resolve: function resolve(root, _ref7) {
+                var viewerId = _ref7.viewerId;
+                return _database2.default.models.user.findOne({ where: { id: viewerId } });
             }
         },
         node: nodeField

@@ -158,7 +158,7 @@ type RemoveItemFromCartPayload {
 }
 
 type Root {
-  viewer: Viewer
+  viewer(viewerId: Int!): Viewer
   node(id: ID!): Node
 }
 

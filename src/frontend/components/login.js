@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import Relay from 'react-relay'
 import Router from 'react-router'
 import auth from './utils/Auth.js'
+import AuthService from './utils/AuthService.js'
 
 class LoginBox extends React.Component {
 
@@ -34,22 +35,43 @@ class LoginForm extends React.Component {
         this.state = {error: false}
     }
 
+    //handleSubmit(e) {
+    //    e.preventDefault();
+    //
+    //    var email = ReactDOM.findDOMNode(this.refs.loginField).value
+    //    var pass = ReactDOM.findDOMNode(this.refs.passwordField).value
+    //
+    //    auth.login(email, pass, (loggedIn) => {
+    //        if (!loggedIn) {
+    //            console.log("not authenticated")
+    //            return this.setState({error: true})
+    //        }
+    //
+    //        this.context.router.push("/")
+    //    })
+    //
+    //    return;
+    //}
+
     handleSubmit(e) {
+
         e.preventDefault();
 
         var email = ReactDOM.findDOMNode(this.refs.loginField).value
-        var pass = ReactDOM.findDOMNode(this.refs.passwordField).value
+        var password = ReactDOM.findDOMNode(this.refs.passwordField).value
 
-        auth.login(email, pass, (loggedIn) => {
-            if (!loggedIn) {
-                console.log("not authenticated")
-                return this.setState({error: true})
-            }
+        AuthService.login(email, password)
+            .then((loggedIn) => {
 
-            this.context.router.push("/")
-        })
+                if (!loggedIn) return this.setState({error: true});
+                const { location } = this.props;
 
-        return;
+                if (location && location.state && location.state.nextPathname) {
+                    this.context.router.replace(location.state.nextPathname)
+                } else {
+                    this.context.router.replace('/')
+                }
+            });
     }
 
     render() {
@@ -84,12 +106,4 @@ LoginForm.contextTypes = {
     router: React.PropTypes.object.isRequired
 }
 
-export default Relay.createContainer(LoginBox, {
-    fragments: {
-        viewer: () => Relay.QL`
-          fragment on Viewer {
-            id
-          }
-        `
-    }
-})
+export default LoginBox

@@ -323,7 +323,13 @@ export var GraphQLRoot = new GraphQLObjectType({
     fields: {
         viewer: {
             type: GraphQLViewer,
-            resolve: () => getViewer
+            args: {
+                viewerId: {
+                    name: 'viewerId',
+                    type: new GraphQLNonNull(GraphQLInt)
+                }
+            },
+            resolve: (root, {viewerId}) => Database.models.user.findOne({where: {id: viewerId}}),
         },
         node: nodeField
     }

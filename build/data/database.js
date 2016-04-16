@@ -143,6 +143,15 @@ var domain = connection.define('domain', {
 domain.belongsToMany(model, { through: 'modelDomain', timestamps: false });
 model.belongsToMany(domain, { through: 'modelDomain', timestamps: false });
 
+connection.define('user', {
+    firstName: _sequelize2.default.STRING,
+    lastName: _sequelize2.default.STRING,
+    login: { type: _sequelize2.default.STRING, unique: true },
+    password: _sequelize2.default.STRING,
+    email: { type: _sequelize2.default.STRING, unique: true },
+    enabled: _sequelize2.default.BOOLEAN
+}, { timestamps: false, tableName: 'users', freezeTableName: true });
+
 connection.sync({ force: false });
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})

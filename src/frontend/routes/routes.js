@@ -1,7 +1,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
-import authService from '../components/utils/Auth'
+import authService from '../components/utils/AuthService'
 
 import ViewerQuery from '../queries/ViewerQueries'
 
@@ -20,13 +20,8 @@ import Login from '../components/login'
 function prepareItemParam(params, route) {
     return {
         ...params,
-        reference: params.reference ? params.reference : "error"
-    }
-}
-
-function requireAuth(nextState, replace) {
-    if(!authService.loggedIn()) {
-        replace('/login')
+        reference: params.reference ? params.reference : "error",
+        viewerId: JSON.parse(localStorage.getItem('user')).id
     }
 }
 
@@ -35,24 +30,44 @@ function logout(nextState, replace) {
     replace('/login')
 }
 
-export default  <Route path="/" component={MainApp} queries={ViewerQuery}>
+function requireAuth(nextState, replace) {
+    if (!JSON.parse(localStorage.getItem('user'))) {
+        replace({
+            pathname: '/login',
+            state: { nextPathname: nextState.location.pathname }
+        })
+    }
+}
 
-                    <IndexRoute component={Stock} queries={ViewerQuery} onEnter={requireAuth}/>
+function getUser(){
+    return {viewerId: JSON.parse(localStorage.getItem('user')).id }
+}
 
-                    <Route path="login" component={Login} queries={ViewerQuery}/>
+export default  <Route>
+                    <Route path="/" component={MainApp} queries={ViewerQuery}>
+
+                        <IndexRoute component={Stock} queries={ViewerQuery} onEnter={requireAuth}
+                                    prepareParams={() => getUser()} />
+
+                        <Route path="stock" component={Stock} queries={ViewerQuery} onEnter={requireAuth}
+                               prepareParams={() => getUser()} />
+
+                        <Route path="stock/:reference" component={Item} queries={ViewerQuery}
+                               prepareParams={prepareItemParam} onEnter={requireAuth} />
+
+                        <Route path="admin/create" component={ItemForm} queries={ViewerQuery} onEnter={requireAuth}
+                               prepareParams={() => getUser()} />
+
+                        <Route path="admin/edit/:reference" component={ItemForm} queries={ViewerQuery}
+                               prepareParams={prepareItemParam} onEnter={requireAuth} />
+
+                    </Route>
+
+                    <Route path="login" component={Login} />
                     <Route path="logout" component={Login} onEnter={logout} />
 
-                    <Route path="stock" component={Stock} queries={ViewerQuery} onEnter={requireAuth}/>
-
-                    <Route path="stock/:reference" component={Item} queries={ViewerQuery}
-                           prepareParams={prepareItemParam} onEnter={requireAuth}/>
-
-                    <Route path="admin/create" component={ItemForm} queries={ViewerQuery} onEnter={requireAuth}/>
-
-                    <Route path="admin/edit/:reference" component={ItemForm} queries={ViewerQuery}
-                           prepareParams={prepareItemParam} onEnter={requireAuth}/>
-
                 </Route>
+
 
 //function prepareWidgetListParams(params, route) {
 //    return {

@@ -43,6 +43,11 @@ CALL lrds.bind_model_to_subCategory('FIREFACE UC', 'USB');
 
 CALL lrds.add_item('RMEFIREUC-1', true, 'FIREFACE UC', 'a réparer');
 
+INSERT INTO lrds.users (firstName, lastName, login, password, email, enabled)
+    VALUES ('lrds', 'lrds', 'lrds', '4RCh2u5VgDjlglgZzKAZ5/hGdzcAuLz2EFIHqQcukgY=', 'lrds@lrds.com', 1)
+
+# 4RCh2u5VgDjlglgZzKAZ5/hGdzcAuLz2EFIHqQcukgY=   ==> lrds
+
 
 
 
