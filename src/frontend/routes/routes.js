@@ -61,6 +61,9 @@ export default  <Route>
                         <Route path="admin/edit/:reference" component={ItemForm} queries={ViewerQuery}
                                prepareParams={prepareItemParam} onEnter={requireAuth} />
 
+                        <Route path="event" component={Event} prepareParams={() => getUser()} 
+                               queries={ViewerQuery} onEnter={requireAuth}/>
+
                     </Route>
 
                     <Route path="login" component={Login} />
