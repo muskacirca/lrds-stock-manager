@@ -1,6 +1,9 @@
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
 
+const server_port = process.env.PORT || 3000
+const server_url = process.env.SERVER_URL || "localhost"
+
 class Auth {
 
     logout() {
@@ -10,7 +13,7 @@ class Auth {
     login(login, password) {
 
         return this.handleAuth(axios({
-            url: 'http://localhost:3000/api/authenticate',
+            url: 'http://' + server_url + ':' + server_port + '/api/authenticate',
             method: 'POST',
             crossOrigin: true,
             type: 'json',

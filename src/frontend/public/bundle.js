@@ -50687,7 +50687,7 @@
 /* 542 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -50707,6 +50707,9 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	var server_port = process.env.PORT || 3000;
+	var server_url = process.env.SERVER_URL || "localhost";
+
 	var Auth = function () {
 	    function Auth() {
 	        _classCallCheck(this, Auth);
@@ -50722,7 +50725,7 @@
 	        value: function login(_login, password) {
 
 	            return this.handleAuth((0, _axios2.default)({
-	                url: 'http://localhost:3000/api/authenticate',
+	                url: 'http://' + server_url + ':' + server_port + '/api/authenticate',
 	                method: 'POST',
 	                crossOrigin: true,
 	                type: 'json',
@@ -50755,6 +50758,7 @@
 	}();
 
 	exports.default = new Auth();
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 543 */
@@ -52213,7 +52217,6 @@
 	    initialVariables: { viewerId: null },
 
 	    prepareVariables: function prepareVariables(prevVariables) {
-	        console.log("getting cart for user : " + _AuthService2.default.getUserId());
 	        return _extends({}, prevVariables, {
 	            viewerId: _AuthService2.default.getUserId() + ""
 	        });
@@ -68457,7 +68460,6 @@
 	    initialVariables: { viewerId: null },
 
 	    prepareVariables: function prepareVariables(prevVariables) {
-	        console.log("getting cart for user : " + _AuthService2.default.getUserId());
 	        return _extends({}, prevVariables, {
 	            viewerId: _AuthService2.default.getUserId() + ""
 	        });
