@@ -13,7 +13,7 @@ class Auth {
     login(login, password) {
 
         return this.handleAuth(axios({
-            url: 'http://' + server_url + ':' + server_port + '/api/authenticate',
+            url: '/api/authenticate',
             method: 'POST',
             crossOrigin: true,
             type: 'json',

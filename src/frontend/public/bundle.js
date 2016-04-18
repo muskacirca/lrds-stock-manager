@@ -50725,7 +50725,7 @@
 	        value: function login(_login, password) {
 
 	            return this.handleAuth((0, _axios2.default)({
-	                url: 'http://' + server_url + ':' + server_port + '/api/authenticate',
+	                url: '/api/authenticate',
 	                method: 'POST',
 	                crossOrigin: true,
 	                type: 'json',
