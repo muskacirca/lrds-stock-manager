@@ -2,6 +2,8 @@ import React from 'react'
 import Relay from 'react-relay'
 import Link from 'react-router'
 
+import UserService from '../utils/AuthService'
+
 import StockTable from './StockTable'
 import StockNavigationBar from './StockNavigationBar'
 
@@ -101,14 +103,14 @@ class StockComponent extends React.Component {
         console.log("addIrmToCart : " + this.props.viewer.id)
         
         var addItemInCartMutation = new AddItemInCartMutation({
-            viewerId: this.props.viewer.id,
+            viewerId: UserService.getUserId(),
             itemReference: reference,
             cart: this.props.viewer.cart
         });
 
         var onSuccess = (response) => console.log("Item added to cart");
 
-        var onFailure = (transaction) => console.log("Item added to cart");
+        var onFailure = (transaction) => console.log("Item not added to cart");
 
         Relay.Store.commitUpdate(addItemInCartMutation, {onSuccess, onFailure})
     }

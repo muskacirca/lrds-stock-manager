@@ -50721,7 +50721,6 @@
 	        key: 'login',
 	        value: function login(_login, password) {
 
-	            console.log('testing credentials');
 	            return this.handleAuth((0, _axios2.default)({
 	                url: 'http://localhost:3000/api/authenticate',
 	                method: 'POST',
@@ -50733,11 +50732,15 @@
 	            }));
 	        }
 	    }, {
+	        key: 'getUserId',
+	        value: function getUserId() {
+	            return JSON.parse(localStorage.getItem('user')).id;
+	        }
+	    }, {
 	        key: 'handleAuth',
 	        value: function handleAuth(loginPromise) {
 
 	            return loginPromise.then(function (response) {
-	                console.log("handleAuth : " + JSON.stringify(response));
 	                if (response.data.success) {
 	                    localStorage.setItem('user', JSON.stringify((0, _jwtDecode2.default)(response.data.token)));
 	                    return true;
@@ -52057,7 +52060,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'site-pusher' },
-	                _react2.default.createElement(_navbar2.default, { shoppingCart: cart }),
+	                _react2.default.createElement(_navbar2.default, { shoppingCart: cart, user: this.props.viewer.user }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'site-content' },
@@ -52092,6 +52095,29 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
+	                    }, {
+	                        children: [{
+	                            fieldName: 'login',
+	                            kind: 'Field',
+	                            metadata: {},
+	                            type: 'String'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'user',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'UserType'
 	                    }, _reactRelay2.default.QL.__frag(RQL_0), _reactRelay2.default.QL.__frag(RQL_1)]),
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -52114,6 +52140,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -52123,6 +52151,10 @@
 	var _reactRelay = __webpack_require__(249);
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	var _AuthService = __webpack_require__(542);
+
+	var _AuthService2 = _interopRequireDefault(_AuthService);
 
 	var _utils = __webpack_require__(566);
 
@@ -52162,14 +52194,12 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { onClick: this.toggleCartDisplay.bind(this) },
+	                _react2.default.createElement('i', { className: 'fa fa-2x fa-shopping-cart pointer' }),
+	                ' ',
 	                _react2.default.createElement(
-	                    'i',
-	                    { className: 'fa fa-2x fa-shopping-cart pointer' },
-	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'badge' },
-	                        cartCount
-	                    )
+	                    'span',
+	                    { className: 'badge' },
+	                    cartCount
 	                )
 	            );
 	        }
@@ -52179,18 +52209,35 @@
 	}(_react2.default.Component);
 
 	exports.default = _reactRelay2.default.createContainer(CartComponent, {
+
+	    initialVariables: { viewerId: null },
+
+	    prepareVariables: function prepareVariables(prevVariables) {
+	        console.log("getting cart for user : " + _AuthService2.default.getUserId());
+	        return _extends({}, prevVariables, {
+	            viewerId: _AuthService2.default.getUserId() + ""
+	        });
+	    },
+
 	    fragments: {
 	        viewer: function viewer() {
 	            return function () {
 	                return {
 	                    children: [{
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
+	                    }, {
 	                        calls: [{
 	                            kind: 'Call',
 	                            metadata: {},
 	                            name: 'viewerId',
 	                            value: {
-	                                kind: 'CallValue',
-	                                callValue: 'Vmlld2VyOg=='
+	                                kind: 'CallVariable',
+	                                callVariableName: 'viewerId'
 	                            }
 	                        }],
 	                        children: [{
@@ -52215,14 +52262,6 @@
 	                            inferredPrimaryKey: 'id'
 	                        },
 	                        type: 'CartType'
-	                    }, {
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -68227,9 +68266,15 @@
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'div',
+	                    'nav',
 	                    { className: 'menu-right' },
 	                    cart
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'menu-right' },
+	                    'hello ',
+	                    this.props.user.login
 	                )
 	            );
 	        }
@@ -68282,6 +68327,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -68299,6 +68346,10 @@
 	var _EmptyCartMutation = __webpack_require__(571);
 
 	var _EmptyCartMutation2 = _interopRequireDefault(_EmptyCartMutation);
+
+	var _AuthService = __webpack_require__(542);
+
+	var _AuthService2 = _interopRequireDefault(_AuthService);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -68322,7 +68373,7 @@
 	        value: function onRemoveItemFromCart(reference) {
 	            console.log("removing item from cart: " + reference);
 	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
-	                viewerId: this.props.viewer.id,
+	                viewerId: _AuthService2.default.getUserId(),
 	                itemReference: reference,
 	                cart: this.props.viewer.cart
 	            });
@@ -68358,10 +68409,10 @@
 	        value: function renderCart(cart) {
 	            var _this2 = this;
 
-	            return cart.selectedItems.map(function (item) {
+	            return cart.selectedItems.map(function (item, key) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    { key: "cart-" + item.reference, className: 'row' },
+	                    { key: "cart-" + key + "-" + item.reference, className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-10' },
@@ -68402,6 +68453,16 @@
 	}(_react2.default.Component);
 
 	exports.default = _reactRelay2.default.createContainer(CartDropdownComponent, {
+
+	    initialVariables: { viewerId: null },
+
+	    prepareVariables: function prepareVariables(prevVariables) {
+	        console.log("getting cart for user : " + _AuthService2.default.getUserId());
+	        return _extends({}, prevVariables, {
+	            viewerId: _AuthService2.default.getUserId() + ""
+	        });
+	    },
+
 	    fragments: {
 	        viewer: function viewer() {
 	            return function (RQL_0) {
@@ -68419,8 +68480,8 @@
 	                            metadata: {},
 	                            name: 'viewerId',
 	                            value: {
-	                                kind: 'CallValue',
-	                                callValue: 'Vmlld2VyOg=='
+	                                kind: 'CallVariable',
+	                                callVariableName: 'viewerId'
 	                            }
 	                        }],
 	                        children: [].concat.apply([], [{
@@ -69109,6 +69170,10 @@
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
+	var _AuthService = __webpack_require__(542);
+
+	var _AuthService2 = _interopRequireDefault(_AuthService);
+
 	var _StockTable = __webpack_require__(575);
 
 	var _StockTable2 = _interopRequireDefault(_StockTable);
@@ -69235,7 +69300,7 @@
 	            console.log("addIrmToCart : " + this.props.viewer.id);
 
 	            var addItemInCartMutation = new _AddItemInCartMutation2.default({
-	                viewerId: this.props.viewer.id,
+	                viewerId: _AuthService2.default.getUserId(),
 	                itemReference: reference,
 	                cart: this.props.viewer.cart
 	            });
@@ -69245,7 +69310,7 @@
 	            };
 
 	            var onFailure = function onFailure(transaction) {
-	                return console.log("Item added to cart");
+	                return console.log("Item not added to cart");
 	            };
 
 	            _reactRelay2.default.Store.commitUpdate(addItemInCartMutation, { onSuccess: onSuccess, onFailure: onFailure });

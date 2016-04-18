@@ -1,6 +1,8 @@
 import React from 'react'
 import Relay from 'react-relay'
 
+import UserService from '../utils/AuthService'
+
 import {
     toggleClassInBody
 } from '../../../utils/utils'
@@ -23,18 +25,29 @@ class CartComponent extends React.Component {
         var cartCount = this.props.viewer.cart.count
 
         return  <div onClick={this.toggleCartDisplay.bind(this)}>
-                    <i className="fa fa-2x fa-shopping-cart pointer">
-                        <span className="badge">{cartCount}</span>
-                    </i>
+                    <i className="fa fa-2x fa-shopping-cart pointer" />
+                    {' '}
+                    <span className="badge">{cartCount}</span>
                 </div>
     }
 }
 
 export default Relay.createContainer(CartComponent, {
+
+    initialVariables: {viewerId: null},
+
+    prepareVariables: prevVariables => {
+        return {
+            ...prevVariables,
+            viewerId: UserService.getUserId() + "",
+        };
+    },
+
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-            cart(viewerId: "Vmlld2VyOg==") {
+            id
+            cart(viewerId: $viewerId) {
                 count
             }
           }

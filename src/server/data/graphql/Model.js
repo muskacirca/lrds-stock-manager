@@ -224,6 +224,36 @@ export var GraphQLCartType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+
+export var UserType = new GraphQLObjectType({
+    name: 'UserType',
+    description: 'It display the information related to an user',
+    fields: {
+        id: globalIdField('UserType'),
+        firstName: {
+            type: GraphQLString,
+            resolve: (obj) => obj.firstName
+        },
+        lastName: {
+            type: GraphQLString,
+            resolve: (obj) => obj.lastName
+        },
+        login: {
+            type: GraphQLString,
+            resolve: (obj) => obj.login
+        },
+        email: {
+            type: GraphQLString,
+            resolve: (obj) => obj.email
+        },
+        enabled: {
+            type: GraphQLBoolean,
+            resolve: (obj) => obj.enabled
+        }
+    },
+    interfaces: [nodeInterface]
+});
+
 var {
     connectionType: ItemsConnection
     ,edgeType: GraphQLItemEdge,
@@ -244,6 +274,10 @@ export var GraphQLViewer = new GraphQLObjectType({
     name: 'Viewer',
     fields: () => ({
         id: globalIdField('Viewer'),
+        user: {
+          type: UserType,
+          resolve: (obj) => obj
+        },
         items: {
             type: ItemsConnection,
             args: {...connectionArgs},

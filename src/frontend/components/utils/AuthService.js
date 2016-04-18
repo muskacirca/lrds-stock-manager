@@ -9,7 +9,6 @@ class Auth {
 
     login(login, password) {
 
-        console.log('testing credentials');
         return this.handleAuth(axios({
             url: 'http://localhost:3000/api/authenticate',
             method: 'POST',
@@ -21,11 +20,14 @@ class Auth {
         }));
     }
 
+    getUserId() {
+        return JSON.parse(localStorage.getItem('user')).id
+    }
+
     handleAuth(loginPromise) {
 
         return loginPromise
             .then(function(response) {
-                console.log("handleAuth : " + JSON.stringify(response))
                 if(response.data.success) {
                     localStorage.setItem('user', JSON.stringify(jwt_decode(response.data.token)));
                     return true;

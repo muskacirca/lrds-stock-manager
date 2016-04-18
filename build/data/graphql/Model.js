@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GraphQLRoot = exports.GraphQLViewer = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLItemCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+exports.GraphQLRoot = exports.GraphQLViewer = exports.GraphQLModelEdge = exports.ModelsConnection = exports.UserType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLItemCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -263,6 +263,45 @@ var GraphQLCartType = exports.GraphQLCartType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var UserType = exports.UserType = new _graphql.GraphQLObjectType({
+    name: 'UserType',
+    description: 'It display the information related to an user',
+    fields: {
+        id: (0, _graphqlRelay.globalIdField)('UserType'),
+        firstName: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(obj) {
+                return obj.firstName;
+            }
+        },
+        lastName: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(obj) {
+                return obj.lastName;
+            }
+        },
+        login: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(obj) {
+                return obj.login;
+            }
+        },
+        email: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(obj) {
+                return obj.email;
+            }
+        },
+        enabled: {
+            type: _graphql.GraphQLBoolean,
+            resolve: function resolve(obj) {
+                return obj.enabled;
+            }
+        }
+    },
+    interfaces: [nodeInterface]
+});
+
 var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'ItemType',
     nodeType: GraphQLItemType
@@ -285,6 +324,12 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
     fields: function fields() {
         return {
             id: (0, _graphqlRelay.globalIdField)('Viewer'),
+            user: {
+                type: UserType,
+                resolve: function resolve(obj) {
+                    return obj;
+                }
+            },
             items: {
                 type: ItemsConnection,
                 args: _extends({}, _graphqlRelay.connectionArgs),

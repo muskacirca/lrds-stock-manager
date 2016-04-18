@@ -4,6 +4,8 @@ import Relay from 'react-relay'
 import RemoveItemFromCartMutation from '../../mutations/RemoveItemFromCartMutation'
 import EmptyCartMutation from '../../mutations/EmptyCartMutation'
 
+import UserService from '../utils/AuthService'
+
 class CartDropdownComponent extends React.Component {
 
     constructor(props) {
@@ -13,7 +15,7 @@ class CartDropdownComponent extends React.Component {
     onRemoveItemFromCart(reference) {
         console.log("removing item from cart: " + reference)
         var removeItemFromCartMutation = new RemoveItemFromCartMutation({
-            viewerId: this.props.viewer.id,
+            viewerId: UserService.getUserId(),
             itemReference: reference,
             cart: this.props.viewer.cart
         });
@@ -38,8 +40,8 @@ class CartDropdownComponent extends React.Component {
 
     renderCart(cart) {
 
-        return cart.selectedItems.map(item => {
-            return  <div key={"cart-" + item.reference} className="row">
+        return cart.selectedItems.map((item, key) => {
+            return  <div key={"cart-" + key + "-" + item.reference} className="row">
                         <div className="col-md-10">
                             <div>{item.reference}</div>
                         </div>
@@ -63,11 +65,21 @@ class CartDropdownComponent extends React.Component {
 }
 
 export default Relay.createContainer(CartDropdownComponent, {
+
+    initialVariables: {viewerId: null},
+
+    prepareVariables: prevVariables => {
+        return {
+            ...prevVariables,
+            viewerId: UserService.getUserId() + "",
+        };
+    },
+
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
-            cart(viewerId: "Vmlld2VyOg==") {
+            cart(viewerId: $viewerId) {
                 ${RemoveItemFromCartMutation.getFragment('cart')}
                 selectedItems {
                     reference

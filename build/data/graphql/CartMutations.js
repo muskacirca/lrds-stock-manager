@@ -25,7 +25,7 @@ var AddItemInCartMutation = exports.AddItemInCartMutation = new _graphqlRelay.mu
     name: 'AddItemInCart',
     description: 'Add one item into the cart',
     inputFields: {
-        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
         itemReference: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
     },
     outputFields: {
@@ -57,7 +57,7 @@ var RemoveItemFromCartMutation = exports.RemoveItemFromCartMutation = new _graph
     name: 'RemoveItemFromCart',
     description: 'Remove one item into the cart',
     inputFields: {
-        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
         itemReference: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
     },
     outputFields: {

@@ -42,22 +42,15 @@ app.post('/api/authenticate', (request, response) => {
         .findOne({where: {login: request.body.login}})
         .then((user) => {
 
-            console.log("password before hash: " + request.body.password)
-            console.log("userh: " + JSON.stringify(user))
             var password = crypto.createHash("sha256").update(request.body.password).digest("base64");
-            console.log("password after hash: " + password)
-
 
             if (user.password != password) {
 
-                console.log("bouuuuhh not authenticated")
                 response.json({
                     success: false,
                     message: 'Bad authentication'
                 });
             } else {
-
-                console.log("yeahh authenticated")
 
                 let decoded = jwt.sign(user.dataValues, 'secret', {
                     expiresIn: 600

@@ -61,21 +61,15 @@ app.post('/api/authenticate', function (request, response) {
 
     _database2.default.models.user.findOne({ where: { login: request.body.login } }).then(function (user) {
 
-        console.log("password before hash: " + request.body.password);
-        console.log("userh: " + JSON.stringify(user));
         var password = _crypto2.default.createHash("sha256").update(request.body.password).digest("base64");
-        console.log("password after hash: " + password);
 
         if (user.password != password) {
 
-            console.log("bouuuuhh not authenticated");
             response.json({
                 success: false,
                 message: 'Bad authentication'
             });
         } else {
-
-            console.log("yeahh authenticated");
 
             var decoded = _jsonwebtoken2.default.sign(user.dataValues, 'secret', {
                 expiresIn: 600

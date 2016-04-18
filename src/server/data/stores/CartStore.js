@@ -51,37 +51,29 @@ export function getCart(viewerId) {
 
 export function pushItemInCart(viewerId, item) {
 
-    console.log("pushItemInCart : " + JSON.stringify(cartStore))
-
     var cart = cartStore[viewerId]
 
     if(cart == undefined) {
-        console.log("cart is undefined : " + JSON.stringify(cartStore))
 
         cartStore[viewerId] = [item]
-        console.log("cart is undefined : " + JSON.stringify(cartStore))
 
     } else {
 
-        console.log("cart is defined : " + JSON.stringify(cartStore))
         var itemFiltered = cart.filter((elt) => {
             if(elt == item) {
                 return elt
             }
         })
 
-        console.log("itemFiltered : " + JSON.stringify(itemFiltered))
         if(!itemFiltered[0]) {
             cartStore[viewerId].push(item)
         }
     }
-
-    console.log("end of pushItemInCart : " + JSON.stringify(cartStore))
 }
 
 export function removeItemFromCart(viewerId, reference) {
 
-    return _.remove(cartStore.get(viewerId), (item) => {
+    return _.remove(cartStore[viewerId], (item) => {
         return item.reference == reference
     })
 }

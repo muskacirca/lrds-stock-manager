@@ -1,5 +1,5 @@
 input AddItemInCartInput {
-  viewerId: String!
+  viewerId: Int!
   itemReference: String!
   clientMutationId: String!
 }
@@ -146,7 +146,7 @@ type PageInfo {
 }
 
 input RemoveItemFromCartInput {
-  viewerId: String!
+  viewerId: Int!
   itemReference: String!
   clientMutationId: String!
 }
@@ -175,8 +175,18 @@ type SubCategoryType implements Node {
   category: CategoryType
 }
 
+type UserType implements Node {
+  id: ID!
+  firstName: String
+  lastName: String
+  login: String
+  email: String
+  enabled: Boolean
+}
+
 type Viewer implements Node {
   id: ID!
+  user: UserType
   items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
   item(reference: String!): ItemType
   brands: [BrandType]

@@ -1,5 +1,6 @@
 import {
     GraphQLString,
+    GraphQLInt,
     GraphQLNonNull
 } from 'graphql'
 
@@ -29,7 +30,7 @@ export const AddItemInCartMutation = new mutationWithClientMutationId({
     name: 'AddItemInCart',
     description: 'Add one item into the cart',
     inputFields: {
-        viewerId: {type: new GraphQLNonNull(GraphQLString)},
+        viewerId: {type: new GraphQLNonNull(GraphQLInt)},
         itemReference: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
@@ -55,7 +56,7 @@ export const RemoveItemFromCartMutation = new mutationWithClientMutationId({
     name: 'RemoveItemFromCart',
     description: 'Remove one item into the cart',
     inputFields: {
-        viewerId: {type: new GraphQLNonNull(GraphQLString)},
+        viewerId: {type: new GraphQLNonNull(GraphQLInt)},
         itemReference: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {

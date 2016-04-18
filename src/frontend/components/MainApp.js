@@ -25,7 +25,7 @@ class MainApp extends React.Component{
         var cart =  <CartIcon viewer={this.props.viewer} />
         return (
             <div className="site-pusher">
-                <NavBarBox shoppingCart={cart}/>
+                <NavBarBox shoppingCart={cart} user={this.props.viewer.user}/>
                
                 <div className="site-content">
                     <div className="container">
@@ -46,6 +46,9 @@ export default Relay.createContainer(MainApp, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
+            user {
+                login
+            }
             ${CartIcon.getFragment('viewer')}
             ${CartDropdown.getFragment('viewer')}
           }
