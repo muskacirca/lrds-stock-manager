@@ -59,13 +59,8 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         return null;
     },
     (obj) => {
-        if (obj instanceof Item) {
-            console.log("getting by object ItemType")
-            return GraphQLItemType;
-        } else if (obj instanceof SubCategory) {
-            console.log("getting by object SubCategoryType")
-            return GraphQLItemType
-        } else if (obj instanceof Domain) {
+       
+        if (obj instanceof Domain) {
             console.log("getting by object SubCategoryType")
             return GraphQLDomainType
         } else if (obj instanceof Viewer) {
@@ -254,7 +249,7 @@ export var UserType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var {
+export var {
     connectionType: ItemsConnection
     ,edgeType: GraphQLItemEdge,
 } = connectionDefinitions({

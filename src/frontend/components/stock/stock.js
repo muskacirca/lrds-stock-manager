@@ -8,6 +8,7 @@ import StockTable from './StockTable'
 import StockNavigationBar from './StockNavigationBar'
 
 import AddItemInCartMutation from '../../mutations/AddItemInCartMutation'
+import AddItemMutation from '../../mutations/AddItemMutation'
 
 class StockComponent extends React.Component {
 
@@ -157,11 +158,21 @@ StockComponent.contextTypes = {
 }
 
 export default Relay.createContainer(StockComponent, {
+
+    initialVariables: {viewerId: null},
+
+    prepareVariables: prevVariables => {
+        return {
+            ...prevVariables,
+            viewerId: UserService.getUserId() + "",
+        };
+    },
+    
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
              id
-             cart(viewerId: "Vmlld2VyOg==") {
+             cart(viewerId: $viewerId) {
                 ${AddItemInCartMutation.getFragment('cart')}
              }
              items(first: 100) {

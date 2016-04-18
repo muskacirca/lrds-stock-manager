@@ -5,8 +5,10 @@ import {
 } from 'graphql'
 
 import {
+    connectionArgs,
     mutationWithClientMutationId,
     cursorForObjectInConnection,
+    connectionFromPromisedArray,
 } from 'graphql-relay'
 
 import Database from '../database'
@@ -14,6 +16,8 @@ import Database from '../database'
 import {
     GraphQLViewer,
     GraphQLModelEdge,
+    GraphQLItemEdge,
+    ItemsConnection,
     GraphQLItemType
 } from './Model'
 
@@ -40,29 +44,27 @@ export const AddModelMutation = new mutationWithClientMutationId({
         },
         modelEdge: {
             type: GraphQLModelEdge,
-            resolve: ({id}) => {
+            resolve: (obj, {id}) => {
+                
+                console.log("AddModelMutation obj : "  + JSON.stringify(obj))
 
                 return Database.models.model.findAll()
                     .then(dataModels => {
-                        return Database.models.model.findById(id)
-                            .then(dataModel =>  {
-                                let itemToPass
-                                for (const i of dataModels) {
-                                    if (i.id === dataModel.id) {
-                                        itemToPass = i;
-                                    }
-                                }
-                                var cursor = cursorForObjectInConnection(dataModels, itemToPass);
-                                return {
-                                    cursor: cursor,
-                                    node: itemToPass
-                                }
-                            })
+
+                        let itemToPass
+                        for (const model of dataModels) {
+                            if (model.id === obj.id) {
+                                itemToPass = model;
+                            }
+                        }
+                        var cursor = cursorForObjectInConnection(dataModels, itemToPass);
+                        return {
+                            cursor: cursor,
+                            node: itemToPass
+                        }
                     })
             }
         }
-
-
     },
     mutateAndGetPayload: ({brandName, name}) => {
 
@@ -100,9 +102,26 @@ export const AddItemMutation = mutationWithClientMutationId({
             resolve: () => getViewer
         },
         itemEdge: {
-            type: GraphQLItemType,
-            resolve: (response) => {
-                return response
+            type: GraphQLItemEdge,
+            resolve: (obj) => {
+
+                console.log("obj in AddItemMutation : " + JSON.stringify(obj))
+
+                return Database.models.item.findAll()
+                    .then(items => {
+
+                        let itemToPass
+                        for (const item of items) {
+                            if (item.id === obj.id) {
+                                itemToPass = item;
+                            }
+                        }
+                        var cursor = cursorForObjectInConnection(items, itemToPass);
+                        return {
+                            cursor: cursor,
+                            node: itemToPass
+                        }
+                    })
             }
         }
     },

@@ -39,50 +39,50 @@ var AddModelMutation = exports.AddModelMutation = new _graphqlRelay.mutationWith
         },
         modelEdge: {
             type: _Model.GraphQLModelEdge,
-            resolve: function resolve(_ref) {
+            resolve: function resolve(obj, _ref) {
                 var id = _ref.id;
 
 
+                console.log("AddModelMutation obj : " + JSON.stringify(obj));
+
                 return _database2.default.models.model.findAll().then(function (dataModels) {
-                    return _database2.default.models.model.findById(id).then(function (dataModel) {
-                        var itemToPass = void 0;
-                        var _iteratorNormalCompletion = true;
-                        var _didIteratorError = false;
-                        var _iteratorError = undefined;
 
-                        try {
-                            for (var _iterator = dataModels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                                var i = _step.value;
+                    var itemToPass = void 0;
+                    var _iteratorNormalCompletion = true;
+                    var _didIteratorError = false;
+                    var _iteratorError = undefined;
 
-                                if (i.id === dataModel.id) {
-                                    itemToPass = i;
-                                }
-                            }
-                        } catch (err) {
-                            _didIteratorError = true;
-                            _iteratorError = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion && _iterator.return) {
-                                    _iterator.return();
-                                }
-                            } finally {
-                                if (_didIteratorError) {
-                                    throw _iteratorError;
-                                }
+                    try {
+                        for (var _iterator = dataModels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            var model = _step.value;
+
+                            if (model.id === obj.id) {
+                                itemToPass = model;
                             }
                         }
+                    } catch (err) {
+                        _didIteratorError = true;
+                        _iteratorError = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion && _iterator.return) {
+                                _iterator.return();
+                            }
+                        } finally {
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                        }
+                    }
 
-                        var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, itemToPass);
-                        return {
-                            cursor: cursor,
-                            node: itemToPass
-                        };
-                    });
+                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, itemToPass);
+                    return {
+                        cursor: cursor,
+                        node: itemToPass
+                    };
                 });
             }
         }
-
     },
     mutateAndGetPayload: function mutateAndGetPayload(_ref2) {
         var brandName = _ref2.brandName;
@@ -123,9 +123,47 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
             }
         },
         itemEdge: {
-            type: _Model.GraphQLItemType,
-            resolve: function resolve(response) {
-                return response;
+            type: _Model.GraphQLItemEdge,
+            resolve: function resolve(obj) {
+
+                console.log("obj in AddItemMutation : " + JSON.stringify(obj));
+
+                return _database2.default.models.item.findAll().then(function (items) {
+
+                    var itemToPass = void 0;
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var item = _step2.value;
+
+                            if (item.id === obj.id) {
+                                itemToPass = item;
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+
+                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(items, itemToPass);
+                    return {
+                        cursor: cursor,
+                        node: itemToPass
+                    };
+                });
             }
         }
     },

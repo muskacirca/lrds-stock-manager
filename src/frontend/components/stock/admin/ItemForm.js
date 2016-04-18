@@ -61,21 +61,17 @@ class ItemFormComponent extends React.Component {
     }
 
     onFormSubmit() {
-
-        console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures))
-
+        
         var domainsToAdd = this.state.itemFeatures.domains.map(elt => elt.name)
-        console.log("about to add domains : " + JSON.stringify(domainsToAdd))
-
         var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(elt => elt.name)
-        console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd))
-
+        
         var addItemMutation = new AddItemMutation({
             modelName: this.state.itemFeatures.modelName,
             severity: this.state.itemFeatures.severity,
             domains: domainsToAdd,
             subCategories: subCategoriesToAdd,
-            viewer: this.props.viewer});
+            viewer: this.props.viewer
+        });
 
         var onSuccess = (response) => this.updateAlert("Item added successfully !", "success");
 
@@ -88,7 +84,6 @@ class ItemFormComponent extends React.Component {
     }
 
     updateAlert(message, type) {
-        console.log("updateAlert: " + message)
         var alert = {message: message, type: type}
         this.setState({alert: alert})
     }
@@ -185,9 +180,7 @@ class ItemFormComponent extends React.Component {
         itemFeatures.domains.length == 0
             ? _.set(itemFeatures, "domains", [{name: suggestionValue}])
             : itemFeatures.domains.push({name: suggestionValue})
-
-        console.log("new itemItemFeatures after addDomain : " + JSON.stringify(itemFeatures))
-
+        
         this.setState({itemFeatures: itemFeatures})
     }
 
@@ -216,9 +209,7 @@ class ItemFormComponent extends React.Component {
         itemFeatures.subCategories.length == 0
             ? _.set(itemFeatures, "subCategories", [{name: suggestionValue}])
             : itemFeatures.subCategories.push({name: suggestionValue})
-
-        console.log("new itemFeatures after addCategories : " + JSON.stringify(itemFeatures))
-
+        
         this.setState({itemFeatures: itemFeatures})
     }
 
@@ -325,6 +316,14 @@ export default Relay.createContainer(ItemFormComponent, {
           fragment on Viewer {
             ${AddModelMutation.getFragment('viewer')}
             ${AddItemMutation.getFragment('viewer')}
+             items(first: 100) {
+                edges {
+                    node {
+                        reference
+                    }
+                }
+                        
+            }
             models(first: 100) {
                 edges {
                     node {
@@ -340,7 +339,6 @@ export default Relay.createContainer(ItemFormComponent, {
                         }
                     }
                 }
-
             }
             states {
                 id

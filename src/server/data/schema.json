@@ -1931,7 +1931,7 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "ItemType",
+                "name": "ItemTypeEdge",
                 "ofType": null
               },
               "isDeprecated": false,

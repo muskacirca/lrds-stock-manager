@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GraphQLRoot = exports.GraphQLViewer = exports.GraphQLModelEdge = exports.ModelsConnection = exports.UserType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLItemCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+exports.GraphQLRoot = exports.GraphQLViewer = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLItemCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -51,13 +51,8 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     }
     return null;
 }, function (obj) {
-    if (obj instanceof Item) {
-        console.log("getting by object ItemType");
-        return GraphQLItemType;
-    } else if (obj instanceof SubCategory) {
-        console.log("getting by object SubCategoryType");
-        return GraphQLItemType;
-    } else if (obj instanceof Domain) {
+
+    if (obj instanceof Domain) {
         console.log("getting by object SubCategoryType");
         return GraphQLDomainType;
     } else if (obj instanceof _ItemStore.Viewer) {
@@ -309,6 +304,8 @@ var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
 
 var ItemsConnection = _connectionDefinition2.connectionType;
 var GraphQLItemEdge = _connectionDefinition2.edgeType;
+exports.ItemsConnection = ItemsConnection;
+exports.GraphQLItemEdge = GraphQLItemEdge;
 
 var _connectionDefinition3 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'ModelType',

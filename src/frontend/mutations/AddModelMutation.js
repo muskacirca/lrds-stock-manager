@@ -20,7 +20,7 @@ class AddModelMutation extends Relay.Mutation {
 
         return Relay.QL`
           fragment on AddModelPayload {
-          modelEdge,
+            modelEdge,
             viewer {
               models
             }
@@ -51,7 +51,6 @@ class AddModelMutation extends Relay.Mutation {
         }];
     }
     getVariables() {
-        console.log("getting FatQuery")
         return {
             name: this.props.modelName,
             brandName: this.props.brandName

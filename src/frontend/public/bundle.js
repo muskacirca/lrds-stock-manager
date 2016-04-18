@@ -50569,11 +50569,11 @@
 
 	var _stock2 = _interopRequireDefault(_stock);
 
-	var _Item = __webpack_require__(582);
+	var _Item = __webpack_require__(583);
 
 	var _Item2 = _interopRequireDefault(_Item);
 
-	var _ItemForm = __webpack_require__(583);
+	var _ItemForm = __webpack_require__(584);
 
 	var _ItemForm2 = _interopRequireDefault(_ItemForm);
 
@@ -69158,6 +69158,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -69187,6 +69189,10 @@
 	var _AddItemInCartMutation = __webpack_require__(581);
 
 	var _AddItemInCartMutation2 = _interopRequireDefault(_AddItemInCartMutation);
+
+	var _AddItemMutation = __webpack_require__(582);
+
+	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -69372,6 +69378,15 @@
 	};
 
 	exports.default = _reactRelay2.default.createContainer(StockComponent, {
+
+	    initialVariables: { viewerId: null },
+
+	    prepareVariables: function prepareVariables(prevVariables) {
+	        return _extends({}, prevVariables, {
+	            viewerId: _AuthService2.default.getUserId() + ""
+	        });
+	    },
+
 	    fragments: {
 	        viewer: function viewer() {
 	            return function (RQL_0) {
@@ -69389,8 +69404,8 @@
 	                            metadata: {},
 	                            name: 'viewerId',
 	                            value: {
-	                                kind: 'CallValue',
-	                                callValue: 'Vmlld2VyOg=='
+	                                kind: 'CallVariable',
+	                                callVariableName: 'viewerId'
 	                            }
 	                        }],
 	                        children: [].concat.apply([], [{
@@ -70601,6 +70616,229 @@
 /* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddItemMutation = function (_Relay$Mutation) {
+	    _inherits(AddItemMutation, _Relay$Mutation);
+
+	    function AddItemMutation() {
+	        _classCallCheck(this, AddItemMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemMutation).apply(this, arguments));
+	    }
+
+	    _createClass(AddItemMutation, [{
+	        key: "getMutation",
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: "Call",
+	                        metadata: {},
+	                        name: "addItem",
+	                        value: {
+	                            kind: "CallVariable",
+	                            callVariableName: "input"
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: "clientMutationId",
+	                        kind: "Field",
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: "String"
+	                    }],
+	                    kind: "Mutation",
+	                    metadata: {
+	                        inputType: "AddItemInput!"
+	                    },
+	                    name: "AddItemMutation",
+	                    responseType: "AddItemPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getFatQuery",
+	        value: function getFatQuery() {
+
+	            console.log("getting FatQuery");
+
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: "cursor",
+	                            kind: "Field",
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "String"
+	                        }, {
+	                            children: [{
+	                                fieldName: "id",
+	                                kind: "Field",
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "ID"
+	                            }],
+	                            fieldName: "node",
+	                            kind: "Field",
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: "node",
+	                                inferredPrimaryKey: "id",
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "ItemType"
+	                        }],
+	                        fieldName: "itemEdge",
+	                        kind: "Field",
+	                        metadata: {
+	                            canHaveSubselections: true
+	                        },
+	                        type: "ItemTypeEdge"
+	                    }, {
+	                        children: [{
+	                            fieldName: "items",
+	                            kind: "Field",
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isConnection: true
+	                            },
+	                            type: "ItemTypeConnection"
+	                        }, {
+	                            fieldName: "id",
+	                            kind: "Field",
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "ID"
+	                        }],
+	                        fieldName: "viewer",
+	                        kind: "Field",
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: "node",
+	                            inferredPrimaryKey: "id"
+	                        },
+	                        type: "Viewer"
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: "Fragment",
+	                    metadata: {},
+	                    name: "AddItemMutation_ValueRelayQL",
+	                    type: "AddItemPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getConfigs",
+	        value: function getConfigs() {
+
+	            console.log("getting config");
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    viewer: this.props.viewer.id
+	                }
+	            }, {
+	                type: 'RANGE_ADD',
+	                parentName: 'viewer',
+	                parentID: this.props.viewer.id,
+	                connectionName: 'items',
+	                edgeName: 'itemEdge',
+	                rangeBehaviors: {
+	                    '': 'append',
+	                    // Prepend the ship, wherever the connection is sorted by age
+	                    'first(100)': 'prepend'
+	                }
+	            }];
+	        }
+	    }, {
+	        key: "getVariables",
+	        value: function getVariables() {
+	            return {
+	                modelName: this.props.modelName,
+	                severity: this.props.severity,
+	                domains: this.props.domains,
+	                subCategories: this.props.subCategories
+	            };
+	        }
+	    }, {
+	        key: "getOptimisticResponse",
+	        value: function getOptimisticResponse() {
+	            return {
+	                viewer: {
+	                    id: this.props.viewer.id
+	                },
+	                itemEdge: {
+	                    node: {
+	                        model: {
+	                            name: this.props.modelName
+	                        },
+	                        isInStock: true,
+	                        reference: this.props.modelName + "/" + this.props.severity
+	                    }
+	                }
+	            };
+	        }
+	    }]);
+
+	    return AddItemMutation;
+	}(_reactRelay2.default.Mutation);
+
+	AddItemMutation.fragments = {
+	    viewer: function viewer() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: "id",
+	                    kind: "Field",
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: "ID"
+	                }],
+	                id: _reactRelay2.default.QL.__id(),
+	                kind: "Fragment",
+	                metadata: {},
+	                name: "AddItemMutation_ViewerRelayQL",
+	                type: "Viewer"
+	            };
+	        }();
+	    }
+	};
+	exports.default = AddItemMutation;
+
+/***/ },
+/* 583 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -70937,7 +71175,7 @@
 	});
 
 /***/ },
-/* 583 */
+/* 584 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70960,19 +71198,19 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _AutosuggestWrapper = __webpack_require__(584);
+	var _AutosuggestWrapper = __webpack_require__(585);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _Expire = __webpack_require__(608);
+	var _Expire = __webpack_require__(609);
 
 	var _Expire2 = _interopRequireDefault(_Expire);
 
-	var _AddModelMutation = __webpack_require__(609);
+	var _AddModelMutation = __webpack_require__(610);
 
 	var _AddModelMutation2 = _interopRequireDefault(_AddModelMutation);
 
-	var _AddItemMutation = __webpack_require__(610);
+	var _AddItemMutation = __webpack_require__(582);
 
 	var _AddItemMutation2 = _interopRequireDefault(_AddItemMutation);
 
@@ -71059,24 +71297,20 @@
 	        value: function onFormSubmit() {
 	            var _this2 = this;
 
-	            console.log("submitting itemFeatures: " + JSON.stringify(this.state.itemFeatures));
-
 	            var domainsToAdd = this.state.itemFeatures.domains.map(function (elt) {
 	                return elt.name;
 	            });
-	            console.log("about to add domains : " + JSON.stringify(domainsToAdd));
-
 	            var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(function (elt) {
 	                return elt.name;
 	            });
-	            console.log("about to add subCategories : " + JSON.stringify(subCategoriesToAdd));
 
 	            var addItemMutation = new _AddItemMutation2.default({
 	                modelName: this.state.itemFeatures.modelName,
 	                severity: this.state.itemFeatures.severity,
 	                domains: domainsToAdd,
 	                subCategories: subCategoriesToAdd,
-	                viewer: this.props.viewer });
+	                viewer: this.props.viewer
+	            });
 
 	            var onSuccess = function onSuccess(response) {
 	                return _this2.updateAlert("Item added successfully !", "success");
@@ -71093,7 +71327,6 @@
 	    }, {
 	        key: 'updateAlert',
 	        value: function updateAlert(message, type) {
-	            console.log("updateAlert: " + message);
 	            var alert = { message: message, type: type };
 	            this.setState({ alert: alert });
 	        }
@@ -71210,8 +71443,6 @@
 	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
 	            itemFeatures.domains.length == 0 ? _lodash2.default.set(itemFeatures, "domains", [{ name: suggestionValue }]) : itemFeatures.domains.push({ name: suggestionValue });
 
-	            console.log("new itemItemFeatures after addDomain : " + JSON.stringify(itemFeatures));
-
 	            this.setState({ itemFeatures: itemFeatures });
 	        }
 	    }, {
@@ -71246,8 +71477,6 @@
 
 	            var itemFeatures = _lodash2.default.cloneDeep(this.state.itemFeatures);
 	            itemFeatures.subCategories.length == 0 ? _lodash2.default.set(itemFeatures, "subCategories", [{ name: suggestionValue }]) : itemFeatures.subCategories.push({ name: suggestionValue });
-
-	            console.log("new itemFeatures after addCategories : " + JSON.stringify(itemFeatures));
 
 	            this.setState({ itemFeatures: itemFeatures });
 	        }
@@ -71408,6 +71637,91 @@
 	            return function (RQL_0, RQL_1, RQL_2) {
 	                return {
 	                    children: [].concat.apply([], [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'reference',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'ItemType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isPlural: true
+	                            },
+	                            type: 'ItemTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'items',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            isConnection: true
+	                        },
+	                        type: 'ItemTypeConnection'
+	                    }, {
 	                        calls: [{
 	                            kind: 'Call',
 	                            metadata: {},
@@ -71682,7 +71996,7 @@
 	});
 
 /***/ },
-/* 584 */
+/* 585 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71697,7 +72011,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactAutosuggest = __webpack_require__(585);
+	var _reactAutosuggest = __webpack_require__(586);
 
 	var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
 
@@ -71853,15 +72167,15 @@
 	exports.default = AutosuggestWrapper;
 
 /***/ },
-/* 585 */
+/* 586 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(586).default;
+	module.exports = __webpack_require__(587).default;
 
 /***/ },
-/* 586 */
+/* 587 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71876,15 +72190,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _redux = __webpack_require__(587);
+	var _redux = __webpack_require__(588);
 
-	var _reactRedux = __webpack_require__(595);
+	var _reactRedux = __webpack_require__(596);
 
-	var _reducerAndActions = __webpack_require__(602);
+	var _reducerAndActions = __webpack_require__(603);
 
 	var _reducerAndActions2 = _interopRequireDefault(_reducerAndActions);
 
-	var _Autosuggest = __webpack_require__(603);
+	var _Autosuggest = __webpack_require__(604);
 
 	var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -72056,7 +72370,7 @@
 	exports.default = AutosuggestContainer;
 
 /***/ },
-/* 587 */
+/* 588 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -72064,27 +72378,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(588);
+	var _createStore = __webpack_require__(589);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(590);
+	var _combineReducers = __webpack_require__(591);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(592);
+	var _bindActionCreators = __webpack_require__(593);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(593);
+	var _applyMiddleware = __webpack_require__(594);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(594);
+	var _compose = __webpack_require__(595);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(591);
+	var _warning = __webpack_require__(592);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -72108,7 +72422,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 588 */
+/* 589 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72117,7 +72431,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 
-	var _isPlainObject = __webpack_require__(589);
+	var _isPlainObject = __webpack_require__(590);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
@@ -72329,7 +72643,7 @@
 	}
 
 /***/ },
-/* 589 */
+/* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getPrototype = __webpack_require__(517),
@@ -72404,7 +72718,7 @@
 
 
 /***/ },
-/* 590 */
+/* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -72412,13 +72726,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 
-	var _createStore = __webpack_require__(588);
+	var _createStore = __webpack_require__(589);
 
-	var _isPlainObject = __webpack_require__(589);
+	var _isPlainObject = __webpack_require__(590);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(591);
+	var _warning = __webpack_require__(592);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -72537,7 +72851,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 591 */
+/* 592 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72566,7 +72880,7 @@
 	}
 
 /***/ },
-/* 592 */
+/* 593 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -72622,7 +72936,7 @@
 	}
 
 /***/ },
-/* 593 */
+/* 594 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72632,7 +72946,7 @@
 	exports.__esModule = true;
 	exports["default"] = applyMiddleware;
 
-	var _compose = __webpack_require__(594);
+	var _compose = __webpack_require__(595);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -72684,7 +72998,7 @@
 	}
 
 /***/ },
-/* 594 */
+/* 595 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72718,7 +73032,7 @@
 	}
 
 /***/ },
-/* 595 */
+/* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72726,11 +73040,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 
-	var _Provider = __webpack_require__(596);
+	var _Provider = __webpack_require__(597);
 
 	var _Provider2 = _interopRequireDefault(_Provider);
 
-	var _connect = __webpack_require__(598);
+	var _connect = __webpack_require__(599);
 
 	var _connect2 = _interopRequireDefault(_connect);
 
@@ -72740,7 +73054,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 596 */
+/* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -72750,7 +73064,7 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(597);
+	var _storeShape = __webpack_require__(598);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
@@ -72824,7 +73138,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 597 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72840,7 +73154,7 @@
 	});
 
 /***/ },
-/* 598 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -72852,23 +73166,23 @@
 
 	var _react = __webpack_require__(1);
 
-	var _storeShape = __webpack_require__(597);
+	var _storeShape = __webpack_require__(598);
 
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 
-	var _shallowEqual = __webpack_require__(599);
+	var _shallowEqual = __webpack_require__(600);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _wrapActionCreators = __webpack_require__(600);
+	var _wrapActionCreators = __webpack_require__(601);
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(589);
+	var _isPlainObject = __webpack_require__(590);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(601);
+	var _hoistNonReactStatics = __webpack_require__(602);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -73168,7 +73482,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 599 */
+/* 600 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -73199,7 +73513,7 @@
 	}
 
 /***/ },
-/* 600 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73207,7 +73521,7 @@
 	exports.__esModule = true;
 	exports["default"] = wrapActionCreators;
 
-	var _redux = __webpack_require__(587);
+	var _redux = __webpack_require__(588);
 
 	function wrapActionCreators(actionCreators) {
 	  return function (dispatch) {
@@ -73216,7 +73530,7 @@
 	}
 
 /***/ },
-/* 601 */
+/* 602 */
 /***/ function(module, exports) {
 
 	/**
@@ -73262,7 +73576,7 @@
 
 
 /***/ },
-/* 602 */
+/* 603 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -73391,7 +73705,7 @@
 	}
 
 /***/ },
-/* 603 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73408,11 +73722,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(595);
+	var _reactRedux = __webpack_require__(596);
 
-	var _reducerAndActions = __webpack_require__(602);
+	var _reducerAndActions = __webpack_require__(603);
 
-	var _reactAutowhatever = __webpack_require__(604);
+	var _reactAutowhatever = __webpack_require__(605);
 
 	var _reactAutowhatever2 = _interopRequireDefault(_reactAutowhatever);
 
@@ -73835,7 +74149,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Autosuggest);
 
 /***/ },
-/* 604 */
+/* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73854,11 +74168,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _sectionIterator = __webpack_require__(605);
+	var _sectionIterator = __webpack_require__(606);
 
 	var _sectionIterator2 = _interopRequireDefault(_sectionIterator);
 
-	var _reactThemeable = __webpack_require__(606);
+	var _reactThemeable = __webpack_require__(607);
 
 	var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
@@ -74158,7 +74472,7 @@
 
 
 /***/ },
-/* 605 */
+/* 606 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -74278,7 +74592,7 @@
 
 
 /***/ },
-/* 606 */
+/* 607 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74291,7 +74605,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _objectAssign = __webpack_require__(607);
+	var _objectAssign = __webpack_require__(608);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -74316,7 +74630,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 607 */
+/* 608 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -74361,7 +74675,7 @@
 
 
 /***/ },
-/* 608 */
+/* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74448,7 +74762,7 @@
 	exports.default = Expire;
 
 /***/ },
-/* 609 */
+/* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -74617,7 +74931,6 @@
 	    }, {
 	        key: "getVariables",
 	        value: function getVariables() {
-	            console.log("getting FatQuery");
 	            return {
 	                name: this.props.modelName,
 	                brandName: this.props.brandName
@@ -74675,191 +74988,6 @@
 	exports.default = AddModelMutation;
 
 /***/ },
-/* 610 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AddItemMutation = function (_Relay$Mutation) {
-	    _inherits(AddItemMutation, _Relay$Mutation);
-
-	    function AddItemMutation() {
-	        _classCallCheck(this, AddItemMutation);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemMutation).apply(this, arguments));
-	    }
-
-	    _createClass(AddItemMutation, [{
-	        key: "getMutation",
-	        value: function getMutation() {
-	            return function () {
-	                return {
-	                    calls: [{
-	                        kind: "Call",
-	                        metadata: {},
-	                        name: "addItem",
-	                        value: {
-	                            kind: "CallVariable",
-	                            callVariableName: "input"
-	                        }
-	                    }],
-	                    children: [{
-	                        fieldName: "clientMutationId",
-	                        kind: "Field",
-	                        metadata: {
-	                            isGenerated: true,
-	                            isRequisite: true
-	                        },
-	                        type: "String"
-	                    }],
-	                    kind: "Mutation",
-	                    metadata: {
-	                        inputType: "AddItemInput!"
-	                    },
-	                    name: "AddItemMutation",
-	                    responseType: "AddItemPayload"
-	                };
-	            }();
-	        }
-	    }, {
-	        key: "getFatQuery",
-	        value: function getFatQuery() {
-
-	            console.log("getting FatQuery");
-
-	            return function () {
-	                return {
-	                    children: [{
-	                        children: [{
-	                            fieldName: "id",
-	                            kind: "Field",
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: "ID"
-	                        }],
-	                        fieldName: "viewer",
-	                        kind: "Field",
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: "node",
-	                            inferredPrimaryKey: "id"
-	                        },
-	                        type: "Viewer"
-	                    }, {
-	                        children: [{
-	                            fieldName: "id",
-	                            kind: "Field",
-	                            metadata: {
-	                                isGenerated: true,
-	                                isRequisite: true
-	                            },
-	                            type: "ID"
-	                        }],
-	                        fieldName: "itemEdge",
-	                        kind: "Field",
-	                        metadata: {
-	                            canHaveSubselections: true,
-	                            inferredRootCallName: "node",
-	                            inferredPrimaryKey: "id"
-	                        },
-	                        type: "ItemType"
-	                    }],
-	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: "Fragment",
-	                    metadata: {},
-	                    name: "AddItemMutation_ValueRelayQL",
-	                    type: "AddItemPayload"
-	                };
-	            }();
-	        }
-	    }, {
-	        key: "getConfigs",
-	        value: function getConfigs() {
-
-	            console.log("getting config");
-	            return [{
-	                type: 'FIELDS_CHANGE',
-	                fieldIDs: {
-	                    viewer: this.props.viewer.id
-	                }
-	            }];
-	        }
-	    }, {
-	        key: "getVariables",
-	        value: function getVariables() {
-	            console.log("getting variables : " + JSON.stringify(this.props.domains));
-	            return {
-	                modelName: this.props.modelName,
-	                severity: this.props.severity,
-	                domains: this.props.domains,
-	                subCategories: this.props.subCategories
-	            };
-	        }
-	    }, {
-	        key: "getOptimisticResponse",
-	        value: function getOptimisticResponse() {
-	            return {
-	                viewer: {
-	                    id: this.props.viewer.id
-	                },
-	                itemEdge: {
-	                    model: {
-	                        name: this.props.modelName
-	                    },
-	                    isInStock: true,
-	                    reference: this.props.modelName + "/" + this.props.state
-	                }
-	            };
-	        }
-	    }]);
-
-	    return AddItemMutation;
-	}(_reactRelay2.default.Mutation);
-
-	AddItemMutation.fragments = {
-	    viewer: function viewer() {
-	        return function () {
-	            return {
-	                children: [{
-	                    fieldName: "id",
-	                    kind: "Field",
-	                    metadata: {
-	                        isRequisite: true
-	                    },
-	                    type: "ID"
-	                }],
-	                id: _reactRelay2.default.QL.__id(),
-	                kind: "Fragment",
-	                metadata: {},
-	                name: "AddItemMutation_ViewerRelayQL",
-	                type: "Viewer"
-	            };
-	        }();
-	    }
-	};
-	exports.default = AddItemMutation;
-
-/***/ },
 /* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -74883,7 +75011,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _AutosuggestWrapper = __webpack_require__(584);
+	var _AutosuggestWrapper = __webpack_require__(585);
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
