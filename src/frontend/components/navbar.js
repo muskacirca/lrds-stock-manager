@@ -28,16 +28,21 @@ class NavBarBox extends React.Component {
                     </div>
                     <nav className="menu">
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
-                        <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                         <Link to="/event" activeClassName="link-active">Event</Link>
-                        <Link to="/logout" activeClassName="link-active">Logout</Link>
-
+                    </nav>
+                    <nav className="menu-right">
+                        <Link to="/logout" activeClassName="link-active"><i className="fa fa-2x fa-power-off"></i></Link>
                     </nav>
                     <nav className="menu-right">
                         {cart}
                     </nav>
+
+                    <nav className="menu-right">
+                        <Link to="/admin/create" activeClassName="link-active"><i className="fa fa-2x fa-cog" aria-hidden="true"></i></Link>
+                    </nav>
+
                     <div className="menu-right">
-                        hello {this.props.user.login}
+                        {this.props.user.login}
                     </div>
                 </header>
 

@@ -88,12 +88,14 @@ a {
     float: left;
 }
 
+.menu-right a,
 .menu a {
     padding: 0 10px;
     text-decoration: none;
     color: #9d9d9d;
 }
 
+.menu-right a:hover,
 .menu a:hover {
     color: whitesmoke;
 }

@@ -16,7 +16,8 @@ class CartComponent extends React.Component {
         }
     }
 
-    toggleCartDisplay() {
+    toggleCartDisplay(e) {
+        e.preventDefault()
         toggleClassInBody('with--cart')
     }
 
@@ -24,11 +25,11 @@ class CartComponent extends React.Component {
 
         var cartCount = this.props.viewer.cart.count
 
-        return  <div onClick={this.toggleCartDisplay.bind(this)}>
+        return  <a href="#" onClick={this.toggleCartDisplay.bind(this)}>
                     <i className="fa fa-2x fa-shopping-cart pointer" />
                     {' '}
                     <span className="badge">{cartCount}</span>
-                </div>
+                </a>
     }
 }
 

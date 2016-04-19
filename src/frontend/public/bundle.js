@@ -52190,7 +52190,8 @@
 
 	    _createClass(CartComponent, [{
 	        key: 'toggleCartDisplay',
-	        value: function toggleCartDisplay() {
+	        value: function toggleCartDisplay(e) {
+	            e.preventDefault();
 	            (0, _utils.toggleClassInBody)('with--cart');
 	        }
 	    }, {
@@ -52200,8 +52201,8 @@
 	            var cartCount = this.props.viewer.cart.count;
 
 	            return _react2.default.createElement(
-	                'div',
-	                { onClick: this.toggleCartDisplay.bind(this) },
+	                'a',
+	                { href: '#', onClick: this.toggleCartDisplay.bind(this) },
 	                _react2.default.createElement('i', { className: 'fa fa-2x fa-shopping-cart pointer' }),
 	                ' ',
 	                _react2.default.createElement(
@@ -68263,18 +68264,17 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: '/admin/create', activeClassName: 'link-active' },
-	                        'Admin'
-	                    ),
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
 	                        { to: '/event', activeClassName: 'link-active' },
 	                        'Event'
-	                    ),
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'nav',
+	                    { className: 'menu-right' },
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
 	                        { to: '/logout', activeClassName: 'link-active' },
-	                        'Logout'
+	                        _react2.default.createElement('i', { className: 'fa fa-2x fa-power-off' })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -68283,9 +68283,17 @@
 	                    cart
 	                ),
 	                _react2.default.createElement(
+	                    'nav',
+	                    { className: 'menu-right' },
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/admin/create', activeClassName: 'link-active' },
+	                        _react2.default.createElement('i', { className: 'fa fa-2x fa-cog', 'aria-hidden': 'true' })
+	                    )
+	                ),
+	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'menu-right' },
-	                    'hello ',
 	                    this.props.user.login
 	                )
 	            );
