@@ -1,0 +1,30 @@
+.calendar-month-header {
+  display: flex;
+  justify-content: space-around; }
+
+.calendar-month-row {
+  display: flex;
+  justify-content: space-around; }
+
+.calendar-row-content {
+  flex: 1; }
+
+.calendar-days-content {
+  min-height: 50px; }
+
+.center {
+  text-align: center; }
+
+.calendar-days-header,
+.calendar-blank-days,
+.calendar-days {
+  border: 1px solid #90A4AE; }
+
+.calendar-days-tr-up {
+  text-align: right; }
+
+.calendar-days-tr-up {
+  font-weight: bold;
+  font-size: 1.5em; }
+
+/*# sourceMappingURL=built-stylesheet.css.map */

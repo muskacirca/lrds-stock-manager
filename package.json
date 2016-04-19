@@ -4,7 +4,8 @@
   "description": "",
   "main": "website/build/server/server.js",
   "scripts": {
-    "build": "node ./node_modules/babel-cli/bin/babel.js src/server --out-dir build && webpack",
+    "build": "npm run build-css && node ./node_modules/babel-cli/bin/babel.js src/server --out-dir build && webpack",
+    "build-css": "sass src/style/sass/style.scss ./src/style/built-stylesheet.css",
     "start": "node build/server.js",
     "update-schema": "babel-node src/tools/updateSchema.js",
     "test": "jest"
