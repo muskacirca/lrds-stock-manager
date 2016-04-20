@@ -71,6 +71,45 @@ type EmptyCartPayload {
   clientMutationId: String!
 }
 
+type EventCommentsTypeConnection {
+  pageInfo: PageInfo!
+  edges: [EventCommentsTypeEdge]
+}
+
+type EventCommentsTypeEdge {
+  node: ItemCommentType
+  cursor: String!
+}
+
+type EventItemsTypeConnection {
+  pageInfo: PageInfo!
+  edges: [EventItemsTypeEdge]
+}
+
+type EventItemsTypeEdge {
+  node: ItemType
+  cursor: String!
+}
+
+type EventType implements Node {
+  id: ID!
+  name: String
+  startDate: String
+  endDate: String
+  comments(after: String, first: Int, before: String, last: Int): EventCommentsTypeConnection
+  reservedItems(after: String, first: Int, before: String, last: Int): EventItemsTypeConnection
+}
+
+type EventTypeConnection {
+  pageInfo: PageInfo!
+  edges: [EventTypeEdge]
+}
+
+type EventTypeEdge {
+  node: EventType
+  cursor: String!
+}
+
 type ItemCommentType implements Node {
   id: ID!
   text: String
@@ -189,6 +228,7 @@ type Viewer implements Node {
   user: UserType
   items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
   item(reference: String!): ItemType
+  events(after: String, first: Int, before: String, last: Int): EventTypeConnection
   brands: [BrandType]
   models(after: String, first: Int, before: String, last: Int): ModelTypeConnection
   domains: [DomainType]

@@ -87,7 +87,7 @@ const itemComment = connection.define('itemComment',  {
 
 item.hasMany(itemComment, {as: 'Comments'})
 
-const event = connection.define('events', {
+const event = connection.define('event', {
 
     name: {type: Sequelize.STRING, allowNull: false},
     description: {type: Sequelize.STRING},

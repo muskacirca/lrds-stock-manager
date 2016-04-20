@@ -15,6 +15,44 @@ CREATE PROCEDURE lrds.add_item(
 
   END //
 
+CREATE PROCEDURE lrds.add_event(
+  IN eventName VARCHAR(255),
+  IN description TEXT,
+  IN startDate DATETIME,
+  IN endDate DATETIME
+)
+  BEGIN
+
+    INSERT INTO events (name, description, startDate, endDate, createdAt, updatedAt) VALUES(eventName, description, startDate, endDate, now(), now());
+
+  END //
+
+CREATE PROCEDURE lrds.bind_item_to_event(
+  IN eventName VARCHAR(255),
+  IN itemName VARCHAR(255)
+)
+  BEGIN
+
+    SET @eventId := (SELECT id FROM events WHERE name = eventName);
+    SET @itemId := (SELECT Id FROM items WHERE reference = itemName);
+
+    INSERT INTO reservedItems (eventId, itemId) VALUES(@eventId, @itemId);
+
+  END //
+
+CREATE PROCEDURE lrds.add_event_comment(
+  IN eventName VARCHAR(255),
+  IN itemReference VARCHAR(255)
+)
+  BEGIN
+
+    SET @eventId := (SELECT id FROM events WHERE name = eventName);
+
+    INSERT INTO eventComments (text, eventId, createdAt, updatedAt) VALUES(text, @eventId, now(), now());
+
+  END //
+
+
 CREATE PROCEDURE lrds.add_brand(
   IN name VARCHAR(255),
   IN description VARCHAR(255)

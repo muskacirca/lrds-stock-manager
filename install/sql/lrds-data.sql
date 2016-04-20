@@ -43,6 +43,10 @@ CALL lrds.bind_model_to_subCategory('FIREFACE UC', 'USB');
 
 CALL lrds.add_item('RMEFIREUC-1', true, 'FIREFACE UC', 'a réparer');
 
+CALL lrds.add_event('Festival sur le pointes', 'gros festival à vitry sur seine', now(), DATE_ADD(NOW(), INTERVAL 2 HOUR));
+CALL lrds.bind_item_to_event('Festival sur le pointes', 'SHUSM58-1');
+CALL lrds.add_event_comment('Festival sur le pointes', 'event comment');
+
 INSERT INTO lrds.users (firstName, lastName, login, password, email, enabled)
     VALUES ('lrds', 'lrds', 'lrds', '4RCh2u5VgDjlglgZzKAZ5/hGdzcAuLz2EFIHqQcukgY=', 'lrds@lrds.com', 1)
 

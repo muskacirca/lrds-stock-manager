@@ -138,7 +138,7 @@ export var GraphQLModelType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-export var GraphQLItemCommentType = new GraphQLObjectType({
+export var GraphQLCommentType = new GraphQLObjectType({
     name: 'ItemCommentType',
     fields: {
         id: globalIdField('ItemCommentType'),
@@ -164,7 +164,15 @@ var {
     // ,edgeType: GraphQLSimTypesEdge,
 } = connectionDefinitions({
     name: 'ItemCommentType',
-    nodeType: GraphQLItemCommentType
+    nodeType: GraphQLCommentType
+});
+
+var {
+    connectionType: EventCommentsConnection
+    // ,edgeType: GraphQLSimTypesEdge,
+} = connectionDefinitions({
+    name: 'EventCommentsType',
+    nodeType: GraphQLCommentType
 });
 
 export var GraphQLItemType = new GraphQLObjectType({
@@ -219,6 +227,47 @@ export var GraphQLCartType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var {
+    connectionType: EventItemsConnection
+    // ,edgeType: GraphQLSimTypesEdge,
+} = connectionDefinitions({
+    name: 'EventItemsType',
+    nodeType: GraphQLItemType
+});
+
+var {
+    connectionType: EventItemsConnection
+    // ,edgeType: GraphQLSimTypesEdge,
+} = connectionDefinitions({
+    name: 'EventItemsType',
+    nodeType: GraphQLItemType
+});
+
+export var EventType = new GraphQLObjectType({
+
+    name: 'EventType',
+    description: 'It represents an event',
+    fields: {
+        id: globalIdField('EventType'),
+        name: {type: GraphQLString, resolve: (obj) => obj.name},
+        description: {type: GraphQLString, resolve: (obj) => obj.description},
+        startDate: {type: GraphQLString, resolve: (obj) =>  obj.startDate},
+        endDate: {type: GraphQLString, resolve: (obj) =>  obj.endDate},
+        comments: {
+            type: EventCommentsConnection,
+            args: {...connectionArgs},
+            resolve: (obj, {...args}) => {
+                return connectionFromPromisedArray(obj.getComments(), args)
+            }
+        },
+        reservedItems: {
+            type: EventItemsConnection,
+            args: {...connectionArgs},
+            resolve: (obj, {...args}) =>  connectionFromPromisedArray(obj.getItems(), args)
+        }
+    },
+    interfaces: [nodeInterface]
+})
 
 export var UserType = new GraphQLObjectType({
     name: 'UserType',
@@ -265,6 +314,14 @@ export var {
     nodeType: GraphQLModelType
 });
 
+export var {
+    connectionType: EventsConnection
+    ,edgeType: EventsEdge,
+} = connectionDefinitions({
+    name: 'EventType',
+    nodeType: EventType
+});
+
 export var GraphQLViewer = new GraphQLObjectType({
     name: 'Viewer',
     fields: () => ({
@@ -291,6 +348,11 @@ export var GraphQLViewer = new GraphQLObjectType({
                 .then((response) => {
                     return response
                 })
+        },
+        events: {
+            type: EventsConnection,
+            args: {...connectionArgs},
+            resolve: (obj, {...args}) => connectionFromPromisedArray(Database.models.event.findAll(), args)
         },
         brands: {
             type: new GraphQLList(GraphQLBrandType),

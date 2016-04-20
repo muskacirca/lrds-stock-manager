@@ -3,7 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GraphQLRoot = exports.GraphQLViewer = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLItemCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+
+var _fields;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -20,6 +22,8 @@ var _ItemStore = require('../stores/ItemStore');
 var _CartStore = require('../stores/CartStore');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
@@ -157,7 +161,7 @@ var GraphQLModelType = exports.GraphQLModelType = new _graphql.GraphQLObjectType
     interfaces: [nodeInterface]
 });
 
-var GraphQLItemCommentType = exports.GraphQLItemCommentType = new _graphql.GraphQLObjectType({
+var GraphQLCommentType = exports.GraphQLCommentType = new _graphql.GraphQLObjectType({
     name: 'ItemCommentType',
     fields: {
         id: (0, _graphqlRelay.globalIdField)('ItemCommentType'),
@@ -192,10 +196,19 @@ var _connectionDefinition =
 // ,edgeType: GraphQLSimTypesEdge,
 (0, _graphqlRelay.connectionDefinitions)({
     name: 'ItemCommentType',
-    nodeType: GraphQLItemCommentType
+    nodeType: GraphQLCommentType
 });
 
 var ItemCommentConnection = _connectionDefinition.connectionType;
+
+var _connectionDefinition2 =
+// ,edgeType: GraphQLSimTypesEdge,
+(0, _graphqlRelay.connectionDefinitions)({
+    name: 'EventCommentsType',
+    nodeType: GraphQLCommentType
+});
+
+var EventCommentsConnection = _connectionDefinition2.connectionType;
 var GraphQLItemType = exports.GraphQLItemType = new _graphql.GraphQLObjectType({
     name: 'ItemType',
     fields: {
@@ -258,6 +271,59 @@ var GraphQLCartType = exports.GraphQLCartType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
+var _connectionDefinition3 =
+// ,edgeType: GraphQLSimTypesEdge,
+(0, _graphqlRelay.connectionDefinitions)({
+    name: 'EventItemsType',
+    nodeType: GraphQLItemType
+});
+
+var EventItemsConnection = _connectionDefinition3.connectionType;
+
+var _connectionDefinition4 =
+// ,edgeType: GraphQLSimTypesEdge,
+(0, _graphqlRelay.connectionDefinitions)({
+    name: 'EventItemsType',
+    nodeType: GraphQLItemType
+});
+
+var EventItemsConnection = _connectionDefinition4.connectionType;
+var EventType = exports.EventType = new _graphql.GraphQLObjectType({
+
+    name: 'EventType',
+    description: 'It represents an event',
+    fields: (_fields = {
+        id: (0, _graphqlRelay.globalIdField)('EventType'),
+        name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                console.log("Eventtype: " + JSON.stringify(obj));
+                return obj.name;
+            } }
+    }, _defineProperty(_fields, 'name', { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+            return obj.description;
+        } }), _defineProperty(_fields, 'startDate', { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+            return obj.startDate;
+        } }), _defineProperty(_fields, 'endDate', { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+            return obj.endDate;
+        } }), _defineProperty(_fields, 'comments', {
+        type: EventCommentsConnection,
+        args: _extends({}, _graphqlRelay.connectionArgs),
+        resolve: function resolve(obj, _ref2) {
+            var args = _objectWithoutProperties(_ref2, []);
+
+            return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getComments(), args);
+        }
+    }), _defineProperty(_fields, 'reservedItems', {
+        type: EventItemsConnection,
+        args: _extends({}, _graphqlRelay.connectionArgs),
+        resolve: function resolve(obj, _ref3) {
+            var args = _objectWithoutProperties(_ref3, []);
+
+            return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getItems(), args);
+        }
+    }), _fields),
+    interfaces: [nodeInterface]
+});
+
 var UserType = exports.UserType = new _graphql.GraphQLObjectType({
     name: 'UserType',
     description: 'It display the information related to an user',
@@ -297,25 +363,35 @@ var UserType = exports.UserType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
+var _connectionDefinition5 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'ItemType',
     nodeType: GraphQLItemType
 });
 
-var ItemsConnection = _connectionDefinition2.connectionType;
-var GraphQLItemEdge = _connectionDefinition2.edgeType;
+var ItemsConnection = _connectionDefinition5.connectionType;
+var GraphQLItemEdge = _connectionDefinition5.edgeType;
 exports.ItemsConnection = ItemsConnection;
 exports.GraphQLItemEdge = GraphQLItemEdge;
 
-var _connectionDefinition3 = (0, _graphqlRelay.connectionDefinitions)({
+var _connectionDefinition6 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'ModelType',
     nodeType: GraphQLModelType
 });
 
-var ModelsConnection = _connectionDefinition3.connectionType;
-var GraphQLModelEdge = _connectionDefinition3.edgeType;
+var ModelsConnection = _connectionDefinition6.connectionType;
+var GraphQLModelEdge = _connectionDefinition6.edgeType;
 exports.ModelsConnection = ModelsConnection;
 exports.GraphQLModelEdge = GraphQLModelEdge;
+
+var _connectionDefinition7 = (0, _graphqlRelay.connectionDefinitions)({
+    name: 'EventType',
+    nodeType: EventType
+});
+
+var EventsConnection = _connectionDefinition7.connectionType;
+var EventsEdge = _connectionDefinition7.edgeType;
+exports.EventsConnection = EventsConnection;
+exports.EventsEdge = EventsEdge;
 var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
     name: 'Viewer',
     fields: function fields() {
@@ -330,8 +406,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             items: {
                 type: ItemsConnection,
                 args: _extends({}, _graphqlRelay.connectionArgs),
-                resolve: function resolve(obj, _ref2) {
-                    var args = _objectWithoutProperties(_ref2, []);
+                resolve: function resolve(obj, _ref4) {
+                    var args = _objectWithoutProperties(_ref4, []);
 
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(), args);
                 }
@@ -343,11 +419,20 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
                         type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                     }
                 },
-                resolve: function resolve(_, _ref3) {
-                    var reference = _ref3.reference;
+                resolve: function resolve(_, _ref5) {
+                    var reference = _ref5.reference;
                     return _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (response) {
                         return response;
                     });
+                }
+            },
+            events: {
+                type: EventsConnection,
+                args: _extends({}, _graphqlRelay.connectionArgs),
+                resolve: function resolve(obj, _ref6) {
+                    var args = _objectWithoutProperties(_ref6, []);
+
+                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(), args);
                 }
             },
             brands: {
@@ -361,8 +446,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             models: {
                 type: ModelsConnection,
                 args: _extends({}, _graphqlRelay.connectionArgs),
-                resolve: function resolve(_, _ref4) {
-                    var args = _objectWithoutProperties(_ref4, []);
+                resolve: function resolve(_, _ref7) {
+                    var args = _objectWithoutProperties(_ref7, []);
 
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
                 }
@@ -406,8 +491,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
                         type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                     }
                 },
-                resolve: function resolve(functionToRetrievedViewerFromCache, _ref5) {
-                    var itemReference = _ref5.itemReference;
+                resolve: function resolve(functionToRetrievedViewerFromCache, _ref8) {
+                    var itemReference = _ref8.itemReference;
 
 
                     var searchKey = itemReference + '%';
@@ -419,8 +504,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             cart: {
                 type: GraphQLCartType,
                 args: { viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) } },
-                resolve: function resolve(obj, _ref6) {
-                    var viewerId = _ref6.viewerId;
+                resolve: function resolve(obj, _ref9) {
+                    var viewerId = _ref9.viewerId;
 
                     console.log('cart type resolve: ' + JSON.stringify((0, _CartStore.getCart)(viewerId)));
                     return (0, _CartStore.getCart)(viewerId);
@@ -442,8 +527,8 @@ var GraphQLRoot = exports.GraphQLRoot = new _graphql.GraphQLObjectType({
                     type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
                 }
             },
-            resolve: function resolve(root, _ref7) {
-                var viewerId = _ref7.viewerId;
+            resolve: function resolve(root, _ref10) {
+                var viewerId = _ref10.viewerId;
                 return _database2.default.models.user.findOne({ where: { id: viewerId } });
             }
         },

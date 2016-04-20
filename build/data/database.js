@@ -94,7 +94,7 @@ var itemComment = connection.define('itemComment', {
 
 item.hasMany(itemComment, { as: 'Comments' });
 
-var event = connection.define('events', {
+var event = connection.define('event', {
 
     name: { type: _sequelize2.default.STRING, allowNull: false },
     description: { type: _sequelize2.default.STRING },
