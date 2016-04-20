@@ -13,11 +13,20 @@ class LoginBox extends React.Component {
     }
 
     render() {
-        return (
-            <div className="col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main">
-                <Header label="Please login"/>
-                <LoginForm />
-            </div>);
+        return  <div className="login-container">
+                    <div className="col-sm-2 col-sm-offset-5 col-md-4 col-md-offset-4">
+                        <div className="well">
+                            <center>
+                                <img className="img-responsive" src="/style/images/lrds-logo-300px.png"/>
+                            </center>
+                            <br />
+                            <div className="panel-body">
+                                <LoginForm />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
     }
 }
 
@@ -34,24 +43,6 @@ class LoginForm extends React.Component {
         super(props);
         this.state = {error: false}
     }
-
-    //handleSubmit(e) {
-    //    e.preventDefault();
-    //
-    //    var email = ReactDOM.findDOMNode(this.refs.loginField).value
-    //    var pass = ReactDOM.findDOMNode(this.refs.passwordField).value
-    //
-    //    auth.login(email, pass, (loggedIn) => {
-    //        if (!loggedIn) {
-    //            console.log("not authenticated")
-    //            return this.setState({error: true})
-    //        }
-    //
-    //        this.context.router.push("/")
-    //    })
-    //
-    //    return;
-    //}
 
     handleSubmit(e) {
 
@@ -75,30 +66,32 @@ class LoginForm extends React.Component {
     }
 
     render() {
-        return (
-            <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
-                <div className="input-group">
-                    <span className="input-group-addon" id="basic-addon1">@</span>
-                    <input type="text" className="form-control" ref="loginField" placeholder="login"
-                           aria-describedby="basic-addon1"/>
-                </div>
-                <div className="input-group">
-                    <span className="input-group-addon" id="basic-addon1">?</span>
-                    <input type="password" className="form-control" ref="passwordField" placeholder="password"
-                           aria-describedby="basic-addon1"/>
-                </div>
-                <SubmitButton label="Login"/>
-                {this.state.error && (
-                    <p>Bad login information</p>
-                )}
-            </form>
-        );
-    }
-}
-
-class SubmitButton extends React.Component {
-    render() {
-        return <button type="submit" className="btn btn-default primary">{this.props.label}</button>
+        return  <form className="commentForm" onSubmit={this.handleSubmit.bind(this)}>
+                    <div className="form-group">
+                        <div className="input-group">
+                            <span className="input-group-addon" id="basic-addon1">
+                                <i className="fa fa-user" aria-hidden="true"></i>
+                            </span>
+                            <input type="text" className="form-control" ref="loginField" placeholder="login"
+                                   aria-describedby="basic-addon1"/>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="input-group">
+                            <span className="input-group-addon" id="basic-addon1">
+                                <i className="fa fa-key" aria-hidden="true"></i>
+                            </span>
+                            <input type="password" className="form-control" ref="passwordField" placeholder="password"
+                                   aria-describedby="basic-addon1"/>
+                        </div>
+                    </div>
+                    <button type="submit" className="btn btn-default primary btn-block">Login</button>
+                    <div>
+                        {this.state.error && (
+                            <p>Bad login information</p>
+                        )}
+                    </div>
+                </form>
     }
 }
 

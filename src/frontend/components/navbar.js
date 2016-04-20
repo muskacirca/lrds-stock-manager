@@ -21,11 +21,12 @@ class NavBarBox extends React.Component {
         
         return  <header className="header">
                     <a href="#" className="header__icon" id="header__icon"
-                       onClick={this.handleClick.bind(this)} href="#"></a>
+                       onClick={this.handleClick.bind(this)} href="#">
+                    </a>
 
-                    <div href="#" className="header__logo link-active" href="#">
-                        LRDS
-                    </div>
+                    <a href="#" className="header__logo link-active" href="#">
+                        <img  src="/style/images/lrds-logo-50px.png"/>
+                    </a>
                     <nav className="menu">
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
                         <Link to="/event" activeClassName="link-active">Event</Link>

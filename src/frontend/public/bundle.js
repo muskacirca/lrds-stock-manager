@@ -68250,9 +68250,9 @@
 	                _react2.default.createElement('a', _defineProperty({ href: '#', className: 'header__icon', id: 'header__icon',
 	                    onClick: this.handleClick.bind(this) }, 'href', '#')),
 	                _react2.default.createElement(
-	                    'div',
+	                    'a',
 	                    _defineProperty({ href: '#', className: 'header__logo link-active' }, 'href', '#'),
-	                    'LRDS'
+	                    _react2.default.createElement('img', { src: '/style/images/lrds-logo-50px.png' })
 	                ),
 	                _react2.default.createElement(
 	                    'nav',
@@ -68952,9 +68952,26 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 main' },
-	                _react2.default.createElement(Header, { label: 'Please login' }),
-	                _react2.default.createElement(LoginForm, null)
+	                { className: 'login-container' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-sm-2 col-sm-offset-5 col-md-4 col-md-offset-4' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'well' },
+	                        _react2.default.createElement(
+	                            'center',
+	                            null,
+	                            _react2.default.createElement('img', { className: 'img-responsive', src: '/style/images/lrds-logo-300px.png' })
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'panel-body' },
+	                            _react2.default.createElement(LoginForm, null)
+	                        )
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -68997,24 +69014,6 @@
 	        return _this3;
 	    }
 
-	    //handleSubmit(e) {
-	    //    e.preventDefault();
-	    //
-	    //    var email = ReactDOM.findDOMNode(this.refs.loginField).value
-	    //    var pass = ReactDOM.findDOMNode(this.refs.passwordField).value
-	    //
-	    //    auth.login(email, pass, (loggedIn) => {
-	    //        if (!loggedIn) {
-	    //            console.log("not authenticated")
-	    //            return this.setState({error: true})
-	    //        }
-	    //
-	    //        this.context.router.push("/")
-	    //    })
-	    //
-	    //    return;
-	    //}
-
 	    _createClass(LoginForm, [{
 	        key: 'handleSubmit',
 	        value: function handleSubmit(e) {
@@ -69046,60 +69045,53 @@
 	                { className: 'commentForm', onSubmit: this.handleSubmit.bind(this) },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'input-group' },
+	                    { className: 'form-group' },
 	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'input-group-addon', id: 'basic-addon1' },
-	                        '@'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'loginField', placeholder: 'login',
-	                        'aria-describedby': 'basic-addon1' })
+	                        'div',
+	                        { className: 'input-group' },
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'input-group-addon', id: 'basic-addon1' },
+	                            _react2.default.createElement('i', { className: 'fa fa-user', 'aria-hidden': 'true' })
+	                        ),
+	                        _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'loginField', placeholder: 'login',
+	                            'aria-describedby': 'basic-addon1' })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'input-group' },
+	                    { className: 'form-group' },
 	                    _react2.default.createElement(
-	                        'span',
-	                        { className: 'input-group-addon', id: 'basic-addon1' },
-	                        '?'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'password', className: 'form-control', ref: 'passwordField', placeholder: 'password',
-	                        'aria-describedby': 'basic-addon1' })
+	                        'div',
+	                        { className: 'input-group' },
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'input-group-addon', id: 'basic-addon1' },
+	                            _react2.default.createElement('i', { className: 'fa fa-key', 'aria-hidden': 'true' })
+	                        ),
+	                        _react2.default.createElement('input', { type: 'password', className: 'form-control', ref: 'passwordField', placeholder: 'password',
+	                            'aria-describedby': 'basic-addon1' })
+	                    )
 	                ),
-	                _react2.default.createElement(SubmitButton, { label: 'Login' }),
-	                this.state.error && _react2.default.createElement(
-	                    'p',
+	                _react2.default.createElement(
+	                    'button',
+	                    { type: 'submit', className: 'btn btn-default primary btn-block' },
+	                    'Login'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
 	                    null,
-	                    'Bad login information'
+	                    this.state.error && _react2.default.createElement(
+	                        'p',
+	                        null,
+	                        'Bad login information'
+	                    )
 	                )
 	            );
 	        }
 	    }]);
 
 	    return LoginForm;
-	}(_react2.default.Component);
-
-	var SubmitButton = function (_React$Component4) {
-	    _inherits(SubmitButton, _React$Component4);
-
-	    function SubmitButton() {
-	        _classCallCheck(this, SubmitButton);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SubmitButton).apply(this, arguments));
-	    }
-
-	    _createClass(SubmitButton, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'button',
-	                { type: 'submit', className: 'btn btn-default primary' },
-	                this.props.label
-	            );
-	        }
-	    }]);
-
-	    return SubmitButton;
 	}(_react2.default.Component);
 
 	LoginForm.contextTypes = {
