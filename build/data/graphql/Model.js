@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
 
-var _fields;
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _graphql = require('graphql');
@@ -22,8 +20,6 @@ var _ItemStore = require('../stores/ItemStore');
 var _CartStore = require('../stores/CartStore');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
@@ -292,35 +288,39 @@ var EventType = exports.EventType = new _graphql.GraphQLObjectType({
 
     name: 'EventType',
     description: 'It represents an event',
-    fields: (_fields = {
+    fields: {
         id: (0, _graphqlRelay.globalIdField)('EventType'),
         name: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
-                console.log("Eventtype: " + JSON.stringify(obj));
                 return obj.name;
-            } }
-    }, _defineProperty(_fields, 'name', { type: _graphql.GraphQLString, resolve: function resolve(obj) {
-            return obj.description;
-        } }), _defineProperty(_fields, 'startDate', { type: _graphql.GraphQLString, resolve: function resolve(obj) {
-            return obj.startDate;
-        } }), _defineProperty(_fields, 'endDate', { type: _graphql.GraphQLString, resolve: function resolve(obj) {
-            return obj.endDate;
-        } }), _defineProperty(_fields, 'comments', {
-        type: EventCommentsConnection,
-        args: _extends({}, _graphqlRelay.connectionArgs),
-        resolve: function resolve(obj, _ref2) {
-            var args = _objectWithoutProperties(_ref2, []);
+            } },
+        description: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.description;
+            } },
+        startDate: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.startDate;
+            } },
+        endDate: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.endDate;
+            } },
+        comments: {
+            type: EventCommentsConnection,
+            args: _extends({}, _graphqlRelay.connectionArgs),
+            resolve: function resolve(obj, _ref2) {
+                var args = _objectWithoutProperties(_ref2, []);
 
-            return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getComments(), args);
-        }
-    }), _defineProperty(_fields, 'reservedItems', {
-        type: EventItemsConnection,
-        args: _extends({}, _graphqlRelay.connectionArgs),
-        resolve: function resolve(obj, _ref3) {
-            var args = _objectWithoutProperties(_ref3, []);
+                return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getComments(), args);
+            }
+        },
+        reservedItems: {
+            type: EventItemsConnection,
+            args: _extends({}, _graphqlRelay.connectionArgs),
+            resolve: function resolve(obj, _ref3) {
+                var args = _objectWithoutProperties(_ref3, []);
 
-            return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getItems(), args);
+                return (0, _graphqlRelay.connectionFromPromisedArray)(obj.getItems(), args);
+            }
         }
-    }), _fields),
+    },
     interfaces: [nodeInterface]
 });
 

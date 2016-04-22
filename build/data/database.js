@@ -11,8 +11,8 @@ var _sequelize2 = _interopRequireDefault(_sequelize);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
-var mysql_user = process.env.CLEARDB_DATABASE_USER || "root";
-var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "liberate";
+var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds";
+var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds";
 
 var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
     pool: {
