@@ -94,6 +94,7 @@ type EventItemsTypeEdge {
 type EventType implements Node {
   id: ID!
   name: String
+  description: String
   startDate: String
   endDate: String
   comments(after: String, first: Int, before: String, last: Int): EventCommentsTypeConnection
