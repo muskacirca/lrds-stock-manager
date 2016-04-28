@@ -47,7 +47,7 @@ var AddModelMutation = exports.AddModelMutation = new _graphqlRelay.mutationWith
 
                 return _database2.default.models.model.findAll().then(function (dataModels) {
 
-                    var itemToPass = undefined;
+                    var itemToPass = void 0;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;
@@ -130,7 +130,7 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
 
                 return _database2.default.models.item.findAll().then(function (items) {
 
-                    var itemToPass = undefined;
+                    var itemToPass = void 0;
                     var _iteratorNormalCompletion2 = true;
                     var _didIteratorError2 = false;
                     var _iteratorError2 = undefined;

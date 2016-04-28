@@ -7,6 +7,13 @@ import {
 } from '../../utils/utils'
 
 class NavBarBox extends React.Component {
+    
+    constructor(props) {
+        super(props)
+        this.state = {
+            isUserMenuOpened: false
+        }
+    }
 
     handleClick(e) {
         e.preventDefault()
@@ -15,9 +22,16 @@ class NavBarBox extends React.Component {
 
     }
 
+    toggleUserMenuOpening() {
+        console.log("toggleUserMenuOpening " + this.state.isUserMenuOpened)
+        this.setState({isUserMenuOpened: !this.state.isUserMenuOpened})
+    }
+
     render() {
 
         var cart = this.props.shoppingCart
+        
+        var userMenuStyle = this.state.isUserMenuOpened ? {display: "block"} : {}
         
         return  <header className="header">
                     <a href="#" className="header__icon" id="header__icon"
@@ -32,18 +46,27 @@ class NavBarBox extends React.Component {
                         <Link to="/event" activeClassName="link-active">Event</Link>
                     </nav>
                     <nav className="menu-right">
-                        <Link to="/logout" activeClassName="link-active"><i className="fa fa-2x fa-power-off"></i></Link>
-                    </nav>
-                    <nav className="menu-right">
                         {cart}
                     </nav>
 
                     <nav className="menu-right">
-                        <Link to="/admin/create" activeClassName="link-active"><i className="fa fa-2x fa-cog" aria-hidden="true"></i></Link>
+                        <Link to="/admin/create" activeClassName="link-active">
+                            <i className="fa fa-2x fa-cog" aria-hidden="true"></i>
+                        </Link>
                     </nav>
 
                     <div className="menu-right">
-                        {this.props.user.login}
+                        <div onClick={this.toggleUserMenuOpening.bind(this)} className="pointer navbar-dropdown">
+                            <div>
+                                <i className="fa fa-2x fa-user" aria-hidden="true" />
+                                {' '}hello{' '}{this.props.user.login}{' '}!
+                            </div>
+                            <div style={userMenuStyle} className="navbar-dropdown-content">
+                                <Link to="/logout" activeClassName="link-active">
+                                    <i className="fa fa-2x fa-power-off" />
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 </header>
 
