@@ -12,7 +12,8 @@ import Item from '../components/stock/Item'
 import ItemForm from '../components/stock/admin/ItemForm'
 import Product from '../components/product'
 import Profile from '../components/profile'
-import Event from '../components/event'
+import Event from '../components/event/event'
+import EventAdmin from '../components/event/admin/EventAdmin'
 import NavBarBox from '../components/navbar'
 import Login from '../components/login'
 
@@ -62,6 +63,9 @@ export default  <Route>
                                prepareParams={prepareItemParam} onEnter={requireAuth} />
 
                         <Route path="event" component={Event} prepareParams={() => getUser()} 
+                               queries={ViewerQuery} onEnter={requireAuth}/>
+
+                        <Route path="event/create" component={EventAdmin} prepareParams={() => getUser()}
                                queries={ViewerQuery} onEnter={requireAuth}/>
 
                     </Route>

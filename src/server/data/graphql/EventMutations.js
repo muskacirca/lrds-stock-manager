@@ -30,7 +30,8 @@ export const AddEventMutation = new mutationWithClientMutationId({
         name: {type: new GraphQLNonNull(GraphQLString)},
         startDate: {type: new GraphQLNonNull(GraphQLString)},
         endDate: {type: new GraphQLNonNull(GraphQLString)},
-        description: {type: GraphQLString}
+        description: {type: GraphQLString},
+        itemsReference: {type: new GraphQLList(GraphQLString)}
         
     },
     outputFields: {
@@ -41,8 +42,6 @@ export const AddEventMutation = new mutationWithClientMutationId({
         eventEdge: {
             type: EventsEdge,
             resolve: (obj, {id}) => {
-
-                console.log("AddModelMutation obj : "  + JSON.stringify(obj))
 
                 return Database.models.event.findAll()
                     .then(dataModels => {
@@ -62,7 +61,7 @@ export const AddEventMutation = new mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({name, startDate, endDate, description}) => {
+    mutateAndGetPayload: ({name, startDate, endDate, description, itemsReference}) => {
 
         var event = {
             name: name,
@@ -71,8 +70,13 @@ export const AddEventMutation = new mutationWithClientMutationId({
             description: description
         }
         
-        return Database.models.brand.create(event)
-            .spread((event, wasCreated) => { // spread is necessary when multiple return value
+        return Database.models.event.create(event)
+            .then(event => { // spread is necessary when multiple return value
+                
+                itemsReference.forEach(reference => {
+                    Database.models.item.findOne({where: {reference: reference}}).then(item => event.addItem(item))
+                })
+                
                 return event
             })
     }

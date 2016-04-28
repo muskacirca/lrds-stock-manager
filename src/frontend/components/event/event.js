@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 
-import Calendar from './calendar/Calendar'
+import Calendar from './../calendar/Calendar'
 
 class EventBox extends React.Component {
 

@@ -263,7 +263,9 @@ export var EventType = new GraphQLObjectType({
         reservedItems: {
             type: EventItemsConnection,
             args: {...connectionArgs},
-            resolve: (obj, {...args}) =>  connectionFromPromisedArray(obj.getItems(), args)
+            resolve: (obj, {...args}) => {
+                return connectionFromPromisedArray(obj.getItems(), args)
+            }
         }
     },
     interfaces: [nodeInterface]

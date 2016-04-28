@@ -15,6 +15,10 @@ import {
 } from './graphql/CartMutations'
 
 import {
+    AddEventMutation,
+} from './graphql/EventMutations'
+
+import {
     GraphQLRoot
 } from './graphql/Model'
 
@@ -26,7 +30,8 @@ var Mutation = new GraphQLObjectType({
         addItem: AddItemMutation,
         addItemInCart: AddItemInCartMutation,
         removeItemFromCart: RemoveItemFromCartMutation,
-        emptyCart: EmptyCartMutation
+        emptyCart: EmptyCartMutation,
+        addEvent: AddEventMutation,
     }
 });
 

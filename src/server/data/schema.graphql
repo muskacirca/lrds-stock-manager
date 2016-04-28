@@ -1,3 +1,18 @@
+input AddEventInput {
+  name: String!
+  startDate: String!
+  endDate: String!
+  description: String
+  itemsReference: [String]
+  clientMutationId: String!
+}
+
+type AddEventPayload {
+  viewer: Viewer
+  eventEdge: EventTypeEdge
+  clientMutationId: String!
+}
+
 input AddItemInCartInput {
   viewerId: Int!
   itemReference: String!
@@ -172,6 +187,7 @@ type Mutation {
   addItemInCart(input: AddItemInCartInput!): AddItemInCartPayload
   removeItemFromCart(input: RemoveItemFromCartInput!): RemoveItemFromCartPayload
   emptyCart(input: EmptyCartInput!): EmptyCartPayload
+  addEvent(input: AddEventInput!): AddEventPayload
 }
 
 interface Node {

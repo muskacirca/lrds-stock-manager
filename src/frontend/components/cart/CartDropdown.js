@@ -27,9 +27,13 @@ class CartDropdownComponent extends React.Component {
         Relay.Store.commitUpdate(removeItemFromCartMutation, {onSuccess, onFailure})
     }
 
+    onCreateEventFromCart() {
+        this.context.router.push("/event/create")
+    }
+
     emptyCart() {
 
-        var emptyCartMutation = new RemoveItemFromCartMutation();
+        var emptyCartMutation = new EmptyCartMutation();
 
         var onSuccess = (response) => console.log("successfully empty cart");
 
@@ -41,14 +45,17 @@ class CartDropdownComponent extends React.Component {
     renderCart(cart) {
 
         return cart.selectedItems.map((item, key) => {
-            return  <div key={"cart-" + key + "-" + item.reference} className="row">
-                        <div className="col-md-10">
-                            <div>{item.reference}</div>
-                        </div>
-                        <div className="col-md-2 pointer" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}>
-                            <i className="fa fa-times red" />
+            return  <div>
+                        <div key={"cart-" + key + "-" + item.reference} className="row">
+                            <div className="col-md-10 col-sm-10 col-xs-10">
+                                <div>{item.reference}</div>
+                            </div>
+                            <div className="col-md-2 col-sm-2 col-xs-2 pointer" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}>
+                                <i className="fa fa-times red" />
+                            </div>
                         </div>
                     </div>
+
 
         })
     }
@@ -58,11 +65,23 @@ class CartDropdownComponent extends React.Component {
         var cartItems = this.renderCart(this.props.viewer.cart)
 
         return  <div className="cart-dropdown">
+                    <div className="cart-dropdown-header">
+                        <ul className="list-inline">
+                            <li className="pointer" onClick={this.onCreateEventFromCart.bind(this)}>
+                                <i className="fa fa-calendar" aria-hidden="true" />
+                            </li>
+                        </ul>
+                    </div>
                     {cartItems}
-                    <div className="pointer" onClick={this.emptyCart.bind(this)}>Empty cart</div>
+                    <a className="pointer" onClick={this.emptyCart.bind(this)}>Empty cart</a>
                 </div>
     }
 }
+
+CartDropdownComponent.contextTypes = {
+    router: React.PropTypes.object.isRequired
+}
+
 
 export default Relay.createContainer(CartDropdownComponent, {
 

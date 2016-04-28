@@ -11,6 +11,8 @@ var _StockMutations = require('./graphql/StockMutations');
 
 var _CartMutations = require('./graphql/CartMutations');
 
+var _EventMutations = require('./graphql/EventMutations');
+
 var _Model = require('./graphql/Model');
 
 var Mutation = new _graphql.GraphQLObjectType({
@@ -20,7 +22,8 @@ var Mutation = new _graphql.GraphQLObjectType({
         addItem: _StockMutations.AddItemMutation,
         addItemInCart: _CartMutations.AddItemInCartMutation,
         removeItemFromCart: _CartMutations.RemoveItemFromCartMutation,
-        emptyCart: _CartMutations.EmptyCartMutation
+        emptyCart: _CartMutations.EmptyCartMutation,
+        addEvent: _EventMutations.AddEventMutation
     }
 });
 
