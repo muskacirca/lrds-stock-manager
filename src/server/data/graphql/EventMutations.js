@@ -31,7 +31,7 @@ export const AddEventMutation = new mutationWithClientMutationId({
         startDate: {type: new GraphQLNonNull(GraphQLString)},
         endDate: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: GraphQLString},
-        itemsReference: {type: new GraphQLList(GraphQLString)}
+        reservedItems: {type: new GraphQLList(GraphQLString)}
         
     },
     outputFields: {
@@ -44,24 +44,24 @@ export const AddEventMutation = new mutationWithClientMutationId({
             resolve: (obj, {id}) => {
 
                 return Database.models.event.findAll()
-                    .then(dataModels => {
+                    .then(events => {
 
-                        let itemToPass
-                        for (const model of dataModels) {
-                            if (model.id === obj.id) {
-                                itemToPass = model;
+                        let eventToPass
+                        for (const event of events) {
+                            if (event.id === obj.id) {
+                                eventToPass = event;
                             }
                         }
-                        var cursor = cursorForObjectInConnection(dataModels, itemToPass);
+                        var cursor = cursorForObjectInConnection(events, eventToPass);
                         return {
                             cursor: cursor,
-                            node: itemToPass
+                            node: eventToPass
                         }
                     })
             }
         }
     },
-    mutateAndGetPayload: ({name, startDate, endDate, description, itemsReference}) => {
+    mutateAndGetPayload: ({name, startDate, endDate, description, reservedItems}) => {
 
         var event = {
             name: name,
@@ -72,8 +72,8 @@ export const AddEventMutation = new mutationWithClientMutationId({
         
         return Database.models.event.create(event)
             .then(event => { // spread is necessary when multiple return value
-                
-                itemsReference.forEach(reference => {
+
+                reservedItems.forEach(reference => {
                     Database.models.item.findOne({where: {reference: reference}}).then(item => event.addItem(item))
                 })
                 

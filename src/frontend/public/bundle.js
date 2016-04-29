@@ -62,7 +62,7 @@
 
 	var _reactRouter = __webpack_require__(191);
 
-	var _history = __webpack_require__(822);
+	var _history = __webpack_require__(823);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75460,10 +75460,14 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'sub-bar row' },
-	                    _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
-	                        increaseCalendar: this.increaseCalendar.bind(this),
-	                        subtractCalendar: this.subtractCalendar.bind(this),
-	                        getNow: this.getNow.bind(this) })
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-10 col-md-offset-1' },
+	                        _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
+	                            increaseCalendar: this.increaseCalendar.bind(this),
+	                            subtractCalendar: this.subtractCalendar.bind(this),
+	                            getNow: this.getNow.bind(this) })
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -88604,17 +88608,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRelay = __webpack_require__(249);
-
-	var _reactRelay2 = _interopRequireDefault(_reactRelay);
-
 	var _moment = __webpack_require__(615);
 
 	var _moment2 = _interopRequireDefault(_moment);
-
-	var _lodash = __webpack_require__(567);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
 
 	var _CalendarColumn = __webpack_require__(715);
 
@@ -88628,7 +88624,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	var days_name = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 	var Calendar = function (_React$Component) {
@@ -88741,7 +88736,6 @@
 	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(newprops) {
-	            console.log("componentWillReceiveProps: " + JSON.stringify(newprops));
 	            this.setState({ defaultDate: newprops.defaultDate });
 	        }
 	    }, {
@@ -88846,7 +88840,7 @@
 /* 716 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -88857,6 +88851,10 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _moment = __webpack_require__(615);
+
+	var _moment2 = _interopRequireDefault(_moment);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -88872,67 +88870,72 @@
 	    function CalendarHeader(props) {
 	        _classCallCheck(this, CalendarHeader);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(CalendarHeader).call(this, props));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CalendarHeader).call(this, props));
+
+	        _this.state = {
+	            defaultDate: (0, _moment2.default)(_this.props.defaultDate)
+	        };
+	        return _this;
 	    }
 
 	    _createClass(CalendarHeader, [{
-	        key: "increaseCalendar",
+	        key: 'increaseCalendar',
 	        value: function increaseCalendar() {
 	            this.props.increaseCalendar();
 	        }
 	    }, {
-	        key: "subtractCalendar",
+	        key: 'subtractCalendar',
 	        value: function subtractCalendar() {
 	            this.props.subtractCalendar();
 	        }
 	    }, {
-	        key: "getNow",
+	        key: 'getNow',
 	        value: function getNow() {
 	            this.props.getNow();
 	        }
 	    }, {
-	        key: "render",
+	        key: 'componentWillReceiveProps',
+	        value: function componentWillReceiveProps(newprops) {
+	            this.setState({ defaultDate: (0, _moment2.default)(newprops.defaultDate) });
+	        }
+	    }, {
+	        key: 'render',
 	        value: function render() {
 
 	            return _react2.default.createElement(
-	                "div",
-	                { className: "calendar-container" },
+	                'div',
+	                { className: 'calendar-container' },
 	                _react2.default.createElement(
-	                    "div",
-	                    { className: "calendar-header" },
+	                    'div',
+	                    { className: 'calendar-header' },
 	                    _react2.default.createElement(
-	                        "span",
-	                        { className: "calendar-month-year" },
-	                        this.props.defaultDate.format("dddd, MMMM Do YYYY, h:mm:ss a")
-	                    ),
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "row" },
+	                        'div',
+	                        { className: 'row' },
 	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "col-md-1" },
+	                            'div',
+	                            { className: 'col-md-1' },
 	                            _react2.default.createElement(
-	                                "button",
-	                                { className: "btn btn-default", onClick: this.subtractCalendar.bind(this) },
-	                                _react2.default.createElement("i", { className: "fa fa-2x fa-chevron-left" })
+	                                'button',
+	                                { className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
+	                                _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-left' })
 	                            )
 	                        ),
 	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "center col-md-10" },
+	                            'div',
+	                            { className: 'center col-md-10' },
 	                            _react2.default.createElement(
-	                                "button",
-	                                { className: "btn btn-default", onClick: this.getNow.bind(this) },
-	                                "Today"
+	                                'button',
+	                                { className: 'btn btn-default', onClick: this.getNow.bind(this) },
+	                                'Today'
 	                            )
 	                        ),
 	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "col-md-1" },
+	                            'div',
+	                            { className: 'col-md-1' },
 	                            _react2.default.createElement(
-	                                "button",
-	                                { className: "btn btn-default", onClick: this.increaseCalendar.bind(this) },
-	                                _react2.default.createElement("i", { className: "fa fa-2x fa-chevron-right" })
+	                                'button',
+	                                { className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
+	                                _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-right' })
 	                            )
 	                        )
 	                    )
@@ -88956,6 +88959,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -88969,6 +88974,18 @@
 	var _reactDatepicker = __webpack_require__(718);
 
 	var _reactDatepicker2 = _interopRequireDefault(_reactDatepicker);
+
+	var _moment = __webpack_require__(615);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _AddEventMutation = __webpack_require__(822);
+
+	var _AddEventMutation2 = _interopRequireDefault(_AddEventMutation);
+
+	var _AuthService = __webpack_require__(542);
+
+	var _AuthService2 = _interopRequireDefault(_AuthService);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -88987,17 +89004,56 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventAdmin).call(this, props));
 
 	        _this.state = {
-	            startDate: new Date()
+	            startDate: (0, _moment2.default)(),
+	            endDate: (0, _moment2.default)()
 	        };
 	        return _this;
 	    }
 
 	    _createClass(EventAdmin, [{
 	        key: 'handleChange',
-	        value: function handleChange() {}
+	        value: function handleChange(fieldRef, date) {
+
+	            if (fieldRef.indexOf("Start") != -1) {
+	                console.log("changind start date: ");
+	                this.setState({ startDate: date });
+	            } else {
+
+	                console.log("chanbging end date");
+
+	                this.setState({ endDate: date });
+	            }
+	        }
 	    }, {
 	        key: 'onAddEvent',
-	        value: function onAddEvent() {}
+	        value: function onAddEvent(e) {
+
+	            e.preventDefault();
+
+	            var eventName = this.refs.inputFormEventName.value;
+	            var eventDescription = this.refs.inputFormEventDescription.value;
+	            var eventStartDate = this.state.startDate;
+	            var eventEndDate = this.state.endDate;
+
+	            var addEventutation = new _AddEventMutation2.default({
+	                viewer: this.props.viewer,
+	                name: eventName,
+	                description: eventDescription,
+	                startDate: eventStartDate,
+	                endDate: eventEndDate,
+	                reservedItems: this.props.viewer.cart.selectedItems
+	            });
+
+	            var onSuccess = function onSuccess(response) {
+	                return console.log(response);
+	            };
+
+	            var onFailure = function onFailure(transaction) {
+	                return console.log(transaction);
+	            };
+
+	            _reactRelay2.default.Store.commitUpdate(addEventutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -89007,62 +89063,100 @@
 	                null,
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'sub-bar-component' },
+	                    { className: 'sub-bar row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1' },
-	                        'Hello sub-bar component'
+	                        { className: 'col-md-8 col-md-offset-2' },
+	                        _react2.default.createElement(
+	                            'h1',
+	                            null,
+	                            'Create an event'
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'form',
-	                    { name: 'addNewEventForm' },
+	                    'div',
+	                    { className: 'page-content row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'form-group' },
+	                        { className: 'col-md-10 col-md-offset-1' },
 	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'inputFormEventName' },
-	                            'Event name'
-	                        ),
-	                        _react2.default.createElement('input', { ref: 'inputFormEventName', id: 'inputFormEventName', type: 'text', className: 'form-control', placeholder: 'name' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'inputFormEventDescription' },
-	                            'Event description'
-	                        ),
-	                        _react2.default.createElement('textarea', { ref: 'inputFormEventDescription', id: 'inputFormEventDescription', className: 'form-control', rows: '5' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'inputFormStartDate' },
-	                            'Start date'
-	                        ),
-	                        _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormStartDate', dateFormat: 'DD/MM/YYYY',
-	                            onChange: this.handleChange.bind(this) })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'form-group' },
-	                        _react2.default.createElement(
-	                            'label',
-	                            { htmlFor: 'inputFormEndDate' },
-	                            'End date'
-	                        ),
-	                        _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormEndDate', dateFormat: 'DD/MM/YYYY',
-	                            onChange: this.handleChange.bind(this) })
-	                    ),
-	                    _react2.default.createElement(
-	                        'button',
-	                        { className: 'btn btn-primary', type: 'submit', onClick: this.onAddEvent.bind(this) },
-	                        'Submit'
+	                            'form',
+	                            { className: 'form-horizontal', name: 'addNewEventForm' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { htmlFor: 'inputFormEventName', className: 'col-sm-2 control-label' },
+	                                    'Event name'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-sm-8' },
+	                                    _react2.default.createElement('input', { ref: 'inputFormEventName', id: 'inputFormEventName', type: 'text', className: 'form-control', placeholder: 'name' })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { htmlFor: 'inputFormEventDescription', className: 'col-sm-2 control-label' },
+	                                    'Event description'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-sm-8' },
+	                                    _react2.default.createElement('textarea', { ref: 'inputFormEventDescription', id: 'inputFormEventDescription', className: 'form-control', rows: '5' })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { htmlFor: 'inputFormStartDate', className: 'col-sm-2 control-label' },
+	                                    'Start date'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-sm-8' },
+	                                    _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormStartDate', ref: 'inputFormStartDate', className: 'form-control',
+	                                        dateFormat: 'DD/MM/YYYY', selected: this.state.startDate,
+	                                        onChange: this.handleChange.bind(this, "inputFormStartDate") })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { htmlFor: 'inputFormEndDate', className: 'col-sm-2 control-label' },
+	                                    'End date'
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-sm-8' },
+	                                    _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormEndDate', ref: 'inputFormEndDate', className: 'form-control',
+	                                        dateFormat: 'DD/MM/YYYY', selected: this.state.endDate,
+	                                        onChange: this.handleChange.bind(this, "inputFormEndDate") })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'form-group' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'col-sm-offset-2 col-sm-10' },
+	                                    _react2.default.createElement(
+	                                        'button',
+	                                        { className: 'btn btn-primary', type: 'submit', onClick: this.onAddEvent.bind(this) },
+	                                        'Submit'
+	                                    )
+	                                )
+	                            )
+	                        )
 	                    )
 	                )
 	            );
@@ -89073,25 +89167,86 @@
 	}(_react2.default.Component);
 
 	exports.default = _reactRelay2.default.createContainer(EventAdmin, {
+
+	    initialVariables: { viewerId: null },
+
+	    prepareVariables: function prepareVariables(prevVariables) {
+	        return _extends({}, prevVariables, {
+	            viewerId: _AuthService2.default.getUserId() + ""
+	        });
+	    },
+
 	    fragments: {
 	        viewer: function viewer() {
-	            return function () {
+	            return function (RQL_0) {
 	                return {
-	                    children: [{
+	                    children: [].concat.apply([], [{
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'viewerId',
+	                            value: {
+	                                kind: 'CallVariable',
+	                                callVariableName: 'viewerId'
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                fieldName: 'reference',
+	                                kind: 'Field',
+	                                metadata: {},
+	                                type: 'String'
+	                            }, {
+	                                fieldName: 'id',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'ID'
+	                            }],
+	                            fieldName: 'selectedItems',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
+	                                isPlural: true
+	                            },
+	                            type: 'ItemType'
+	                        }, {
+	                            fieldName: 'id',
+	                            kind: 'Field',
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'ID'
+	                        }],
+	                        fieldName: 'cart',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
+	                        },
+	                        type: 'CartType'
+	                    }, {
 	                        fieldName: 'id',
 	                        kind: 'Field',
 	                        metadata: {
+	                            isGenerated: true,
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
-	                    }],
+	                    }, _reactRelay2.default.QL.__frag(RQL_0)]),
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
 	                    metadata: {},
 	                    name: 'EventAdmin_ViewerRelayQL',
 	                    type: 'Viewer'
 	                };
-	            }();
+	            }(_AddEventMutation2.default.getFragment('viewer'));
 	        }
 	    }
 	});
@@ -103027,6 +103182,230 @@
 /* 822 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRelay = __webpack_require__(249);
+
+	var _reactRelay2 = _interopRequireDefault(_reactRelay);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddItemMutation = function (_Relay$Mutation) {
+	    _inherits(AddItemMutation, _Relay$Mutation);
+
+	    function AddItemMutation() {
+	        _classCallCheck(this, AddItemMutation);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemMutation).apply(this, arguments));
+	    }
+
+	    _createClass(AddItemMutation, [{
+	        key: "getMutation",
+	        value: function getMutation() {
+	            return function () {
+	                return {
+	                    calls: [{
+	                        kind: "Call",
+	                        metadata: {},
+	                        name: "addEvent",
+	                        value: {
+	                            kind: "CallVariable",
+	                            callVariableName: "input"
+	                        }
+	                    }],
+	                    children: [{
+	                        fieldName: "clientMutationId",
+	                        kind: "Field",
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: "String"
+	                    }],
+	                    kind: "Mutation",
+	                    metadata: {
+	                        inputType: "AddEventInput!"
+	                    },
+	                    name: "AddEventMutation",
+	                    responseType: "AddEventPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getFatQuery",
+	        value: function getFatQuery() {
+
+	            console.log("getting FatQuery");
+
+	            return function () {
+	                return {
+	                    children: [{
+	                        children: [{
+	                            fieldName: "cursor",
+	                            kind: "Field",
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "String"
+	                        }, {
+	                            children: [{
+	                                fieldName: "id",
+	                                kind: "Field",
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: "ID"
+	                            }],
+	                            fieldName: "node",
+	                            kind: "Field",
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                inferredRootCallName: "node",
+	                                inferredPrimaryKey: "id",
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "EventType"
+	                        }],
+	                        fieldName: "eventEdge",
+	                        kind: "Field",
+	                        metadata: {
+	                            canHaveSubselections: true
+	                        },
+	                        type: "EventTypeEdge"
+	                    }, {
+	                        children: [{
+	                            fieldName: "events",
+	                            kind: "Field",
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isConnection: true
+	                            },
+	                            type: "EventTypeConnection"
+	                        }, {
+	                            fieldName: "id",
+	                            kind: "Field",
+	                            metadata: {
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: "ID"
+	                        }],
+	                        fieldName: "viewer",
+	                        kind: "Field",
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            inferredRootCallName: "node",
+	                            inferredPrimaryKey: "id"
+	                        },
+	                        type: "Viewer"
+	                    }],
+	                    id: _reactRelay2.default.QL.__id(),
+	                    kind: "Fragment",
+	                    metadata: {},
+	                    name: "AddEventMutation_ValueRelayQL",
+	                    type: "AddEventPayload"
+	                };
+	            }();
+	        }
+	    }, {
+	        key: "getConfigs",
+	        value: function getConfigs() {
+
+	            console.log("getting config");
+	            return [{
+	                type: 'FIELDS_CHANGE',
+	                fieldIDs: {
+	                    viewer: this.props.viewer.id
+	                }
+	            }, {
+	                type: 'RANGE_ADD',
+	                parentName: 'viewer',
+	                parentID: this.props.viewer.id,
+	                connectionName: 'events',
+	                edgeName: 'eventEdge',
+	                rangeBehaviors: {
+	                    '': 'append',
+	                    // Prepend the ship, wherever the connection is sorted by age
+	                    'first(100)': 'prepend'
+	                }
+	            }];
+	        }
+	    }, {
+	        key: "getVariables",
+	        value: function getVariables() {
+	            return {
+	                name: this.props.name,
+	                description: this.props.description,
+	                startDate: this.props.startDate,
+	                endDate: this.props.endDate,
+	                reservedItems: this.props.reservedItems
+	            };
+	        }
+	    }, {
+	        key: "getOptimisticResponse",
+	        value: function getOptimisticResponse() {
+	            return {
+	                viewer: {
+	                    id: this.props.viewer.id
+	                },
+	                eventEdge: {
+	                    node: {
+	                        name: this.props.name,
+	                        description: this.props.description,
+	                        startDate: this.props.startDate,
+	                        endDate: this.props.endDate,
+	                        reservedItems: this.props.reservedItems
+	                    }
+	                }
+	            };
+	        }
+	    }]);
+
+	    return AddItemMutation;
+	}(_reactRelay2.default.Mutation);
+
+	AddItemMutation.fragments = {
+	    viewer: function viewer() {
+	        return function () {
+	            return {
+	                children: [{
+	                    fieldName: "id",
+	                    kind: "Field",
+	                    metadata: {
+	                        isRequisite: true
+	                    },
+	                    type: "ID"
+	                }],
+	                id: _reactRelay2.default.QL.__id(),
+	                kind: "Fragment",
+	                metadata: {},
+	                name: "AddEventMutation_ViewerRelayQL",
+	                type: "Viewer"
+	            };
+	        }();
+	    }
+	};
+	exports.default = AddItemMutation;
+
+/***/ },
+/* 823 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	exports.__esModule = true;
@@ -103065,7 +103444,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(823);
+	var _useBeforeUnload2 = __webpack_require__(824);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -103085,13 +103464,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(824);
+	var _enableBeforeUnload2 = __webpack_require__(825);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(825);
+	var _enableQueries2 = __webpack_require__(826);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -103100,7 +103479,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 823 */
+/* 824 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -103217,7 +103596,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 824 */
+/* 825 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103230,7 +103609,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(823);
+	var _useBeforeUnload = __webpack_require__(824);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -103238,7 +103617,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 825 */
+/* 826 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

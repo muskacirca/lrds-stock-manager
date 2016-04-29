@@ -3,7 +3,7 @@ input AddEventInput {
   startDate: String!
   endDate: String!
   description: String
-  itemsReference: [String]
+  reservedItems: [String]
   clientMutationId: String!
 }
 

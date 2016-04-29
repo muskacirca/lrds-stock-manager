@@ -19,10 +19,10 @@ class AddItemMutation extends Relay.Mutation {
         console.log("getting FatQuery")
 
         return Relay.QL`
-          fragment on AddItemPayload {
-              itemEdge,
+          fragment on AddEventPayload {
+              eventEdge,
               viewer {
-                items
+                events
               }
           }
         `
@@ -41,8 +41,8 @@ class AddItemMutation extends Relay.Mutation {
                 type: 'RANGE_ADD',
                 parentName: 'viewer',
                 parentID: this.props.viewer.id,
-                connectionName: 'items',
-                edgeName: 'itemEdge',
+                connectionName: 'events',
+                edgeName: 'eventEdge',
                 rangeBehaviors: {
                     '': 'append',
                     // Prepend the ship, wherever the connection is sorted by age
@@ -53,10 +53,11 @@ class AddItemMutation extends Relay.Mutation {
     }
     getVariables() {
         return {
-            modelName: this.props.modelName,
-            severity: this.props.severity,
-            domains: this.props.domains,
-            subCategories: this.props.subCategories
+            name: this.props.name,
+            description: this.props.description,
+            startDate: this.props.startDate,
+            endDate: this.props.endDate,
+            reservedItems: this.props.reservedItems
         };
     }
 
@@ -65,13 +66,13 @@ class AddItemMutation extends Relay.Mutation {
             viewer: {
                 id: this.props.viewer.id
             },
-            itemEdge: {
+            eventEdge: {
                 node: {
-                    model: {
-                        name: this.props.modelName
-                    },
-                    isInStock: true,
-                    reference: this.props.modelName + "/" + this.props.severity
+                    name: this.props.name,
+                    description: this.props.description,
+                    startDate: this.props.startDate,
+                    endDate: this.props.endDate,
+                    reservedItems: this.props.reservedItems
                 }
             }
         };

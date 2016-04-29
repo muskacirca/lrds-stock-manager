@@ -36,11 +36,14 @@ class EventBox extends React.Component {
 
         return  <div className="calendar-container">
                     <div className="sub-bar row">
-                        <CalendarHeader defaultDate={date} 
-                                        increaseCalendar={this.increaseCalendar.bind(this)}
-                                        subtractCalendar={this.subtractCalendar.bind(this)}
-                                        getNow={this.getNow.bind(this)} />
+                        <div className="col-md-10 col-md-offset-1">
+                            <CalendarHeader defaultDate={date}
+                                            increaseCalendar={this.increaseCalendar.bind(this)}
+                                            subtractCalendar={this.subtractCalendar.bind(this)}
+                                            getNow={this.getNow.bind(this)} />
                         
+
+                        </div>
                     </div>
                     <div className="col-md-10 col-md-offset-1">
                         <Calendar defaultDate={date} />

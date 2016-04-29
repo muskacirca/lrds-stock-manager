@@ -27,7 +27,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         startDate: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         endDate: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         description: { type: _graphql.GraphQLString },
-        itemsReference: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+        reservedItems: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
 
     },
     outputFields: {
@@ -87,7 +87,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         var startDate = _ref2.startDate;
         var endDate = _ref2.endDate;
         var description = _ref2.description;
-        var itemsReference = _ref2.itemsReference;
+        var reservedItems = _ref2.reservedItems;
 
 
         var event = {
@@ -100,7 +100,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         return _database2.default.models.event.create(event).then(function (event) {
             // spread is necessary when multiple return value
 
-            itemsReference.forEach(function (reference) {
+            reservedItems.forEach(function (reference) {
                 _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (item) {
                     return event.addItem(item);
                 });

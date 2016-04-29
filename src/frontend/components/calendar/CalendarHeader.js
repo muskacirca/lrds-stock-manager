@@ -30,7 +30,6 @@ class CalendarHeader extends React.Component {
 
         return  <div className="calendar-container">
                     <div className="calendar-header">
-                        <span className="calendar-month-year">{this.state.defaultDate.format("dddd, MMMM Do YYYY, h:mm:ss a")}</span>
                         <div className="row">
                             <div className="col-md-1">
                                 <button className="btn btn-default" onClick={this.subtractCalendar.bind(this)}>

@@ -1,6 +1,18 @@
 $font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 
+/*
+  MAIN
+*/
+
+.page-content {
+  padding-top: 10px;
+}
+
+/*
+  CALENDAR
+*/
+
 .calendar-month-header {
   display: flex;
   justify-content: space-around;
@@ -86,4 +98,12 @@ $primary-color: #333;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
   z-index: 200 !important;
+}
+
+/*
+  DATEPICKER OVERRIDE
+*/
+
+.react-datepicker__input-container {
+  width: 100% !important;
 }

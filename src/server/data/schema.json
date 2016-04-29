@@ -2834,7 +2834,7 @@
               "defaultValue": null
             },
             {
-              "name": "itemsReference",
+              "name": "reservedItems",
               "description": null,
               "type": {
                 "kind": "LIST",
