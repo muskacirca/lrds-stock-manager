@@ -1,9 +1,13 @@
 import React from 'react'
+import moment from 'moment'
 
 class CalendarHeader extends React.Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            defaultDate: moment(this.props.defaultDate)
+        }
     }
 
     increaseCalendar() {
@@ -17,12 +21,16 @@ class CalendarHeader extends React.Component {
     getNow() {
         this.props.getNow()
     }
+    
+    componentWillReceiveProps(newprops) {
+        this.setState({defaultDate: moment(newprops.defaultDate)})
+    }
 
     render() {
 
         return  <div className="calendar-container">
                     <div className="calendar-header">
-                        <span className="calendar-month-year">{this.props.defaultDate.format("dddd, MMMM Do YYYY, h:mm:ss a")}</span>
+                        <span className="calendar-month-year">{this.state.defaultDate.format("dddd, MMMM Do YYYY, h:mm:ss a")}</span>
                         <div className="row">
                             <div className="col-md-1">
                                 <button className="btn btn-default" onClick={this.subtractCalendar.bind(this)}>

@@ -1,9 +1,6 @@
 import React from 'react'
-import Relay from 'react-relay'
 import moment from 'moment';
-import _ from 'lodash'
 
-const month_name = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const days_name = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 import CalendarColumn from './CalendarColumn'

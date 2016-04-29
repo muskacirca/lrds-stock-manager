@@ -30,10 +30,5 @@ describe('Calendar', () => {
         expect(calendarContent[2].props.children.length).toEqual(7)
         expect(calendarContent[3].props.children.length).toEqual(7)
         expect(calendarContent[4].props.children.length).toEqual(7)
-
-        var calendarHeader = TestUtils.findRenderedDOMComponentWithClass(instance, 'calendar-month-year');
-        expect(calendarHeader.textContent).toEqual("Friday, January 1st 2016, 10:30:02 am")
     })
-    
-    it('')
 });
