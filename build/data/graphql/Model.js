@@ -503,12 +503,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             },
             cart: {
                 type: GraphQLCartType,
-                args: { viewerId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) } },
-                resolve: function resolve(obj, _ref9) {
-                    var viewerId = _ref9.viewerId;
-
-                    console.log('cart type resolve: ' + JSON.stringify((0, _CartStore.getCart)(viewerId)));
-                    return (0, _CartStore.getCart)(viewerId);
+                resolve: function resolve(user) {
+                    return (0, _CartStore.getCart)(user.id);
                 }
             }
         };
@@ -527,8 +523,8 @@ var GraphQLRoot = exports.GraphQLRoot = new _graphql.GraphQLObjectType({
                     type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
                 }
             },
-            resolve: function resolve(root, _ref10) {
-                var viewerId = _ref10.viewerId;
+            resolve: function resolve(root, _ref9) {
+                var viewerId = _ref9.viewerId;
                 return _database2.default.models.user.findOne({ where: { id: viewerId } });
             }
         },

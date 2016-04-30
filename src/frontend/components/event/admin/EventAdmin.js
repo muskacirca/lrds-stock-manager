@@ -41,6 +41,7 @@ class EventAdmin extends React.Component {
 
         var addEventutation = new AddEventMutation({
             viewer: this.props.viewer,
+            userId: UserService.getUserId(),
             name: eventName,
             description: eventDescription,
             startDate: eventStartDate,
@@ -124,10 +125,17 @@ export default Relay.createContainer(EventAdmin, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             ${AddEventMutation.getFragment('viewer')}
-            cart(viewerId: $viewerId) {
+            cart {
                 selectedItems {
                     reference
                 }
+            }
+            events(first: 100) {
+                edges {
+                    node {
+                        name
+                    }
+                } 
             }
           }
         `

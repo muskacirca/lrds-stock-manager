@@ -55,7 +55,7 @@ app.post('/api/authenticate', (request, response) => {
                 let decoded = jwt.sign(user.dataValues, 'secret', {
                     expiresIn: 600
                 });
-
+                
                 response.json({
                     success: true,
                     message: 'Enjoy your token!',

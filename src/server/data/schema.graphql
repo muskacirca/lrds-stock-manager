@@ -4,11 +4,13 @@ input AddEventInput {
   endDate: String!
   description: String
   reservedItems: [String]
+  userId: String!
   clientMutationId: String!
 }
 
 type AddEventPayload {
   viewer: Viewer
+  cart: CartType
   eventEdge: EventTypeEdge
   clientMutationId: String!
 }
@@ -253,5 +255,5 @@ type Viewer implements Node {
   categories: [CategoryType]
   states: [StateType]
   countNextItemId(itemReference: String!): Int
-  cart(viewerId: String!): CartType
+  cart: CartType
 }

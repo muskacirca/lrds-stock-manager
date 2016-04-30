@@ -80,5 +80,6 @@ export function removeItemFromCart(viewerId, reference) {
 
 export function emptyCart(viewerId) {
 
-    cartStore = []
+    cartStore[viewerId] = []
+    return cartStore[viewerId]
 }

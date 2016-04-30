@@ -401,11 +401,7 @@ export var GraphQLViewer = new GraphQLObjectType({
         },
         cart: {
             type: GraphQLCartType,
-            args: {viewerId: {type: new GraphQLNonNull(GraphQLString)}},
-            resolve: (obj, {viewerId}) => {
-                console.log('cart type resolve: ' + JSON.stringify(getCart(viewerId)))
-                return getCart(viewerId)
-            }
+            resolve: (user) => getCart(user.id)
         }
     }),
     interfaces: [nodeInterface]

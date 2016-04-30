@@ -22,6 +22,7 @@ class AddItemMutation extends Relay.Mutation {
           fragment on AddEventPayload {
               eventEdge,
               viewer {
+                cart
                 events
               }
           }
@@ -57,14 +58,18 @@ class AddItemMutation extends Relay.Mutation {
             description: this.props.description,
             startDate: this.props.startDate,
             endDate: this.props.endDate,
-            reservedItems: this.props.reservedItems
+            reservedItems: this.props.reservedItems,
+            userId: this.props.userId
         };
     }
 
     getOptimisticResponse() {
         return {
             viewer: {
-                id: this.props.viewer.id
+                id: this.props.viewer.id,
+                cart: {
+                    selectedItems: []
+                }
             },
             eventEdge: {
                 node: {

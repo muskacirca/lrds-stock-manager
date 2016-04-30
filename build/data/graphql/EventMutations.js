@@ -17,6 +17,8 @@ var _Model = require('./Model');
 
 var _ItemStore = require('../stores/ItemStore');
 
+var _CartStore = require('../stores/CartStore');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWithClientMutationId({
@@ -27,14 +29,22 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         startDate: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         endDate: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         description: { type: _graphql.GraphQLString },
-        reservedItems: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+        reservedItems: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+        userId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
 
     },
     outputFields: {
         viewer: {
             type: _Model.GraphQLViewer,
             resolve: function resolve() {
-                return _ItemStore.getViewer;
+                return _CartStore.getViewer;
+            }
+        },
+        cart: {
+            type: _Model.GraphQLCartType,
+            resolve: function resolve(args) {
+                console.log("add event cart args : " + JSON.stringify(args));
+                return (0, _ItemStore.emptyCart)(args.userId);
             }
         },
         eventEdge: {
@@ -43,19 +53,19 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
                 var id = _ref.id;
 
 
-                return _database2.default.models.event.findAll().then(function (dataModels) {
+                return _database2.default.models.event.findAll().then(function (events) {
 
-                    var itemToPass = void 0;
+                    var eventToPass = void 0;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;
 
                     try {
-                        for (var _iterator = dataModels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                            var model = _step.value;
+                        for (var _iterator = events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                            var event = _step.value;
 
-                            if (model.id === obj.id) {
-                                itemToPass = model;
+                            if (event.id === obj.id) {
+                                eventToPass = event;
                             }
                         }
                     } catch (err) {
@@ -73,10 +83,10 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
                         }
                     }
 
-                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(dataModels, itemToPass);
+                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(events, eventToPass);
                     return {
                         cursor: cursor,
-                        node: itemToPass
+                        node: eventToPass
                     };
                 });
             }

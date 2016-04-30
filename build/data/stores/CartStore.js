@@ -158,5 +158,6 @@ function removeItemFromCart(viewerId, reference) {
 
 function emptyCart(viewerId) {
 
-    cartStore = [];
+    cartStore[viewerId] = [];
+    return cartStore[viewerId];
 }

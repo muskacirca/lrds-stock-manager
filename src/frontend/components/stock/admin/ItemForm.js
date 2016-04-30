@@ -3,7 +3,6 @@ import Relay from 'react-relay'
 import _ from 'lodash'
 
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
-import Expire from '../../utils/Expire'
 
 import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
@@ -11,7 +10,7 @@ import AddItemMutation from '../../../mutations/AddItemMutation'
 import ModelQuickForm from './ModelQuickForm'
 import ItemFormDisplay from '../ItemDisplay'
 
-
+import Alert from '../../utils/Alert'
 
 class ItemFormComponent extends React.Component {
 
@@ -213,32 +212,11 @@ class ItemFormComponent extends React.Component {
         this.setState({itemFeatures: itemFeatures})
     }
 
-    onAlertDismiss() {
-        this.setState({alert: undefined})
-    }
-
-    renderAlert() {
-
-        if(this.state.alert !== undefined) {
-            console.log("alert")
-
-            var commonAlert = "alert "
-            var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger"
-
-            return  <Expire delay={5000} callback={this.onAlertDismiss.bind(this)}>
-                <div className={commonAlert + alertType} role="alert">
-                    {this.state.alert.message}
-                </div>
-            </Expire>
-        }
-    }
-
     renderStateList(states) {
         return states.map((state, key) => {
             return <option key={"state-list-" + key} value={state.severity}>{state.name}</option>
         })
     }
-
 
     render() {
 
@@ -253,8 +231,7 @@ class ItemFormComponent extends React.Component {
         var model = this.findModelAndBindNewFeatures(this.state.itemFeatures)
 
         var stateList = this.renderStateList(this.props.viewer.states)
-
-        var alert = this.renderAlert()
+        
         var pageTitle = "Create an item"
 
         var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
@@ -263,10 +240,10 @@ class ItemFormComponent extends React.Component {
 
         return  <div className="col-md-10 col-md-offset-1">
             <h2>{pageTitle}</h2>
-            {alert}
+            <Alert alert={this.state.alert} />
             <h3>Select your model</h3>
             <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-6">
                     <AutosuggestWrapper inputText="Select a model ..." suggestions={builtModelSuggestion}
                                         multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
                                         onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
@@ -295,7 +272,7 @@ class ItemFormComponent extends React.Component {
                                         resetInputValue={true} ref="inputFormSearchSubCategories"/>
                 </div>
 
-                <div className="col-md-8">
+                <div className="col-md-6">
                     {itemFormDisplay}
                 </div>
             </div>

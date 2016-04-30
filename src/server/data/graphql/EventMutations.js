@@ -15,12 +15,18 @@ import Database from '../database'
 
 import {
     GraphQLViewer,
-    EventsEdge
+    EventsEdge,
+    GraphQLCartType
 } from './Model'
 
 import {
-    getViewer,
+    emptyCart,
 } from '../stores/ItemStore';
+
+
+import {
+    getViewer,
+} from '../stores/CartStore';
 
 
 export const AddEventMutation = new mutationWithClientMutationId({
@@ -31,13 +37,21 @@ export const AddEventMutation = new mutationWithClientMutationId({
         startDate: {type: new GraphQLNonNull(GraphQLString)},
         endDate: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: GraphQLString},
-        reservedItems: {type: new GraphQLList(GraphQLString)}
+        reservedItems: {type: new GraphQLList(GraphQLString)},
+        userId: {type: new GraphQLNonNull(GraphQLString)},
         
     },
     outputFields: {
         viewer: {
             type: GraphQLViewer,
             resolve: () => getViewer
+        },
+        cart: {
+            type: GraphQLCartType,
+            resolve: (args) => {
+                console.log("add event cart args : " + JSON.stringify(args))
+                return emptyCart(args.userId)
+            }
         },
         eventEdge: {
             type: EventsEdge,

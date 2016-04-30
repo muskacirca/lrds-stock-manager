@@ -98,7 +98,7 @@ export default Relay.createContainer(CartDropdownComponent, {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
-            cart(viewerId: $viewerId) {
+            cart {
                 ${RemoveItemFromCartMutation.getFragment('cart')}
                 selectedItems {
                     reference

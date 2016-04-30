@@ -32,7 +32,9 @@ class Auth {
         return loginPromise
             .then(function(response) {
                 if(response.data.success) {
-                    localStorage.setItem('user', JSON.stringify(jwt_decode(response.data.token)));
+                    
+                    var response = JSON.stringify(jwt_decode(response.data.token));
+                    localStorage.setItem('user', response);
                     return true;
                 }
                 else { return false }

@@ -413,22 +413,7 @@
             {
               "name": "cart",
               "description": null,
-              "args": [
-                {
-                  "name": "viewerId",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
+              "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "CartType",
@@ -2848,6 +2833,20 @@
               "defaultValue": null
             },
             {
+              "name": "userId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "clientMutationId",
               "description": null,
               "type": {
@@ -2878,6 +2877,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Viewer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cart",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "CartType",
                 "ofType": null
               },
               "isDeprecated": false,
