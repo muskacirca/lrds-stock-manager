@@ -19,6 +19,10 @@ var _ItemStore = require('../stores/ItemStore');
 
 var _CartStore = require('../stores/CartStore');
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -428,11 +432,27 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             },
             events: {
                 type: EventsConnection,
-                args: _extends({}, _graphqlRelay.connectionArgs),
+                args: _extends({
+                    date: {
+                        type: _graphql.GraphQLString
+                    }
+                }, _graphqlRelay.connectionArgs),
                 resolve: function resolve(obj, _ref6) {
-                    var args = _objectWithoutProperties(_ref6, []);
+                    var date = _ref6.date;
 
-                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(), args);
+                    var args = _objectWithoutProperties(_ref6, ['date']);
+
+                    console.log("date : " + JSON.stringify(date));
+
+                    var date = (0, _moment2.default)(date, "YYYY-MM-DD");
+
+                    var beginOfMonth = (0, _moment2.default)(date.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();
+                    var endOfMonth = (0, _moment2.default)(date.format("YYYY-MM") + "-" + date.daysInMonth(), "YYYY-MM-DD").format();
+
+                    var queryArgs = date != null ? { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } } : null;
+
+                    console.log("queryArgs : " + JSON.stringify(queryArgs));
+                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
                 }
             },
             brands: {

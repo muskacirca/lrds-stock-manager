@@ -49,23 +49,36 @@ class NavBarBox extends React.Component {
                         {cart}
                     </nav>
 
-                    <nav className="menu-right">
-                        <Link to="/admin/create" activeClassName="link-active">
-                            <i className="fa fa-2x fa-cog" aria-hidden="true"></i>
-                        </Link>
-                    </nav>
-
                     <div className="menu-right">
                         <div onClick={this.toggleUserMenuOpening.bind(this)} className="pointer navbar-dropdown">
                             <div>
                                 <i className="fa fa-2x fa-user" aria-hidden="true" />
                                 {' '}hello{' '}{this.props.user.login}{' '}!
                             </div>
-                            <div style={userMenuStyle} className="navbar-dropdown-content">
-                                <Link to="/logout" activeClassName="link-active">
-                                    <i className="fa fa-2x fa-power-off" />
-                                </Link>
-                            </div>
+                        </div>
+                    </div>
+                    <div style={userMenuStyle} className="navbar-dropdown-content">
+                        <div className="navbar-dropdown-group">
+                            <Link to="/logout" onClick={this.toggleUserMenuOpening.bind(this)}
+                                   activeClassName="link-active">
+                                
+                                <div className="navbar-dropdown-list">
+                                    <div className="__logo__">
+                                        <i className="fa fa-2x fa-power-off" />
+                                    </div>
+                                    <div className="__text__">Logout</div>
+                                </div>
+                            </Link>
+                            <Link to="/admin/create" onClick={this.toggleUserMenuOpening.bind(this)}
+                                  activeClassName="link-active">
+                                
+                                <div className="navbar-dropdown-list">
+                                    <div className="__logo__">
+                                        <i className="fa fa-2x fa-cog" aria-hidden="true"/>
+                                    </div>
+                                    <div className="__text__">Settings</div>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </header>

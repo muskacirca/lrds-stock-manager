@@ -34,6 +34,8 @@ import {
     getCart,
 } from '../stores/CartStore';
 
+import moment from 'moment'
+
 /**
  * The first argument defines the way to resolve an ID to its object.
  * The second argument defines the way to resolve a node object to its GraphQL type.
@@ -353,8 +355,26 @@ export var GraphQLViewer = new GraphQLObjectType({
         },
         events: {
             type: EventsConnection,
-            args: {...connectionArgs},
-            resolve: (obj, {...args}) => connectionFromPromisedArray(Database.models.event.findAll(), args)
+            args: {
+                date: {
+                    type: GraphQLString
+                },
+                ...connectionArgs
+            },
+            resolve: (obj, {date, ...args}) => {
+                
+                var date = moment(date, "YYYY-MM-DD")
+                
+                var beginOfMonth = moment(date.format("YYYY-MM") + "-01", "YYYY-MM-DD").format()
+                var endOfMonth = moment(date.format("YYYY-MM") + "-" + date.daysInMonth(), "YYYY-MM-DD").format()
+
+                var queryArgs = date != null 
+                    ? {where: {startDate: {gte: beginOfMonth, $lte: endOfMonth}}}
+                    : null;
+                
+                console.log("queryArgs : " + JSON.stringify(queryArgs))
+                return connectionFromPromisedArray(Database.models.event.findAll(queryArgs), args)
+            }
         },
         brands: {
             type: new GraphQLList(GraphQLBrandType),

@@ -68288,15 +68288,6 @@
 	                    cart
 	                ),
 	                _react2.default.createElement(
-	                    'nav',
-	                    { className: 'menu-right' },
-	                    _react2.default.createElement(
-	                        _reactRouter.Link,
-	                        { to: '/admin/create', activeClassName: 'link-active' },
-	                        _react2.default.createElement('i', { className: 'fa fa-2x fa-cog', 'aria-hidden': 'true' })
-	                    )
-	                ),
-	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'menu-right' },
 	                    _react2.default.createElement(
@@ -68312,14 +68303,51 @@
 	                            this.props.user.login,
 	                            ' ',
 	                            '!'
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: userMenuStyle, className: 'navbar-dropdown-content' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'navbar-dropdown-group' },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/logout', onClick: this.toggleUserMenuOpening.bind(this),
+	                                activeClassName: 'link-active' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'navbar-dropdown-list' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: '__logo__' },
+	                                    _react2.default.createElement('i', { className: 'fa fa-2x fa-power-off' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: '__text__' },
+	                                    'Logout'
+	                                )
+	                            )
 	                        ),
 	                        _react2.default.createElement(
-	                            'div',
-	                            { style: userMenuStyle, className: 'navbar-dropdown-content' },
+	                            _reactRouter.Link,
+	                            { to: '/admin/create', onClick: this.toggleUserMenuOpening.bind(this),
+	                                activeClassName: 'link-active' },
 	                            _react2.default.createElement(
-	                                _reactRouter.Link,
-	                                { to: '/logout', activeClassName: 'link-active' },
-	                                _react2.default.createElement('i', { className: 'fa fa-2x fa-power-off' })
+	                                'div',
+	                                { className: 'navbar-dropdown-list' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: '__logo__' },
+	                                    _react2.default.createElement('i', { className: 'fa fa-2x fa-cog', 'aria-hidden': 'true' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: '__text__' },
+	                                    'Settings'
+	                                )
 	                            )
 	                        )
 	                    )
@@ -75541,6 +75569,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
@@ -75618,7 +75648,7 @@
 	                    { className: 'sub-bar row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-10 col-md-offset-1' },
+	                        { className: 'sub-bar-component-centered col-md-10 col-md-offset-1' },
 	                        _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
 	                            increaseCalendar: this.increaseCalendar.bind(this),
 	                            subtractCalendar: this.subtractCalendar.bind(this),
@@ -75638,6 +75668,15 @@
 	}(_react2.default.Component);
 
 	exports.default = _reactRelay2.default.createContainer(EventBox, {
+
+	    initialVariables: { date: null },
+
+	    prepareVariables: function prepareVariables(prevVariables) {
+	        return _extends({}, prevVariables, {
+	            viewerId: UserService.getUserId() + ""
+	        });
+	    },
+
 	    fragments: {
 	        viewer: function viewer() {
 	            return function () {
@@ -75649,6 +75688,99 @@
 	                            isRequisite: true
 	                        },
 	                        type: 'ID'
+	                    }, {
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }, {
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'date',
+	                            value: {
+	                                kind: 'CallVariable',
+	                                callVariableName: 'date'
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'EventType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isPlural: true
+	                            },
+	                            type: 'EventTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'events',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            isConnection: true
+	                        },
+	                        type: 'EventTypeConnection'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -88904,20 +89036,16 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'calendar-container' },
+	                { className: 'calendar-month-view' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'calendar-month-view' },
+	                    null,
 	                    _react2.default.createElement(
 	                        'div',
-	                        null,
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'calendar-row calendar-month-header' },
-	                            calendarHeaderDays
-	                        ),
-	                        calendar
-	                    )
+	                        { className: 'calendar-row calendar-month-header' },
+	                        calendarHeaderDays
+	                    ),
+	                    calendar
 	                )
 	            );
 	        }
@@ -89060,39 +89188,35 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'calendar-container' },
+	                { className: 'calendar-header' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'calendar-header' },
+	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'row' },
+	                        { className: 'col-md-1 col-sm-1 col-xs-1 col-xs-offset-1' },
 	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-1' },
-	                            _react2.default.createElement(
-	                                'button',
-	                                { className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
-	                                _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-left' })
-	                            )
-	                        ),
+	                            'button',
+	                            { className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
+	                            _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-left' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'center col-md-8 col-sm-8 col-xs-6' },
 	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'center col-md-10' },
-	                            _react2.default.createElement(
-	                                'button',
-	                                { className: 'btn btn-default', onClick: this.getNow.bind(this) },
-	                                'Today'
-	                            )
-	                        ),
+	                            'button',
+	                            { className: 'btn btn-default', onClick: this.getNow.bind(this) },
+	                            'Today'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-1 col-sm-1 col-xs-1' },
 	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-1' },
-	                            _react2.default.createElement(
-	                                'button',
-	                                { className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
-	                                _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-right' })
-	                            )
+	                            'button',
+	                            { className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
+	                            _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-right' })
 	                        )
 	                    )
 	                )
@@ -89271,7 +89395,7 @@
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'inputFormEventName', className: 'col-md-1 control-label' },
-	                                'Event name'
+	                                'name'
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
@@ -89285,7 +89409,7 @@
 	                            _react2.default.createElement(
 	                                'label',
 	                                { htmlFor: 'inputFormEventDescription', className: 'col-md-1 control-label' },
-	                                'Event description'
+	                                'description'
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
@@ -89305,6 +89429,7 @@
 	                                'div',
 	                                { className: 'col-md-11' },
 	                                _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormStartDate', ref: 'inputFormStartDate', className: 'form-control',
+	                                    placeholder: 'start date',
 	                                    dateFormat: 'DD/MM/YYYY', selected: this.state.startDate,
 	                                    onChange: this.handleChange.bind(this, "inputFormStartDate") })
 	                            )
@@ -89321,6 +89446,7 @@
 	                                'div',
 	                                { className: 'col-md-11' },
 	                                _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormEndDate', ref: 'inputFormEndDate', className: 'form-control',
+	                                    placeholder: 'end date',
 	                                    dateFormat: 'DD/MM/YYYY', selected: this.state.endDate,
 	                                    onChange: this.handleChange.bind(this, "inputFormEndDate") })
 	                            )

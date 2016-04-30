@@ -36,7 +36,7 @@ class EventBox extends React.Component {
 
         return  <div className="calendar-container">
                     <div className="sub-bar row">
-                        <div className="col-md-10 col-md-offset-1">
+                        <div className="sub-bar-component-centered col-md-10 col-md-offset-1">
                             <CalendarHeader defaultDate={date}
                                             increaseCalendar={this.increaseCalendar.bind(this)}
                                             subtractCalendar={this.subtractCalendar.bind(this)}
@@ -55,10 +55,27 @@ class EventBox extends React.Component {
 }
 
 export default Relay.createContainer(EventBox, {
+
+    initialVariables: {date: null},
+
+    prepareVariables: prevVariables => {
+        return {
+            ...prevVariables,
+            viewerId: UserService.getUserId() + "",
+        };
+    },
+
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
             id
+            events(first: 100, date: $date) {
+                edges {
+                    node {
+                        name
+                    }
+                }
+            }
           }
         `
     }

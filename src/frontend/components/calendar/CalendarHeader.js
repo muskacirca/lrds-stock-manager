@@ -28,23 +28,22 @@ class CalendarHeader extends React.Component {
 
     render() {
 
-        return  <div className="calendar-container">
-                    <div className="calendar-header">
-                        <div className="row">
-                            <div className="col-md-1">
-                                <button className="btn btn-default" onClick={this.subtractCalendar.bind(this)}>
-                                    <i className="fa fa-2x fa-chevron-left"/>
-                                </button>
-                            </div>
-                            <div className="center col-md-10">
-                                <button className="btn btn-default" onClick={this.getNow.bind(this)}>Today</button>
-                            </div>
-                            <div className="col-md-1">
-                                <button className="btn btn-default" onClick={this.increaseCalendar.bind(this)}><i className="fa fa-2x fa-chevron-right"/></button>
-                            </div>
+        return  <div className="calendar-header">
+                    <div className="row">
+                        <div className="col-md-1 col-sm-1 col-xs-1 col-xs-offset-1">
+                            <button className="btn btn-default" onClick={this.subtractCalendar.bind(this)}>
+                                <i className="fa fa-2x fa-chevron-left"/>
+                            </button>
+                        </div>
+                        <div className="center col-md-8 col-sm-8 col-xs-6">
+                            <button className="btn btn-default" onClick={this.getNow.bind(this)}>Today</button>
+                        </div>
+                        <div className="col-md-1 col-sm-1 col-xs-1">
+                            <button className="btn btn-default" onClick={this.increaseCalendar.bind(this)}><i className="fa fa-2x fa-chevron-right"/></button>
                         </div>
                     </div>
                 </div>
+
     }
 
 
