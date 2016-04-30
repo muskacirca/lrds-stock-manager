@@ -75639,6 +75639,7 @@
 	        value: function render() {
 
 	            var date = this.state.defaultDate;
+	            var events = this.props.viewer.events.edges;
 
 	            return _react2.default.createElement(
 	                'div',
@@ -75658,7 +75659,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'col-md-10 col-md-offset-1' },
-	                    _react2.default.createElement(_Calendar2.default, { defaultDate: date })
+	                    _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: events })
 	                )
 	            );
 	        }
