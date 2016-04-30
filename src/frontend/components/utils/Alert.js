@@ -23,16 +23,21 @@ class Alert extends React.Component {
     }
     
     renderAlert() {
-        
-        console.log("")
 
         if(this.state.alert !== undefined) {
 
-            var commonAlert = "alert "
-            var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger"
+            var alertType = this.state.alert.type == "success" ? "success" : "danger"
+            
+            var iconClassCommon  = "alert-icon fa fa-2x "
+            var iconClass  = this.state.alert.type == "success" ? "fa-check" : "fa fa-times"
+            
             return  <Expire delay={this.state.delay} callback={this.onAlertDismiss.bind(this)}>
-                        <div className={commonAlert + alertType} role="alert">
-                            {this.state.alert.message}
+                        <div className={alertType}>
+                            <i className={iconClassCommon + iconClass} aria-hidden="true"></i>
+                            <span className="alert-message">
+                                {'  '}
+                                {this.state.alert.message}
+                            </span>
                         </div>
                     </Expire>
         } else {
@@ -49,6 +54,6 @@ Alert.propTypes = {
     delay: React.PropTypes.number,
 };
 
-Alert.defaultProps = { delay: 30000, alert: undefined };
+Alert.defaultProps = { delay: 300000, alert: undefined };
 
 export default Alert

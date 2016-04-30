@@ -71339,8 +71339,10 @@
 	        }
 	    }, {
 	        key: 'onFormSubmit',
-	        value: function onFormSubmit() {
+	        value: function onFormSubmit(e) {
 	            var _this2 = this;
+
+	            e.preventDefault();
 
 	            var domainsToAdd = this.state.itemFeatures.domains.map(function (elt) {
 	                return elt.name;
@@ -71558,86 +71560,105 @@
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'col-md-10 col-md-offset-1' },
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    pageTitle
-	                ),
-	                _react2.default.createElement(_Alert2.default, { alert: this.state.alert }),
-	                _react2.default.createElement(
-	                    'h3',
-	                    null,
-	                    'Select your model'
-	                ),
+	                { className: 'form-horizontal' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'sub-bar row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-6' },
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a model ...', suggestions: builtModelSuggestion,
-	                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
-	                            resetInputValue: true, ref: 'inputFormSearchModel' }),
-	                        _react2.default.createElement('br', null),
+	                        { className: 'col-md-8 col-md-offset-2 col-sm-10 col-xs-9' },
 	                        _react2.default.createElement(
-	                            'h5',
+	                            'h2',
 	                            null,
-	                            'or create one ...'
-	                        ),
-	                        _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
-	                        _react2.default.createElement('br', null),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Add State'
-	                        ),
-	                        _react2.default.createElement(
-	                            'select',
-	                            { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
-	                            _react2.default.createElement(
-	                                'option',
-	                                null,
-	                                'Select a state ...'
-	                            ),
-	                            stateList
-	                        ),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Add Domain'
-	                        ),
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a domain ...', suggestions: builtDomainSuggestion,
-	                            multiSection: false, suggestionFilter: this.domainSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onDomainSuggestionSelected.bind(this),
-	                            resetInputValue: true, ref: 'inputFormSearchDomain' }),
-	                        _react2.default.createElement(
-	                            'h3',
-	                            null,
-	                            'Add Categories'
-	                        ),
-	                        _react2.default.createElement(_AutosuggestWrapper2.default, { inputText: 'Select a category ...', suggestions: builtSubCategoriesSuggestion,
-	                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
-	                            onSuggestionSelected: this.onSubCategoriesSuggestionSelected.bind(this),
-	                            resetInputValue: true, ref: 'inputFormSearchSubCategories' })
+	                            pageTitle
+	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-6' },
-	                        itemFormDisplay
+	                        { className: 'sub-bar-component-centered col-md-1 col-sm-2' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary', onClick: this.onFormSubmit.bind(this) },
+	                            'Save'
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'col-md-10 col-md-offset-1' },
+	                    _react2.default.createElement(_Alert2.default, { alert: this.state.alert }),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1 col-md-offset-10' },
+	                        { className: 'form-group' },
 	                        _react2.default.createElement(
-	                            'button',
-	                            { className: 'btn btn-primary', onClick: this.onFormSubmit.bind(this) },
-	                            'Submit'
+	                            'label',
+	                            { htmlFor: 'modelInputForm', className: 'col-md-1 control-label' },
+	                            'Select your model'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-11' },
+	                            _react2.default.createElement(_AutosuggestWrapper2.default, { id: 'modelInputForm',
+	                                inputText: 'Select a model ...', suggestions: builtModelSuggestion,
+	                                multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
+	                                onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
+	                                resetInputValue: true, ref: 'inputFormSearchModel' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-6' },
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(
+	                                'h5',
+	                                null,
+	                                'or create one ...'
+	                            ),
+	                            _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) }),
+	                            _react2.default.createElement('br', null),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Add State'
+	                            ),
+	                            _react2.default.createElement(
+	                                'select',
+	                                { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
+	                                _react2.default.createElement(
+	                                    'option',
+	                                    null,
+	                                    'Select a state ...'
+	                                ),
+	                                stateList
+	                            ),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Add Domain'
+	                            ),
+	                            _react2.default.createElement(_AutosuggestWrapper2.default, {
+	                                inputText: 'Select a domain ...', suggestions: builtDomainSuggestion,
+	                                multiSection: false, suggestionFilter: this.domainSuggestionFilter.bind(this),
+	                                onSuggestionSelected: this.onDomainSuggestionSelected.bind(this),
+	                                resetInputValue: true, ref: 'inputFormSearchDomain' }),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Add Categories'
+	                            ),
+	                            _react2.default.createElement(_AutosuggestWrapper2.default, {
+	                                inputText: 'Select a category ...', suggestions: builtSubCategoriesSuggestion,
+	                                multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
+	                                onSuggestionSelected: this.onSubCategoriesSuggestionSelected.bind(this),
+	                                resetInputValue: true, ref: 'inputFormSearchSubCategories' })
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-md-6' },
+	                            itemFormDisplay
 	                        )
 	                    )
 	                )
@@ -75170,19 +75191,26 @@
 	        key: 'renderAlert',
 	        value: function renderAlert() {
 
-	            console.log("");
-
 	            if (this.state.alert !== undefined) {
 
-	                var commonAlert = "alert ";
-	                var alertType = this.state.alert.type == "success" ? "alert-success" : "alert-danger";
+	                var alertType = this.state.alert.type == "success" ? "success" : "danger";
+
+	                var iconClassCommon = "alert-icon fa fa-2x ";
+	                var iconClass = this.state.alert.type == "success" ? "fa-check" : "fa fa-times";
+
 	                return _react2.default.createElement(
 	                    _Expire2.default,
 	                    { delay: this.state.delay, callback: this.onAlertDismiss.bind(this) },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: commonAlert + alertType, role: 'alert' },
-	                        this.state.alert.message
+	                        { className: alertType },
+	                        _react2.default.createElement('i', { className: iconClassCommon + iconClass, 'aria-hidden': 'true' }),
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'alert-message' },
+	                            '  ',
+	                            this.state.alert.message
+	                        )
 	                    )
 	                );
 	            } else {
@@ -75203,7 +75231,7 @@
 	    delay: _react2.default.PropTypes.number
 	};
 
-	Alert.defaultProps = { delay: 30000, alert: undefined };
+	Alert.defaultProps = { delay: 300000, alert: undefined };
 
 	exports.default = Alert;
 
@@ -89027,6 +89055,10 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _Alert = __webpack_require__(611);
+
+	var _Alert2 = _interopRequireDefault(_Alert);
+
 	var _AddEventMutation = __webpack_require__(823);
 
 	var _AddEventMutation2 = _interopRequireDefault(_AddEventMutation);
@@ -89052,8 +89084,9 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventAdmin).call(this, props));
 
 	        _this.state = {
-	            startDate: (0, _moment2.default)(),
-	            endDate: (0, _moment2.default)()
+	            startDate: null,
+	            endDate: null,
+	            alert: undefined
 	        };
 	        return _this;
 	    }
@@ -89073,8 +89106,17 @@
 	            }
 	        }
 	    }, {
+	        key: 'resetForm',
+	        value: function resetForm() {
+
+	            this.refs.inputFormEventName.value = "";
+	            this.refs.inputFormEventDescription.value = "";
+	            this.setState({ startDate: null, endDate: null });
+	        }
+	    }, {
 	        key: 'onAddEvent',
 	        value: function onAddEvent(e) {
+	            var _this2 = this;
 
 	            e.preventDefault();
 
@@ -89094,34 +89136,60 @@
 	            });
 
 	            var onSuccess = function onSuccess(response) {
-	                return console.log(response);
+	                _this2.updateAlert("Event added successfully", "success");
+	                _this2.resetForm();
 	            };
 
 	            var onFailure = function onFailure(transaction) {
-	                return console.log(transaction);
+	                return _this2.updateAlert("An error occurred when adding new event", "error");
 	            };
 
 	            _reactRelay2.default.Store.commitUpdate(addEventutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+	    }, {
+	        key: 'updateAlert',
+	        value: function updateAlert(message, type) {
+	            var alert = { message: message, type: type };
+	            this.setState({ alert: alert });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            return _react2.default.createElement(
-	                'div',
-	                null,
+	                'form',
+	                { className: 'form-horizontal', name: 'addNewEventForm' },
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'sub-bar row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-8 col-md-offset-2' },
+	                        { className: 'col-md-5 col-md-offset-2 col-sm-6 col-xs-8' },
 	                        _react2.default.createElement(
-	                            'h1',
+	                            'h2',
 	                            null,
 	                            'Create an event'
 	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'sub-bar-component-centered align-right col-md-3 col-sm-4 col-xs-1' },
+	                        _react2.default.createElement(_Alert2.default, { alert: this.state.alert })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'sub-bar-component-centered col-md-1 col-sm-2 col-xs-1' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary', type: 'submit', onClick: this.onAddEvent.bind(this) },
+	                            'Save'
+	                        )
 	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    _react2.default.createElement('div', { className: 'col-md-9 col-md-offset-2' })
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -89130,82 +89198,66 @@
 	                        'div',
 	                        { className: 'col-md-10 col-md-offset-1' },
 	                        _react2.default.createElement(
-	                            'form',
-	                            { className: 'form-horizontal', name: 'addNewEventForm' },
+	                            'div',
+	                            { className: 'form-group' },
 	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'form-group' },
-	                                _react2.default.createElement(
-	                                    'label',
-	                                    { htmlFor: 'inputFormEventName', className: 'col-sm-2 control-label' },
-	                                    'Event name'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-sm-8' },
-	                                    _react2.default.createElement('input', { ref: 'inputFormEventName', id: 'inputFormEventName', type: 'text', className: 'form-control', placeholder: 'name' })
-	                                )
+	                                'label',
+	                                { htmlFor: 'inputFormEventName', className: 'col-md-1 control-label' },
+	                                'Event name'
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'form-group' },
-	                                _react2.default.createElement(
-	                                    'label',
-	                                    { htmlFor: 'inputFormEventDescription', className: 'col-sm-2 control-label' },
-	                                    'Event description'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-sm-8' },
-	                                    _react2.default.createElement('textarea', { ref: 'inputFormEventDescription', id: 'inputFormEventDescription', className: 'form-control', rows: '5' })
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'form-group' },
-	                                _react2.default.createElement(
-	                                    'label',
-	                                    { htmlFor: 'inputFormStartDate', className: 'col-sm-2 control-label' },
-	                                    'Start date'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-sm-8' },
-	                                    _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormStartDate', ref: 'inputFormStartDate', className: 'form-control',
-	                                        dateFormat: 'DD/MM/YYYY', selected: this.state.startDate,
-	                                        onChange: this.handleChange.bind(this, "inputFormStartDate") })
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'form-group' },
-	                                _react2.default.createElement(
-	                                    'label',
-	                                    { htmlFor: 'inputFormEndDate', className: 'col-sm-2 control-label' },
-	                                    'End date'
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-sm-8' },
-	                                    _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormEndDate', ref: 'inputFormEndDate', className: 'form-control',
-	                                        dateFormat: 'DD/MM/YYYY', selected: this.state.endDate,
-	                                        onChange: this.handleChange.bind(this, "inputFormEndDate") })
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'form-group' },
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'col-sm-offset-2 col-sm-10' },
-	                                    _react2.default.createElement(
-	                                        'button',
-	                                        { className: 'btn btn-primary', type: 'submit', onClick: this.onAddEvent.bind(this) },
-	                                        'Submit'
-	                                    )
-	                                )
+	                                { className: 'col-md-11' },
+	                                _react2.default.createElement('input', { ref: 'inputFormEventName', id: 'inputFormEventName', type: 'text', className: 'form-control', placeholder: 'name' })
 	                            )
-	                        )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'form-group' },
+	                            _react2.default.createElement(
+	                                'label',
+	                                { htmlFor: 'inputFormEventDescription', className: 'col-md-1 control-label' },
+	                                'Event description'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-11' },
+	                                _react2.default.createElement('textarea', { ref: 'inputFormEventDescription', id: 'inputFormEventDescription', className: 'form-control', rows: '5' })
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'form-group' },
+	                            _react2.default.createElement(
+	                                'label',
+	                                { htmlFor: 'inputFormStartDate', className: 'col-md-1 control-label' },
+	                                'Start date'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-11' },
+	                                _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormStartDate', ref: 'inputFormStartDate', className: 'form-control',
+	                                    dateFormat: 'DD/MM/YYYY', selected: this.state.startDate,
+	                                    onChange: this.handleChange.bind(this, "inputFormStartDate") })
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'form-group' },
+	                            _react2.default.createElement(
+	                                'label',
+	                                { htmlFor: 'inputFormEndDate', className: 'col-md-1 control-label' },
+	                                'End date'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-11' },
+	                                _react2.default.createElement(_reactDatepicker2.default, { id: 'inputFormEndDate', ref: 'inputFormEndDate', className: 'form-control',
+	                                    dateFormat: 'DD/MM/YYYY', selected: this.state.endDate,
+	                                    onChange: this.handleChange.bind(this, "inputFormEndDate") })
+	                            )
+	                        ),
+	                        _react2.default.createElement('div', { className: 'form-group' })
 	                    )
 	                )
 	            );

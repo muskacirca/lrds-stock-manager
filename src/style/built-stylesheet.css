@@ -63,6 +63,24 @@
   z-index: 200 !important; }
 
 /*
+  SUBBAR
+*/
+.sub-bar-component-centered {
+  padding-top: 23px; }
+
+.align-right {
+  text-align: right; }
+
+/*
+  ALERT
+*/
+.alert-message {
+  font-size: medium; }
+
+@media only screen and (max-width: 750px) {
+  .alert-message {
+    display: none; } }
+/*
   DATEPICKER OVERRIDE
 */
 .react-datepicker__input-container {
