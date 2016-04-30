@@ -108,11 +108,13 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         };
 
         return _database2.default.models.event.create(event).then(function (event) {
-            // spread is necessary when multiple return value
+
+            console.log("addEventMutation, reserved items : " + JSON.stringify(reservedItems));
 
             reservedItems.forEach(function (reference) {
                 _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (item) {
-                    return event.addItem(item);
+                    console.log("adding item : " + JSON.stringify(item));
+                    event.addItem(item);
                 });
             });
 

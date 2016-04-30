@@ -68465,24 +68465,20 @@
 	            return cart.selectedItems.map(function (item, key) {
 	                return _react2.default.createElement(
 	                    'div',
-	                    null,
+	                    { key: "cart-dropdown-" + key + "-" + item.reference, className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { key: "cart-" + key + "-" + item.reference, className: 'row' },
+	                        { className: 'col-md-10 col-sm-10 col-xs-10' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'col-md-10 col-sm-10 col-xs-10' },
-	                            _react2.default.createElement(
-	                                'div',
-	                                null,
-	                                item.reference
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'col-md-2 col-sm-2 col-xs-2 pointer', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) },
-	                            _react2.default.createElement('i', { className: 'fa fa-times red' })
+	                            null,
+	                            item.reference
 	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-2 col-sm-2 col-xs-2 pointer', onClick: _this2.onRemoveItemFromCart.bind(_this2, item.reference) },
+	                        _react2.default.createElement('i', { className: 'fa fa-times red' })
 	                    )
 	                );
 	            });
@@ -69358,8 +69354,6 @@
 	    }, {
 	        key: 'addItemToCart',
 	        value: function addItemToCart(reference) {
-
-	            console.log("addIrmToCart : " + this.props.viewer.id);
 
 	            var addItemInCartMutation = new _AddItemInCartMutation2.default({
 	                viewerId: _AuthService2.default.getUserId(),
@@ -70586,13 +70580,8 @@
 	    }, {
 	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
-	            console.log("get optimistic responbse : " + JSON.stringify(this.props.cart));
-
 	            var actualCart = _lodash2.default.cloneDeep(this.props.cart);
 	            actualCart.selectedItems.push({ reference: this.props.itemReference });
-
-	            console.log("modified cart : " + JSON.stringify(actualCart));
-
 	            return {
 	                count: this.props.cart.count + 1,
 	                selectedItems: actualCart.selectedItems,
@@ -89173,7 +89162,8 @@
 	        _this.state = {
 	            startDate: null,
 	            endDate: null,
-	            alert: undefined
+	            alert: undefined,
+	            selectedItems: _this.props.viewer.cart.selectedItems
 	        };
 	        return _this;
 	    }
@@ -89183,12 +89173,8 @@
 	        value: function handleChange(fieldRef, date) {
 
 	            if (fieldRef.indexOf("Start") != -1) {
-	                console.log("changind start date: ");
 	                this.setState({ startDate: date });
 	            } else {
-
-	                console.log("chanbging end date");
-
 	                this.setState({ endDate: date });
 	            }
 	        }
@@ -89212,14 +89198,16 @@
 	            var eventStartDate = this.state.startDate;
 	            var eventEndDate = this.state.endDate;
 
-	            var addEventutation = new _AddEventMutation2.default({
+	            var computedReservedItems = this.computeReservedItemds(this.state.selectedItems);
+
+	            var addEventMutation = new _AddEventMutation2.default({
 	                viewer: this.props.viewer,
 	                userId: _AuthService2.default.getUserId(),
 	                name: eventName,
 	                description: eventDescription,
 	                startDate: eventStartDate,
 	                endDate: eventEndDate,
-	                reservedItems: this.props.viewer.cart.selectedItems
+	                reservedItems: computedReservedItems
 	            });
 
 	            var onSuccess = function onSuccess(response) {
@@ -89231,7 +89219,16 @@
 	                return _this2.updateAlert("An error occurred when adding new event", "error");
 	            };
 
-	            _reactRelay2.default.Store.commitUpdate(addEventutation, { onSuccess: onSuccess, onFailure: onFailure });
+	            _reactRelay2.default.Store.commitUpdate(addEventMutation, { onSuccess: onSuccess, onFailure: onFailure });
+	        }
+	    }, {
+	        key: 'computeReservedItemds',
+	        value: function computeReservedItemds(items) {
+	            var reservedItems = items.map(function (item) {
+	                return item.reference;
+	            });
+	            console.log("reservedItemx : " + reservedItems);
+	            return reservedItems;
 	        }
 	    }, {
 	        key: 'updateAlert',
@@ -89240,8 +89237,21 @@
 	            this.setState({ alert: alert });
 	        }
 	    }, {
+	        key: 'renderReservedItems',
+	        value: function renderReservedItems() {
+	            return this.state.selectedItems.map(function (item) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { className: 'list-group-item', key: "event-reserved-items-" + item.reference },
+	                    item.reference
+	                );
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+
+	            var reservedItems = this.renderReservedItems();
 
 	            return _react2.default.createElement(
 	                'form',
@@ -89254,7 +89264,7 @@
 	                    { className: 'page-content row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-10 col-md-offset-1' },
+	                        { className: 'col-md-6 col-md-offset-1' },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'form-group' },
@@ -89316,6 +89326,20 @@
 	                            )
 	                        ),
 	                        _react2.default.createElement('div', { className: 'form-group' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'col-md-4' },
+	                        _react2.default.createElement(
+	                            'h5',
+	                            null,
+	                            'Selected items'
+	                        ),
+	                        _react2.default.createElement(
+	                            'ul',
+	                            { className: 'list-group' },
+	                            reservedItems
+	                        )
 	                    )
 	                )
 	            );

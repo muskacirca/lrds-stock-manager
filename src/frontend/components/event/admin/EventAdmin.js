@@ -14,7 +14,8 @@ class EventAdmin extends React.Component {
         this.state = {
             startDate: null,
             endDate: null,
-            alert: undefined
+            alert: undefined,
+            selectedItems: this.props.viewer.cart.selectedItems
         }
     }
 
@@ -22,12 +23,8 @@ class EventAdmin extends React.Component {
 
         
         if(fieldRef.indexOf("Start") != -1) {
-            console.log("changind start date: ")
             this.setState({startDate: date})
         } else {
-
-            console.log("chanbging end date")
-
             this.setState({endDate : date})
         }
     }
@@ -48,14 +45,17 @@ class EventAdmin extends React.Component {
         var eventStartDate =  this.state.startDate
         var eventEndDate =  this.state.endDate
 
-        var addEventutation = new AddEventMutation({
+
+        var computedReservedItems = this.computeReservedItemds(this.state.selectedItems)
+        
+        var addEventMutation = new AddEventMutation({
             viewer: this.props.viewer,
             userId: UserService.getUserId(),
             name: eventName,
             description: eventDescription,
             startDate: eventStartDate,
             endDate: eventEndDate,
-            reservedItems: this.props.viewer.cart.selectedItems
+            reservedItems: computedReservedItems
         });
 
         var onSuccess = (response) => {
@@ -65,7 +65,13 @@ class EventAdmin extends React.Component {
 
         var onFailure = (transaction) => this.updateAlert("An error occurred when adding new event", "error");
         
-        Relay.Store.commitUpdate(addEventutation, {onSuccess, onFailure})
+        Relay.Store.commitUpdate(addEventMutation, {onSuccess, onFailure})
+    }
+
+    computeReservedItemds(items)  {
+        var reservedItems = items.map(item => item.reference)
+        console.log("reservedItemx : " + reservedItems)
+        return reservedItems
     }
     
     updateAlert(message, type) {
@@ -73,7 +79,15 @@ class EventAdmin extends React.Component {
         this.setState({alert: alert})
     }
     
+    renderReservedItems() {
+        return this.state.selectedItems.map(item => {
+            return <li className="list-group-item" key={"event-reserved-items-" + item.reference}>{item.reference}</li>
+        })
+    }
+    
     render() {
+        
+        var reservedItems = this.renderReservedItems()
 
         return  <form className="form-horizontal" name="addNewEventForm">
             
@@ -82,7 +96,7 @@ class EventAdmin extends React.Component {
                                 onSave={this.onAddEvent.bind(this)} />
             
                     <div className="page-content row">
-                        <div className="col-md-10 col-md-offset-1">                            
+                        <div className="col-md-6 col-md-offset-1">                            
                                 <div className="form-group">
                                     <label htmlFor="inputFormEventName" className="col-md-1 control-label">Event name</label>
                                     <div className="col-md-11">
@@ -114,6 +128,12 @@ class EventAdmin extends React.Component {
                                 <div className="form-group">
 
                                 </div>
+                        </div>
+                        <div className="col-md-4">
+                            <h5>Selected items</h5>
+                            <ul className="list-group">
+                                {reservedItems}
+                            </ul>
                         </div>
                     </div>
                 </form>

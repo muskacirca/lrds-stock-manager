@@ -85,10 +85,15 @@ export const AddEventMutation = new mutationWithClientMutationId({
         }
         
         return Database.models.event.create(event)
-            .then(event => { // spread is necessary when multiple return value
+            .then(event => {
 
+                console.log("addEventMutation, reserved items : " + JSON.stringify(reservedItems))
+                
                 reservedItems.forEach(reference => {
-                    Database.models.item.findOne({where: {reference: reference}}).then(item => event.addItem(item))
+                    Database.models.item.findOne({where: {reference: reference}}).then(item => {
+                        console.log("adding item : " + JSON.stringify(item))
+                        event.addItem(item)
+                    })
                 })
                 
                 return event

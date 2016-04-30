@@ -100,8 +100,6 @@ class StockComponent extends React.Component {
     }
 
     addItemToCart(reference) {
-
-        console.log("addIrmToCart : " + this.props.viewer.id)
         
         var addItemInCartMutation = new AddItemInCartMutation({
             viewerId: UserService.getUserId(),

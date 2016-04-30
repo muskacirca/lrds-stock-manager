@@ -45,16 +45,15 @@ class CartDropdownComponent extends React.Component {
     renderCart(cart) {
 
         return cart.selectedItems.map((item, key) => {
-            return  <div>
-                        <div key={"cart-" + key + "-" + item.reference} className="row">
-                            <div className="col-md-10 col-sm-10 col-xs-10">
-                                <div>{item.reference}</div>
-                            </div>
-                            <div className="col-md-2 col-sm-2 col-xs-2 pointer" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}>
-                                <i className="fa fa-times red" />
-                            </div>
+            return  <div key={"cart-dropdown-" + key + "-" + item.reference} className="row">
+                        <div className="col-md-10 col-sm-10 col-xs-10">
+                            <div>{item.reference}</div>
+                        </div>
+                        <div className="col-md-2 col-sm-2 col-xs-2 pointer" onClick={this.onRemoveItemFromCart.bind(this, item.reference)}>
+                            <i className="fa fa-times red" />
                         </div>
                     </div>
+                        
 
 
         })

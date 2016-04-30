@@ -43,13 +43,8 @@ class AddItemInCartMutation extends Relay.Mutation {
     }
 
     getOptimisticResponse() {
-        console.log("get optimistic responbse : " + JSON.stringify(this.props.cart))
-
         var actualCart = _.cloneDeep(this.props.cart)
         actualCart.selectedItems.push({reference : this.props.itemReference})
-
-        console.log("modified cart : " + JSON.stringify(actualCart))
-        
         return {
                 count: this.props.cart.count + 1,
                 selectedItems: actualCart.selectedItems,
