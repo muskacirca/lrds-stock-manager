@@ -1,9 +1,8 @@
 import React from 'react'
 import Relay from 'react-relay'
 import DatePicker from 'react-datepicker'
-import moment from 'moment'
 
-import Alert from '../../utils/Alert'
+import FormHeader from '../../utils/forms/FormHeader'
 
 import AddEventMutation from '../../../mutations/AddEventMutation'
 import UserService from '../../utils/AuthService'
@@ -77,22 +76,11 @@ class EventAdmin extends React.Component {
     render() {
 
         return  <form className="form-horizontal" name="addNewEventForm">
-                    <div className="sub-bar row">
-                        <div className="col-md-5 col-md-offset-2 col-sm-6 col-xs-8">
-                            <h2>Create an event</h2>
-                        </div>
-                        <div className="sub-bar-component-centered align-right col-md-3 col-sm-4 col-xs-1">
-                            <Alert alert={this.state.alert} />
-                        </div>
-                        <div className="sub-bar-component-centered col-md-1 col-sm-2 col-xs-1">
-                            <button className="btn btn-primary" type="submit" onClick={this.onAddEvent.bind(this)}>Save</button>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-9 col-md-offset-2">
-
-                        </div>
-                    </div>
+            
+                    <FormHeader title="Create an event"
+                                alert={this.state.alert}
+                                onSave={this.onAddEvent.bind(this)} />
+            
                     <div className="page-content row">
                         <div className="col-md-10 col-md-offset-1">                            
                                 <div className="form-group">
