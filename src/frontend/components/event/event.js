@@ -33,6 +33,7 @@ class EventBox extends React.Component {
     render() {
         
         var date = this.state.defaultDate
+        var events = this.props.viewer.events.edges
 
         return  <div className="calendar-container">
                     <div className="sub-bar row">
@@ -46,7 +47,7 @@ class EventBox extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-10 col-md-offset-1">
-                        <Calendar defaultDate={date} />
+                        <Calendar defaultDate={date} events={events} />
                     </div>
                 </div>
     }
@@ -61,7 +62,7 @@ export default Relay.createContainer(EventBox, {
     prepareVariables: prevVariables => {
         return {
             ...prevVariables,
-            viewerId: UserService.getUserId() + "",
+            date: moment().format("YYYY-MM-DD"),
         };
     },
 

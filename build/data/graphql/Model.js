@@ -442,8 +442,6 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
 
                     var args = _objectWithoutProperties(_ref6, ['date']);
 
-                    console.log("date : " + JSON.stringify(date));
-
                     var date = (0, _moment2.default)(date, "YYYY-MM-DD");
 
                     var beginOfMonth = (0, _moment2.default)(date.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();

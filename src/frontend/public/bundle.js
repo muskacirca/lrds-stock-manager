@@ -75673,7 +75673,7 @@
 
 	    prepareVariables: function prepareVariables(prevVariables) {
 	        return _extends({}, prevVariables, {
-	            viewerId: UserService.getUserId() + ""
+	            date: (0, _moment2.default)().format("YYYY-MM-DD")
 	        });
 	    },
 
