@@ -37,7 +37,7 @@ class StockTableRow extends React.Component {
                     <td className="pointer" onClick={this.handleRowClick.bind(this)}>{state}</td>
                     <td>{item.model.name}</td>
                     <td>{item.model.brand.name}</td>
-                    <td>{item.reference}</td>
+                    <td className="mobile-hide">{item.reference}</td>
                     <td>{isInStock}</td>
                     <td>
                         <div className="row">

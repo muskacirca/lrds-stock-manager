@@ -34,7 +34,6 @@ export function login(viewerId) {
 }
 
 export function getViewer(viewerId) {
-
-    console.log("getting viewer : " + JSON.stringify(usersById[viewerId]))
+    console.log("deprecated getViewer")
    return usersById[viewerId]
 }

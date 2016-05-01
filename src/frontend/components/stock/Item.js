@@ -29,7 +29,6 @@ export default Relay.createContainer(ItemComponent, {
     },
     prepareVariables({ reference }) {
 
-        console.log("reference in ItemComponent : " + reference)
         return {
             reference: reference
         }

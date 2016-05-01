@@ -43,7 +43,6 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         cart: {
             type: _Model.GraphQLCartType,
             resolve: function resolve(args) {
-                console.log("add event cart args : " + JSON.stringify(args));
                 return (0, _ItemStore.emptyCart)(args.userId);
             }
         },
@@ -108,13 +107,9 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         };
 
         return _database2.default.models.event.create(event).then(function (event) {
-
-            console.log("addEventMutation, reserved items : " + JSON.stringify(reservedItems));
-
             reservedItems.forEach(function (reference) {
                 _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (item) {
-                    console.log("adding item : " + JSON.stringify(item));
-                    event.addItem(item);
+                    return event.addItem(item);
                 });
             });
 

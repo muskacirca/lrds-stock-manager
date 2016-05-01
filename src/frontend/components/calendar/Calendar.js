@@ -75,6 +75,16 @@ class Calendar extends React.Component {
         return blankDays
     }
 
+    findEventsByDay(events, dayNumber) {
+        
+        return events != undefined 
+            ?   events.filter(event => {
+                    return moment(event.node.startDate).dates() == dayNumber
+                })
+            : []
+        
+    }
+
     renderWeekRow(initialDayNumber, blankDays) {
 
         var dayNumber = initialDayNumber;
@@ -82,8 +92,12 @@ class Calendar extends React.Component {
 
         for(var c=counter ; c < 7; c++) {
             if(dayNumber > this.getDaysInMonth()) break;
+            
+            var eventsOfTheDay = this.findEventsByDay(this.props.events, dayNumber)
+            
             blankDays.push(<CalendarColumn defaultDate={this.state.defaultDate} 
-                                           dayNumber={dayNumber} 
+                                           dayNumber={dayNumber}
+                                           events={eventsOfTheDay}
                                            key={"calendar-days-" + dayNumber} />)
             dayNumber++
         }

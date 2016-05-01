@@ -19,7 +19,11 @@
   flex: 1; }
 
 .calendar-days-content {
-  min-height: 115px; }
+  min-height: 135px; }
+  .calendar-days-content li {
+    list-style-type: none; }
+  .calendar-days-content ul {
+    padding-left: 10px; }
 
 .center {
   text-align: center; }
@@ -32,6 +36,11 @@
 .calendar-blank-days,
 .calendar-days {
   height: 115px; }
+
+.calendar-days-header {
+  text-align: center;
+  font-size: medium;
+  padding: 5px; }
 
 .calendar-days-tr-up {
   text-align: right; }

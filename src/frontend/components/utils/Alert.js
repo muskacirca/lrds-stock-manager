@@ -54,6 +54,6 @@ Alert.propTypes = {
     delay: React.PropTypes.number,
 };
 
-Alert.defaultProps = { delay: 300000, alert: undefined };
+Alert.defaultProps = { delay: 10000, alert: undefined };
 
 export default Alert

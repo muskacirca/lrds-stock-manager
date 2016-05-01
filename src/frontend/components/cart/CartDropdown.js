@@ -13,7 +13,6 @@ class CartDropdownComponent extends React.Component {
     }
 
     onRemoveItemFromCart(reference) {
-        console.log("removing item from cart: " + reference)
         var removeItemFromCartMutation = new RemoveItemFromCartMutation({
             viewerId: UserService.getUserId(),
             itemReference: reference,

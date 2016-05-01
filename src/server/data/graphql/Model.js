@@ -47,7 +47,7 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         console.log("id of " + type + " : " + id)
         if (type === 'ItemType') {
             console.log("Im here getting ItemType")
-            return getById(id)
+            return Database.models.item.findOne({where: {id: id}});
         } else if (type === "SubCategoryType") {
             console.log("Im here getting SubCategoryType")
             return getViewer(id);
@@ -55,17 +55,15 @@ var { nodeInterface, nodeField } = nodeDefinitions(
             console.log("Im here getting Domain")
             return getViewer(id);
         } else if (type === "Viewer") {
-            console.log("Im here getting viewer")
-            return getViewer(id);
+            return Database.models.user.findOne({where: {id: id}});
         }
         return null;
     },
     (obj) => {
        
-        if (obj instanceof Domain) {
-            console.log("getting by object SubCategoryType")
-            return GraphQLDomainType
-        } else if (obj instanceof Viewer) {
+        console.log("in interface obj: " + JSON.stringify(obj))
+        
+        if (obj.password != undefined) {
             console.log("getting by object ViewerType")
             return GraphQLViewer
         }

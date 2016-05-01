@@ -9,7 +9,7 @@ class StockTableHeader extends React.Component {
                 <th>Etat</th>
                 <th>Modèle</th>
                 <th>Marque</th>
-                <th>Reference</th>
+                <th className="mobile-hide">Reference</th>
                 <th>En Stock</th>
                 <th>Actions</th>
             </tr>

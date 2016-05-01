@@ -7,12 +7,19 @@ class CalendarColumn extends React.Component {
         super(props)
     }
     
+    renderEventsList(events) {
+        
+        return events.map((event, key) => {
+            return <li key={"calendar-event-list-" + this.props.dayNumber + "-" + key}>{event.node.name}</li>
+        })
+    }
+    
     render() {
         
-        
-    
         var dayNumber = this.props.dayNumber
         var now = moment()
+        
+        var events = this.renderEventsList(this.props.events)
         
         var className = dayNumber == now.date() 
                         && this.props.defaultDate.month() == now.month() 
@@ -23,7 +30,9 @@ class CalendarColumn extends React.Component {
                         {dayNumber}
                     </div>
                     <div className="calendar-days-content">
-                       
+                       <ul>
+                           {events}
+                       </ul>
                     </div>
                 </div>
     }

@@ -11,7 +11,7 @@ describe('Calendar', () => {
 
     it('Display the default date ', () => {
 
-        let instance = TestUtils.renderIntoDocument(<Calendar defaultDate={defaultDate}/>);
+        let instance = TestUtils.renderIntoDocument(<Calendar defaultDate={defaultDate} />);
 
         var calendarHeaderColumns = TestUtils.scryRenderedDOMComponentsWithClass(instance, 'calendar-days-header');
         expect(calendarHeaderColumns.length).toEqual(7);

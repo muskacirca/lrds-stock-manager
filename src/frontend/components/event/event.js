@@ -17,38 +17,56 @@ class EventBox extends React.Component {
     increaseCalendar() {
 
         var newDisplayDate = moment(this.state.defaultDate).add(1, 'M')
-        this.setState({defaultDate: newDisplayDate})
+
+        this.props.relay.setVariables({
+            date: newDisplayDate.format("YYYY-MM-DD")
+        }, ({ready, done, error, aborted}) => {
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
+            this.setState({defaultDate: newDisplayDate})
+        });
+        
+       
     }
 
     subtractCalendar() {
 
         var newDisplayDate = moment(this.state.defaultDate).subtract(1, 'M')
-        this.setState({defaultDate: newDisplayDate})
+
+        this.props.relay.setVariables({
+            date: newDisplayDate.format("YYYY-MM-DD")
+        }, ({ready, done, error, aborted}) => {
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
+            this.setState({defaultDate: newDisplayDate})
+        });
+        
+       
     }
 
     getNow() {
-        this.setState({defaultDate: moment()})
+        var now = moment()
+        
+        this.props.relay.setVariables({
+            date: now.format("YYYY-MM-DD")
+        }, ({ready, done, error, aborted}) => {
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
+            this.setState({defaultDate: now})
+        });
     }
 
     render() {
         
         var date = this.state.defaultDate
         var events = this.props.viewer.events.edges
-
+        
         return  <div className="calendar-container">
-                    <div className="sub-bar row">
-                        <div className="sub-bar-component-centered col-md-10 col-md-offset-1">
-                            <CalendarHeader defaultDate={date}
-                                            increaseCalendar={this.increaseCalendar.bind(this)}
-                                            subtractCalendar={this.subtractCalendar.bind(this)}
-                                            getNow={this.getNow.bind(this)} />
+                   
+                    <CalendarHeader defaultDate={date}
+                                    increaseCalendar={this.increaseCalendar.bind(this)}
+                                    subtractCalendar={this.subtractCalendar.bind(this)}
+                                    getNow={this.getNow.bind(this)} />
                         
-
-                        </div>
-                    </div>
-                    <div className="col-md-10 col-md-offset-1">
-                        <Calendar defaultDate={date} events={events} />
-                    </div>
+            
+                    <Calendar defaultDate={date} events={events} />
                 </div>
     }
 
@@ -60,9 +78,14 @@ export default Relay.createContainer(EventBox, {
     initialVariables: {date: null},
 
     prepareVariables: prevVariables => {
+        
+        var date = prevVariables.date == null 
+            ? moment().format("YYYY-MM-DD") 
+            : prevVariables.date
+        
         return {
             ...prevVariables,
-            date: moment().format("YYYY-MM-DD"),
+            date: date,
         };
     },
 
@@ -74,6 +97,8 @@ export default Relay.createContainer(EventBox, {
                 edges {
                     node {
                         name
+                        startDate
+                        endDate
                     }
                 }
             }

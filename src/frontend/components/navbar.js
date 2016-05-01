@@ -23,7 +23,6 @@ class NavBarBox extends React.Component {
     }
 
     toggleUserMenuOpening() {
-        console.log("toggleUserMenuOpening " + this.state.isUserMenuOpened)
         this.setState({isUserMenuOpened: !this.state.isUserMenuOpened})
     }
 

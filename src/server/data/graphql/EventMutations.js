@@ -48,10 +48,7 @@ export const AddEventMutation = new mutationWithClientMutationId({
         },
         cart: {
             type: GraphQLCartType,
-            resolve: (args) => {
-                console.log("add event cart args : " + JSON.stringify(args))
-                return emptyCart(args.userId)
-            }
+            resolve: (args) => emptyCart(args.userId)
         },
         eventEdge: {
             type: EventsEdge,
@@ -86,14 +83,8 @@ export const AddEventMutation = new mutationWithClientMutationId({
         
         return Database.models.event.create(event)
             .then(event => {
-
-                console.log("addEventMutation, reserved items : " + JSON.stringify(reservedItems))
-                
                 reservedItems.forEach(reference => {
-                    Database.models.item.findOne({where: {reference: reference}}).then(item => {
-                        console.log("adding item : " + JSON.stringify(item))
-                        event.addItem(item)
-                    })
+                    Database.models.item.findOne({where: {reference: reference}}).then(item => event.addItem(item))
                 })
                 
                 return event

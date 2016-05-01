@@ -16,8 +16,6 @@ class AddItemMutation extends Relay.Mutation {
 
     getFatQuery() {
 
-        console.log("getting FatQuery")
-
         return Relay.QL`
           fragment on AddItemPayload {
               itemEdge,
@@ -29,7 +27,6 @@ class AddItemMutation extends Relay.Mutation {
     }
     getConfigs() {
 
-        console.log("getting config")
         return [
             {
                 type: 'FIELDS_CHANGE',

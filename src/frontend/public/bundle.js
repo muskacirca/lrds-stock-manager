@@ -52082,11 +52082,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'site-content' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'container' },
-	                        this.props.children
-	                    )
+	                    this.props.children
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -68247,7 +68243,6 @@
 	    }, {
 	        key: 'toggleUserMenuOpening',
 	        value: function toggleUserMenuOpening() {
-	            console.log("toggleUserMenuOpening " + this.state.isUserMenuOpened);
 	            this.setState({ isUserMenuOpened: !this.state.isUserMenuOpened });
 	        }
 	    }, {
@@ -68447,7 +68442,6 @@
 	    _createClass(CartDropdownComponent, [{
 	        key: 'onRemoveItemFromCart',
 	        value: function onRemoveItemFromCart(reference) {
-	            console.log("removing item from cart: " + reference);
 	            var removeItemFromCartMutation = new _RemoveItemFromCartMutation2.default({
 	                viewerId: _AuthService2.default.getUserId(),
 	                itemReference: reference,
@@ -68744,8 +68738,6 @@
 	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
 
-	            console.log("getOptimisticResponse : " + JSON.stringify(this.props.cart));
-
 	            return {
 	                id: this.props.cart.id,
 	                count: this.props.cart.count - 1
@@ -69010,10 +69002,7 @@
 	    function LoginBox(props) {
 	        _classCallCheck(this, LoginBox);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LoginBox).call(this, props));
-
-	        console.log(props);
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(LoginBox).call(this, props));
 	    }
 
 	    _createClass(LoginBox, [{
@@ -69181,7 +69170,6 @@
 
 	    cb = arguments[arguments.length - 1];
 	    if (localStorage.token) {
-	      console.log(localStorage.token);
 	      if (cb) {
 	        cb(true);
 	      }
@@ -69910,7 +69898,7 @@
 /* 576 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -69940,43 +69928,43 @@
 	    }
 
 	    _createClass(StockTableHeader, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'thead',
+	                "thead",
 	                null,
 	                _react2.default.createElement(
-	                    'tr',
+	                    "tr",
 	                    null,
 	                    _react2.default.createElement(
-	                        'th',
+	                        "th",
 	                        null,
-	                        'Etat'
+	                        "Etat"
 	                    ),
 	                    _react2.default.createElement(
-	                        'th',
+	                        "th",
 	                        null,
-	                        'Modèle'
+	                        "Modèle"
 	                    ),
 	                    _react2.default.createElement(
-	                        'th',
+	                        "th",
 	                        null,
-	                        'Marque'
+	                        "Marque"
 	                    ),
 	                    _react2.default.createElement(
-	                        'th',
-	                        null,
-	                        'Reference'
+	                        "th",
+	                        { className: "mobile-hide" },
+	                        "Reference"
 	                    ),
 	                    _react2.default.createElement(
-	                        'th',
+	                        "th",
 	                        null,
-	                        'En Stock'
+	                        "En Stock"
 	                    ),
 	                    _react2.default.createElement(
-	                        'th',
+	                        "th",
 	                        null,
-	                        'Actions'
+	                        "Actions"
 	                    )
 	                )
 	            );
@@ -70072,7 +70060,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    "td",
-	                    null,
+	                    { className: "mobile-hide" },
 	                    item.reference
 	                ),
 	                _react2.default.createElement(
@@ -70441,7 +70429,6 @@
 	        key: 'handleSearch',
 	        value: function handleSearch() {
 	            var searchedText = _reactDom2.default.findDOMNode(this.refs.searchInput).value;
-	            console.log(searchedText);
 	            this.setState({ searchedText: searchedText });
 	            this.props.onChange(searchedText);
 	        }
@@ -70678,7 +70665,7 @@
 /* 582 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -70708,121 +70695,118 @@
 	    }
 
 	    _createClass(AddItemMutation, [{
-	        key: "getMutation",
+	        key: 'getMutation',
 	        value: function getMutation() {
 	            return function () {
 	                return {
 	                    calls: [{
-	                        kind: "Call",
+	                        kind: 'Call',
 	                        metadata: {},
-	                        name: "addItem",
+	                        name: 'addItem',
 	                        value: {
-	                            kind: "CallVariable",
-	                            callVariableName: "input"
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
 	                        }
 	                    }],
 	                    children: [{
-	                        fieldName: "clientMutationId",
-	                        kind: "Field",
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
 	                        metadata: {
 	                            isGenerated: true,
 	                            isRequisite: true
 	                        },
-	                        type: "String"
+	                        type: 'String'
 	                    }],
-	                    kind: "Mutation",
+	                    kind: 'Mutation',
 	                    metadata: {
-	                        inputType: "AddItemInput!"
+	                        inputType: 'AddItemInput!'
 	                    },
-	                    name: "AddItemMutation",
-	                    responseType: "AddItemPayload"
+	                    name: 'AddItemMutation',
+	                    responseType: 'AddItemPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getFatQuery",
+	        key: 'getFatQuery',
 	        value: function getFatQuery() {
-
-	            console.log("getting FatQuery");
 
 	            return function () {
 	                return {
 	                    children: [{
 	                        children: [{
-	                            fieldName: "cursor",
-	                            kind: "Field",
+	                            fieldName: 'cursor',
+	                            kind: 'Field',
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "String"
+	                            type: 'String'
 	                        }, {
 	                            children: [{
-	                                fieldName: "id",
-	                                kind: "Field",
+	                                fieldName: 'id',
+	                                kind: 'Field',
 	                                metadata: {
 	                                    isGenerated: true,
 	                                    isRequisite: true
 	                                },
-	                                type: "ID"
+	                                type: 'ID'
 	                            }],
-	                            fieldName: "node",
-	                            kind: "Field",
+	                            fieldName: 'node',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
-	                                inferredRootCallName: "node",
-	                                inferredPrimaryKey: "id",
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "ItemType"
+	                            type: 'ItemType'
 	                        }],
-	                        fieldName: "itemEdge",
-	                        kind: "Field",
+	                        fieldName: 'itemEdge',
+	                        kind: 'Field',
 	                        metadata: {
 	                            canHaveSubselections: true
 	                        },
-	                        type: "ItemTypeEdge"
+	                        type: 'ItemTypeEdge'
 	                    }, {
 	                        children: [{
-	                            fieldName: "items",
-	                            kind: "Field",
+	                            fieldName: 'items',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
 	                                isConnection: true
 	                            },
-	                            type: "ItemTypeConnection"
+	                            type: 'ItemTypeConnection'
 	                        }, {
-	                            fieldName: "id",
-	                            kind: "Field",
+	                            fieldName: 'id',
+	                            kind: 'Field',
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "ID"
+	                            type: 'ID'
 	                        }],
-	                        fieldName: "viewer",
-	                        kind: "Field",
+	                        fieldName: 'viewer',
+	                        kind: 'Field',
 	                        metadata: {
 	                            canHaveSubselections: true,
-	                            inferredRootCallName: "node",
-	                            inferredPrimaryKey: "id"
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
 	                        },
-	                        type: "Viewer"
+	                        type: 'Viewer'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: "Fragment",
+	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: "AddItemMutation_ValueRelayQL",
-	                    type: "AddItemPayload"
+	                    name: 'AddItemMutation_ValueRelayQL',
+	                    type: 'AddItemPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getConfigs",
+	        key: 'getConfigs',
 	        value: function getConfigs() {
 
-	            console.log("getting config");
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
@@ -70842,7 +70826,7 @@
 	            }];
 	        }
 	    }, {
-	        key: "getVariables",
+	        key: 'getVariables',
 	        value: function getVariables() {
 	            return {
 	                modelName: this.props.modelName,
@@ -70852,7 +70836,7 @@
 	            };
 	        }
 	    }, {
-	        key: "getOptimisticResponse",
+	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
 	            return {
 	                viewer: {
@@ -70879,18 +70863,18 @@
 	        return function () {
 	            return {
 	                children: [{
-	                    fieldName: "id",
-	                    kind: "Field",
+	                    fieldName: 'id',
+	                    kind: 'Field',
 	                    metadata: {
 	                        isRequisite: true
 	                    },
-	                    type: "ID"
+	                    type: 'ID'
 	                }],
 	                id: _reactRelay2.default.QL.__id(),
-	                kind: "Fragment",
+	                kind: 'Fragment',
 	                metadata: {},
-	                name: "AddItemMutation_ViewerRelayQL",
-	                type: "Viewer"
+	                name: 'AddItemMutation_ViewerRelayQL',
+	                type: 'Viewer'
 	            };
 	        }();
 	    }
@@ -70967,7 +70951,6 @@
 	        var reference = _ref.reference;
 
 
-	        console.log("reference in ItemComponent : " + reference);
 	        return {
 	            reference: reference
 	        };
@@ -74739,7 +74722,7 @@
 /* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -74769,121 +74752,118 @@
 	    }
 
 	    _createClass(AddModelMutation, [{
-	        key: "getMutation",
+	        key: 'getMutation',
 	        value: function getMutation() {
 	            return function () {
 	                return {
 	                    calls: [{
-	                        kind: "Call",
+	                        kind: 'Call',
 	                        metadata: {},
-	                        name: "addModel",
+	                        name: 'addModel',
 	                        value: {
-	                            kind: "CallVariable",
-	                            callVariableName: "input"
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
 	                        }
 	                    }],
 	                    children: [{
-	                        fieldName: "clientMutationId",
-	                        kind: "Field",
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
 	                        metadata: {
 	                            isGenerated: true,
 	                            isRequisite: true
 	                        },
-	                        type: "String"
+	                        type: 'String'
 	                    }],
-	                    kind: "Mutation",
+	                    kind: 'Mutation',
 	                    metadata: {
-	                        inputType: "AddModelInput!"
+	                        inputType: 'AddModelInput!'
 	                    },
-	                    name: "AddModelMutation",
-	                    responseType: "AddModelPayload"
+	                    name: 'AddModelMutation',
+	                    responseType: 'AddModelPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getFatQuery",
+	        key: 'getFatQuery',
 	        value: function getFatQuery() {
-
-	            console.log("getting FatQuery");
 
 	            return function () {
 	                return {
 	                    children: [{
 	                        children: [{
-	                            fieldName: "cursor",
-	                            kind: "Field",
+	                            fieldName: 'cursor',
+	                            kind: 'Field',
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "String"
+	                            type: 'String'
 	                        }, {
 	                            children: [{
-	                                fieldName: "id",
-	                                kind: "Field",
+	                                fieldName: 'id',
+	                                kind: 'Field',
 	                                metadata: {
 	                                    isGenerated: true,
 	                                    isRequisite: true
 	                                },
-	                                type: "ID"
+	                                type: 'ID'
 	                            }],
-	                            fieldName: "node",
-	                            kind: "Field",
+	                            fieldName: 'node',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
-	                                inferredRootCallName: "node",
-	                                inferredPrimaryKey: "id",
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "ModelType"
+	                            type: 'ModelType'
 	                        }],
-	                        fieldName: "modelEdge",
-	                        kind: "Field",
+	                        fieldName: 'modelEdge',
+	                        kind: 'Field',
 	                        metadata: {
 	                            canHaveSubselections: true
 	                        },
-	                        type: "ModelTypeEdge"
+	                        type: 'ModelTypeEdge'
 	                    }, {
 	                        children: [{
-	                            fieldName: "models",
-	                            kind: "Field",
+	                            fieldName: 'models',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
 	                                isConnection: true
 	                            },
-	                            type: "ModelTypeConnection"
+	                            type: 'ModelTypeConnection'
 	                        }, {
-	                            fieldName: "id",
-	                            kind: "Field",
+	                            fieldName: 'id',
+	                            kind: 'Field',
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "ID"
+	                            type: 'ID'
 	                        }],
-	                        fieldName: "viewer",
-	                        kind: "Field",
+	                        fieldName: 'viewer',
+	                        kind: 'Field',
 	                        metadata: {
 	                            canHaveSubselections: true,
-	                            inferredRootCallName: "node",
-	                            inferredPrimaryKey: "id"
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
 	                        },
-	                        type: "Viewer"
+	                        type: 'Viewer'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: "Fragment",
+	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: "AddModelMutation_ValueRelayQL",
-	                    type: "AddModelPayload"
+	                    name: 'AddModelMutation_ValueRelayQL',
+	                    type: 'AddModelPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getConfigs",
+	        key: 'getConfigs',
 	        value: function getConfigs() {
 
-	            console.log("getting config");
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
@@ -74903,7 +74883,7 @@
 	            }];
 	        }
 	    }, {
-	        key: "getVariables",
+	        key: 'getVariables',
 	        value: function getVariables() {
 	            return {
 	                name: this.props.modelName,
@@ -74911,10 +74891,8 @@
 	            };
 	        }
 	    }, {
-	        key: "getOptimisticResponse",
+	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
-
-	            console.log("getOptimisticResponse");
 
 	            return {
 	                viewer: {
@@ -74943,18 +74921,18 @@
 	        return function () {
 	            return {
 	                children: [{
-	                    fieldName: "id",
-	                    kind: "Field",
+	                    fieldName: 'id',
+	                    kind: 'Field',
 	                    metadata: {
 	                        isRequisite: true
 	                    },
-	                    type: "ID"
+	                    type: 'ID'
 	                }],
 	                id: _reactRelay2.default.QL.__id(),
-	                kind: "Fragment",
+	                kind: 'Fragment',
 	                metadata: {},
-	                name: "AddModelMutation_ViewerRelayQL",
-	                type: "Viewer"
+	                name: 'AddModelMutation_ViewerRelayQL',
+	                type: 'Viewer'
 	            };
 	        }();
 	    }
@@ -75339,7 +75317,7 @@
 	    delay: _react2.default.PropTypes.number
 	};
 
-	Alert.defaultProps = { delay: 300000, alert: undefined };
+	Alert.defaultProps = { delay: 10000, alert: undefined };
 
 	exports.default = Alert;
 
@@ -75470,7 +75448,6 @@
 	            data: [],
 	            productId: props.params.id
 	        };
-	        console.log(props.params.id);
 	        return _this;
 	    }
 
@@ -75618,21 +75595,59 @@
 	    _createClass(EventBox, [{
 	        key: 'increaseCalendar',
 	        value: function increaseCalendar() {
+	            var _this2 = this;
 
 	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).add(1, 'M');
-	            this.setState({ defaultDate: newDisplayDate });
+
+	            this.props.relay.setVariables({
+	                date: newDisplayDate.format("YYYY-MM-DD")
+	            }, function (_ref) {
+	                var ready = _ref.ready;
+	                var done = _ref.done;
+	                var error = _ref.error;
+	                var aborted = _ref.aborted;
+
+	                // console.log("isLoading: " + !ready && !(done || error || aborted));
+	                _this2.setState({ defaultDate: newDisplayDate });
+	            });
 	        }
 	    }, {
 	        key: 'subtractCalendar',
 	        value: function subtractCalendar() {
+	            var _this3 = this;
 
 	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).subtract(1, 'M');
-	            this.setState({ defaultDate: newDisplayDate });
+
+	            this.props.relay.setVariables({
+	                date: newDisplayDate.format("YYYY-MM-DD")
+	            }, function (_ref2) {
+	                var ready = _ref2.ready;
+	                var done = _ref2.done;
+	                var error = _ref2.error;
+	                var aborted = _ref2.aborted;
+
+	                // console.log("isLoading: " + !ready && !(done || error || aborted));
+	                _this3.setState({ defaultDate: newDisplayDate });
+	            });
 	        }
 	    }, {
 	        key: 'getNow',
 	        value: function getNow() {
-	            this.setState({ defaultDate: (0, _moment2.default)() });
+	            var _this4 = this;
+
+	            var now = (0, _moment2.default)();
+
+	            this.props.relay.setVariables({
+	                date: now.format("YYYY-MM-DD")
+	            }, function (_ref3) {
+	                var ready = _ref3.ready;
+	                var done = _ref3.done;
+	                var error = _ref3.error;
+	                var aborted = _ref3.aborted;
+
+	                // console.log("isLoading: " + !ready && !(done || error || aborted));
+	                _this4.setState({ defaultDate: now });
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -75644,23 +75659,11 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'calendar-container' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'sub-bar row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'sub-bar-component-centered col-md-10 col-md-offset-1' },
-	                        _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
-	                            increaseCalendar: this.increaseCalendar.bind(this),
-	                            subtractCalendar: this.subtractCalendar.bind(this),
-	                            getNow: this.getNow.bind(this) })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-md-10 col-md-offset-1' },
-	                    _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: events })
-	                )
+	                _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
+	                    increaseCalendar: this.increaseCalendar.bind(this),
+	                    subtractCalendar: this.subtractCalendar.bind(this),
+	                    getNow: this.getNow.bind(this) }),
+	                _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: events })
 	            );
 	        }
 	    }]);
@@ -75673,8 +75676,11 @@
 	    initialVariables: { date: null },
 
 	    prepareVariables: function prepareVariables(prevVariables) {
+
+	        var date = prevVariables.date == null ? (0, _moment2.default)().format("YYYY-MM-DD") : prevVariables.date;
+
 	        return _extends({}, prevVariables, {
-	            date: (0, _moment2.default)().format("YYYY-MM-DD")
+	            date: date
 	        });
 	    },
 
@@ -75711,6 +75717,16 @@
 	                            children: [{
 	                                children: [{
 	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'startDate',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'endDate',
 	                                    kind: 'Field',
 	                                    metadata: {},
 	                                    type: 'String'
@@ -89006,6 +89022,14 @@
 	            return blankDays;
 	        }
 	    }, {
+	        key: 'findEventsByDay',
+	        value: function findEventsByDay(events, dayNumber) {
+
+	            return events != undefined ? events.filter(function (event) {
+	                return (0, _moment2.default)(event.node.startDate).dates() == dayNumber;
+	            }) : [];
+	        }
+	    }, {
 	        key: 'renderWeekRow',
 	        value: function renderWeekRow(initialDayNumber, blankDays) {
 
@@ -89014,8 +89038,12 @@
 
 	            for (var c = counter; c < 7; c++) {
 	                if (dayNumber > this.getDaysInMonth()) break;
+
+	                var eventsOfTheDay = this.findEventsByDay(this.props.events, dayNumber);
+
 	                blankDays.push(_react2.default.createElement(_CalendarColumn2.default, { defaultDate: this.state.defaultDate,
 	                    dayNumber: dayNumber,
+	                    events: eventsOfTheDay,
 	                    key: "calendar-days-" + dayNumber }));
 	                dayNumber++;
 	            }
@@ -89095,11 +89123,26 @@
 	    }
 
 	    _createClass(CalendarColumn, [{
+	        key: 'renderEventsList',
+	        value: function renderEventsList(events) {
+	            var _this2 = this;
+
+	            return events.map(function (event, key) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: "calendar-event-list-" + _this2.props.dayNumber + "-" + key },
+	                    event.node.name
+	                );
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var dayNumber = this.props.dayNumber;
 	            var now = (0, _moment2.default)();
+
+	            var events = this.renderEventsList(this.props.events);
 
 	            var className = dayNumber == now.date() && this.props.defaultDate.month() == now.month() && this.props.defaultDate.year() == now.year() ? "red" : "";
 
@@ -89111,7 +89154,15 @@
 	                    { className: className + " calendar-days-tr-up" },
 	                    dayNumber
 	                ),
-	                _react2.default.createElement('div', { className: 'calendar-days-content' })
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'calendar-days-content' },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        null,
+	                        events
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -89187,41 +89238,60 @@
 	        key: 'render',
 	        value: function render() {
 
+	            var date = (0, _moment2.default)(this.state.defaultDate).format("MMMM YYYY");
+
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'calendar-header' },
+	                { className: 'sub-bar row' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1' },
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        date
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'sub-bar-component-centered col-md-3 col-sm-4 col-xs-5' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1 col-sm-1 col-xs-1 col-xs-offset-1' },
+	                        { className: 'btn-group', role: 'group' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
-	                            _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-left' })
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'center col-md-8 col-sm-8 col-xs-6' },
+	                            { type: 'button', className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
+	                            _react2.default.createElement('i', { className: 'fa fa-chevron-left' })
+	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', onClick: this.getNow.bind(this) },
+	                            { type: 'button', className: 'btn btn-default', onClick: this.getNow.bind(this) },
 	                            'Today'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1 col-sm-1 col-xs-1' },
+	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
-	                            _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-right' })
+	                            { type: 'button', className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
+	                            _react2.default.createElement('i', { className: 'fa fa-chevron-right' })
 	                        )
 	                    )
-	                )
+	                ),
+	                _react2.default.createElement('div', { className: 'sub-bar-component-centered col-md-1 col-sm-2 col-xs-1' }),
+	                _react2.default.createElement('div', { className: 'sub-bar-component-centered col-md-1 col-sm-2 col-xs-1' })
 	            );
+
+	            // return  <div className="calendar-header">
+	            //             <div className="row">
+	            //                 <div className="col-md-1 col-sm-1 col-xs-1 col-xs-offset-1">
+	            //
+	            //                 </div>
+	            //                 <div className="center col-md-8 col-sm-8 col-xs-6">
+	            //                     <button className="btn btn-default" onClick={this.getNow.bind(this)}>Today</button>
+	            //                 </div>
+	            //                 <div className="col-md-1 col-sm-1 col-xs-1">
+	            //                  
+	            //                 </div>
+	            //             </div>
+	            //         </div>
 	        }
 	    }]);
 
@@ -89349,11 +89419,9 @@
 	    }, {
 	        key: 'computeReservedItemds',
 	        value: function computeReservedItemds(items) {
-	            var reservedItems = items.map(function (item) {
+	            return items.map(function (item) {
 	                return item.reference;
 	            });
-	            console.log("reservedItemx : " + reservedItems);
-	            return reservedItems;
 	        }
 	    }, {
 	        key: 'updateAlert',
@@ -89475,6 +89543,9 @@
 
 	    return EventAdmin;
 	}(_react2.default.Component);
+
+	// TODO : weird to have to load events here
+
 
 	exports.default = _reactRelay2.default.createContainer(EventAdmin, {
 
@@ -103568,7 +103639,7 @@
 /* 824 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -103598,139 +103669,136 @@
 	    }
 
 	    _createClass(AddItemMutation, [{
-	        key: "getMutation",
+	        key: 'getMutation',
 	        value: function getMutation() {
 	            return function () {
 	                return {
 	                    calls: [{
-	                        kind: "Call",
+	                        kind: 'Call',
 	                        metadata: {},
-	                        name: "addEvent",
+	                        name: 'addEvent',
 	                        value: {
-	                            kind: "CallVariable",
-	                            callVariableName: "input"
+	                            kind: 'CallVariable',
+	                            callVariableName: 'input'
 	                        }
 	                    }],
 	                    children: [{
-	                        fieldName: "clientMutationId",
-	                        kind: "Field",
+	                        fieldName: 'clientMutationId',
+	                        kind: 'Field',
 	                        metadata: {
 	                            isGenerated: true,
 	                            isRequisite: true
 	                        },
-	                        type: "String"
+	                        type: 'String'
 	                    }],
-	                    kind: "Mutation",
+	                    kind: 'Mutation',
 	                    metadata: {
-	                        inputType: "AddEventInput!"
+	                        inputType: 'AddEventInput!'
 	                    },
-	                    name: "AddEventMutation",
-	                    responseType: "AddEventPayload"
+	                    name: 'AddEventMutation',
+	                    responseType: 'AddEventPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getFatQuery",
+	        key: 'getFatQuery',
 	        value: function getFatQuery() {
-
-	            console.log("getting FatQuery");
 
 	            return function () {
 	                return {
 	                    children: [{
 	                        children: [{
-	                            fieldName: "cursor",
-	                            kind: "Field",
+	                            fieldName: 'cursor',
+	                            kind: 'Field',
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "String"
+	                            type: 'String'
 	                        }, {
 	                            children: [{
-	                                fieldName: "id",
-	                                kind: "Field",
+	                                fieldName: 'id',
+	                                kind: 'Field',
 	                                metadata: {
 	                                    isGenerated: true,
 	                                    isRequisite: true
 	                                },
-	                                type: "ID"
+	                                type: 'ID'
 	                            }],
-	                            fieldName: "node",
-	                            kind: "Field",
+	                            fieldName: 'node',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
-	                                inferredRootCallName: "node",
-	                                inferredPrimaryKey: "id",
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id',
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "EventType"
+	                            type: 'EventType'
 	                        }],
-	                        fieldName: "eventEdge",
-	                        kind: "Field",
+	                        fieldName: 'eventEdge',
+	                        kind: 'Field',
 	                        metadata: {
 	                            canHaveSubselections: true
 	                        },
-	                        type: "EventTypeEdge"
+	                        type: 'EventTypeEdge'
 	                    }, {
 	                        children: [{
 	                            children: [{
-	                                fieldName: "id",
-	                                kind: "Field",
+	                                fieldName: 'id',
+	                                kind: 'Field',
 	                                metadata: {
 	                                    isGenerated: true,
 	                                    isRequisite: true
 	                                },
-	                                type: "ID"
+	                                type: 'ID'
 	                            }],
-	                            fieldName: "cart",
-	                            kind: "Field",
+	                            fieldName: 'cart',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
-	                                inferredRootCallName: "node",
-	                                inferredPrimaryKey: "id"
+	                                inferredRootCallName: 'node',
+	                                inferredPrimaryKey: 'id'
 	                            },
-	                            type: "CartType"
+	                            type: 'CartType'
 	                        }, {
-	                            fieldName: "events",
-	                            kind: "Field",
+	                            fieldName: 'events',
+	                            kind: 'Field',
 	                            metadata: {
 	                                canHaveSubselections: true,
 	                                isConnection: true
 	                            },
-	                            type: "EventTypeConnection"
+	                            type: 'EventTypeConnection'
 	                        }, {
-	                            fieldName: "id",
-	                            kind: "Field",
+	                            fieldName: 'id',
+	                            kind: 'Field',
 	                            metadata: {
 	                                isGenerated: true,
 	                                isRequisite: true
 	                            },
-	                            type: "ID"
+	                            type: 'ID'
 	                        }],
-	                        fieldName: "viewer",
-	                        kind: "Field",
+	                        fieldName: 'viewer',
+	                        kind: 'Field',
 	                        metadata: {
 	                            canHaveSubselections: true,
-	                            inferredRootCallName: "node",
-	                            inferredPrimaryKey: "id"
+	                            inferredRootCallName: 'node',
+	                            inferredPrimaryKey: 'id'
 	                        },
-	                        type: "Viewer"
+	                        type: 'Viewer'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
-	                    kind: "Fragment",
+	                    kind: 'Fragment',
 	                    metadata: {},
-	                    name: "AddEventMutation_ValueRelayQL",
-	                    type: "AddEventPayload"
+	                    name: 'AddEventMutation_ValueRelayQL',
+	                    type: 'AddEventPayload'
 	                };
 	            }();
 	        }
 	    }, {
-	        key: "getConfigs",
+	        key: 'getConfigs',
 	        value: function getConfigs() {
 
-	            console.log("getting config");
 	            return [{
 	                type: 'FIELDS_CHANGE',
 	                fieldIDs: {
@@ -103750,7 +103818,7 @@
 	            }];
 	        }
 	    }, {
-	        key: "getVariables",
+	        key: 'getVariables',
 	        value: function getVariables() {
 	            return {
 	                name: this.props.name,
@@ -103762,7 +103830,7 @@
 	            };
 	        }
 	    }, {
-	        key: "getOptimisticResponse",
+	        key: 'getOptimisticResponse',
 	        value: function getOptimisticResponse() {
 	            return {
 	                viewer: {
@@ -103792,18 +103860,18 @@
 	        return function () {
 	            return {
 	                children: [{
-	                    fieldName: "id",
-	                    kind: "Field",
+	                    fieldName: 'id',
+	                    kind: 'Field',
 	                    metadata: {
 	                        isRequisite: true
 	                    },
-	                    type: "ID"
+	                    type: 'ID'
 	                }],
 	                id: _reactRelay2.default.QL.__id(),
-	                kind: "Fragment",
+	                kind: 'Fragment',
 	                metadata: {},
-	                name: "AddEventMutation_ViewerRelayQL",
-	                type: "Viewer"
+	                name: 'AddEventMutation_ViewerRelayQL',
+	                type: 'Viewer'
 	            };
 	        }();
 	    }

@@ -43,8 +43,6 @@ var AddModelMutation = exports.AddModelMutation = new _graphqlRelay.mutationWith
                 var id = _ref.id;
 
 
-                console.log("AddModelMutation obj : " + JSON.stringify(obj));
-
                 return _database2.default.models.model.findAll().then(function (dataModels) {
 
                     var itemToPass = void 0;
@@ -125,8 +123,6 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
         itemEdge: {
             type: _Model.GraphQLItemEdge,
             resolve: function resolve(obj) {
-
-                console.log("obj in AddItemMutation : " + JSON.stringify(obj));
 
                 return _database2.default.models.item.findAll().then(function (items) {
 

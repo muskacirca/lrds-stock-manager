@@ -34,7 +34,17 @@ $navbar-height: 66px;
 }
 
 .calendar-days-content {
-  min-height: 115px;
+  min-height: 135px;
+
+  li {
+
+    list-style-type: none;
+
+  }
+
+  ul {
+    padding-left: 10px;
+  }
 }
 
 .center {
@@ -58,6 +68,12 @@ $navbar-height: 66px;
 }
 .calendar-days {
 
+}
+
+.calendar-days-header {
+  text-align: center;
+  font-size: medium;
+  padding: 5px;
 }
 
 .calendar-days-tr-up {
