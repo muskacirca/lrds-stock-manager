@@ -52042,7 +52042,11 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'site-content' },
-	                    this.props.children
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'container' },
+	                        this.props.children
+	                    )
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -84749,106 +84753,114 @@
 	                    onSave: this.onFormSubmit.bind(this) }),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'page-content col-md-10 col-md-offset-1' },
+	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-6' },
+	                        { className: 'page-content col-md-10 col-md-offset-1' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'form-group' },
+	                            { className: 'row' },
 	                            _react2.default.createElement(
-	                                'label',
-	                                { htmlFor: 'modelInputForm', className: 'col-md-3 control-label' },
-	                                'Select your model'
+	                                'div',
+	                                { className: 'col-md-6 col-sm-6 col-sm-push-6 col-md-push-6' },
+	                                itemFormDisplay
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-9' },
-	                                _react2.default.createElement(_AutosuggestWrapper2.default, { id: 'modelInputForm',
-	                                    inputText: 'Select a model ...', suggestions: builtModelSuggestion,
-	                                    multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
-	                                    onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
-	                                    resetInputValue: true, ref: 'inputFormSearchModel' })
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'form-group' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { htmlFor: '', className: 'col-md-3 control-label' },
-	                                'or create one'
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-9' },
-	                                _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) })
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'form-group' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { htmlFor: '', className: 'col-md-3 control-label' },
-	                                'Add a state'
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-9' },
+	                                { className: 'col-md-6 col-sm-6 col-md-pull-6 col-sm-pull-6' },
 	                                _react2.default.createElement(
-	                                    'select',
-	                                    { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
+	                                    'div',
+	                                    { className: 'form-group' },
 	                                    _react2.default.createElement(
-	                                        'option',
-	                                        null,
-	                                        'Select a state ...'
+	                                        'label',
+	                                        { htmlFor: 'modelInputForm', className: 'col-md-3 control-label' },
+	                                        'Select your model'
 	                                    ),
-	                                    stateList
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'col-md-9' },
+	                                        _react2.default.createElement(_AutosuggestWrapper2.default, { id: 'modelInputForm',
+	                                            inputText: 'Select a model ...', suggestions: builtModelSuggestion,
+	                                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
+	                                            onSuggestionSelected: this.onModelSuggestionSelected.bind(this),
+	                                            resetInputValue: true, ref: 'inputFormSearchModel' })
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'form-group' },
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: '', className: 'col-md-3 control-label' },
+	                                        'or create one'
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'col-md-9' },
+	                                        _react2.default.createElement(_ModelQuickForm2.default, { viewer: this.props.viewer, onAddNewModel: this.onAddNewModel.bind(this) })
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'form-group' },
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: '', className: 'col-md-3 control-label' },
+	                                        'Add a state'
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'col-md-9' },
+	                                        _react2.default.createElement(
+	                                            'select',
+	                                            { className: 'form-control', onChange: this.onSelectStateChange.bind(this) },
+	                                            _react2.default.createElement(
+	                                                'option',
+	                                                null,
+	                                                'Select a state ...'
+	                                            ),
+	                                            stateList
+	                                        )
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'form-group' },
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: '', className: 'col-md-3 control-label' },
+	                                        'Add domains'
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'col-md-9' },
+	                                        _react2.default.createElement(_AutosuggestWrapper2.default, {
+	                                            inputText: 'Select a domain ...', suggestions: builtDomainSuggestion,
+	                                            multiSection: false, suggestionFilter: this.domainSuggestionFilter.bind(this),
+	                                            onSuggestionSelected: this.onDomainSuggestionSelected.bind(this),
+	                                            resetInputValue: true, ref: 'inputFormSearchDomain' })
+	                                    )
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'form-group' },
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: '', className: 'col-md-3 control-label' },
+	                                        'Add Categories'
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'col-md-9' },
+	                                        _react2.default.createElement(_AutosuggestWrapper2.default, {
+	                                            inputText: 'Select a category ...', suggestions: builtSubCategoriesSuggestion,
+	                                            multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
+	                                            onSuggestionSelected: this.onSubCategoriesSuggestionSelected.bind(this),
+	                                            resetInputValue: true, ref: 'inputFormSearchSubCategories' })
+	                                    )
 	                                )
 	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'form-group' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { htmlFor: '', className: 'col-md-3 control-label' },
-	                                'Add domains'
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-9' },
-	                                _react2.default.createElement(_AutosuggestWrapper2.default, {
-	                                    inputText: 'Select a domain ...', suggestions: builtDomainSuggestion,
-	                                    multiSection: false, suggestionFilter: this.domainSuggestionFilter.bind(this),
-	                                    onSuggestionSelected: this.onDomainSuggestionSelected.bind(this),
-	                                    resetInputValue: true, ref: 'inputFormSearchDomain' })
-	                            )
-	                        ),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'form-group' },
-	                            _react2.default.createElement(
-	                                'label',
-	                                { htmlFor: '', className: 'col-md-3 control-label' },
-	                                'Add Categories'
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'col-md-9' },
-	                                _react2.default.createElement(_AutosuggestWrapper2.default, {
-	                                    inputText: 'Select a category ...', suggestions: builtSubCategoriesSuggestion,
-	                                    multiSection: true, suggestionFilter: this.multiSectionSuggestionFilter.bind(this),
-	                                    onSuggestionSelected: this.onSubCategoriesSuggestionSelected.bind(this),
-	                                    resetInputValue: true, ref: 'inputFormSearchSubCategories' })
-	                            )
 	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-6' },
-	                        itemFormDisplay
 	                    )
 	                )
 	            );

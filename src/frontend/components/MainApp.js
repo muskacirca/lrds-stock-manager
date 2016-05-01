@@ -28,7 +28,9 @@ class MainApp extends React.Component{
                 <NavBarBox shoppingCart={cart} user={this.props.viewer.user}/>
                
                 <div className="site-content">
-                    {this.props.children}
+                    <div className="container">
+                        {this.props.children}
+                    </div>
                 </div>
                 <div className="cart-pusher">
                     <CartDropdown viewer={this.props.viewer}/>
