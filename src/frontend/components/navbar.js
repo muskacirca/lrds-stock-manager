@@ -41,13 +41,12 @@ class NavBarBox extends React.Component {
                         <img  src="/style/images/lrds-logo-50px.png"/>
                     </a>
                     <nav className="menu">
+                        <Link to="/dashboard" activeClassName="link-active">Dashboard</Link>
                         <Link to="/stock" activeClassName="link-active">Stock</Link>
                         <Link to="/event" activeClassName="link-active">Event</Link>
+                        <Link to="/admin/create" activeClassName="link-active">Admin</Link>
                     </nav>
-                    <nav className="menu-right">
-                        {cart}
-                    </nav>
-
+                   
                     <div className="menu-right">
                         <div onClick={this.toggleUserMenuOpening.bind(this)} className="pointer navbar-dropdown">
                             <div>
@@ -58,16 +57,6 @@ class NavBarBox extends React.Component {
                     </div>
                     <div style={userMenuStyle} className="navbar-dropdown-content">
                         <div className="navbar-dropdown-group">
-                            <Link to="/logout" onClick={this.toggleUserMenuOpening.bind(this)}
-                                   activeClassName="link-active">
-                                
-                                <div className="navbar-dropdown-list">
-                                    <div className="__logo__">
-                                        <i className="fa fa-2x fa-power-off" />
-                                    </div>
-                                    <div className="__text__">Logout</div>
-                                </div>
-                            </Link>
                             <Link to="/admin/create" onClick={this.toggleUserMenuOpening.bind(this)}
                                   activeClassName="link-active">
                                 
@@ -78,8 +67,22 @@ class NavBarBox extends React.Component {
                                     <div className="__text__">Settings</div>
                                 </div>
                             </Link>
+                            <Link to="/logout" onClick={this.toggleUserMenuOpening.bind(this)}
+                                  activeClassName="link-active">
+
+                                <div className="navbar-dropdown-list">
+                                    <div className="__logo__">
+                                        <i className="fa fa-2x fa-power-off" />
+                                    </div>
+                                    <div className="__text__">Logout</div>
+                                </div>
+                            </Link>
                         </div>
                     </div>
+
+                    <nav className="menu-right">
+                        {cart}
+                    </nav>
                 </header>
 
 

@@ -74,7 +74,6 @@ class ItemFormComponent extends React.Component {
 
         var onSuccess = (response) => {
             this.updateAlert("Item added successfully !", "success");
-            this.resetForm()
         }
 
         var onFailure = (transaction) => this.updateAlert("An error occurred when adding new item", "error");
@@ -234,11 +233,10 @@ class ItemFormComponent extends React.Component {
         var model = this.findModelAndBindNewFeatures(this.state.itemFeatures)
 
         var stateList = this.renderStateList(this.props.viewer.states)
-        
-        var pageTitle = "Create an item"
 
-        var itemFormDisplay = this.state.itemFeatures.modelName !== "" ?
-            <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> : ""
+        var itemFormDisplay = this.state.itemFeatures.modelName !== ""
+            ? <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> 
+            : <ItemFormDisplay />
 
 
         return  <div className="form-horizontal">
@@ -248,61 +246,59 @@ class ItemFormComponent extends React.Component {
                                 onSave={this.onFormSubmit.bind(this)} />
             
                     <div className="page-content col-md-10 col-md-offset-1">
-                        
-                        <div className="form-group">
-                            <label htmlFor="modelInputForm" className="col-md-1 control-label">Select your model</label>
-                            <div className="col-md-11">
-                                <AutosuggestWrapper id="modelInputForm"
-                                    inputText="Select a model ..." suggestions={builtModelSuggestion}
-                                    multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
-                                    onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
-                                    resetInputValue={true} ref="inputFormSearchModel" />
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="modelInputForm" className="col-md-3 control-label">Select your model</label>
+                                <div className="col-md-9">
+                                    <AutosuggestWrapper id="modelInputForm"
+                                        inputText="Select a model ..." suggestions={builtModelSuggestion}
+                                        multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onModelSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchModel" />
+                                </div>
                             </div>
-                        </div>
+    
+                            <div className="form-group">
+                                <label htmlFor="" className="col-md-3 control-label">or create one</label>
+                                <div className="col-md-9">
+                                    <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
+                                </div>
+                            </div>
+    
+                            <div className="form-group">
+                                <label htmlFor="" className="col-md-3 control-label">Add a state</label>
+                                <div className="col-md-9">
+                                    <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
+                                        <option>Select a state ...</option>
+                                        {stateList}
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <div className="form-group">
+                                <label htmlFor="" className="col-md-3 control-label">Add domains</label>
+                                <div className="col-md-9">
+                                    <AutosuggestWrapper
+                                        inputText="Select a domain ..." suggestions={builtDomainSuggestion}
+                                        multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchDomain"/>
+                                </div>
+                            </div>
 
-                        <div className="form-group">
-                            <label htmlFor="" className="col-md-1 control-label">or create one</label>
-                            <div className="col-md-11">
-                                <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
+                            <div className="form-group">
+                                <label htmlFor="" className="col-md-3 control-label">Add Categories</label>
+                                <div className="col-md-9">
+                                    <AutosuggestWrapper
+                                        inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
+                                        multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
+                                        onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
+                                        resetInputValue={true} ref="inputFormSearchSubCategories"/>
+                                </div>
                             </div>
                         </div>
-
-                        <div className="form-group">
-                            <label htmlFor="" className="col-md-1 control-label">Add a state</label>
-                            <div className="col-md-11">
-                                <select className="form-control" onChange={this.onSelectStateChange.bind(this)}>
-                                    <option>Select a state ...</option>
-                                    {stateList}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="" className="col-md-1 control-label">Add domains</label>
-                            <div className="col-md-11">
-                                <AutosuggestWrapper
-                                    inputText="Select a domain ..." suggestions={builtDomainSuggestion}
-                                    multiSection={false} suggestionFilter={this.domainSuggestionFilter.bind(this)}
-                                    onSuggestionSelected={this.onDomainSuggestionSelected.bind(this)}
-                                    resetInputValue={true} ref="inputFormSearchDomain"/>
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="" className="col-md-1 control-label">Add Categories</label>
-                            <div className="col-md-11">
-                                <AutosuggestWrapper
-                                    inputText="Select a category ..." suggestions={builtSubCategoriesSuggestion}
-                                    multiSection={true} suggestionFilter={this.multiSectionSuggestionFilter.bind(this)}
-                                    onSuggestionSelected={this.onSubCategoriesSuggestionSelected.bind(this)}
-                                    resetInputValue={true} ref="inputFormSearchSubCategories"/>
-                            </div>
-                        </div>
-                        
-                        <div className="row">            
-                            <div className="col-md-12">
-                                {itemFormDisplay}
-                            </div>
+                        <div className="col-md-6">
+                            {itemFormDisplay}
                         </div>
                     </div>
                 </div>

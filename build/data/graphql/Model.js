@@ -407,11 +407,23 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             },
             items: {
                 type: ItemsConnection,
-                args: _extends({}, _graphqlRelay.connectionArgs),
+                args: _extends({
+                    severity: {
+                        type: _graphql.GraphQLString
+                    }
+                }, _graphqlRelay.connectionArgs),
                 resolve: function resolve(obj, _ref4) {
-                    var args = _objectWithoutProperties(_ref4, []);
+                    var severity = _ref4.severity;
 
-                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(), args);
+                    var args = _objectWithoutProperties(_ref4, ['severity']);
+
+                    return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
+                        var queryArgs = { where: true };
+                        if (state != null) {
+                            queryArgs = { where: { stateId: state.id } };
+                        }
+                        return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.item.findAll(queryArgs), args);
+                    });
                 }
             },
             item: {

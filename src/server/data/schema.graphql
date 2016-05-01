@@ -245,7 +245,7 @@ type UserType implements Node {
 type Viewer implements Node {
   id: ID!
   user: UserType
-  items(after: String, first: Int, before: String, last: Int): ItemTypeConnection
+  items(severity: String, after: String, first: Int, before: String, last: Int): ItemTypeConnection
   item(reference: String!): ItemType
   events(date: String, after: String, first: Int, before: String, last: Int): EventTypeConnection
   brands: [BrandType]

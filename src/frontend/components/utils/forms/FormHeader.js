@@ -28,10 +28,4 @@ class FormHeader extends React.Component {
     }
 }
 
-Alert.propTypes = {
-    title: React.PropTypes.string.required,
-    onSave: React.PropTypes.func.required
-};
-
-
 export default FormHeader

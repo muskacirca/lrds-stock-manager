@@ -334,9 +334,24 @@ export var GraphQLViewer = new GraphQLObjectType({
         },
         items: {
             type: ItemsConnection,
-            args: {...connectionArgs},
-            resolve: (obj, {...args}) => {
-                return connectionFromPromisedArray(Database.models.item.findAll(), args)
+            args: {
+                severity: {
+                    type: GraphQLString
+                },
+                ...connectionArgs
+            },
+            resolve: (obj, {severity, ...args}) => {
+                    
+                return Database.models.state.findOne({where: {severity: severity}})
+                    .then(state => {
+                        var queryArgs = {where: true}
+                        if(state != null) {
+                            queryArgs = {where: {stateId: state.id}}
+                        }
+                        return connectionFromPromisedArray(Database.models.item.findAll(queryArgs), args)
+                    })
+                
+                
             }
         },
         item: {

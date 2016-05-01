@@ -96,20 +96,20 @@ class EventAdmin extends React.Component {
                     <div className="page-content row">
                         <div className="col-md-6 col-md-offset-1">                            
                                 <div className="form-group">
-                                    <label htmlFor="inputFormEventName" className="col-md-1 control-label">name</label>
-                                    <div className="col-md-11">
+                                    <label htmlFor="inputFormEventName" className="col-md-3 control-label">name</label>
+                                    <div className="col-md-9">
                                         <input ref="inputFormEventName" id="inputFormEventName" type="text" className="form-control" placeholder="name" />
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputFormEventDescription" className="col-md-1 control-label">description</label>
-                                    <div className="col-md-11">
+                                    <label htmlFor="inputFormEventDescription" className="col-md-3 control-label">description</label>
+                                    <div className="col-md-9">
                                         <textarea ref="inputFormEventDescription" id="inputFormEventDescription" className="form-control" rows="5" />
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputFormStartDate" className="col-md-1 control-label">Start date</label>
-                                    <div className="col-md-11">
+                                    <label htmlFor="inputFormStartDate" className="col-md-3 control-label">Start date</label>
+                                    <div className="col-md-9">
                                         <DatePicker id="inputFormStartDate" ref="inputFormStartDate" className="form-control"
                                                     placeholder="start date"
                                                     dateFormat="DD/MM/YYYY" selected={this.state.startDate}
@@ -117,8 +117,8 @@ class EventAdmin extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="inputFormEndDate" className="col-md-1 control-label">End date</label>
-                                    <div className="col-md-11">
+                                    <label htmlFor="inputFormEndDate" className="col-md-3 control-label">End date</label>
+                                    <div className="col-md-9">
                                         <DatePicker id="inputFormEndDate" ref="inputFormEndDate" className="form-control"
                                                     placeholder="end date"
                                                     dateFormat="DD/MM/YYYY" selected={this.state.endDate}

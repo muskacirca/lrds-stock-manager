@@ -6,15 +6,12 @@ import authService from '../components/utils/AuthService'
 import ViewerQuery from '../queries/ViewerQueries'
 
 import MainApp from '../components/MainApp'
-import LoginBox from '../components/login'
 import Stock from '../components/stock/stock'
+import Dashboard from '../components/dashboard/Dashboard'
 import Item from '../components/stock/Item'
 import ItemForm from '../components/stock/admin/ItemForm'
-import Product from '../components/product'
-import Profile from '../components/profile'
 import Event from '../components/event/event'
 import EventAdmin from '../components/event/admin/EventAdmin'
-import NavBarBox from '../components/navbar'
 import Login from '../components/login'
 
 
@@ -49,6 +46,9 @@ export default  <Route>
 
                         <IndexRoute component={Stock} queries={ViewerQuery} onEnter={requireAuth}
                                     prepareParams={() => getUser()} />
+                        
+                        <Route path="dashboard" component={Dashboard} queries={ViewerQuery} onEnter={requireAuth}
+                               prepareParams={() => getUser()} />
 
                         <Route path="stock" component={Stock} queries={ViewerQuery} onEnter={requireAuth}
                                prepareParams={() => getUser()} />
@@ -74,43 +74,3 @@ export default  <Route>
                     <Route path="logout" component={Login} onEnter={logout} />
 
                 </Route>
-
-
-//function prepareWidgetListParams(params, route) {
-//    return {
-//        ...params,
-//        id: params.id ? params.id : "1"
-//    }
-//}
-//
-
-//
-
-
-
-
-//export default <Route path="/jeestock" component={MainApp}>
-//    <IndexRoute component={MainApp} />
-//    <Route path="profile" component={Profile} onEnter={requireAuth}/>
-//    <Route path="stock" component={Stock} onEnter={requireAuth}>
-//        <Route path="product/:id" component={Product} onEnter={requireAuth} />
-//    </Route>
-//    <Route path="event" component={Event} onEnter={requireAuth}/>
-//    <Route path="login" component={LoginBox}/>
-//    <Route path="logout" component={LoginBox} onEnter={logout} />
-//</Route>
-
-//export default <Route path="/" component={MainApp} queries={WreckQueries} >
-//                    <IndexRoute component={MainApp} queries={WreckQueries}/>
-//                    <Route path="wreck(/:id)" component={Wreck} queries={WreckUnitQuery}
-//                            prepareParams={prepareWidgetListParams} />
-//
-//                    <Route path="advice" component={Advice} />
-//                    <Route path="team" component={Team} />
-//
-//                    <Route path="admin" component={Admin} queries={WreckQueries} />
-//
-//                    <Route path="admin/wreck/create" component={WreckForm} />
-//                    <Route path="admin/wreck/edit/:id" component={WreckForm} queries={WreckUnitQuery}
-//                           prepareParams={prepareWidgetListParams} />/>
-//                </Route>
