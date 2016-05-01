@@ -42,7 +42,7 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     console.log("id of " + type + " : " + id);
     if (type === 'ItemType') {
         console.log("Im here getting ItemType");
-        return (0, _ItemStore.getById)(id);
+        return _database2.default.models.item.findOne({ where: { id: id } });
     } else if (type === "SubCategoryType") {
         console.log("Im here getting SubCategoryType");
         return (0, _ItemStore.getViewer)(id);
@@ -50,16 +50,14 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
         console.log("Im here getting Domain");
         return (0, _ItemStore.getViewer)(id);
     } else if (type === "Viewer") {
-        console.log("Im here getting viewer");
-        return (0, _ItemStore.getViewer)(id);
+        return _database2.default.models.user.findOne({ where: { id: id } });
     }
     return null;
 }, function (obj) {
 
-    if (obj instanceof Domain) {
-        console.log("getting by object SubCategoryType");
-        return GraphQLDomainType;
-    } else if (obj instanceof _ItemStore.Viewer) {
+    console.log("in interface obj: " + JSON.stringify(obj));
+
+    if (obj.password != undefined) {
         console.log("getting by object ViewerType");
         return GraphQLViewer;
     }

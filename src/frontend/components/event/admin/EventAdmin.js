@@ -144,6 +144,7 @@ class EventAdmin extends React.Component {
 
 }
 
+// TODO : weird to have to load events here
 export default Relay.createContainer(EventAdmin, {
 
     initialVariables: {viewerId: null},

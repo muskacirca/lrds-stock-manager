@@ -52082,11 +52082,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'site-content' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'container' },
-	                        this.props.children
-	                    )
+	                    this.props.children
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -75618,27 +75614,68 @@
 	    _createClass(EventBox, [{
 	        key: 'increaseCalendar',
 	        value: function increaseCalendar() {
+	            var _this2 = this;
 
 	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).add(1, 'M');
-	            this.setState({ defaultDate: newDisplayDate });
+
+	            this.props.relay.setVariables({
+	                date: newDisplayDate.format("YYYY-MM-DD")
+	            }, function (_ref) {
+	                var ready = _ref.ready;
+	                var done = _ref.done;
+	                var error = _ref.error;
+	                var aborted = _ref.aborted;
+
+	                console.log("isLoading: " + !ready && !(done || error || aborted));
+	                _this2.setState({ defaultDate: newDisplayDate });
+	            });
 	        }
 	    }, {
 	        key: 'subtractCalendar',
 	        value: function subtractCalendar() {
+	            var _this3 = this;
 
 	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).subtract(1, 'M');
-	            this.setState({ defaultDate: newDisplayDate });
+
+	            this.props.relay.setVariables({
+	                date: newDisplayDate.format("YYYY-MM-DD")
+	            }, function (_ref2) {
+	                var ready = _ref2.ready;
+	                var done = _ref2.done;
+	                var error = _ref2.error;
+	                var aborted = _ref2.aborted;
+
+	                console.log("isLoading: " + !ready && !(done || error || aborted));
+	                _this3.setState({ defaultDate: newDisplayDate });
+	            });
 	        }
 	    }, {
 	        key: 'getNow',
 	        value: function getNow() {
-	            this.setState({ defaultDate: (0, _moment2.default)() });
+	            var _this4 = this;
+
+	            var now = (0, _moment2.default)();
+
+	            this.props.relay.setVariables({
+	                date: now.format("YYYY-MM-DD")
+	            }, function (_ref3) {
+	                var ready = _ref3.ready;
+	                var done = _ref3.done;
+	                var error = _ref3.error;
+	                var aborted = _ref3.aborted;
+
+	                console.log("isLoading: " + !ready && !(done || error || aborted));
+	                _this4.setState({ defaultDate: now });
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var date = this.state.defaultDate;
+	            var events = this.props.viewer.events.edges;
+
+	            console.log("number of events : " + events.length);
 
 	            return _react2.default.createElement(
 	                'div',
@@ -75655,11 +75692,7 @@
 	                            getNow: this.getNow.bind(this) })
 	                    )
 	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-md-10 col-md-offset-1' },
-	                    _react2.default.createElement(_Calendar2.default, { defaultDate: date })
-	                )
+	                _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: events })
 	            );
 	        }
 	    }]);
@@ -75672,8 +75705,13 @@
 	    initialVariables: { date: null },
 
 	    prepareVariables: function prepareVariables(prevVariables) {
+
+	        console.log("prevVariables : " + JSON.stringify(prevVariables));
+
+	        var date = prevVariables.date == null ? (0, _moment2.default)().format("YYYY-MM-DD") : prevVariables.date;
+
 	        return _extends({}, prevVariables, {
-	            date: (0, _moment2.default)().format("YYYY-MM-DD")
+	            date: date
 	        });
 	    },
 
@@ -75710,6 +75748,16 @@
 	                            children: [{
 	                                children: [{
 	                                    fieldName: 'name',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'startDate',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    fieldName: 'endDate',
 	                                    kind: 'Field',
 	                                    metadata: {},
 	                                    type: 'String'
@@ -89005,6 +89053,14 @@
 	            return blankDays;
 	        }
 	    }, {
+	        key: 'findEventsByDay',
+	        value: function findEventsByDay(events, dayNumber) {
+
+	            return events.filter(function (event) {
+	                return (0, _moment2.default)(event.node.startDate).format("DD").indexOf(dayNumber) != -1;
+	            });
+	        }
+	    }, {
 	        key: 'renderWeekRow',
 	        value: function renderWeekRow(initialDayNumber, blankDays) {
 
@@ -89013,8 +89069,12 @@
 
 	            for (var c = counter; c < 7; c++) {
 	                if (dayNumber > this.getDaysInMonth()) break;
+
+	                var eventsOfTheDay = this.findEventsByDay(this.props.events, dayNumber);
+
 	                blankDays.push(_react2.default.createElement(_CalendarColumn2.default, { defaultDate: this.state.defaultDate,
 	                    dayNumber: dayNumber,
+	                    events: eventsOfTheDay,
 	                    key: "calendar-days-" + dayNumber }));
 	                dayNumber++;
 	            }
@@ -89094,11 +89154,26 @@
 	    }
 
 	    _createClass(CalendarColumn, [{
+	        key: 'renderEventsList',
+	        value: function renderEventsList(events) {
+	            var _this2 = this;
+
+	            return events.map(function (event, key) {
+	                return _react2.default.createElement(
+	                    'li',
+	                    { key: "calendar-event-list-" + _this2.props.dayNumber + "-" + key },
+	                    event.node.name
+	                );
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var dayNumber = this.props.dayNumber;
 	            var now = (0, _moment2.default)();
+
+	            var events = this.renderEventsList(this.props.events);
 
 	            var className = dayNumber == now.date() && this.props.defaultDate.month() == now.month() && this.props.defaultDate.year() == now.year() ? "red" : "";
 
@@ -89110,7 +89185,15 @@
 	                    { className: className + " calendar-days-tr-up" },
 	                    dayNumber
 	                ),
-	                _react2.default.createElement('div', { className: 'calendar-days-content' })
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'calendar-days-content' },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        null,
+	                        events
+	                    )
+	                )
 	            );
 	        }
 	    }]);
