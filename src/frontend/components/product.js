@@ -9,7 +9,6 @@ class ProductComponent extends React.Component {
             data: [],
             productId: props.params.id
         }
-        console.log(props.params.id)
     }
 
     render() {

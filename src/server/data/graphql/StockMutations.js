@@ -46,8 +46,6 @@ export const AddModelMutation = new mutationWithClientMutationId({
             type: GraphQLModelEdge,
             resolve: (obj, {id}) => {
                 
-                console.log("AddModelMutation obj : "  + JSON.stringify(obj))
-
                 return Database.models.model.findAll()
                     .then(dataModels => {
 
@@ -104,8 +102,6 @@ export const AddItemMutation = mutationWithClientMutationId({
         itemEdge: {
             type: GraphQLItemEdge,
             resolve: (obj) => {
-
-                console.log("obj in AddItemMutation : " + JSON.stringify(obj))
 
                 return Database.models.item.findAll()
                     .then(items => {

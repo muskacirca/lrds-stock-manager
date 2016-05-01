@@ -79,7 +79,7 @@ class Calendar extends React.Component {
         
         return events != undefined 
             ?   events.filter(event => {
-                    return moment(event.node.startDate).format("DD").indexOf(dayNumber) != -1
+                    return moment(event.node.startDate).dates() == dayNumber
                 })
             : []
         

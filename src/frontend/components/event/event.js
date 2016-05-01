@@ -21,7 +21,7 @@ class EventBox extends React.Component {
         this.props.relay.setVariables({
             date: newDisplayDate.format("YYYY-MM-DD")
         }, ({ready, done, error, aborted}) => {
-            console.log("isLoading: " + !ready && !(done || error || aborted));
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
             this.setState({defaultDate: newDisplayDate})
         });
         
@@ -35,7 +35,7 @@ class EventBox extends React.Component {
         this.props.relay.setVariables({
             date: newDisplayDate.format("YYYY-MM-DD")
         }, ({ready, done, error, aborted}) => {
-            console.log("isLoading: " + !ready && !(done || error || aborted));
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
             this.setState({defaultDate: newDisplayDate})
         });
         
@@ -48,7 +48,7 @@ class EventBox extends React.Component {
         this.props.relay.setVariables({
             date: now.format("YYYY-MM-DD")
         }, ({ready, done, error, aborted}) => {
-            console.log("isLoading: " + !ready && !(done || error || aborted));
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
             this.setState({defaultDate: now})
         });
     }
@@ -57,9 +57,6 @@ class EventBox extends React.Component {
         
         var date = this.state.defaultDate
         var events = this.props.viewer.events.edges
-        
-        console.log("number of events : " + events.length)
-        
         
         return  <div className="calendar-container">
                    
@@ -81,8 +78,6 @@ export default Relay.createContainer(EventBox, {
     initialVariables: {date: null},
 
     prepareVariables: prevVariables => {
-        
-        console.log("prevVariables : " + JSON.stringify(prevVariables))
         
         var date = prevVariables.date == null 
             ? moment().format("YYYY-MM-DD") 

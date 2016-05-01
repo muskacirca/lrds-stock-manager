@@ -16,8 +16,6 @@ class AddModelMutation extends Relay.Mutation {
 
     getFatQuery() {
 
-        console.log("getting FatQuery")
-
         return Relay.QL`
           fragment on AddModelPayload {
             modelEdge,
@@ -29,7 +27,6 @@ class AddModelMutation extends Relay.Mutation {
     }
     getConfigs() {
 
-        console.log("getting config")
         return [
             {
                 type: 'FIELDS_CHANGE',
@@ -58,8 +55,6 @@ class AddModelMutation extends Relay.Mutation {
     }
 
     getOptimisticResponse() {
-
-        console.log("getOptimisticResponse")
 
         return {
             viewer: {

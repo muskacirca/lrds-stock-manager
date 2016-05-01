@@ -2,7 +2,6 @@ module.exports = {
   login(email, pass, cb) {
     cb = arguments[arguments.length - 1]
     if (localStorage.token) {
-      console.log(localStorage.token)
       if (cb) {
         cb(true)
       }

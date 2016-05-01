@@ -18,7 +18,6 @@ class SearchComponent extends React.Component {
 
     handleSearch() {
         var searchedText = ReactDOM.findDOMNode(this.refs.searchInput).value
-        console.log(searchedText)
         this.setState({searchedText: searchedText})
         this.props.onChange(searchedText);
     }

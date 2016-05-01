@@ -43,8 +43,6 @@ class RemoveItemFromCartMutation extends Relay.Mutation {
 
     getOptimisticResponse() {
         
-        console.log("getOptimisticResponse : " + JSON.stringify(this.props.cart))
-        
         return {
             id: this.props.cart.id,
             count: this.props.cart.count - 1

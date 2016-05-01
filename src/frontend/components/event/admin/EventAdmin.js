@@ -69,9 +69,7 @@ class EventAdmin extends React.Component {
     }
 
     computeReservedItemds(items)  {
-        var reservedItems = items.map(item => item.reference)
-        console.log("reservedItemx : " + reservedItems)
-        return reservedItems
+        return items.map(item => item.reference)
     }
     
     updateAlert(message, type) {
