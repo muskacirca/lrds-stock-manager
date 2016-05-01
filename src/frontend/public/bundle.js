@@ -75335,7 +75335,7 @@
 	    delay: _react2.default.PropTypes.number
 	};
 
-	Alert.defaultProps = { delay: 300000, alert: undefined };
+	Alert.defaultProps = { delay: 10000, alert: undefined };
 
 	exports.default = Alert;
 
@@ -89268,7 +89268,7 @@
 	                { className: 'sub-bar row' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-8' },
+	                    { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1' },
 	                    _react2.default.createElement(
 	                        'h2',
 	                        null,
@@ -89277,7 +89277,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'sub-bar-component-centered col-md-3 col-sm-4 col-xs-1' },
+	                    { className: 'sub-bar-component-centered col-md-3 col-sm-4 col-xs-5' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'btn-group', role: 'group' },
