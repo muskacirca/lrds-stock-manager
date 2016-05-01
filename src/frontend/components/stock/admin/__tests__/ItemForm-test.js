@@ -87,7 +87,7 @@ describe('ItemForm', () => {
         expect(autosuggestSubCategoriesCallArgs.suggestions[0].suggestions[1].section).toEqual("category1");
         expect(autosuggestSubCategoriesCallArgs.suggestions[0].title).toEqual("category1");
 
-        expect(ItemFormDisplay.mock.calls.length).toBe(0)
+        expect(ItemFormDisplay.mock.calls.length).toBe(1)
     });
 
     it('reset item feature severity when selection new model', () => {
