@@ -70009,7 +70009,7 @@
 	            ) : _react2.default.createElement(
 	                "em",
 	                null,
-	                "Choose a model oor create one"
+	                "Choose a model or create one"
 	            );
 
 	            return _react2.default.createElement(

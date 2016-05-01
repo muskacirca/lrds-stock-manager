@@ -43,7 +43,7 @@ class ItemDisplay extends React.Component {
         var stateIcon = item ? this.computeStateIcon(item.state.severity) : undefined
         var title = item 
             ? <strong>{item.model.brand.name + ' - ' + item.model.name}</strong>
-            : <em>Choose a model oor create one</em>
+            : <em>Choose a model or create one</em>
 
         return  <div>
                     <div className="panel panel-default">
