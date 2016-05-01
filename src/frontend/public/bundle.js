@@ -68201,6 +68201,12 @@
 	            (0, _utils.toggleClassInBody)(className);
 	        }
 	    }, {
+	        key: 'safehandleClick',
+	        value: function safehandleClick() {
+	            var className = 'with--sidebar';
+	            (0, _utils.toggleClassInBody)(className);
+	        }
+	    }, {
 	        key: 'toggleUserMenuOpening',
 	        value: function toggleUserMenuOpening() {
 	            this.setState({ isUserMenuOpened: !this.state.isUserMenuOpened });
@@ -68228,22 +68234,22 @@
 	                    { className: 'menu' },
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: '/dashboard', activeClassName: 'link-active' },
+	                        { to: '/dashboard', activeClassName: 'link-active', onClick: this.safehandleClick.bind(this).bind(this) },
 	                        'Dashboard'
 	                    ),
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: '/stock', activeClassName: 'link-active' },
+	                        { to: '/stock', activeClassName: 'link-active', onClick: this.safehandleClick.bind(this).bind(this) },
 	                        'Stock'
 	                    ),
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: '/event', activeClassName: 'link-active' },
+	                        { to: '/event', activeClassName: 'link-active', onClick: this.safehandleClick.bind(this).bind(this) },
 	                        'Event'
 	                    ),
 	                    _react2.default.createElement(
 	                        _reactRouter.Link,
-	                        { to: '/admin/create', activeClassName: 'link-active' },
+	                        { to: '/admin/create', activeClassName: 'link-active', onClick: this.safehandleClick.bind(this).bind(this) },
 	                        'Admin'
 	                    )
 	                ),
@@ -89208,7 +89214,7 @@
 	                { className: 'sub-bar row' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-md-5 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1' },
+	                    { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1' },
 	                    _react2.default.createElement(
 	                        'h2',
 	                        null,
@@ -89217,7 +89223,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'center sub-bar-component-centered col-md-1 col-sm-4 col-xs-5' },
+	                    { className: 'mobile-hide center sub-bar-component-centered col-md-1 col-sm-2 col-xs-5' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'btn-group', role: 'group' },
@@ -89230,7 +89236,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'sub-bar-component-centered col-md-2 col-sm-4 col-xs-5' },
+	                    { className: 'center sub-bar-component-centered col-md-2 col-sm-3 col-xs-5' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'btn-group', role: 'group' },

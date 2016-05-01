@@ -35,15 +35,15 @@ class CalendarHeader extends React.Component {
         var date = moment(this.state.defaultDate).format("MMMM YYYY")
 
         return  <div className="sub-bar row">
-                    <div className="col-md-5 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1">
+                    <div className="col-md-6 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1">
                         <h2>{date}</h2>
                     </div>
-                    <div className="center sub-bar-component-centered col-md-1 col-sm-4 col-xs-5">
+                    <div className="mobile-hide center sub-bar-component-centered col-md-1 col-sm-2 col-xs-5">
                         <div className="btn-group" role="group">
                             <button type="button" className="btn btn-primary" onClick={this.goToAddEventPage.bind(this)}>Add Event</button>
                         </div>
                     </div>
-                    <div className="sub-bar-component-centered col-md-2 col-sm-4 col-xs-5">
+                    <div className="center sub-bar-component-centered col-md-2 col-sm-3 col-xs-5">
                         <div className="btn-group" role="group">
                             <button type="button" className="btn btn-default" onClick={this.subtractCalendar.bind(this)}>
                                 <i className="fa fa-chevron-left" />

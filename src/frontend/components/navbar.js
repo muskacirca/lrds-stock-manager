@@ -19,6 +19,12 @@ class NavBarBox extends React.Component {
         e.preventDefault()
         var className = 'with--sidebar'
         toggleClassInBody(className)
+        
+    }
+
+    safehandleClick() {
+        var className = 'with--sidebar'
+        toggleClassInBody(className)
 
     }
 
@@ -41,10 +47,18 @@ class NavBarBox extends React.Component {
                         <img  src="/style/images/lrds-logo-50px.png"/>
                     </a>
                     <nav className="menu">
-                        <Link to="/dashboard" activeClassName="link-active">Dashboard</Link>
-                        <Link to="/stock" activeClassName="link-active">Stock</Link>
-                        <Link to="/event" activeClassName="link-active">Event</Link>
-                        <Link to="/admin/create" activeClassName="link-active">Admin</Link>
+                        <Link to="/dashboard" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                            Dashboard
+                        </Link>
+                        <Link to="/stock" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                            Stock
+                        </Link>
+                        <Link to="/event" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                            Event
+                        </Link>
+                        <Link to="/admin/create" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                            Admin
+                        </Link>
                     </nav>
                    
                     <div className="menu-right">
