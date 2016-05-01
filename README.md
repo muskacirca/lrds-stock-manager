@@ -2,4 +2,4 @@
 
 Stock management website for LRDS in react relay, graphql and sequelize
 
-Demo website : http://lrds.herokuapp.com
+Demo website : http://lrds.herokuapp.com (credentials : lrds/lrds)
