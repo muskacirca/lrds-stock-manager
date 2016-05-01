@@ -75680,18 +75680,10 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'calendar-container' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'sub-bar row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'sub-bar-component-centered col-md-10 col-md-offset-1' },
-	                        _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
-	                            increaseCalendar: this.increaseCalendar.bind(this),
-	                            subtractCalendar: this.subtractCalendar.bind(this),
-	                            getNow: this.getNow.bind(this) })
-	                    )
-	                ),
+	                _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
+	                    increaseCalendar: this.increaseCalendar.bind(this),
+	                    subtractCalendar: this.subtractCalendar.bind(this),
+	                    getNow: this.getNow.bind(this) }),
 	                _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: events })
 	            );
 	        }
@@ -89056,9 +89048,9 @@
 	        key: 'findEventsByDay',
 	        value: function findEventsByDay(events, dayNumber) {
 
-	            return events.filter(function (event) {
+	            return events != undefined ? events.filter(function (event) {
 	                return (0, _moment2.default)(event.node.startDate).format("DD").indexOf(dayNumber) != -1;
-	            });
+	            }) : [];
 	        }
 	    }, {
 	        key: 'renderWeekRow',
@@ -89269,41 +89261,60 @@
 	        key: 'render',
 	        value: function render() {
 
+	            var date = (0, _moment2.default)(this.state.defaultDate).format("MMMM YYYY");
+
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'calendar-header' },
+	                { className: 'sub-bar row' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-8' },
+	                    _react2.default.createElement(
+	                        'h2',
+	                        null,
+	                        date
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'sub-bar-component-centered col-md-3 col-sm-4 col-xs-1' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'col-md-1 col-sm-1 col-xs-1 col-xs-offset-1' },
+	                        { className: 'btn-group', role: 'group' },
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
-	                            _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-left' })
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'center col-md-8 col-sm-8 col-xs-6' },
+	                            { type: 'button', className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
+	                            _react2.default.createElement('i', { className: 'fa fa-chevron-left' })
+	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', onClick: this.getNow.bind(this) },
+	                            { type: 'button', className: 'btn btn-default', onClick: this.getNow.bind(this) },
 	                            'Today'
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1 col-sm-1 col-xs-1' },
+	                        ),
 	                        _react2.default.createElement(
 	                            'button',
-	                            { className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
-	                            _react2.default.createElement('i', { className: 'fa fa-2x fa-chevron-right' })
+	                            { type: 'button', className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
+	                            _react2.default.createElement('i', { className: 'fa fa-chevron-right' })
 	                        )
 	                    )
-	                )
+	                ),
+	                _react2.default.createElement('div', { className: 'sub-bar-component-centered col-md-1 col-sm-2 col-xs-1' }),
+	                _react2.default.createElement('div', { className: 'sub-bar-component-centered col-md-1 col-sm-2 col-xs-1' })
 	            );
+
+	            // return  <div className="calendar-header">
+	            //             <div className="row">
+	            //                 <div className="col-md-1 col-sm-1 col-xs-1 col-xs-offset-1">
+	            //
+	            //                 </div>
+	            //                 <div className="center col-md-8 col-sm-8 col-xs-6">
+	            //                     <button className="btn btn-default" onClick={this.getNow.bind(this)}>Today</button>
+	            //                 </div>
+	            //                 <div className="col-md-1 col-sm-1 col-xs-1">
+	            //                  
+	            //                 </div>
+	            //             </div>
+	            //         </div>
 	        }
 	    }]);
 
@@ -89557,6 +89568,9 @@
 
 	    return EventAdmin;
 	}(_react2.default.Component);
+
+	// TODO : weird to have to load events here
+
 
 	exports.default = _reactRelay2.default.createContainer(EventAdmin, {
 
