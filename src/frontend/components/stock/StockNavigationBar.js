@@ -66,10 +66,10 @@ class StockNavigationBar extends React.Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="navigation-sub-row col-md-6 mobile-hide">
+                        <div className="navigation-sub-row col-md-6 col-sm-6 mobile-hide">
                            <div className="row">
-                               <div className="col-md-1 col-xs-2"><strong>Filter:</strong></div>
-                               <div className="col-md-11 col-xs-10">
+                               <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>Filter:</strong></div>
+                               <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                    {filterByState}
                                    <buton key={"filter-buttons-clear"}
                                           className="pointer filter-button" type="button"
@@ -80,10 +80,10 @@ class StockNavigationBar extends React.Component {
                                </div>
                            </div>
                         </div>
-                        <div className="navigation-sub-row col-md-6 col-xs-12">
+                        <div className="navigation-sub-row col-md-6 col-sm-6 col-xs-12">
                             <div className="row">
-                                <div className="col-md-1 col-xs-2"><strong>Tags:</strong></div>
-                                <div className="col-md-11 col-xs-10">
+                                <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>Tags:</strong></div>
+                                <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                     <ul className="inline-ul">{tagRow}</ul>
                                 </div>
                             </div>

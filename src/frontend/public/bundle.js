@@ -69961,13 +69961,13 @@
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'navigation-sub-row col-md-6 mobile-hide' },
+	                        { className: 'navigation-sub-row col-md-6 col-sm-6 mobile-hide' },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'row' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-1 col-xs-2' },
+	                                { className: 'col-lg-2 col-md-2 col-sm-2 col-xs-2' },
 	                                _react2.default.createElement(
 	                                    'strong',
 	                                    null,
@@ -69976,7 +69976,7 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-11 col-xs-10' },
+	                                { className: 'col-lg-10 col-md-10 col-sm-10 col-xs-10' },
 	                                filterByState,
 	                                _react2.default.createElement(
 	                                    'buton',
@@ -69990,13 +69990,13 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'navigation-sub-row col-md-6 col-xs-12' },
+	                        { className: 'navigation-sub-row col-md-6 col-sm-6 col-xs-12' },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'row' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-1 col-xs-2' },
+	                                { className: 'col-lg-2 col-md-2 col-sm-2 col-xs-2' },
 	                                _react2.default.createElement(
 	                                    'strong',
 	                                    null,
@@ -70005,7 +70005,7 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-md-11 col-xs-10' },
+	                                { className: 'col-lg-10 col-md-10 col-sm-10 col-xs-10' },
 	                                _react2.default.createElement(
 	                                    'ul',
 	                                    { className: 'inline-ul' },
