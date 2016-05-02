@@ -65,8 +65,10 @@ class EventBox extends React.Component {
                                     subtractCalendar={this.subtractCalendar.bind(this)}
                                     getNow={this.getNow.bind(this)} />
                         
-            
-                    <Calendar defaultDate={date} events={events} />
+
+                    <div className="page-content">
+                        <Calendar defaultDate={date} events={events} />
+                    </div>
                 </div>
     }
 

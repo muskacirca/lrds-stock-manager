@@ -117,8 +117,8 @@ class Calendar extends React.Component {
         var blankDays = this.renderBlankDays()
         var calendar = this.renderCalendar(blankDays)
 
-        return  <div className="calendar-month-view">
-                    <div>
+        return  <div>
+                    <div className="calendar-month-view">
                         <div className="calendar-row calendar-month-header">
                             {calendarHeaderDays}
                         </div>

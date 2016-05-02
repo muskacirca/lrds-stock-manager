@@ -13,6 +13,19 @@ $navbar-height: 66px;
 
 .page-content {
   padding-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+.page-content {
+  padding-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.filter-button {
+  margin-right: 5px;
 }
 
 /*
@@ -63,6 +76,10 @@ $navbar-height: 66px;
   height: 115px;
 }
 
+.calendar-days-tr-up {
+  padding-right: 5px;
+}
+
 .calendar-blank-days {
 
 }
@@ -89,6 +106,18 @@ $navbar-height: 66px;
   //height: 2.5em;
   //width: 10em;
 }
+
+.calendar-container .page-content {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+/*
+  END OF CALENDAR
+*/
+
+
+
 
 .input-addon {
   width: 40px;

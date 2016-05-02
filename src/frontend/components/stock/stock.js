@@ -1,6 +1,5 @@
 import React from 'react'
 import Relay from 'react-relay'
-import Link from 'react-router'
 
 import UserService from '../utils/AuthService'
 
@@ -8,7 +7,6 @@ import StockTable from './StockTable'
 import StockNavigationBar from './StockNavigationBar'
 
 import AddItemInCartMutation from '../../mutations/AddItemInCartMutation'
-import AddItemMutation from '../../mutations/AddItemMutation'
 
 class StockComponent extends React.Component {
 
@@ -17,7 +15,8 @@ class StockComponent extends React.Component {
         this.state = {
             data: [],
             searchedText: "",
-            tags: []
+            tags: [],
+            stateFilter: null
         }
     }
 
@@ -114,13 +113,38 @@ class StockComponent extends React.Component {
         Relay.Store.commitUpdate(addItemInCartMutation, {onSuccess, onFailure})
     }
 
+    onEditFilterByState(severity) {
+
+
+        this.props.relay.setVariables({
+            severity: severity
+        }, ({ready, done, error, aborted}) => {
+            // console.log("isLoading: " + !ready && !(done || error || aborted));
+            this.setState({stateFilter: severity})
+        });
+
+    }
+
+    filterByState(severity, items) {
+        if(severity != null) {
+            return items.filter(item => {
+                return item.node.state.severity == severity
+            })
+        }
+        
+        return items
+    }
+
     render() {
 
         var items = this.props.viewer.items.edges;
-        var filterText = this.state.searchedText.toLowerCase()
+        var filterText = this.state.searchedText.toLowerCase().replace(' ', "")
         var filterTags = this.state.tags
+        var filterByState = this.state.stateFilter
+        
+        var stateFilteredRow = this.filterByState(filterByState, items)
 
-        var tagFilteredData = this.filterByTag(filterTags, items)
+        var tagFilteredData = this.filterByTag(filterTags, stateFilteredRow)
         tagFilteredData = tagFilteredData.length === 0 ? items : tagFilteredData
 
         var filteredItems = this.filter(filterText, tagFilteredData)
@@ -133,6 +157,7 @@ class StockComponent extends React.Component {
                             <StockNavigationBar onTagSelected={this.onTagSelected.bind(this)}
                                                 onSearchInputChange={this.onSearchInputChange.bind(this)}
                                                 onTagRemoval={this.onCLickTag.bind(this)}
+                                                onEditFilterByState={this.onEditFilterByState.bind(this)}
                                                 tags={this.state.tags} />
                         </div>
                     </div>
@@ -157,12 +182,17 @@ StockComponent.contextTypes = {
 
 export default Relay.createContainer(StockComponent, {
 
-    initialVariables: {viewerId: null},
+    initialVariables: {severity: null},
 
     prepareVariables: prevVariables => {
+
+        var severity = prevVariables.severity == null
+            ? null
+            : prevVariables.severity
+        
         return {
             ...prevVariables,
-            viewerId: UserService.getUserId() + "",
+            severity: severity,
         };
     },
     
@@ -173,7 +203,7 @@ export default Relay.createContainer(StockComponent, {
              cart {
                 ${AddItemInCartMutation.getFragment('cart')}
              }
-             items(first: 100) {
+             items(first: 100, severity: $severity) {
               edges {
                 node {
                   reference,

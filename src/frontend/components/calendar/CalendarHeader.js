@@ -35,7 +35,7 @@ class CalendarHeader extends React.Component {
         var date = moment(this.state.defaultDate).format("MMMM YYYY")
 
         return  <div className="sub-bar row">
-                    <div className="col-md-6 col-md-offset-2 col-sm-6 col-xs-6 col-xs-offset-1">
+                    <div className="col-md-6 col-md-offset-2 col-sm-6 col-xs-6">
                         <h2>{date}</h2>
                     </div>
                     <div className="mobile-hide center sub-bar-component-centered col-md-1 col-sm-2 col-xs-5">
