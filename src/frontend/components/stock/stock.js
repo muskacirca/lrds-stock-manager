@@ -8,6 +8,10 @@ import StockNavigationBar from './StockNavigationBar'
 
 import AddItemInCartMutation from '../../mutations/AddItemInCartMutation'
 
+import {
+    filterByText
+} from '../utils/filter/FilterFunctions'
+
 class StockComponent extends React.Component {
 
     constructor(props) {
@@ -70,28 +74,7 @@ class StockComponent extends React.Component {
     }
 
     filter(filterText, rowsRoFilter) {
-
-        var counter = 0
-
-        var rows = rowsRoFilter.map((product, key) => {
-
-            if(counter < 35 ) {
-                if (filterText === "" || filterText.length <= 1 ) {
-                    counter += 1
-                    return product.node
-
-                } else if (filterText.length > 1 && product.node.model.name.toLowerCase().indexOf(filterText) != -1) {
-                    counter += 1
-                    return product.node
-                }
-            }
-        })
-
-        var goodRows = rows.filter(function (element) {
-            return element !== undefined;
-        })
-
-        return goodRows
+        return filterByText(filterText, rowsRoFilter)
     }
 
     selectItem(reference) {
