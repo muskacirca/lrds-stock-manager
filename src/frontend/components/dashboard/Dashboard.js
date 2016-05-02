@@ -60,13 +60,13 @@ class DashboardComponent extends React.Component {
                             <br />
                             <div className="progress">
                                 <div className="progress-bar progress-bar-success" style={{width: goodItemsPercentage +"%"}}>
-                                    <span className="sr-only">65% Complete (success)</span>
+                                    <span className="sr-only">{goodItemsPercentage + "% Complete (success)"}</span>
                                 </div>
                                 <div className="progress-bar progress-bar-warning" style={{width: needAttentionItemsPercentage +"%"}}>
-                                    <span className="sr-only">25% Complete (warning)</span>
+                                    <span className="sr-only">{needAttentionItemsPercentage + "% Complete (warning)"}</span>
                                 </div>
                                 <div className="progress-bar progress-bar-danger" style={{width: badItemsPercentage +"%"}}>
-                                    <span className="sr-only">10% Complete (danger)</span>
+                                    <span className="sr-only">{badItemsPercentage + "% Complete (danger)"}</span>
                                 </div>
                             </div>
                             <div className="row">
