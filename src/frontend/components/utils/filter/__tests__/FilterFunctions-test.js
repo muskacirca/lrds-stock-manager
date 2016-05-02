@@ -1,4 +1,5 @@
 'use strict';
+var _ =  require('lodash')
 
 jest.unmock('../FilterFunctions.js');
 
@@ -34,6 +35,22 @@ const items = [
                         }
                     }
                 ];
+
+const threeItems = _.concat(items, {
+    node: {
+        reference: "ref-3",
+        isInStock: true,
+        state: {
+            severity: 2
+        },
+        model: {
+            name: "model-3",
+            brand: {name: "WYZ"},
+            domains: [{name: "domain_3"}],
+            subCategories: [{name: "category_3"}]
+        }
+    }
+})
 
 describe('filterByText', () => {
     
@@ -86,3 +103,60 @@ describe('filterByText', () => {
         expect(itemFiltered[0].reference).toBe("ref-2");
     });
 });
+
+describe('filterByTag', () => {
+
+    it('filter nothing when there is no tag', () => {
+
+        const filterByTag = require('../FilterFunctions').filterByTag;
+
+        var itemFiltered = filterByTag([], items);
+        expect(itemFiltered.length).toBe(2);
+    });
+
+    it('filter when a tag is entered corresponding to a model', () => {
+
+        const filterByTag = require('../FilterFunctions').filterByTag;
+
+        var itemFiltered = filterByTag(["model-1"], items);
+        expect(itemFiltered.length).toBe(1);
+        expect(itemFiltered[0].node.reference).toBe("ref-1");
+    });
+    
+    it('filter when a tag is entered corresponding to a brand', () => {
+
+        const filterByTag = require('../FilterFunctions').filterByTag;
+
+        var itemFiltered = filterByTag(["Shure"], items);
+        expect(itemFiltered.length).toBe(1);
+        expect(itemFiltered[0].node.reference).toBe("ref-2");
+    });
+
+    it('filter when a tag is entered corresponding to a reference', () => {
+
+        const filterByTag = require('../FilterFunctions').filterByTag;
+
+        var itemFiltered = filterByTag(["ref-2"], items);
+        expect(itemFiltered.length).toBe(1);
+        expect(itemFiltered[0].node.reference).toBe("ref-2");
+    });
+
+    it('Display nothing when two different tags match two different rows', () => {
+
+        const filterByTag = require('../FilterFunctions').filterByTag;
+        
+        var itemFiltered = filterByTag(["ref-2", "ref-1"], threeItems);
+        expect(itemFiltered.length).toBe(2);
+    });
+
+    it('Display nothing when two different tags match two different rows', () => {
+
+        const filterByTag = require('../FilterFunctions').filterByTag;
+
+        var itemFiltered = filterByTag(["model-3"], threeItems);
+        expect(itemFiltered.length).toBe(1);
+        expect(itemFiltered[0].node.reference).toBe("ref-3");
+    });
+});
+
+

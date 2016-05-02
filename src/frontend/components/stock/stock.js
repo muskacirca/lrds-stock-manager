@@ -9,7 +9,8 @@ import StockNavigationBar from './StockNavigationBar'
 import AddItemInCartMutation from '../../mutations/AddItemInCartMutation'
 
 import {
-    filterByText
+    filterByText,
+    filterByTag
 } from '../utils/filter/FilterFunctions'
 
 class StockComponent extends React.Component {
@@ -41,40 +42,6 @@ class StockComponent extends React.Component {
         var i = tmpTag.indexOf(tagToRemove)
         if(i !== -1) tmpTag.splice(i, 1);
         this.setState({ tags: tmpTag })
-    }
-
-    filterByTag(tags, rowsToFilter) {
-
-        var counter = 0
-
-        var taggedFilteredRows = []
-        if (tags.length !== 0) {
-
-            taggedFilteredRows = rowsToFilter.map(function (product) {
-
-                if (counter < 35) {
-                    var hasTags = false
-                    for(var i = 0; i < tags.length; i++) {
-                        if (product.node.model.name.toLowerCase().indexOf(tags[i].toLowerCase()) != -1) {
-                            counter += 1
-                            hasTags = true
-                        }
-                    }
-
-                    return hasTags ? product : undefined
-                }
-            })
-        }
-
-        var filteredTags = taggedFilteredRows.filter(function (element) {
-            return element !== undefined;
-        })
-
-        return filteredTags
-    }
-
-    filter(filterText, rowsRoFilter) {
-        return filterByText(filterText, rowsRoFilter)
     }
 
     selectItem(reference) {
@@ -126,11 +93,8 @@ class StockComponent extends React.Component {
         var filterByState = this.state.stateFilter
         
         var stateFilteredRow = this.filterByState(filterByState, items)
-
-        var tagFilteredData = this.filterByTag(filterTags, stateFilteredRow)
-        tagFilteredData = tagFilteredData.length === 0 ? items : tagFilteredData
-
-        var filteredItems = this.filter(filterText, tagFilteredData)
+        var tagFilteredData = filterByTag(filterTags, stateFilteredRow)
+        var filteredItems = filterByText(filterText, tagFilteredData)
 
         return (
             <div>

@@ -69016,42 +69016,6 @@
 	            this.setState({ tags: tmpTag });
 	        }
 	    }, {
-	        key: 'filterByTag',
-	        value: function filterByTag(tags, rowsToFilter) {
-
-	            var counter = 0;
-
-	            var taggedFilteredRows = [];
-	            if (tags.length !== 0) {
-
-	                taggedFilteredRows = rowsToFilter.map(function (product) {
-
-	                    if (counter < 35) {
-	                        var hasTags = false;
-	                        for (var i = 0; i < tags.length; i++) {
-	                            if (product.node.model.name.toLowerCase().indexOf(tags[i].toLowerCase()) != -1) {
-	                                counter += 1;
-	                                hasTags = true;
-	                            }
-	                        }
-
-	                        return hasTags ? product : undefined;
-	                    }
-	                });
-	            }
-
-	            var filteredTags = taggedFilteredRows.filter(function (element) {
-	                return element !== undefined;
-	            });
-
-	            return filteredTags;
-	        }
-	    }, {
-	        key: 'filter',
-	        value: function filter(filterText, rowsRoFilter) {
-	            return (0, _FilterFunctions.filterByText)(filterText, rowsRoFilter);
-	        }
-	    }, {
 	        key: 'selectItem',
 	        value: function selectItem(reference) {
 	            this.context.router.push("/stock/" + reference);
@@ -69114,11 +69078,8 @@
 	            var filterByState = this.state.stateFilter;
 
 	            var stateFilteredRow = this.filterByState(filterByState, items);
-
-	            var tagFilteredData = this.filterByTag(filterTags, stateFilteredRow);
-	            tagFilteredData = tagFilteredData.length === 0 ? items : tagFilteredData;
-
-	            var filteredItems = this.filter(filterText, tagFilteredData);
+	            var tagFilteredData = (0, _FilterFunctions.filterByTag)(filterTags, stateFilteredRow);
+	            var filteredItems = (0, _FilterFunctions.filterByText)(filterText, tagFilteredData);
 
 	            return _react2.default.createElement(
 	                'div',
@@ -70475,6 +70436,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.filterByTag = filterByTag;
 	exports.filterByText = filterByText;
 	function minimize(item) {
 	    return item.toLowerCase().replace(' ', '');
@@ -70482,6 +70444,36 @@
 
 	function filter(filterText, textToFilter) {
 	    return minimize(textToFilter).indexOf(minimize(filterText)) != -1;
+	}
+
+	function filterByTag(tags, rowsToFilter) {
+
+	    if (tags.length === 0) return rowsToFilter;
+
+	    var counter = 0;
+	    var taggedFilteredRows = rowsToFilter.map(function (productNode) {
+
+	        var product = productNode.node;
+	        if (counter < 35) {
+	            var hasTags = false;
+
+	            // It's an ugly OR
+	            for (var i = 0; i < tags.length; i++) {
+	                if (filter(product.model.name, tags[i]) || filter(product.reference, tags[i]) || filter(product.model.brand.name, tags[i])) {
+	                    counter += 1;
+	                    hasTags = true;
+	                }
+	            }
+
+	            return hasTags ? productNode : undefined;
+	        }
+	    });
+
+	    var filteredTags = taggedFilteredRows.filter(function (element) {
+	        return element !== undefined;
+	    });
+
+	    return filteredTags;
 	}
 
 	function filterByText(filterText, rowsRoFilter) {
