@@ -84632,10 +84632,10 @@
 	                    onSave: this.onFormSubmit.bind(this) }),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'row' },
+	                    { className: 'page-content row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'page-content col-md-10 col-md-offset-1' },
+	                        { className: 'col-md-10 col-md-offset-1' },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'row' },

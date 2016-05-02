@@ -245,8 +245,8 @@ class ItemFormComponent extends React.Component {
                                 alert={this.state.alert}
                                 onSave={this.onFormSubmit.bind(this)} />
 
-                    <div className="row">
-                        <div className="page-content col-md-10 col-md-offset-1">
+                    <div className="page-content row">
+                        <div className="col-md-10 col-md-offset-1">
                             <div className="row">
 
                                 <div className="col-md-6 col-sm-6 col-sm-push-6 col-md-push-6">
