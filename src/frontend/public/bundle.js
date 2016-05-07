@@ -68405,6 +68405,8 @@
 	
 	var _AuthService2 = _interopRequireDefault(_AuthService);
 	
+	var _utils = __webpack_require__(567);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68444,6 +68446,7 @@
 	    }, {
 	        key: 'onCreateEventFromCart',
 	        value: function onCreateEventFromCart() {
+	            (0, _utils.toggleClassInBody)('with--cart');
 	            this.context.router.push("/event/create");
 	        }
 	    }, {
@@ -69911,13 +69914,13 @@
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'navigation-sub-row col-md-6 col-sm-6 mobile-hide' },
+	                        { className: 'navigation-sub-row col-md-6 col-sm-6 col-xs-4' },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'row' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-lg-2 col-md-2 col-sm-2 col-xs-2' },
+	                                { className: 'col-lg-2 col-md-2 col-sm-2 mobile-hide' },
 	                                _react2.default.createElement(
 	                                    'strong',
 	                                    null,
@@ -69926,7 +69929,7 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-lg-10 col-md-10 col-sm-10 col-xs-10' },
+	                                { className: 'col-lg-10 col-md-10 col-sm-10 col-xs-12' },
 	                                filterByState,
 	                                _react2.default.createElement(
 	                                    'buton',
@@ -69940,7 +69943,7 @@
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'navigation-sub-row col-md-6 col-sm-6 col-xs-12' },
+	                        { className: 'navigation-sub-row col-md-6 col-sm-6 col-xs-8' },
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'row' },

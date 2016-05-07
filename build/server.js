@@ -954,12 +954,6 @@ module.exports =
 	                return obj.lastName;
 	            }
 	        },
-	        fullName: {
-	            type: _graphql.GraphQLString,
-	            resolve: function resolve(obj) {
-	                return obj.firstName + ' ' + obj.lastName;
-	            }
-	        },
 	        login: {
 	            type: _graphql.GraphQLString,
 	            resolve: function resolve(obj) {

@@ -6,6 +6,10 @@ import EmptyCartMutation from '../../mutations/EmptyCartMutation'
 
 import UserService from '../utils/AuthService'
 
+import {
+    toggleClassInBody
+} from '../../../utils/utils'
+
 class CartDropdownComponent extends React.Component {
 
     constructor(props) {
@@ -27,7 +31,9 @@ class CartDropdownComponent extends React.Component {
     }
 
     onCreateEventFromCart() {
+        toggleClassInBody('with--cart')
         this.context.router.push("/event/create")
+        
     }
 
     emptyCart() {

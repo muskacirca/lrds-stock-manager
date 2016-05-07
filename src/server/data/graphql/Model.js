@@ -284,10 +284,6 @@ export var UserType = new GraphQLObjectType({
             type: GraphQLString,
             resolve: (obj) => obj.lastName
         },
-        fullName: {
-            type: GraphQLString,
-            resolve: (obj) => obj.firstName + ' ' + obj.lastName
-        },
         login: {
             type: GraphQLString,
             resolve: (obj) => obj.login
