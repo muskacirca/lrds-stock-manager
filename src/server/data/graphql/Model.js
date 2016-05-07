@@ -60,9 +60,9 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         return null;
     },
     (obj) => {
-       
+
         console.log("in interface obj: " + JSON.stringify(obj))
-        
+
         if (obj.password != undefined) {
             console.log("getting by object ViewerType")
             return GraphQLViewer
@@ -284,6 +284,10 @@ export var UserType = new GraphQLObjectType({
             type: GraphQLString,
             resolve: (obj) => obj.lastName
         },
+        fullName: {
+            type: GraphQLString,
+            resolve: (obj) => obj.firstName + ' ' + obj.lastName
+        },
         login: {
             type: GraphQLString,
             resolve: (obj) => obj.login
@@ -341,7 +345,7 @@ export var GraphQLViewer = new GraphQLObjectType({
                 ...connectionArgs
             },
             resolve: (obj, {severity, ...args}) => {
-                    
+
                 return Database.models.state.findOne({where: {severity: severity}})
                     .then(state => {
                         var queryArgs = {where: true}
@@ -350,8 +354,8 @@ export var GraphQLViewer = new GraphQLObjectType({
                         }
                         return connectionFromPromisedArray(Database.models.item.findAll(queryArgs), args)
                     })
-                
-                
+
+
             }
         },
         item: {
@@ -375,16 +379,16 @@ export var GraphQLViewer = new GraphQLObjectType({
                 ...connectionArgs
             },
             resolve: (obj, {date, ...args}) => {
-                
+
                 var date = moment(date, "YYYY-MM-DD")
-                
+
                 var beginOfMonth = moment(date.format("YYYY-MM") + "-01", "YYYY-MM-DD").format()
                 var endOfMonth = moment(date.format("YYYY-MM") + "-" + date.daysInMonth(), "YYYY-MM-DD").format()
 
-                var queryArgs = date != null 
+                var queryArgs = date != null
                     ? {where: {startDate: {gte: beginOfMonth, $lte: endOfMonth}}}
                     : null;
-                
+
                 console.log("queryArgs : " + JSON.stringify(queryArgs))
                 return connectionFromPromisedArray(Database.models.event.findAll(queryArgs), args)
             }
