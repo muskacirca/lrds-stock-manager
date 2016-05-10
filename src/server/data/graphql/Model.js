@@ -45,17 +45,20 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         let { id, type } = fromGlobalId(globalId);
         console.log("globalId of " + type + " : " + globalId)
         console.log("id of " + type + " : " + id)
+        
         if (type === 'ItemType') {
             console.log("Im here getting ItemType")
             return Database.models.item.findOne({where: {id: id}});
-        } else if (type === "SubCategoryType") {
-            console.log("Im here getting SubCategoryType")
-            return getViewer(id);
-        } else if (type === "DomainType") {
-            console.log("Im here getting Domain")
-            return getViewer(id);
+        } else if(type === "EventType") {
+            console.log("Im here getting EventType")
+            return Database.models.event.findOne({where: {id: id}})
+        } else if(type === "ModelType") {
+            console.log("Im here getting ModelType")
+            Database.models.modem.findOne({where : {id: id}})
         } else if (type === "Viewer") {
             return Database.models.user.findOne({where: {id: id}});
+        } else {
+            console.log("I'm here getting " + type + " but was not present")
         }
         return null;
     },
@@ -66,6 +69,15 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         if (obj.password != undefined) {
             console.log("getting by object ViewerType")
             return GraphQLViewer
+        } else if(obj.reference != undefined) {
+            console.log("getting by object ItemType")
+            return GraphQLItemType
+        } else if(obj.brand != undefined) {
+            console.log("getiing by object Modeltype")
+            return GraphQLModelType
+        } else if(obj.startDate != undefined) {
+            console.log("getting by object EventType") 
+            return EventType
         }
     }
 );
