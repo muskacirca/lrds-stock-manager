@@ -237,7 +237,6 @@ type UserType implements Node {
   id: ID!
   firstName: String
   lastName: String
-  fullName: String
   login: String
   email: String
   enabled: Boolean

@@ -100181,16 +100181,16 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var AddItemMutation = function (_Relay$Mutation) {
-	    _inherits(AddItemMutation, _Relay$Mutation);
+	var AddEventMutation = function (_Relay$Mutation) {
+	    _inherits(AddEventMutation, _Relay$Mutation);
 
-	    function AddItemMutation() {
-	        _classCallCheck(this, AddItemMutation);
+	    function AddEventMutation() {
+	        _classCallCheck(this, AddEventMutation);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddItemMutation).apply(this, arguments));
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddEventMutation).apply(this, arguments));
 	    }
 
-	    _createClass(AddItemMutation, [{
+	    _createClass(AddEventMutation, [{
 	        key: 'getMutation',
 	        value: function getMutation() {
 	            return function () {
@@ -100374,10 +100374,10 @@
 	        }
 	    }]);
 
-	    return AddItemMutation;
+	    return AddEventMutation;
 	}(_reactRelay2.default.Mutation);
 
-	AddItemMutation.fragments = {
+	AddEventMutation.fragments = {
 	    viewer: function viewer() {
 	        return function () {
 	            return {
@@ -100398,7 +100398,7 @@
 	        }();
 	    }
 	};
-	exports.default = AddItemMutation;
+	exports.default = AddEventMutation;
 
 /***/ },
 /* 759 */

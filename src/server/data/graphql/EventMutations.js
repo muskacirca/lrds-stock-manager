@@ -21,12 +21,12 @@ import {
 
 import {
     emptyCart,
-} from '../stores/ItemStore';
+} from '../stores/CartStore';
 
 
 import {
     getViewer,
-} from '../stores/CartStore';
+} from '../stores/UserStore';
 
 
 export const AddEventMutation = new mutationWithClientMutationId({
@@ -44,22 +44,25 @@ export const AddEventMutation = new mutationWithClientMutationId({
     outputFields: {
         viewer: {
             type: GraphQLViewer,
-            resolve: () => getViewer
+            resolve: (obj) => {
+                console.log("In EventMutation output field viewer : " + JSON.stringify(obj.viewerId))
+                return getViewer(obj.viewerId)
+            }
         },
         cart: {
             type: GraphQLCartType,
-            resolve: (args) => emptyCart(args.userId)
+            resolve: (obj) => emptyCart(obj.viewerId)
         },
         eventEdge: {
             type: EventsEdge,
-            resolve: (obj, {id}) => {
+            resolve: (obj) => {
 
                 return Database.models.event.findAll()
                     .then(events => {
 
                         let eventToPass
                         for (const event of events) {
-                            if (event.id === obj.id) {
+                            if (event.id === obj.event.id) {
                                 eventToPass = event;
                             }
                         }
@@ -72,7 +75,7 @@ export const AddEventMutation = new mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({name, startDate, endDate, description, reservedItems}) => {
+    mutateAndGetPayload: ({name, startDate, endDate, description, reservedItems, userId}) => {
 
         var event = {
             name: name,
@@ -87,7 +90,10 @@ export const AddEventMutation = new mutationWithClientMutationId({
                     Database.models.item.findOne({where: {reference: reference}}).then(item => event.addItem(item))
                 })
                 
-                return event
+                return {
+                    viewerId : userId,
+                    event: event
+                }
             })
     }
 })

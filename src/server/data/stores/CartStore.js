@@ -33,10 +33,6 @@ export function getById(id) {
     return item[0]
 }
 
-export function getViewer() {
-   return usersById[VIEWER_ID]
-}
-
 export function isInitialized() {
     if(cartStore.length === 0) {
         return false

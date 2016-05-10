@@ -1,6 +1,6 @@
 import Relay from 'react-relay';
 
-class AddItemMutation extends Relay.Mutation {
+class AddEventMutation extends Relay.Mutation {
 
     static fragments = {
         viewer: () => Relay.QL`
@@ -81,4 +81,4 @@ class AddItemMutation extends Relay.Mutation {
     }
 }
 
-export default AddItemMutation
+export default AddEventMutation

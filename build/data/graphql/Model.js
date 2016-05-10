@@ -471,7 +471,6 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
 
                     var queryArgs = date != null ? { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } } : null;
 
-                    console.log("queryArgs : " + JSON.stringify(queryArgs));
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
                 }
             },

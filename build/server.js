@@ -218,7 +218,7 @@ module.exports =
 
 	var _Model = __webpack_require__(9);
 
-	var _ItemStore = __webpack_require__(10);
+	var _UserStore = __webpack_require__(20);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -237,7 +237,7 @@ module.exports =
 	        viewer: {
 	            type: _Model.GraphQLViewer,
 	            resolve: function resolve() {
-	                return _ItemStore.getViewer;
+	                return _UserStore.getViewer;
 	            }
 	        },
 	        modelEdge: {
@@ -320,7 +320,7 @@ module.exports =
 	        viewer: {
 	            type: _Model.GraphQLViewer,
 	            resolve: function resolve() {
-	                return _ItemStore.getViewer;
+	                return _UserStore.getViewer;
 	            }
 	        },
 	        itemEdge: {
@@ -430,8 +430,8 @@ module.exports =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
-	var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec";
-	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
+	var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds";
+	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds";
 
 	var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
 	    pool: {
@@ -625,7 +625,7 @@ module.exports =
 
 	var _database2 = _interopRequireDefault(_database);
 
-	var _ItemStore = __webpack_require__(10);
+	var _UserStore = __webpack_require__(20);
 
 	var _CartStore = __webpack_require__(12);
 
@@ -661,7 +661,7 @@ module.exports =
 	        console.log("Im here getting ModelType");
 	        _database2.default.models.modem.findOne({ where: { id: id } });
 	    } else if (type === "Viewer") {
-	        return _database2.default.models.user.findOne({ where: { id: id } });
+	        return (0, _UserStore.getViewer)(id);
 	    } else {
 	        console.log("I'm here getting " + type + " but was not present");
 	    }
@@ -1081,7 +1081,6 @@ module.exports =
 
 	                    var queryArgs = date != null ? { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } } : null;
 
-	                    console.log("queryArgs : " + JSON.stringify(queryArgs));
 	                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
 	                }
 	            },
@@ -1175,7 +1174,11 @@ module.exports =
 	            },
 	            resolve: function resolve(root, _ref9) {
 	                var viewerId = _ref9.viewerId;
-	                return _database2.default.models.user.findOne({ where: { id: viewerId } });
+
+	                return _database2.default.models.user.findOne({ where: { id: viewerId } }).then(function (response) {
+	                    (0, _UserStore.registerViewer)(response);
+	                    return (0, _UserStore.getViewer)(response.id);
+	                });
 	            }
 	        },
 	        node: nodeField
@@ -1183,79 +1186,7 @@ module.exports =
 	});
 
 /***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Viewer = undefined;
-	exports.initState = initState;
-	exports.getById = getById;
-	exports.login = login;
-	exports.getViewer = getViewer;
-
-	var _lodash = __webpack_require__(11);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Viewer = exports.Viewer = function (_Object) {
-	    _inherits(Viewer, _Object);
-
-	    function Viewer() {
-	        _classCallCheck(this, Viewer);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).apply(this, arguments));
-	    }
-
-	    return Viewer;
-	}(Object);
-
-	var VIEWER_ID = 'me';
-
-	var viewer = new Viewer();
-	viewer.id = VIEWER_ID;
-
-	var itemsStore = [];
-
-	var usersById = _defineProperty({}, VIEWER_ID, viewer);
-
-	function initState(items) {
-	    itemsStore = items;
-	    return itemsStore;
-	}
-
-	function getById(id) {
-
-	    var item = itemsStore.filter(function (elt) {
-	        if (elt.id == id) {
-	            return elt;
-	        }
-	    });
-
-	    return item[0];
-	}
-
-	function login(viewerId) {}
-
-	function getViewer(viewerId) {
-	    console.log("deprecated getViewer");
-	    return usersById[viewerId];
-	}
-
-/***/ },
+/* 10 */,
 /* 11 */
 /***/ function(module, exports) {
 
@@ -1273,7 +1204,6 @@ module.exports =
 	exports.SubCategory = exports.Category = exports.Cart = exports.Viewer = exports.Item = undefined;
 	exports.initState = initState;
 	exports.getById = getById;
-	exports.getViewer = getViewer;
 	exports.isInitialized = isInitialized;
 	exports.getCart = getCart;
 	exports.pushItemInCart = pushItemInCart;
@@ -1379,10 +1309,6 @@ module.exports =
 	    return item[0];
 	}
 
-	function getViewer() {
-	    return usersById[VIEWER_ID];
-	}
-
 	function isInitialized() {
 	    if (cartStore.length === 0) {
 	        return false;
@@ -1456,7 +1382,7 @@ module.exports =
 
 	var _Model = __webpack_require__(9);
 
-	var _ItemStore = __webpack_require__(10);
+	var _UserStore = __webpack_require__(20);
 
 	var _CartStore = __webpack_require__(12);
 
@@ -1473,7 +1399,7 @@ module.exports =
 	        viewer: {
 	            type: _Model.GraphQLViewer,
 	            resolve: function resolve() {
-	                return _ItemStore.getViewer;
+	                return _UserStore.getViewer;
 	            }
 	        },
 	        cart: {
@@ -1505,7 +1431,7 @@ module.exports =
 	        viewer: {
 	            type: _Model.GraphQLViewer,
 	            resolve: function resolve() {
-	                return _ItemStore.getViewer;
+	                return _UserStore.getViewer;
 	            }
 	        },
 	        cart: {
@@ -1533,8 +1459,8 @@ module.exports =
 	    outputFields: {
 	        viewer: {
 	            type: _Model.GraphQLViewer,
-	            resolve: function resolve() {
-	                return _ItemStore.getViewer;
+	            resolve: function resolve(args) {
+	                return (0, _UserStore.getViewer)(args.viewerId);
 	            }
 	        },
 	        cart: {
@@ -1573,9 +1499,9 @@ module.exports =
 
 	var _Model = __webpack_require__(9);
 
-	var _ItemStore = __webpack_require__(10);
-
 	var _CartStore = __webpack_require__(12);
+
+	var _UserStore = __webpack_require__(20);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1594,21 +1520,20 @@ module.exports =
 	    outputFields: {
 	        viewer: {
 	            type: _Model.GraphQLViewer,
-	            resolve: function resolve() {
-	                return _CartStore.getViewer;
+	            resolve: function resolve(obj) {
+	                console.log("In EventMutation output field viewer : " + JSON.stringify(obj.viewerId));
+	                return (0, _UserStore.getViewer)(obj.viewerId);
 	            }
 	        },
 	        cart: {
 	            type: _Model.GraphQLCartType,
-	            resolve: function resolve(args) {
-	                return (0, _ItemStore.emptyCart)(args.userId);
+	            resolve: function resolve(obj) {
+	                return (0, _CartStore.emptyCart)(obj.viewerId);
 	            }
 	        },
 	        eventEdge: {
 	            type: _Model.EventsEdge,
-	            resolve: function resolve(obj, _ref) {
-	                var id = _ref.id;
-
+	            resolve: function resolve(obj) {
 
 	                return _database2.default.models.event.findAll().then(function (events) {
 
@@ -1621,7 +1546,7 @@ module.exports =
 	                        for (var _iterator = events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                            var event = _step.value;
 
-	                            if (event.id === obj.id) {
+	                            if (event.id === obj.event.id) {
 	                                eventToPass = event;
 	                            }
 	                        }
@@ -1649,12 +1574,13 @@ module.exports =
 	            }
 	        }
 	    },
-	    mutateAndGetPayload: function mutateAndGetPayload(_ref2) {
-	        var name = _ref2.name;
-	        var startDate = _ref2.startDate;
-	        var endDate = _ref2.endDate;
-	        var description = _ref2.description;
-	        var reservedItems = _ref2.reservedItems;
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref) {
+	        var name = _ref.name;
+	        var startDate = _ref.startDate;
+	        var endDate = _ref.endDate;
+	        var description = _ref.description;
+	        var reservedItems = _ref.reservedItems;
+	        var userId = _ref.userId;
 
 
 	        var event = {
@@ -1671,7 +1597,10 @@ module.exports =
 	                });
 	            });
 
-	            return event;
+	            return {
+	                viewerId: userId,
+	                event: event
+	            };
 	        });
 	    }
 	});
@@ -1699,6 +1628,69 @@ module.exports =
 /***/ function(module, exports) {
 
 	module.exports = require("crypto");
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Viewer = undefined;
+	exports.registerViewer = registerViewer;
+	exports.getViewer = getViewer;
+
+	var _database = __webpack_require__(7);
+
+	var _database2 = _interopRequireDefault(_database);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Viewer = exports.Viewer = function (_Object) {
+	    _inherits(Viewer, _Object);
+
+	    function Viewer() {
+	        _classCallCheck(this, Viewer);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).apply(this, arguments));
+	    }
+
+	    return Viewer;
+	}(Object);
+
+	var VIEWER_ID = 'me';
+
+	var viewer = new Viewer();
+	viewer.id = VIEWER_ID;
+
+	var users = {};
+
+	var usersById = _defineProperty({}, VIEWER_ID, viewer);
+
+	function registerViewer(viewer) {
+
+	    if (users[viewer.id] == undefined) {
+	        users[viewer.id] = viewer;
+	    }
+	}
+
+	function getViewer(viewerId) {
+
+	    console.log("getViewer with Id : " + viewerId);
+	    console.log("getViewer : " + JSON.stringify(users[viewerId]));
+
+	    return users[viewerId] == undefined ? _database2.default.models.user.findOne({ where: { id: viewerId } }) : users[viewerId];
+	}
 
 /***/ }
 /******/ ]);

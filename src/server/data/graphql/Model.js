@@ -26,9 +26,9 @@ import Database from '../database'
 
 import {
     Viewer,
-    getById,
+    registerViewer,
     getViewer,
-} from '../stores/ItemStore';
+} from '../stores/UserStore';
 
 import {
     getCart,
@@ -56,7 +56,7 @@ var { nodeInterface, nodeField } = nodeDefinitions(
             console.log("Im here getting ModelType")
             Database.models.modem.findOne({where : {id: id}})
         } else if (type === "Viewer") {
-            return Database.models.user.findOne({where: {id: id}});
+            return getViewer(id)
         } else {
             console.log("I'm here getting " + type + " but was not present")
         }
@@ -397,7 +397,6 @@ export var GraphQLViewer = new GraphQLObjectType({
                     ? {where: {startDate: {gte: beginOfMonth, $lte: endOfMonth}}}
                     : null;
 
-                console.log("queryArgs : " + JSON.stringify(queryArgs))
                 return connectionFromPromisedArray(Database.models.event.findAll(queryArgs), args)
             }
         },
@@ -463,7 +462,13 @@ export var GraphQLRoot = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLInt)
                 }
             },
-            resolve: (root, {viewerId}) => Database.models.user.findOne({where: {id: viewerId}}),
+            resolve: (root, {viewerId}) => {
+                return Database.models.user.findOne({where: {id: viewerId}})
+                    .then(response => {
+                        registerViewer(response)
+                        return getViewer(response.id)
+                    })
+            }
         },
         node: nodeField
     }
