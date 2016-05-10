@@ -249,7 +249,7 @@ module.exports =
 	
 	                return _database2.default.models.model.findAll().then(function (dataModels) {
 	
-	                    var itemToPass = void 0;
+	                    var itemToPass = undefined;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -330,7 +330,7 @@ module.exports =
 	
 	                return _database2.default.models.item.findAll().then(function (items) {
 	
-	                    var itemToPass = void 0;
+	                    var itemToPass = undefined;
 	                    var _iteratorNormalCompletion2 = true;
 	                    var _didIteratorError2 = false;
 	                    var _iteratorError2 = undefined;
@@ -1601,7 +1601,7 @@ module.exports =
 	
 	                return _database2.default.models.event.findAll().then(function (events) {
 	
-	                    var eventToPass = void 0;
+	                    var eventToPass = undefined;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
