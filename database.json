@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "host": "localhost",
+    "driver": "mysql",
+    "user": "greec",
+    "password": "test",
+    "database": "lrds",
+    "schema": "lrds",
+    "multipleStatements": true
+  }
+}
