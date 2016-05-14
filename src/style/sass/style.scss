@@ -28,6 +28,10 @@ $navbar-height: 66px;
   margin-right: 5px;
 }
 
+.hide {
+  display: none;
+}
+
 /*
   CALENDAR
 */
@@ -235,4 +239,12 @@ $navbar-height: 66px;
 
 .react-datepicker__input-container {
   width: 100% !important;
+}
+
+/*
+  COMMENT BOX
+*/
+
+.comment-box {
+  resize: none;
 }

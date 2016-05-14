@@ -92,7 +92,8 @@ export const AddItemMutation = mutationWithClientMutationId({
         modelName: {type: new GraphQLNonNull(GraphQLString)},
         severity: {type: new GraphQLNonNull(GraphQLString)},
         domains: {type: new GraphQLList(GraphQLString)},
-        subCategories: {type: new GraphQLList(GraphQLString)}
+        subCategories: {type: new GraphQLList(GraphQLString)},
+        comments: {type: new GraphQLList(GraphQLString)}
     },
     outputFields: {
         viewer: {
@@ -121,7 +122,7 @@ export const AddItemMutation = mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({modelName, severity, domains, subCategories}) => {
+    mutateAndGetPayload: ({modelName, severity, domains, subCategories, comments}) => {
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
@@ -151,6 +152,7 @@ export const AddItemMutation = mutationWithClientMutationId({
                                     .then(state => {
                                         return model.createItem({stateId: state.id, reference: reference})
                                             .then(item => {
+                                                item.addComments(comments)
                                                 return item
                                             })
                                     })

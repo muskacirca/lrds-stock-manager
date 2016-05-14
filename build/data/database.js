@@ -89,6 +89,11 @@ var itemComment = connection.define('itemComment', {
     text: {
         type: _sequelize2.default.STRING,
         allowNull: false
+    },
+    author: {
+
+        type: _sequelize2.default.STRING,
+        allowNull: false
     }
 });
 
@@ -107,7 +112,8 @@ item.belongsToMany(event, { through: 'reservedItems', timestamps: false });
 
 var eventComment = connection.define('eventComment', {
 
-    text: { type: _sequelize2.default.STRING, allowNull: false }
+    text: { type: _sequelize2.default.STRING, allowNull: false },
+    author: { type: _sequelize2.default.STRING, allowNull: false }
 });
 
 event.hasMany(eventComment, { as: 'Comments' });
@@ -152,7 +158,7 @@ connection.define('user', {
     enabled: _sequelize2.default.BOOLEAN
 }, { timestamps: false, tableName: 'users', freezeTableName: true });
 
-connection.sync({ force: false });
+connection.sync({ force: true });
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})

@@ -14,6 +14,9 @@
 .filter-button {
   margin-right: 5px; }
 
+.hide {
+  display: none; }
+
 /*
   CALENDAR
 */
@@ -150,5 +153,11 @@
 */
 .react-datepicker__input-container {
   width: 100% !important; }
+
+/*
+  COMMENT BOX
+*/
+.comment-box {
+  resize: none; }
 
 /*# sourceMappingURL=built-stylesheet.css.map */

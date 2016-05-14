@@ -343,12 +343,6 @@ var UserType = exports.UserType = new _graphql.GraphQLObjectType({
                 return obj.lastName;
             }
         },
-        fullName: {
-            type: _graphql.GraphQLString,
-            resolve: function resolve(obj) {
-                return obj.firstName + ' ' + obj.lastName;
-            }
-        },
         login: {
             type: _graphql.GraphQLString,
             resolve: function resolve(obj) {

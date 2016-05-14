@@ -1,24 +1,29 @@
 import React from 'react'
 import Relay from 'react-relay'
 import _ from 'lodash'
+import moment from 'moment'
 
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
 
 import AddModelMutation from '../../../mutations/AddModelMutation'
 import AddItemMutation from '../../../mutations/AddItemMutation'
 
+import CommentComponent from '../../utils/forms/CommentComponent'
 import ModelQuickForm from './ModelQuickForm'
 import ItemFormDisplay from '../ItemDisplay'
 
 import FormHeader from '../../utils/forms/FormHeader'
+
+import UserService from '../../utils/AuthService'
 
 class ItemFormComponent extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            itemFeatures : {modelName: "", domains: [], subCategories: []},
-            alert: undefined
+            itemFeatures : {modelName: "", domains: [], subCategories: [], comments: []},
+            alert: undefined,
+            isModelFormOpened: false
         }
     }
 
@@ -69,6 +74,7 @@ class ItemFormComponent extends React.Component {
             severity: this.state.itemFeatures.severity,
             domains: domainsToAdd,
             subCategories: subCategoriesToAdd,
+            comments: this.state.itemFeatures.comments,
             viewer: this.props.viewer
         });
 
@@ -220,6 +226,27 @@ class ItemFormComponent extends React.Component {
         })
     }
 
+    toggleModelCreationForm(e) {
+        e.preventDefault()
+        this.setState({isModelFormOpened: !this.state.isModelFormOpened})
+    }
+
+    handleCommentPublish(message) {
+        
+        var comment = {
+            text: message,
+            createdAt: moment(),
+            author: UserService.getLogin()
+        };
+
+        var itemFeatures = _.cloneDeep(this.state.itemFeatures);
+        itemFeatures.comments.length == 0
+            ? _.set(itemFeatures, "comments", [comment])
+            : itemFeatures.comments.push(comment);
+        
+        this.setState({itemFeatures : itemFeatures})
+    }
+
     render() {
 
         var models = this.props.viewer.models
@@ -251,6 +278,8 @@ class ItemFormComponent extends React.Component {
 
                                 <div className="col-md-6 col-sm-6 col-sm-push-6 col-md-push-6">
                                     {itemFormDisplay}
+                                    <CommentComponent comments={this.state.itemFeatures.comments} 
+                                                      handleCommentPublish={this.handleCommentPublish.bind(this)} />
                                 </div>
 
                                 <div className="col-md-6 col-sm-6 col-md-pull-6 col-sm-pull-6">
@@ -267,9 +296,16 @@ class ItemFormComponent extends React.Component {
                                     </div>
 
                                     <div className="form-group">
-                                        <label htmlFor="" className="col-md-3 control-label">or create one</label>
-                                        <div className="col-md-9">
-                                            <ModelQuickForm viewer={this.props.viewer} onAddNewModel={this.onAddNewModel.bind(this)} />
+                                        <a href="#" onClick={this.toggleModelCreationForm.bind(this)}>
+                                            <label htmlFor="" className="pointer col-md-3 control-label">or create one</label>
+                                        </a>
+                                        <div className={"col-md-9" }>
+                                            <div className={this.state.isModelFormOpened ? "" : " hide"}>
+                                                <ModelQuickForm viewer={this.props.viewer} 
+                                                                onAddNewModel={this.onAddNewModel.bind(this)} />
+                                        
+                                            </div>
+                                            <div className={!this.state.isModelFormOpened ? "" : " hide"}>...</div>
                                         </div>
                                     </div>
 

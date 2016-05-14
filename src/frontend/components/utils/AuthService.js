@@ -27,6 +27,10 @@ class Auth {
         return JSON.parse(localStorage.getItem('user')).id
     }
 
+    getLogin() {
+        return JSON.parse(localStorage.getItem('user')).login
+    }
+
     handleAuth(loginPromise) {
 
         return loginPromise

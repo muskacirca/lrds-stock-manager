@@ -315,7 +315,8 @@ module.exports =
 	        modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
 	        severity: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
 	        domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-	        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+	        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+	        comments: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
 	    },
 	    outputFields: {
 	        viewer: {
@@ -372,6 +373,7 @@ module.exports =
 	        var severity = _ref3.severity;
 	        var domains = _ref3.domains;
 	        var subCategories = _ref3.subCategories;
+	        var comments = _ref3.comments;
 	
 	
 	        return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
@@ -399,6 +401,7 @@ module.exports =
 	                    reference = reference + "-" + nextId;
 	                    return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
 	                        return model.createItem({ stateId: state.id, reference: reference }).then(function (item) {
+	                            item.addComments(comments);
 	                            return item;
 	                        });
 	                    });
@@ -509,6 +512,11 @@ module.exports =
 	    text: {
 	        type: _sequelize2.default.STRING,
 	        allowNull: false
+	    },
+	    author: {
+	
+	        type: _sequelize2.default.STRING,
+	        allowNull: false
 	    }
 	});
 	
@@ -527,7 +535,8 @@ module.exports =
 	
 	var eventComment = connection.define('eventComment', {
 	
-	    text: { type: _sequelize2.default.STRING, allowNull: false }
+	    text: { type: _sequelize2.default.STRING, allowNull: false },
+	    author: { type: _sequelize2.default.STRING, allowNull: false }
 	});
 	
 	event.hasMany(eventComment, { as: 'Comments' });
@@ -572,7 +581,7 @@ module.exports =
 	    enabled: _sequelize2.default.BOOLEAN
 	}, { timestamps: false, tableName: 'users', freezeTableName: true });
 	
-	connection.sync({ force: false });
+	connection.sync({ force: true });
 	//    .then(() => {
 	//    var studio = domain.create({name: 'STUDIO'})
 	//    var scene = domain.create({name: 'SCENE'})

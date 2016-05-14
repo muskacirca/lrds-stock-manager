@@ -2,6 +2,7 @@ import React from 'react'
 import Relay from 'react-relay'
 
 import ItemDisplay from './ItemDisplay'
+import CommentComponent from '../utils/forms/CommentComponent'
 
 class ItemComponent extends React.Component {
 
@@ -18,6 +19,8 @@ class ItemComponent extends React.Component {
 
         return  <div className="col-md-10 col-md-offset-1">
                     <ItemDisplay item={item}/>
+                    <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this)} 
+                                      comments={item.comments.edges} />
                 </div>
     }
 }

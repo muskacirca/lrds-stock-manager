@@ -32,6 +32,7 @@ input AddItemInput {
   severity: String!
   domains: [String]
   subCategories: [String]
+  comments: [String]
   clientMutationId: String!
 }
 
@@ -237,7 +238,6 @@ type UserType implements Node {
   id: ID!
   firstName: String
   lastName: String
-  fullName: String
   login: String
   email: String
   enabled: Boolean

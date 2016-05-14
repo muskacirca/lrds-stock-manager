@@ -81,9 +81,14 @@ const itemComment = connection.define('itemComment',  {
         text: {
             type: Sequelize.STRING,
             allowNull: false
+        },
+        author: {
+            
+            type: Sequelize.STRING,
+            allowNull: false
         }
     }
-)
+);
 
 item.hasMany(itemComment, {as: 'Comments'})
 
@@ -93,18 +98,18 @@ const event = connection.define('event', {
     description: {type: Sequelize.STRING},
     startDate: {type: Sequelize.STRING, allowNull: false},
     endDate: {type: Sequelize.STRING, allowNull: false}
-})
+});
 
 event.belongsToMany(item, {through: 'reservedItems', timestamps: false})
 item.belongsToMany(event, {through: 'reservedItems', timestamps: false})
 
-const eventComment = connection.define('eventComment',  {
+const eventComment = connection.define('eventComment', {
 
-        text: {type: Sequelize.STRING, allowNull: false}
-    }
-)
+    text: {type: Sequelize.STRING, allowNull: false},
+    author: {type: Sequelize.STRING, allowNull: false}
+});
 
-event.hasMany(eventComment, {as: 'Comments'})
+event.hasMany(eventComment, {as: 'Comments'});
 
 const category = connection.define('category', {
 
@@ -113,7 +118,7 @@ const category = connection.define('category', {
 
     },
     { timestamps: false}
-)
+);
 
 const subCategory = connection.define('subCategory', {
 
@@ -156,7 +161,7 @@ connection.define('user', {
     } , {timestamps: false, tableName: 'users', freezeTableName: true,}
 );
 
-connection.sync({force: false})
+connection.sync({force: true})
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})

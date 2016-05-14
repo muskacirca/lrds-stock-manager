@@ -111,7 +111,8 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
         modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         severity: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
         domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+        comments: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
     },
     outputFields: {
         viewer: {
@@ -168,6 +169,7 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
         var severity = _ref3.severity;
         var domains = _ref3.domains;
         var subCategories = _ref3.subCategories;
+        var comments = _ref3.comments;
 
 
         return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
@@ -195,6 +197,7 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
                     reference = reference + "-" + nextId;
                     return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
                         return model.createItem({ stateId: state.id, reference: reference }).then(function (item) {
+                            item.addComments(comments);
                             return item;
                         });
                     });
