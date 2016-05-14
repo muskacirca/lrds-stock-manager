@@ -143,6 +143,7 @@ export var GraphQLCommentType = new GraphQLObjectType({
     fields: {
         id: globalIdField('ItemCommentType'),
         text: { type: GraphQLString, resolve: (obj) => obj.text},
+        author: {type: GraphQLString, resolve: (obj) => obj.author},
         createdAt: { type: GraphQLString, resolve: (obj) => obj.createdAt},
         updatedAt: { type: GraphQLString, resolve: (obj) => obj.updatedAt}
     },
@@ -335,9 +336,7 @@ export var GraphQLViewer = new GraphQLObjectType({
         items: {
             type: ItemsConnection,
             args: {
-                severity: {
-                    type: GraphQLString
-                },
+                severity: { type: GraphQLString},
                 ...connectionArgs
             },
             resolve: (obj, {severity, ...args}) => {

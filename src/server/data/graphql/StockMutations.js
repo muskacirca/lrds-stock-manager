@@ -17,8 +17,7 @@ import {
     GraphQLViewer,
     GraphQLModelEdge,
     GraphQLItemEdge,
-    ItemsConnection,
-    GraphQLItemType
+    GraphQLCommentType
 } from './Model'
 
 import {
@@ -93,7 +92,8 @@ export const AddItemMutation = mutationWithClientMutationId({
         severity: {type: new GraphQLNonNull(GraphQLString)},
         domains: {type: new GraphQLList(GraphQLString)},
         subCategories: {type: new GraphQLList(GraphQLString)},
-        comments: {type: new GraphQLList(GraphQLString)}
+        comments: {type: new GraphQLList(GraphQLString)},
+        author: {type: GraphQLString}
     },
     outputFields: {
         viewer: {
@@ -122,7 +122,7 @@ export const AddItemMutation = mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: ({modelName, severity, domains, subCategories, comments}) => {
+    mutateAndGetPayload: ({modelName, severity, domains, subCategories, comments, author}) => {
 
         return Database.models.model.findOne({where: {name: modelName}})
             .then(model => {
@@ -150,9 +150,9 @@ export const AddItemMutation = mutationWithClientMutationId({
                                 reference = reference  + "-" + nextId
                                 return Database.models.state.findOne({where: {severity: severity}})
                                     .then(state => {
-                                        return model.createItem({stateId: state.id, reference: reference})
-                                            .then(item => {
-                                                item.addComments(comments)
+                                        return model.createItem({ stateId: state.id, reference: reference})
+                                            .then(item =>  {
+                                                comments.forEach(c => item.createComment({text: c, author: author}))
                                                 return item
                                             })
                                     })

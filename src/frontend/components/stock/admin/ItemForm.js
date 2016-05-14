@@ -68,13 +68,15 @@ class ItemFormComponent extends React.Component {
         
         var domainsToAdd = this.state.itemFeatures.domains.map(elt => elt.name)
         var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(elt => elt.name)
+        var commentsToAdd = this.state.itemFeatures.comments.map(elt => elt.text)
         
         var addItemMutation = new AddItemMutation({
             modelName: this.state.itemFeatures.modelName,
             severity: this.state.itemFeatures.severity,
             domains: domainsToAdd,
             subCategories: subCategoriesToAdd,
-            comments: this.state.itemFeatures.comments,
+            comments: commentsToAdd,
+            author:  this.state.itemFeatures.comments[0].author,
             viewer: this.props.viewer
         });
 

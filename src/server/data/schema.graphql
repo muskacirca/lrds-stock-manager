@@ -33,6 +33,7 @@ input AddItemInput {
   domains: [String]
   subCategories: [String]
   comments: [String]
+  author: String
   clientMutationId: String!
 }
 
@@ -132,6 +133,7 @@ type EventTypeEdge {
 type ItemCommentType implements Node {
   id: ID!
   text: String
+  author: String
   createdAt: String
   updatedAt: String
 }

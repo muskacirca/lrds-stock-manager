@@ -12,6 +12,9 @@ class ItemComponent extends React.Component {
         }
     }
 
+    handleCommentPublish(comment) {
+        
+    }
 
     render() {
 

@@ -84,7 +84,9 @@ export const AddEventMutation = new mutationWithClientMutationId({
         return Database.models.event.create(event)
             .then(event => {
                 reservedItems.forEach(reference => {
-                    Database.models.item.findOne({where: {reference: reference}}).then(item => event.addItem(item))
+                    Database.models.item.findOne({where: {reference: reference}}).then(item => {
+                        return event.addItem(item)
+                    })
                 })
                 
                 return event

@@ -316,7 +316,8 @@ module.exports =
 	        severity: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
 	        domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
 	        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-	        comments: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+	        comments: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+	        author: { type: _graphql.GraphQLString }
 	    },
 	    outputFields: {
 	        viewer: {
@@ -374,6 +375,7 @@ module.exports =
 	        var domains = _ref3.domains;
 	        var subCategories = _ref3.subCategories;
 	        var comments = _ref3.comments;
+	        var author = _ref3.author;
 	
 	
 	        return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
@@ -401,7 +403,9 @@ module.exports =
 	                    reference = reference + "-" + nextId;
 	                    return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
 	                        return model.createItem({ stateId: state.id, reference: reference }).then(function (item) {
-	                            item.addComments(comments);
+	                            comments.forEach(function (c) {
+	                                return item.createComment({ text: c, author: author });
+	                            });
 	                            return item;
 	                        });
 	                    });
@@ -581,7 +585,7 @@ module.exports =
 	    enabled: _sequelize2.default.BOOLEAN
 	}, { timestamps: false, tableName: 'users', freezeTableName: true });
 	
-	connection.sync({ force: true });
+	connection.sync({ force: false });
 	//    .then(() => {
 	//    var studio = domain.create({name: 'STUDIO'})
 	//    var scene = domain.create({name: 'SCENE'})
@@ -785,6 +789,9 @@ module.exports =
 	        id: (0, _graphqlRelay.globalIdField)('ItemCommentType'),
 	        text: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
 	                return obj.text;
+	            } },
+	        author: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+	                return obj.author;
 	            } },
 	        createdAt: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
 	                return obj.createdAt;
@@ -1028,9 +1035,7 @@ module.exports =
 	            items: {
 	                type: ItemsConnection,
 	                args: _extends({
-	                    severity: {
-	                        type: _graphql.GraphQLString
-	                    }
+	                    severity: { type: _graphql.GraphQLString }
 	                }, _graphqlRelay.connectionArgs),
 	                resolve: function resolve(obj, _ref4) {
 	                    var severity = _ref4.severity;

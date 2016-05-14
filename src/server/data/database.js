@@ -161,7 +161,7 @@ connection.define('user', {
     } , {timestamps: false, tableName: 'users', freezeTableName: true,}
 );
 
-connection.sync({force: true})
+connection.sync({force: false})
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})

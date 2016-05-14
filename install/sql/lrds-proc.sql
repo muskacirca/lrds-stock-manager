@@ -48,7 +48,7 @@ CREATE PROCEDURE lrds.add_event_comment(
 
     SET @eventId := (SELECT id FROM events WHERE name = eventName);
 
-    INSERT INTO eventComments (text, eventId, createdAt, updatedAt) VALUES(text, @eventId, now(), now());
+    INSERT INTO eventComments (text, eventId, author, createdAt, updatedAt) VALUES(text, @eventId, 'lrds', now(), now());
 
   END //
 
@@ -145,7 +145,7 @@ CREATE PROCEDURE lrds.add_item_comment(
 
     SET @itemId := (SELECT id FROM items WHERE reference = itemReference);
 
-    INSERT INTO itemComments (text, itemId, createdAt, updatedAt) VALUES(text, @itemId, now(), now());
+    INSERT INTO itemComments (text, itemId, author, createdAt, updatedAt) VALUES(text, @itemId, 'lrds', now(), now());
 
   END //
 

@@ -84031,6 +84031,9 @@
 	    }
 	
 	    _createClass(ItemComponent, [{
+	        key: 'handleCommentPublish',
+	        value: function handleCommentPublish(comment) {}
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	
@@ -84391,7 +84394,7 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'panel-body' },
-	                            comment.message
+	                            comment.text
 	                        )
 	                    );
 	                });
@@ -84597,13 +84600,17 @@
 	            var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(function (elt) {
 	                return elt.name;
 	            });
+	            var commentsToAdd = this.state.itemFeatures.comments.map(function (elt) {
+	                return elt.text;
+	            });
 	
 	            var addItemMutation = new _AddItemMutation2.default({
 	                modelName: this.state.itemFeatures.modelName,
 	                severity: this.state.itemFeatures.severity,
 	                domains: domainsToAdd,
 	                subCategories: subCategoriesToAdd,
-	                comments: this.state.itemFeatures.comments,
+	                comments: commentsToAdd,
+	                author: this.state.itemFeatures.comments[0].author,
 	                viewer: this.props.viewer
 	            });
 	
@@ -84797,7 +84804,7 @@
 	        value: function handleCommentPublish(message) {
 	
 	            var comment = {
-	                message: message,
+	                text: message,
 	                createdAt: (0, _moment2.default)(),
 	                author: _AuthService2.default.getLogin()
 	            };
@@ -88403,7 +88410,8 @@
 	                severity: this.props.severity,
 	                domains: this.props.domains,
 	                subCategories: this.props.subCategories,
-	                comments: this.props.comments
+	                comments: this.props.comments,
+	                author: this.props.author
 	            };
 	        }
 	    }, {
