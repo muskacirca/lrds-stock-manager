@@ -64,7 +64,8 @@
       "<rootDir>/node_modules/fbjs",
       "<rootDir>/node_modules/history",
       "<rootDir>/node_modules/moment",
-      "<rootDir>/node_modules/lodash"
+      "<rootDir>/node_modules/lodash",
+      "<rootDir>/node_modules/axios"
     ],
     "moduleFileExtensions": [
       "js"
