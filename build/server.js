@@ -1746,12 +1746,8 @@ module.exports =
 	        attributes: ['id']
 	    };
 	
-	    console.log("retrieving events with args : " + JSON.stringify(args));
-	
 	    return _database2.default.models.event.findAll(args).then(function (event) {
-	        console.log("event : " + JSON.stringify(event));
 	        if (event.length > 0) {
-	            console.log("found an event");
 	            return false;
 	        }
 	        return true;

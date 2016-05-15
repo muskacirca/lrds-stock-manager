@@ -16,13 +16,9 @@ export function isItemInStock(eventIds) {
         attributes: ['id']
     }
     
-    console.log("retrieving events with args : " + JSON.stringify(args))
-    
     return Database.models.event.findAll(args)
         .then(event => {
-            console.log("event : " + JSON.stringify(event))
             if(event.length > 0) {
-                console.log("found an event")
                 return false
             }
             return true

@@ -21,7 +21,8 @@ class StockComponent extends React.Component {
             data: [],
             searchedText: "",
             tags: [],
-            stateFilter: null
+            stateFilter: null,
+            filterByInStock: false 
         }
     }
 
@@ -85,6 +86,20 @@ class StockComponent extends React.Component {
         return items
     }
 
+    filterByInStock(items) {
+        if(this.state.filterByInStock) {
+            return items.filter(item => {
+                return item.node.isInStock == true
+            })
+        }
+
+        return items
+    }
+
+    toggleInStockFilter() {
+        this.setState({filterByInStock: !this.state.filterByInStock})
+    }
+
     render() {
 
         var items = this.props.viewer.items.edges;
@@ -92,7 +107,8 @@ class StockComponent extends React.Component {
         var filterTags = this.state.tags
         var filterByState = this.state.stateFilter
         
-        var stateFilteredRow = this.filterByState(filterByState, items)
+        var inStockFilteredRows = this.filterByInStock(items)
+        var stateFilteredRow = this.filterByState(filterByState, inStockFilteredRows)
         var tagFilteredData = filterByTag(filterTags, stateFilteredRow)
         var filteredItems = filterByText(filterText, tagFilteredData)
 
@@ -105,6 +121,7 @@ class StockComponent extends React.Component {
                                                 onSearchInputChange={this.onSearchInputChange.bind(this)}
                                                 onTagRemoval={this.onCLickTag.bind(this)}
                                                 onEditFilterByState={this.onEditFilterByState.bind(this)}
+                                                toggleInStockFilter={this.toggleInStockFilter.bind(this)}
                                                 tags={this.state.tags} />
                         </div>
                     </div>

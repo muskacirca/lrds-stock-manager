@@ -69003,7 +69003,8 @@
 	            data: [],
 	            searchedText: "",
 	            tags: [],
-	            stateFilter: null
+	            stateFilter: null,
+	            filterByInStock: false
 	        };
 	        return _this;
 	    }
@@ -69084,6 +69085,22 @@
 	            return items;
 	        }
 	    }, {
+	        key: 'filterByInStock',
+	        value: function filterByInStock(items) {
+	            if (this.state.filterByInStock) {
+	                return items.filter(function (item) {
+	                    return item.node.isInStock == true;
+	                });
+	            }
+	
+	            return items;
+	        }
+	    }, {
+	        key: 'toggleInStockFilter',
+	        value: function toggleInStockFilter() {
+	            this.setState({ filterByInStock: !this.state.filterByInStock });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	
@@ -69092,7 +69109,8 @@
 	            var filterTags = this.state.tags;
 	            var filterByState = this.state.stateFilter;
 	
-	            var stateFilteredRow = this.filterByState(filterByState, items);
+	            var inStockFilteredRows = this.filterByInStock(items);
+	            var stateFilteredRow = this.filterByState(filterByState, inStockFilteredRows);
 	            var tagFilteredData = (0, _FilterFunctions.filterByTag)(filterTags, stateFilteredRow);
 	            var filteredItems = (0, _FilterFunctions.filterByText)(filterText, tagFilteredData);
 	
@@ -69112,6 +69130,7 @@
 	                                onSearchInputChange: this.onSearchInputChange.bind(this),
 	                                onTagRemoval: this.onCLickTag.bind(this),
 	                                onEditFilterByState: this.onEditFilterByState.bind(this),
+	                                toggleInStockFilter: this.toggleInStockFilter.bind(this),
 	                                tags: this.state.tags })
 	                        )
 	                    )
@@ -69869,6 +69888,11 @@
 	            this.props.onEditFilterByState(severity);
 	        }
 	    }, {
+	        key: 'toggleInStockFilter',
+	        value: function toggleInStockFilter(e) {
+	            this.props.toggleInStockFilter();
+	        }
+	    }, {
 	        key: 'renderFilterByState',
 	        value: function renderFilterByState() {
 	            var _this2 = this;
@@ -69934,7 +69958,7 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-lg-10 col-md-6 col-sm-6 col-xs-8' },
+	                                { className: 'col-lg-4 col-md-6 col-sm-6 col-xs-8' },
 	                                filterByState,
 	                                _react2.default.createElement(
 	                                    'buton',
@@ -69946,8 +69970,14 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-lg-10 col-md-4 col-sm-4 col-xs-4' },
-	                                'inStock :'
+	                                { className: 'col-lg-4 col-md-4 col-sm-4 col-xs-4' },
+	                                _react2.default.createElement('input', { type: 'checkbox', id: 'inStockCheckBox', onClick: this.toggleInStockFilter.bind(this), value: 'deuxieme_checkbox' }),
+	                                ' ',
+	                                _react2.default.createElement(
+	                                    'label',
+	                                    { htmlFor: 'inStockCheckBox' },
+	                                    'In stock'
+	                                )
 	                            )
 	                        )
 	                    ),

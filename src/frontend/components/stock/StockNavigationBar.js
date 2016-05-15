@@ -30,6 +30,10 @@ class StockNavigationBar extends React.Component {
         this.props.onEditFilterByState(severity)
     }
 
+    toggleInStockFilter(e) {
+        this.props.toggleInStockFilter()
+    }
+
     renderFilterByState() {
 
         const states = [{name: "green", severity: "1"}, 
@@ -69,7 +73,7 @@ class StockNavigationBar extends React.Component {
                         <div className="navigation-sub-row col-md-6 col-sm-6 col-xs-4">
                            <div className="row">
                                <div className="col-lg-2 col-md-2 col-sm-2 mobile-hide"><strong>Filter:</strong></div>
-                               <div className="col-lg-10 col-md-6 col-sm-6 col-xs-8">
+                               <div className="col-lg-4 col-md-6 col-sm-6 col-xs-8">
                                    {filterByState}
                                    <buton key={"filter-buttons-clear"}
                                           className="pointer filter-button" type="button"
@@ -78,8 +82,9 @@ class StockNavigationBar extends React.Component {
                                        <i className="fa fa-times" aria-hidden="true" />
                                    </buton>
                                </div>
-                               <div className="col-lg-10 col-md-4 col-sm-4 col-xs-4">
-                                   inStock :
+                               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                   <input type="checkbox" id="inStockCheckBox" onClick={this.toggleInStockFilter.bind(this)} value="deuxieme_checkbox" />
+                                   {' '}<label htmlFor="inStockCheckBox">In stock</label>
                                </div>
                            </div>
                         </div>
