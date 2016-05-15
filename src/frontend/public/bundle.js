@@ -69934,7 +69934,7 @@
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'col-lg-10 col-md-10 col-sm-10 col-xs-12' },
+	                                { className: 'col-lg-10 col-md-6 col-sm-6 col-xs-8' },
 	                                filterByState,
 	                                _react2.default.createElement(
 	                                    'buton',
@@ -69943,6 +69943,11 @@
 	                                        onClick: this.onSelectFilter.bind(this, null) },
 	                                    _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': 'true' })
 	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-lg-10 col-md-4 col-sm-4 col-xs-4' },
+	                                'inStock :'
 	                            )
 	                        )
 	                    ),

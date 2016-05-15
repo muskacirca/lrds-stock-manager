@@ -635,6 +635,8 @@ module.exports =
 	
 	var _graphqlRelay = __webpack_require__(6);
 	
+	var _EventFacade = __webpack_require__(20);
+	
 	var _database = __webpack_require__(7);
 	
 	var _database2 = _interopRequireDefault(_database);
@@ -859,7 +861,17 @@ module.exports =
 	        isInStock: {
 	            type: _graphql.GraphQLBoolean,
 	            resolve: function resolve(obj) {
-	                return obj.isInStock;
+	
+	                return _database2.default.models.reservedItems.findAll({ where: { itemId: obj.id } }).then(function (result) {
+	                    var eventIds = result.map(function (r) {
+	                        return r.eventId;
+	                    });
+	                    if (eventIds.length > 0) {
+	                        return (0, _EventFacade.isItemInStock)(eventIds);
+	                    } else {
+	                        return true;
+	                    }
+	                });
 	            }
 	        },
 	        comments: {
@@ -1702,6 +1714,49 @@ module.exports =
 /***/ function(module, exports) {
 
 	module.exports = require("crypto");
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.isItemInStock = isItemInStock;
+	
+	var _database = __webpack_require__(7);
+	
+	var _database2 = _interopRequireDefault(_database);
+	
+	var _moment = __webpack_require__(13);
+	
+	var _moment2 = _interopRequireDefault(_moment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function isItemInStock(eventIds) {
+	
+	    var now = (0, _moment2.default)().format("YYYY-MM-DDTHH-mm-ss.SSSZ");
+	    var args = {
+	        where: {
+	            $and: [{ id: { $in: eventIds } }, { startDate: { $lte: now } }, { endDate: { $gte: now } }]
+	        },
+	        attributes: ['id']
+	    };
+	
+	    console.log("retrieving events with args : " + JSON.stringify(args));
+	
+	    return _database2.default.models.event.findAll(args).then(function (event) {
+	        console.log("event : " + JSON.stringify(event));
+	        if (event.length > 0) {
+	            console.log("found an event");
+	            return false;
+	        }
+	        return true;
+	    });
+	}
 
 /***/ }
 /******/ ]);

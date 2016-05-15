@@ -16,7 +16,8 @@ import Database from '../database'
 import {
     GraphQLViewer,
     EventsEdge,
-    GraphQLCartType
+    GraphQLCartType,
+    GraphQLItemType
 } from './Model'
 
 import {

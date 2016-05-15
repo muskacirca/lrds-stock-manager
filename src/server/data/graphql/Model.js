@@ -22,6 +22,10 @@ import {
     offsetToCursor
 } from 'graphql-relay'
 
+import {
+    isItemInStock
+} from '../Events/EventFacade'
+
 import Database from '../database'
 
 import {
@@ -196,7 +200,19 @@ export var GraphQLItemType = new GraphQLObjectType({
         },
         isInStock: {
             type: GraphQLBoolean,
-            resolve: (obj) => obj.isInStock
+            resolve: (obj) => {
+                
+                return Database.models.reservedItems.findAll({where: {itemId: obj.id}})
+                    .then(result => {
+                        var eventIds = result.map(r => r.eventId)
+                        if(eventIds.length > 0) {
+                            return isItemInStock(eventIds)
+                        } else {
+                            return true
+                        }
+                        
+                    })
+            }
         },
         comments: {
             type: ItemCommentConnection,
