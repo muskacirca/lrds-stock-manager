@@ -1,3 +1,16 @@
+input AddEventCommentInput {
+  text: String!
+  author: String!
+  eventId: String!
+  clientMutationId: String!
+}
+
+type AddEventCommentPayload {
+  viewer: Viewer
+  commentEdge: EventCommentsTypeEdge
+  clientMutationId: String!
+}
+
 input AddEventInput {
   name: String!
   startDate: String!
@@ -193,6 +206,7 @@ type Mutation {
   removeItemFromCart(input: RemoveItemFromCartInput!): RemoveItemFromCartPayload
   emptyCart(input: EmptyCartInput!): EmptyCartPayload
   addEvent(input: AddEventInput!): AddEventPayload
+  addEventComment(input: AddEventCommentInput!): AddEventCommentPayload
 }
 
 interface Node {

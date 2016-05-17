@@ -1,5 +1,8 @@
 import React from 'react'
 import moment from 'moment'
+import {
+    Link
+} from 'react-router'
 
 class CalendarHeader extends React.Component {
 
@@ -27,7 +30,7 @@ class CalendarHeader extends React.Component {
     }
 
     goToAddEventPage() {
-        this.context.router.push("/event/create")
+        this.context.router.push("/admin/event/create")
     }
 
     render() {
@@ -40,7 +43,9 @@ class CalendarHeader extends React.Component {
                     </div>
                     <div className="mobile-hide center sub-bar-component-centered col-md-1 col-sm-2 col-xs-5">
                         <div className="btn-group" role="group">
-                            <button type="button" className="btn btn-primary" onClick={this.goToAddEventPage.bind(this)}>Add Event</button>
+                            <Link to="/admin/event/create">
+                                <button type="button" className="btn btn-primary">Add Event</button>
+                            </Link>
                         </div>
                     </div>
                     <div className="center sub-bar-component-centered col-md-2 col-sm-3 col-xs-5">

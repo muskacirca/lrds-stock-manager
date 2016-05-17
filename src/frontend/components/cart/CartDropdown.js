@@ -32,7 +32,7 @@ class CartDropdownComponent extends React.Component {
 
     onCreateEventFromCart() {
         toggleClassInBody('with--cart')
-        this.context.router.push("/event/create")
+        this.context.router.push("/admin/event/create")
         
     }
 

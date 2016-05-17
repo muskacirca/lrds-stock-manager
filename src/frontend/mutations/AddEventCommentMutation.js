@@ -1,6 +1,7 @@
 import Relay from 'react-relay';
+import moment from 'moment'
 
-class AddEventMutation extends Relay.Mutation {
+class AddEventCommentMutation extends Relay.Mutation {
 
     static fragments = {
         viewer: () => Relay.QL`
@@ -11,17 +12,16 @@ class AddEventMutation extends Relay.Mutation {
     };
 
     getMutation() {
-        return Relay.QL`mutation{addEvent}`
+        return Relay.QL`mutation{addEventComment}`
     }
 
     getFatQuery() {
 
         return Relay.QL`
-          fragment on AddEventPayload {
-              eventEdge,
-              viewer {
-                cart
-                events
+          fragment on addEventCommentPayload {
+              commentEdge
+              event {
+                comments
               }
           }
         `
@@ -32,13 +32,14 @@ class AddEventMutation extends Relay.Mutation {
             {
                 type: 'FIELDS_CHANGE',
                 fieldIDs: {
-                    viewer: this.props.viewer.id
+                    event: this.props.event.id
                 }
+           
             },
             {
                 type: 'RANGE_ADD',
-                parentName: 'viewer',
-                parentID: this.props.viewer.id,
+                parentName: 'event',
+                parentID: this.props.event.id,
                 connectionName: 'events',
                 edgeName: 'eventEdge',
                 rangeBehaviors: {
@@ -51,12 +52,8 @@ class AddEventMutation extends Relay.Mutation {
     }
     getVariables() {
         return {
-            name: this.props.name,
-            description: this.props.description,
-            startDate: this.props.startDate,
-            endDate: this.props.endDate,
-            reservedItems: this.props.reservedItems,
-            userId: this.props.userId
+            text: this.props.text,
+            author: this.props.author,
         };
     }
 
@@ -64,21 +61,16 @@ class AddEventMutation extends Relay.Mutation {
         return {
             viewer: {
                 id: this.props.viewer.id,
-                cart: {
-                    selectedItems: []
-                }
             },
             eventEdge: {
                 node: {
-                    name: this.props.name,
-                    description: this.props.description,
-                    startDate: this.props.startDate,
-                    endDate: this.props.endDate,
-                    reservedItems: this.props.reservedItems
+                    text: this.props.text,
+                    author: this.props.author,
+                    createdDate: moment()
                 }
             }
         };
     }
 }
 
-export default AddEventMutation
+export default AddEventCommentMutation

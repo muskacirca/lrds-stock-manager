@@ -1,7 +1,9 @@
 import React from 'react'
 import Relay from 'react-relay'
 import moment from 'moment'
+import _ from 'lodash'
 
+import UserService from '../utils/AuthService'
 import CommentComponent from '../utils/forms/CommentComponent'
 
 class EventDisplay extends React.Component {
@@ -13,6 +15,12 @@ class EventDisplay extends React.Component {
 
     handleCommentPublish(message) {
 
+        var comment = {
+            text: message,
+            createdAt: moment(),
+            author: UserService.getLogin()
+        };
+        
     }
 
     computeState(state) {

@@ -183,7 +183,8 @@ module.exports =
 	        addItemInCart: _CartMutations.AddItemInCartMutation,
 	        removeItemFromCart: _CartMutations.RemoveItemFromCartMutation,
 	        emptyCart: _CartMutations.EmptyCartMutation,
-	        addEvent: _EventMutations.AddEventMutation
+	        addEvent: _EventMutations.AddEventMutation,
+	        addEventComment: _EventMutations.AddEventCommentMutation
 	    }
 	});
 	
@@ -249,7 +250,7 @@ module.exports =
 	
 	                return _database2.default.models.model.findAll().then(function (dataModels) {
 	
-	                    var itemToPass = void 0;
+	                    var itemToPass = undefined;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -332,7 +333,7 @@ module.exports =
 	
 	                return _database2.default.models.item.findAll().then(function (items) {
 	
-	                    var itemToPass = void 0;
+	                    var itemToPass = undefined;
 	                    var _iteratorNormalCompletion2 = true;
 	                    var _didIteratorError2 = false;
 	                    var _iteratorError2 = undefined;
@@ -438,8 +439,8 @@ module.exports =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
-	var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec";
-	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
+	var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds";
+	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds";
 	
 	var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
 	    pool: {
@@ -627,7 +628,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+	exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.EventCommentEdge = exports.EventCommentsConnection = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
@@ -828,14 +829,15 @@ module.exports =
 	
 	var ItemCommentConnection = _connectionDefinition.connectionType;
 	
-	var _connectionDefinition2 =
-	// ,edgeType: GraphQLSimTypesEdge,
-	(0, _graphqlRelay.connectionDefinitions)({
+	var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
 	    name: 'EventCommentsType',
 	    nodeType: GraphQLCommentType
 	});
 	
 	var EventCommentsConnection = _connectionDefinition2.connectionType;
+	var EventCommentEdge = _connectionDefinition2.edgeType;
+	exports.EventCommentsConnection = EventCommentsConnection;
+	exports.EventCommentEdge = EventCommentEdge;
 	var GraphQLItemType = exports.GraphQLItemType = new _graphql.GraphQLObjectType({
 	    name: 'ItemType',
 	    fields: {
@@ -1639,7 +1641,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.AddEventMutation = undefined;
+	exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
 	
 	var _graphql = __webpack_require__(4);
 	
@@ -1690,7 +1692,7 @@ module.exports =
 	
 	                return _database2.default.models.event.findAll().then(function (events) {
 	
-	                    var eventToPass = void 0;
+	                    var eventToPass = undefined;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -1750,6 +1752,51 @@ module.exports =
 	            });
 	
 	            return event;
+	        });
+	    }
+	});
+	
+	var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'AddEventComment',
+	    description: 'Function to add a comment to an event',
+	    inputFields: {
+	        text: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        author: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+	    },
+	    outputFields: {
+	        viewer: {
+	            type: _Model.GraphQLViewer,
+	            resolve: function resolve(args) {
+	                return _CartStore.getViewer;
+	            }
+	        },
+	        commentEdge: {
+	            type: _Model.EventCommentEdge,
+	            resolve: function resolve(obj) {
+	                return obj.event.getComments().then(function (r) {
+	                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(r, obj.comment);
+	                    return {
+	                        cursor: cursor,
+	                        node: obj.comment
+	                    };
+	                });
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
+	        var text = _ref3.text;
+	        var author = _ref3.author;
+	        var eventId = _ref3.eventId;
+	
+	
+	        return _database2.default.models.event.findOne({ where: { id: eventId } }).then(function (event) {
+	            return event.createComment({ text: text, author: author }).then(function (c) {
+	                return {
+	                    event: event,
+	                    comment: c
+	                };
+	            });
 	        });
 	    }
 	});

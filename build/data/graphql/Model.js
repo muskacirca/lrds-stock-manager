@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.EventCommentEdge = exports.EventCommentsConnection = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -204,14 +204,15 @@ var _connectionDefinition =
 
 var ItemCommentConnection = _connectionDefinition.connectionType;
 
-var _connectionDefinition2 =
-// ,edgeType: GraphQLSimTypesEdge,
-(0, _graphqlRelay.connectionDefinitions)({
+var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
     name: 'EventCommentsType',
     nodeType: GraphQLCommentType
 });
 
 var EventCommentsConnection = _connectionDefinition2.connectionType;
+var EventCommentEdge = _connectionDefinition2.edgeType;
+exports.EventCommentsConnection = EventCommentsConnection;
+exports.EventCommentEdge = EventCommentEdge;
 var GraphQLItemType = exports.GraphQLItemType = new _graphql.GraphQLObjectType({
     name: 'ItemType',
     fields: {

@@ -16,6 +16,7 @@ import Database from '../database'
 import {
     GraphQLViewer,
     EventsEdge,
+    EventCommentEdge,
     GraphQLCartType,
     GraphQLItemType
 } from './Model'
@@ -93,4 +94,48 @@ export const AddEventMutation = new mutationWithClientMutationId({
                 return event
             })
     }
-})
+});
+
+export const AddEventCommentMutation = new mutationWithClientMutationId({
+    name: 'AddEventComment',
+    description: 'Function to add a comment to an event',
+    inputFields: {
+        text: {type: new GraphQLNonNull(GraphQLString)},
+        author: {type: new GraphQLNonNull(GraphQLString)},
+        eventId: {type: new GraphQLNonNull(GraphQLString)}
+    },
+    outputFields: {
+        viewer: {
+            type: GraphQLViewer,
+            resolve: (args) => getViewer
+        },
+        commentEdge: {
+            type: EventCommentEdge,
+            resolve: (obj) => {
+                return obj.event.getComments()
+                    .then(r => {
+                        var cursor = cursorForObjectInConnection(r, obj.comment);
+                        return {
+                            cursor: cursor,
+                            node: obj.comment
+                        }
+                    })
+            }
+        }
+    },
+    mutateAndGetPayload: ({text, author, eventId}) => {
+
+        return Database.models.event.findOne({where: {id: eventId}})
+            .then(event => {
+                return event.createComment({text: text, author: author})
+                    .then(c => {
+                        return {
+                            event: event,
+                            comment: c
+                        }
+                    })
+
+
+            })
+    }
+});

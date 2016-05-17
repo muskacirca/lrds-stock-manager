@@ -2,8 +2,8 @@
   "dev": {
     "host": "localhost",
     "driver": "mysql",
-    "user": "greec",
-    "password": "test",
+    "user": "lrds",
+    "password": "lrds",
     "database": "lrds",
     "schema": "lrds",
     "multipleStatements": true

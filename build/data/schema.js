@@ -23,7 +23,8 @@ var Mutation = new _graphql.GraphQLObjectType({
         addItemInCart: _CartMutations.AddItemInCartMutation,
         removeItemFromCart: _CartMutations.RemoveItemFromCartMutation,
         emptyCart: _CartMutations.EmptyCartMutation,
-        addEvent: _EventMutations.AddEventMutation
+        addEvent: _EventMutations.AddEventMutation,
+        addEventComment: _EventMutations.AddEventCommentMutation
     }
 });
 

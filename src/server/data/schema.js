@@ -16,6 +16,7 @@ import {
 
 import {
     AddEventMutation,
+    AddEventCommentMutation
 } from './graphql/EventMutations'
 
 import {
@@ -32,6 +33,7 @@ var Mutation = new GraphQLObjectType({
         removeItemFromCart: RemoveItemFromCartMutation,
         emptyCart: EmptyCartMutation,
         addEvent: AddEventMutation,
+        addEventComment: AddEventCommentMutation,
     }
 });
 

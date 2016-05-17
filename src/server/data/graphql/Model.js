@@ -172,9 +172,9 @@ var {
     nodeType: GraphQLCommentType
 });
 
-var {
+export var {
     connectionType: EventCommentsConnection
-    // ,edgeType: GraphQLSimTypesEdge,
+     ,edgeType: EventCommentEdge,
 } = connectionDefinitions({
     name: 'EventCommentsType',
     nodeType: GraphQLCommentType

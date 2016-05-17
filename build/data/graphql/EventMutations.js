@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.AddEventMutation = undefined;
+exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
 
 var _graphql = require('graphql');
 
@@ -54,7 +54,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
 
                 return _database2.default.models.event.findAll().then(function (events) {
 
-                    var eventToPass = void 0;
+                    var eventToPass = undefined;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;
@@ -97,6 +97,73 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         var endDate = _ref2.endDate;
         var description = _ref2.description;
         var reservedItems = _ref2.reservedItems;
+
+
+        var event = {
+            name: name,
+            startDate: startDate,
+            endDate: endDate,
+            description: description
+        };
+
+        return _database2.default.models.event.create(event).then(function (event) {
+            reservedItems.forEach(function (reference) {
+                _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (item) {
+                    return event.addItem(item);
+                });
+            });
+
+            return event;
+        });
+    }
+});
+
+var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'AddEventComment',
+    description: 'Function to add a comment to an event',
+    inputFields: {
+        text: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        author: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+    },
+    outputFields: {
+        viewer: {
+            type: _Model.GraphQLViewer,
+            resolve: function resolve(args) {
+                return _CartStore.getViewer;
+            }
+        },
+        commentEdge: {
+            type: _Model.EventCommentEdge,
+            resolve: function resolve(obj, _ref3) {
+                var text = _ref3.text;
+                var author = _ref3.author;
+                var eventId = _ref3.eventId;
+
+
+                return _database2.default.models.event.findOne({ where: { id: eventId } }).then(function (event) {
+
+                    return event.addComment({ text: text, author: author }).then(function (c) {
+                        console.log("adding comments in event : " + JSON.stringify(c));
+
+                        return event.getComments().then(function (r) {
+                            var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(r, c);
+                            return {
+                                cursor: cursor,
+                                node: c
+                            };
+                        });
+                    });
+                });
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
+        var name = _ref4.name;
+        var startDate = _ref4.startDate;
+        var endDate = _ref4.endDate;
+        var description = _ref4.description;
+        var reservedItems = _ref4.reservedItems;
 
 
         var event = {

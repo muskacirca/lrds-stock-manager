@@ -77,7 +77,7 @@ export default  <Route>
                         <Route path="event/:id" component={EventDisplay} prepareParams={prepareEventParam}
                                queries={ViewerQuery} onEnter={requireAuth}/>
 
-                        <Route path="event/create" component={EventAdmin} prepareParams={() => getUser()}
+                        <Route path="admin/event/create" component={EventAdmin} prepareParams={() => getUser()}
                                queries={ViewerQuery} onEnter={requireAuth}/>
 
                     </Route>
