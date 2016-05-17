@@ -1765,10 +1765,10 @@ module.exports =
 	        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
 	    },
 	    outputFields: {
-	        viewer: {
-	            type: _Model.GraphQLViewer,
-	            resolve: function resolve(args) {
-	                return _CartStore.getViewer;
+	        comments: {
+	            type: _Model.EventCommentsConnection,
+	            resolve: function resolve(obj) {
+	                return (0, _graphqlRelay.connectionFromPromisedArray)(obj.event.getComments());
 	            }
 	        },
 	        commentEdge: {

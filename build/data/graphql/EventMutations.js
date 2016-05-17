@@ -135,52 +135,30 @@ var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRela
         },
         commentEdge: {
             type: _Model.EventCommentEdge,
-            resolve: function resolve(obj, _ref3) {
-                var text = _ref3.text;
-                var author = _ref3.author;
-                var eventId = _ref3.eventId;
-
-
-                return _database2.default.models.event.findOne({ where: { id: eventId } }).then(function (event) {
-
-                    return event.addComment({ text: text, author: author }).then(function (c) {
-                        console.log("adding comments in event : " + JSON.stringify(c));
-
-                        return event.getComments().then(function (r) {
-                            var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(r, c);
-                            return {
-                                cursor: cursor,
-                                node: c
-                            };
-                        });
-                    });
+            resolve: function resolve(obj) {
+                return obj.event.getComments().then(function (r) {
+                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(r, obj.comment);
+                    return {
+                        cursor: cursor,
+                        node: obj.comment
+                    };
                 });
             }
         }
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
-        var name = _ref4.name;
-        var startDate = _ref4.startDate;
-        var endDate = _ref4.endDate;
-        var description = _ref4.description;
-        var reservedItems = _ref4.reservedItems;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
+        var text = _ref3.text;
+        var author = _ref3.author;
+        var eventId = _ref3.eventId;
 
 
-        var event = {
-            name: name,
-            startDate: startDate,
-            endDate: endDate,
-            description: description
-        };
-
-        return _database2.default.models.event.create(event).then(function (event) {
-            reservedItems.forEach(function (reference) {
-                _database2.default.models.item.findOne({ where: { reference: reference } }).then(function (item) {
-                    return event.addItem(item);
-                });
+        return _database2.default.models.event.findOne({ where: { id: eventId } }).then(function (event) {
+            return event.createComment({ text: text, author: author }).then(function (c) {
+                return {
+                    event: event,
+                    comment: c
+                };
             });
-
-            return event;
         });
     }
 });

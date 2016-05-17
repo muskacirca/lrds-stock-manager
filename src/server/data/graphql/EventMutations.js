@@ -18,7 +18,8 @@ import {
     EventsEdge,
     EventCommentEdge,
     GraphQLCartType,
-    GraphQLItemType
+    GraphQLItemType,
+    EventCommentsConnection
 } from './Model'
 
 import {
@@ -105,9 +106,9 @@ export const AddEventCommentMutation = new mutationWithClientMutationId({
         eventId: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
-        viewer: {
-            type: GraphQLViewer,
-            resolve: (args) => getViewer
+        comments: {
+            type: EventCommentsConnection,
+            resolve: (obj) => connectionFromPromisedArray(obj.event.getComments())
         },
         commentEdge: {
             type: EventCommentEdge,

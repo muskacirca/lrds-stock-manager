@@ -6,6 +6,8 @@ import _ from 'lodash'
 import UserService from '../utils/AuthService'
 import CommentComponent from '../utils/forms/CommentComponent'
 
+import AddEventCommentMutation from '../../mutations/AddEventCommentMutation'
+
 class EventDisplay extends React.Component {
 
     constructor(props) {
@@ -13,7 +15,7 @@ class EventDisplay extends React.Component {
        
     }
 
-    handleCommentPublish(message) {
+    handleCommentPublish(message, eventId) {
 
         var comment = {
             text: message,
@@ -21,6 +23,19 @@ class EventDisplay extends React.Component {
             author: UserService.getLogin()
         };
         
+        var addItemMutation = new AddEventCommentMutation({
+            text: message,
+            author: UserService.getLogin(),
+            eventId: eventId,
+        });
+
+        var onSuccess = (response) => {
+            console.log("Item comment added successfully !");
+        }
+
+        var onFailure = (transaction) => console.log("An error occurred when adding new event comment");
+
+        Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
     }
 
     computeState(state) {
@@ -88,7 +103,7 @@ class EventDisplay extends React.Component {
                                     </div>
                                 </div>
 
-                                <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this)}
+                                <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this, event.id)}
                                                   comments={event.comments.edges} />
                             </div>
                         </div>
@@ -118,7 +133,9 @@ export default Relay.createContainer(EventDisplay, {
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
+            
             event(a: $id) {
+              ${AddEventCommentMutation.getFragment('event')}
               name,
               description
               startDate,

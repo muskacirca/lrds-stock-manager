@@ -4,9 +4,18 @@ import moment from 'moment'
 class AddEventCommentMutation extends Relay.Mutation {
 
     static fragments = {
-        viewer: () => Relay.QL`
-          fragment on Viewer {
+        event: () => Relay.QL`
+          fragment on EventType {
             id
+            comments(first: 5) {
+               edges {
+                  node {
+                    text
+                    author
+                    createdAt
+                  }
+                }
+            }
           }
         `
     };
@@ -18,11 +27,9 @@ class AddEventCommentMutation extends Relay.Mutation {
     getFatQuery() {
 
         return Relay.QL`
-          fragment on addEventCommentPayload {
+          fragment on AddEventCommentPayload {
               commentEdge
-              event {
-                comments
-              }
+              comments 
           }
         `
     }
@@ -32,14 +39,14 @@ class AddEventCommentMutation extends Relay.Mutation {
             {
                 type: 'FIELDS_CHANGE',
                 fieldIDs: {
-                    event: this.props.event.id
+                    event: this.props.eventId
                 }
            
             },
             {
                 type: 'RANGE_ADD',
                 parentName: 'event',
-                parentID: this.props.event.id,
+                parentID: this.props.eventId,
                 connectionName: 'events',
                 edgeName: 'eventEdge',
                 rangeBehaviors: {
@@ -59,9 +66,6 @@ class AddEventCommentMutation extends Relay.Mutation {
 
     getOptimisticResponse() {
         return {
-            viewer: {
-                id: this.props.viewer.id,
-            },
             eventEdge: {
                 node: {
                     text: this.props.text,
