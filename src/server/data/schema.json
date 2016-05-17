@@ -271,6 +271,33 @@
               "deprecationReason": null
             },
             {
+              "name": "event",
+              "description": null,
+              "args": [
+                {
+                  "name": "a",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "EventType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "brands",
               "description": null,
               "args": [],

@@ -11,6 +11,8 @@ var _graphql = require('graphql');
 
 var _graphqlRelay = require('graphql-relay');
 
+var _EventFacade = require('../Events/EventFacade');
+
 var _database = require('../database');
 
 var _database2 = _interopRequireDefault(_database);
@@ -33,10 +35,10 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
  */
 
 var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
-    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(globalId);
+    var _fromGlobalId2 = (0, _graphqlRelay.fromGlobalId)(globalId);
 
-    var id = _fromGlobalId.id;
-    var type = _fromGlobalId.type;
+    var id = _fromGlobalId2.id;
+    var type = _fromGlobalId2.type;
 
     console.log("globalId of " + type + " : " + globalId);
     console.log("id of " + type + " : " + id);
@@ -166,6 +168,9 @@ var GraphQLCommentType = exports.GraphQLCommentType = new _graphql.GraphQLObject
         text: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
                 return obj.text;
             } },
+        author: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+                return obj.author;
+            } },
         createdAt: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
                 return obj.createdAt;
             } },
@@ -232,7 +237,17 @@ var GraphQLItemType = exports.GraphQLItemType = new _graphql.GraphQLObjectType({
         isInStock: {
             type: _graphql.GraphQLBoolean,
             resolve: function resolve(obj) {
-                return obj.isInStock;
+
+                return _database2.default.models.reservedItems.findAll({ where: { itemId: obj.id } }).then(function (result) {
+                    var eventIds = result.map(function (r) {
+                        return r.eventId;
+                    });
+                    if (eventIds.length > 0) {
+                        return (0, _EventFacade.isItemInStock)(eventIds);
+                    } else {
+                        return true;
+                    }
+                });
             }
         },
         comments: {
@@ -408,9 +423,7 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             items: {
                 type: ItemsConnection,
                 args: _extends({
-                    severity: {
-                        type: _graphql.GraphQLString
-                    }
+                    severity: { type: _graphql.GraphQLString }
                 }, _graphqlRelay.connectionArgs),
                 resolve: function resolve(obj, _ref4) {
                     var severity = _ref4.severity;
@@ -463,6 +476,30 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
                 }
             },
+            event: {
+                type: EventType,
+                args: {
+                    a: {
+                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+                    }
+                },
+                resolve: function resolve(_, _ref7) {
+                    var a = _ref7.a;
+
+                    console.log("id from relay : " + a);
+
+                    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(a);
+
+                    var type = _fromGlobalId.type;
+                    var id = _fromGlobalId.id;
+
+                    console.log("retrieved database id : " + id + type);
+                    return _database2.default.models.event.findOne({ where: { id: id } }).then(function (response) {
+                        console.log("event : " + JSON.stringify(response));
+                        return response;
+                    });
+                }
+            },
             brands: {
                 type: new _graphql.GraphQLList(GraphQLBrandType),
                 resolve: function resolve() {
@@ -474,8 +511,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
             models: {
                 type: ModelsConnection,
                 args: _extends({}, _graphqlRelay.connectionArgs),
-                resolve: function resolve(_, _ref7) {
-                    var args = _objectWithoutProperties(_ref7, []);
+                resolve: function resolve(_, _ref8) {
+                    var args = _objectWithoutProperties(_ref8, []);
 
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
                 }
@@ -519,8 +556,8 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
                         type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                     }
                 },
-                resolve: function resolve(functionToRetrievedViewerFromCache, _ref8) {
-                    var itemReference = _ref8.itemReference;
+                resolve: function resolve(functionToRetrievedViewerFromCache, _ref9) {
+                    var itemReference = _ref9.itemReference;
 
 
                     var searchKey = itemReference + '%';
@@ -551,8 +588,8 @@ var GraphQLRoot = exports.GraphQLRoot = new _graphql.GraphQLObjectType({
                     type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
                 }
             },
-            resolve: function resolve(root, _ref9) {
-                var viewerId = _ref9.viewerId;
+            resolve: function resolve(root, _ref10) {
+                var viewerId = _ref10.viewerId;
                 return _database2.default.models.user.findOne({ where: { id: viewerId } });
             }
         },

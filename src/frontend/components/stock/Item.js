@@ -20,10 +20,15 @@ class ItemComponent extends React.Component {
 
         var item = this.props.viewer.item
 
-        return  <div className="col-md-10 col-md-offset-1">
-                    <ItemDisplay item={item}/>
-                    <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this)} 
-                                      comments={item.comments.edges} />
+        return  <div className="page-content">
+                    <div className="row">
+                        <div className="col-md-10 col-md-offset-1">
+                            <ItemDisplay item={item}/>
+                            <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this)}
+                                              comments={item.comments.edges} />
+                        </div>
+                    </div>
+            
                 </div>
     }
 }

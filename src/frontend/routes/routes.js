@@ -11,6 +11,7 @@ import Dashboard from '../components/dashboard/Dashboard'
 import Item from '../components/stock/Item'
 import ItemForm from '../components/stock/admin/ItemForm'
 import Event from '../components/event/event'
+import EventDisplay from '../components/event/EventDisplay'
 import EventAdmin from '../components/event/admin/EventAdmin'
 import Login from '../components/login'
 
@@ -19,6 +20,14 @@ function prepareItemParam(params, route) {
     return {
         ...params,
         reference: params.reference ? params.reference : "error",
+        viewerId: JSON.parse(localStorage.getItem('user')).id
+    }
+}
+
+function prepareEventParam(params, route) {
+    return {
+        ...params,
+        id: params.id ? params.id : "error",
         viewerId: JSON.parse(localStorage.getItem('user')).id
     }
 }
@@ -63,6 +72,9 @@ export default  <Route>
                                prepareParams={prepareItemParam} onEnter={requireAuth} />
 
                         <Route path="event" component={Event} prepareParams={() => getUser()} 
+                               queries={ViewerQuery} onEnter={requireAuth}/>
+
+                        <Route path="event/:id" component={EventDisplay} prepareParams={prepareEventParam}
                                queries={ViewerQuery} onEnter={requireAuth}/>
 
                         <Route path="event/create" component={EventAdmin} prepareParams={() => getUser()}

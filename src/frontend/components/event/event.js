@@ -98,6 +98,7 @@ export default Relay.createContainer(EventBox, {
             events(first: 100, date: $date) {
                 edges {
                     node {
+                        id
                         name
                         startDate
                         endDate

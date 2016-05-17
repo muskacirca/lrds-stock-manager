@@ -251,6 +251,7 @@ type Viewer implements Node {
   items(severity: String, after: String, first: Int, before: String, last: Int): ItemTypeConnection
   item(reference: String!): ItemType
   events(date: String, after: String, first: Int, before: String, last: Int): EventTypeConnection
+  event(a: String!): EventType
   brands: [BrandType]
   models(after: String, first: Int, before: String, last: Int): ModelTypeConnection
   domains: [DomainType]

@@ -1,6 +1,10 @@
 import React from 'react'
 import moment from 'moment'
 
+import {
+    Link
+} from 'react-router'
+
 class CalendarColumn extends React.Component {
 
     constructor(props) {
@@ -10,7 +14,9 @@ class CalendarColumn extends React.Component {
     renderEventsList(events) {
         
         return events.map((event, key) => {
-            return <li key={"calendar-event-list-" + this.props.dayNumber + "-" + key}>{event.node.name}</li>
+            return  <li key={"calendar-event-list-" + this.props.dayNumber + "-" + key}>
+                        <Link to={"/event/" + event.node.id}>{event.node.name}</Link>
+                    </li>
         })
     }
     

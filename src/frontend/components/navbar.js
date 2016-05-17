@@ -47,16 +47,16 @@ class NavBarBox extends React.Component {
                         <img  src="/style/images/lrds-logo-50px.png"/>
                     </a>
                     <nav className="menu">
-                        <Link to="/dashboard" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                        <Link to="/dashboard" activeClassName="link-active" onClick={this.safehandleClick.bind(this)}>
                             Dashboard
                         </Link>
-                        <Link to="/stock" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                        <Link to="/stock" activeClassName="link-active" onClick={this.safehandleClick.bind(this)}>
                             Stock
                         </Link>
-                        <Link to="/event" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                        <Link to="/event" activeClassName="link-active" onClick={this.safehandleClick.bind(this)}>
                             Event
                         </Link>
-                        <Link to="/admin/create" activeClassName="link-active" onClick={this.safehandleClick.bind(this).bind(this)}>
+                        <Link to="/admin/create" activeClassName="link-active" onClick={this.safehandleClick.bind(this)}>
                             Admin
                         </Link>
                     </nav>

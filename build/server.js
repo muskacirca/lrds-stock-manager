@@ -58,7 +58,7 @@ module.exports =
 	
 	var _schema = __webpack_require__(3);
 	
-	var _expressGraphql = __webpack_require__(16);
+	var _expressGraphql = __webpack_require__(17);
 	
 	var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
 	
@@ -66,15 +66,15 @@ module.exports =
 	
 	var _database2 = _interopRequireDefault(_database);
 	
-	var _jsonwebtoken = __webpack_require__(17);
+	var _jsonwebtoken = __webpack_require__(18);
 	
 	var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 	
-	var _bodyParser = __webpack_require__(18);
+	var _bodyParser = __webpack_require__(19);
 	
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
 	
-	var _crypto = __webpack_require__(19);
+	var _crypto = __webpack_require__(20);
 	
 	var _crypto2 = _interopRequireDefault(_crypto);
 	
@@ -169,9 +169,9 @@ module.exports =
 	
 	var _StockMutations = __webpack_require__(5);
 	
-	var _CartMutations = __webpack_require__(14);
+	var _CartMutations = __webpack_require__(15);
 	
-	var _EventMutations = __webpack_require__(15);
+	var _EventMutations = __webpack_require__(16);
 	
 	var _Model = __webpack_require__(9);
 	
@@ -219,7 +219,7 @@ module.exports =
 	
 	var _Model = __webpack_require__(9);
 	
-	var _ItemStore = __webpack_require__(10);
+	var _ItemStore = __webpack_require__(12);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -635,17 +635,17 @@ module.exports =
 	
 	var _graphqlRelay = __webpack_require__(6);
 	
-	var _EventFacade = __webpack_require__(20);
+	var _EventFacade = __webpack_require__(10);
 	
 	var _database = __webpack_require__(7);
 	
 	var _database2 = _interopRequireDefault(_database);
 	
-	var _ItemStore = __webpack_require__(10);
+	var _ItemStore = __webpack_require__(12);
 	
-	var _CartStore = __webpack_require__(12);
+	var _CartStore = __webpack_require__(14);
 	
-	var _moment = __webpack_require__(13);
+	var _moment = __webpack_require__(11);
 	
 	var _moment2 = _interopRequireDefault(_moment);
 	
@@ -659,10 +659,10 @@ module.exports =
 	 */
 	
 	var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
-	    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(globalId);
+	    var _fromGlobalId2 = (0, _graphqlRelay.fromGlobalId)(globalId);
 	
-	    var id = _fromGlobalId.id;
-	    var type = _fromGlobalId.type;
+	    var id = _fromGlobalId2.id;
+	    var type = _fromGlobalId2.type;
 	
 	    console.log("globalId of " + type + " : " + globalId);
 	    console.log("id of " + type + " : " + id);
@@ -1100,6 +1100,30 @@ module.exports =
 	                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
 	                }
 	            },
+	            event: {
+	                type: EventType,
+	                args: {
+	                    a: {
+	                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+	                    }
+	                },
+	                resolve: function resolve(_, _ref7) {
+	                    var a = _ref7.a;
+	
+	                    console.log("id from relay : " + a);
+	
+	                    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(a);
+	
+	                    var type = _fromGlobalId.type;
+	                    var id = _fromGlobalId.id;
+	
+	                    console.log("retrieved database id : " + id + type);
+	                    return _database2.default.models.event.findOne({ where: { id: id } }).then(function (response) {
+	                        console.log("event : " + JSON.stringify(response));
+	                        return response;
+	                    });
+	                }
+	            },
 	            brands: {
 	                type: new _graphql.GraphQLList(GraphQLBrandType),
 	                resolve: function resolve() {
@@ -1111,8 +1135,8 @@ module.exports =
 	            models: {
 	                type: ModelsConnection,
 	                args: _extends({}, _graphqlRelay.connectionArgs),
-	                resolve: function resolve(_, _ref7) {
-	                    var args = _objectWithoutProperties(_ref7, []);
+	                resolve: function resolve(_, _ref8) {
+	                    var args = _objectWithoutProperties(_ref8, []);
 	
 	                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
 	                }
@@ -1156,8 +1180,8 @@ module.exports =
 	                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
 	                    }
 	                },
-	                resolve: function resolve(functionToRetrievedViewerFromCache, _ref8) {
-	                    var itemReference = _ref8.itemReference;
+	                resolve: function resolve(functionToRetrievedViewerFromCache, _ref9) {
+	                    var itemReference = _ref9.itemReference;
 	
 	
 	                    var searchKey = itemReference + '%';
@@ -1188,8 +1212,8 @@ module.exports =
 	                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
 	                }
 	            },
-	            resolve: function resolve(root, _ref9) {
-	                var viewerId = _ref9.viewerId;
+	            resolve: function resolve(root, _ref10) {
+	                var viewerId = _ref10.viewerId;
 	                return _database2.default.models.user.findOne({ where: { id: viewerId } });
 	            }
 	        },
@@ -1206,13 +1230,58 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.isItemInStock = isItemInStock;
+	
+	var _database = __webpack_require__(7);
+	
+	var _database2 = _interopRequireDefault(_database);
+	
+	var _moment = __webpack_require__(11);
+	
+	var _moment2 = _interopRequireDefault(_moment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function isItemInStock(eventIds) {
+	
+	    var now = (0, _moment2.default)().format("YYYY-MM-DDTHH-mm-ss.SSSZ");
+	    var args = {
+	        where: {
+	            $and: [{ id: { $in: eventIds } }, { startDate: { $lte: now } }, { endDate: { $gte: now } }]
+	        },
+	        attributes: ['id']
+	    };
+	
+	    return _database2.default.models.event.findAll(args).then(function (event) {
+	        if (event.length > 0) {
+	            return false;
+	        }
+	        return true;
+	    });
+	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	module.exports = require("moment");
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.Viewer = undefined;
 	exports.initState = initState;
 	exports.getById = getById;
 	exports.login = login;
 	exports.getViewer = getViewer;
 	
-	var _lodash = __webpack_require__(11);
+	var _lodash = __webpack_require__(13);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -1271,13 +1340,13 @@ module.exports =
 	}
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = require("lodash");
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1295,7 +1364,7 @@ module.exports =
 	exports.removeItemFromCart = removeItemFromCart;
 	exports.emptyCart = emptyCart;
 	
-	var _lodash = __webpack_require__(11);
+	var _lodash = __webpack_require__(13);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -1445,13 +1514,7 @@ module.exports =
 	}
 
 /***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	module.exports = require("moment");
-
-/***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1471,9 +1534,9 @@ module.exports =
 	
 	var _Model = __webpack_require__(9);
 	
-	var _ItemStore = __webpack_require__(10);
+	var _ItemStore = __webpack_require__(12);
 	
-	var _CartStore = __webpack_require__(12);
+	var _CartStore = __webpack_require__(14);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1568,7 +1631,7 @@ module.exports =
 	});
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1588,9 +1651,9 @@ module.exports =
 	
 	var _Model = __webpack_require__(9);
 	
-	var _ItemStore = __webpack_require__(10);
+	var _ItemStore = __webpack_require__(12);
 	
-	var _CartStore = __webpack_require__(12);
+	var _CartStore = __webpack_require__(14);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1692,67 +1755,28 @@ module.exports =
 	});
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	module.exports = require("express-graphql");
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = require("jsonwebtoken");
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = require("body-parser");
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = require("crypto");
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.isItemInStock = isItemInStock;
-	
-	var _database = __webpack_require__(7);
-	
-	var _database2 = _interopRequireDefault(_database);
-	
-	var _moment = __webpack_require__(13);
-	
-	var _moment2 = _interopRequireDefault(_moment);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function isItemInStock(eventIds) {
-	
-	    var now = (0, _moment2.default)().format("YYYY-MM-DDTHH-mm-ss.SSSZ");
-	    var args = {
-	        where: {
-	            $and: [{ id: { $in: eventIds } }, { startDate: { $lte: now } }, { endDate: { $gte: now } }]
-	        },
-	        attributes: ['id']
-	    };
-	
-	    return _database2.default.models.event.findAll(args).then(function (event) {
-	        if (event.length > 0) {
-	            return false;
-	        }
-	        return true;
-	    });
-	}
 
 /***/ }
 /******/ ]);

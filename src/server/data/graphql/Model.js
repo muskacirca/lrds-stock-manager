@@ -404,6 +404,23 @@ export var GraphQLViewer = new GraphQLObjectType({
                 return connectionFromPromisedArray(Database.models.event.findAll(queryArgs), args)
             }
         },
+        event: {
+            type: EventType,
+            args: {
+                a: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (_, {a}) => {
+                console.log("id from relay : " + a)
+                let { type, id } = fromGlobalId(a)
+                console.log("retrieved database id : " + id + type)
+                return Database.models.event.findOne({where: {id : id}}).then((response) => {
+                    console.log("event : " + JSON.stringify(response))
+                    return response
+                })
+            }
+        },
         brands: {
             type: new GraphQLList(GraphQLBrandType),
             resolve: () => Database.models.brand.findAll().then((response) => response)
