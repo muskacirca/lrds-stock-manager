@@ -1,7 +1,8 @@
 import React from 'react'
 import Relay from 'react-relay'
 import moment from 'moment'
-import _ from 'lodash'
+import jsPDF from 'jspdf'
+
 
 import PageHeader from '../utils/forms/FormHeader'
 
@@ -72,8 +73,9 @@ class EventDisplay extends React.Component {
     }
     
     exportToPdf() {
-        
-        
+        var doc = new jsPDF();
+        doc.text(20, 20, 'Hello world.');
+        doc.save('Test.pdf');
     }
 
     renderHeaderToolBar() {

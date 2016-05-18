@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
+exports.ExportEventToPdfMutation = exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
 
 var _graphql = require('graphql');
 
@@ -149,5 +149,27 @@ var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRela
                 };
             });
         });
+    }
+});
+
+var ExportEventToPdfMutation = exports.ExportEventToPdfMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'ExportEventToPdf',
+    description: 'Export an event to pdf',
+    inputFields: {
+        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+    },
+    outputFields: {
+        output: {
+            type: _graphql.GraphQLString,
+            resolve: function resolve(obj) {
+                return obj.event;
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
+        var eventId = _ref4.eventId;
+
+
+        return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {});
     }
 });

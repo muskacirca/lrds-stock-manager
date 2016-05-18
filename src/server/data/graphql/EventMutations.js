@@ -129,3 +129,31 @@ export const AddEventCommentMutation = new mutationWithClientMutationId({
             })
     }
 });
+
+export const ExportEventToPdfMutation = new mutationWithClientMutationId({
+    name: 'ExportEventToPdf',
+    description: 'Export an event to pdf',
+    inputFields: {
+        eventId: {type: new GraphQLNonNull(GraphQLString)},
+    },
+    outputFields: {
+        output: {
+            type: GraphQLString,
+            resolve: (obj) => obj.event
+        }
+    },
+    mutateAndGetPayload: ({eventId}) => {
+
+        return Database.models.event.findOne({where: {id: fromGlobalId(eventId).id}})
+            .then(event => {
+                
+
+            })
+    }
+});
+
+
+
+
+
+

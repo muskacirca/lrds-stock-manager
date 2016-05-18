@@ -97,6 +97,7 @@ module.exports =
 	
 	app.use('/style', _express2.default.static(_path2.default.resolve(__dirname, '../src/style')));
 	app.use('/utils', _express2.default.static(_path2.default.resolve(__dirname, '../src/utils')));
+	app.use('/template', _express2.default.static(_path2.default.resolve(__dirname, '../src/frontend/public/template')));
 	
 	app.get('/bundle.js', function (req, res) {
 	    res.sendFile(_path2.default.resolve(__dirname, "../src/frontend/public/bundle.js"));
@@ -1589,7 +1590,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
+	exports.ExportEventToPdfMutation = exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
 	
 	var _graphql = __webpack_require__(4);
 	
@@ -1735,6 +1736,28 @@ module.exports =
 	                };
 	            });
 	        });
+	    }
+	});
+	
+	var ExportEventToPdfMutation = exports.ExportEventToPdfMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'ExportEventToPdf',
+	    description: 'Export an event to pdf',
+	    inputFields: {
+	        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+	    },
+	    outputFields: {
+	        output: {
+	            type: _graphql.GraphQLString,
+	            resolve: function resolve(obj) {
+	                return obj.event;
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
+	        var eventId = _ref4.eventId;
+	
+	
+	        return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {});
 	    }
 	});
 

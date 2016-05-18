@@ -26,6 +26,9 @@ app.get('/', (req, res) => {
 
 app.use('/style', express.static(path.resolve(__dirname, '../src/style')));
 app.use('/utils', express.static(path.resolve(__dirname, '../src/utils')));
+app.use('/template', express.static(path.resolve(__dirname, '../src/frontend/public/template')));
+
+
 
 app.get('/bundle.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, "../src/frontend/public/bundle.js"));

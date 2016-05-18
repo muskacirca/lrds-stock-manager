@@ -17,7 +17,7 @@ import {
 
 import {
     AddEventMutation,
-    AddEventCommentMutation
+    AddEventCommentMutation,
 } from './graphql/EventMutations'
 
 import {
