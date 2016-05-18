@@ -32,10 +32,7 @@ class ItemComponent extends React.Component {
     }
     
     renderPageTitle(item) {
-        return  <div>
-                    <span>{item.model.brand.name + " - " + item.model.name}</span>
-                    <span>{" (" + item.reference + ")"}</span>
-                </div>
+        return  <span>{item.model.brand.name + " - " + item.model.name}</span>
     }
 
     computeStateIcon(state) {
@@ -62,7 +59,9 @@ class ItemComponent extends React.Component {
         var headerContent = this.renderHeaderContent(item)
 
         return  <div>
-                    <FormHeader title={title} content={headerContent}/>
+                    <FormHeader title={title} 
+                                subTitle={item.reference}
+                                content={headerContent}/>
                             
                     <div className="page-content">
                         <div className="row">

@@ -86,5 +86,5 @@ class ItemDisplay extends React.Component {
 
 export default ItemDisplay
 
-ItemDisplay.propTypes = { showHeader: React.PropTypes.boolean };
+ItemDisplay.propTypes = { showHeader: React.PropTypes.bool };
 ItemDisplay.defaultProps = { showHeader: true };

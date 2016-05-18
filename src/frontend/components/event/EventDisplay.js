@@ -3,6 +3,8 @@ import Relay from 'react-relay'
 import moment from 'moment'
 import _ from 'lodash'
 
+import PageHeader from '../utils/forms/FormHeader'
+
 import UserService from '../utils/AuthService'
 import CommentComponent from '../utils/forms/CommentComponent'
 
@@ -63,25 +65,36 @@ class EventDisplay extends React.Component {
         
     }
 
+    computeEventSubTitle(event) {
+        var startDate = moment(event.startDate).format("DD/MM/YYYY");
+        var endDate = moment(event.endDate).format("DD/MM/YYYY");
+        return  <span>{"from " + startDate + " to " + endDate}</span>
+    }
+    
+    exportToPdf() {
+        
+        
+    }
+
+    renderHeaderToolBar() {
+        return <button className="btn btn-primary" type="submit" onClick={this.exportToPdf.bind(this)}>Export BAL</button>
+    }
    
     render() {
 
         var event = this.props.viewer.event;
-        var startDate = moment(event.startDate).format("DD/MM/YYYY HH:mm");
-        var endDate = moment(event.endDate).format("DD/MM/YYYY HH:mm");
-        
+    
         var reservedItems = this.renderReservedItems(event.reservedItems.edges);
 
+        var computeEventSubTitle = this.computeEventSubTitle(event)
+        var headerToolBar = this.renderHeaderToolBar()
+        
         return  <div>
 
-                    <div className="sub-bar row">
-                        <div className="col-md-6 col-md-offset-2 col-sm-6 col-xs-6">
-                            <h2>{event.name}</h2>
-                        </div>
-                        <div className="center sub-bar-component-centered col-md-4 col-sm-4 col-xs-6">
-                            <strong>from {startDate} to {endDate}</strong>
-                        </div>
-                    </div>
+                    <PageHeader title={event.name} 
+                                subTitle={computeEventSubTitle}
+                                content={headerToolBar}/>
+            
                     <div className="page-content">
 
                         <div className="row">

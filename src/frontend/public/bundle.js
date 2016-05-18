@@ -70208,7 +70208,7 @@
 	exports.default = ItemDisplay;
 	
 	
-	ItemDisplay.propTypes = { showHeader: _react2.default.PropTypes.boolean };
+	ItemDisplay.propTypes = { showHeader: _react2.default.PropTypes.bool };
 	ItemDisplay.defaultProps = { showHeader: true };
 
 /***/ },
@@ -84120,18 +84120,9 @@
 	        key: 'renderPageTitle',
 	        value: function renderPageTitle(item) {
 	            return _react2.default.createElement(
-	                'div',
+	                'span',
 	                null,
-	                _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    item.model.brand.name + " - " + item.model.name
-	                ),
-	                _react2.default.createElement(
-	                    'span',
-	                    null,
-	                    " (" + item.reference + ")"
-	                )
+	                item.model.brand.name + " - " + item.model.name
 	            );
 	        }
 	    }, {
@@ -84168,7 +84159,9 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_FormHeader2.default, { title: title, content: headerContent }),
+	                _react2.default.createElement(_FormHeader2.default, { title: title,
+	                    subTitle: item.reference,
+	                    content: headerContent }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'page-content' },
@@ -84670,6 +84663,11 @@
 	                        'h2',
 	                        null,
 	                        this.props.title
+	                    ),
+	                    _react2.default.createElement(
+	                        'h5',
+	                        null,
+	                        this.props.subTitle
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -84687,6 +84685,12 @@
 	}(_react2.default.Component);
 	
 	exports.default = FormHeader;
+	
+	
+	FormHeader.propTypes = {
+	    title: _react2.default.PropTypes.node,
+	    subTitle: _react2.default.PropTypes.node
+	};
 
 /***/ },
 /* 686 */
@@ -90074,6 +90078,10 @@
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
+	var _FormHeader = __webpack_require__(685);
+	
+	var _FormHeader2 = _interopRequireDefault(_FormHeader);
+	
 	var _AuthService = __webpack_require__(543);
 	
 	var _AuthService2 = _interopRequireDefault(_AuthService);
@@ -90178,43 +90186,45 @@
 	            }
 	        }
 	    }, {
+	        key: 'computeEventSubTitle',
+	        value: function computeEventSubTitle(event) {
+	            var startDate = (0, _moment2.default)(event.startDate).format("DD/MM/YYYY");
+	            var endDate = (0, _moment2.default)(event.endDate).format("DD/MM/YYYY");
+	            return _react2.default.createElement(
+	                'span',
+	                null,
+	                "from " + startDate + " to " + endDate
+	            );
+	        }
+	    }, {
+	        key: 'exportToPdf',
+	        value: function exportToPdf() {}
+	    }, {
+	        key: 'renderHeaderToolBar',
+	        value: function renderHeaderToolBar() {
+	            return _react2.default.createElement(
+	                'button',
+	                { className: 'btn btn-primary', type: 'submit', onClick: this.exportToPdf.bind(this) },
+	                'Export BAL'
+	            );
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	
 	            var event = this.props.viewer.event;
-	            var startDate = (0, _moment2.default)(event.startDate).format("DD/MM/YYYY HH:mm");
-	            var endDate = (0, _moment2.default)(event.endDate).format("DD/MM/YYYY HH:mm");
 	
 	            var reservedItems = this.renderReservedItems(event.reservedItems.edges);
+	
+	            var computeEventSubTitle = this.computeEventSubTitle(event);
+	            var headerToolBar = this.renderHeaderToolBar();
 	
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'sub-bar row' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-6' },
-	                        _react2.default.createElement(
-	                            'h2',
-	                            null,
-	                            event.name
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'center sub-bar-component-centered col-md-4 col-sm-4 col-xs-6' },
-	                        _react2.default.createElement(
-	                            'strong',
-	                            null,
-	                            'from ',
-	                            startDate,
-	                            ' to ',
-	                            endDate
-	                        )
-	                    )
-	                ),
+	                _react2.default.createElement(_FormHeader2.default, { title: event.name,
+	                    subTitle: computeEventSubTitle,
+	                    content: headerToolBar }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'page-content' },

@@ -28,6 +28,7 @@ class FormHeader extends React.Component {
         return  <div className="sub-bar row">
                     <div className="col-md-5 col-md-offset-2 col-sm-6 col-xs-8">
                         <h2>{this.props.title}</h2>
+                        <h5>{this.props.subTitle}</h5>
                     </div>
                     <div className="sub-bar-component-centered align-right col-md-3 col-sm-4 col-xs-1">
                         <Alert alert={this.props.alert} />
@@ -40,3 +41,8 @@ class FormHeader extends React.Component {
 }
 
 export default FormHeader
+
+FormHeader.propTypes = { 
+    title: React.PropTypes.node,
+    subTitle: React.PropTypes.node
+};
