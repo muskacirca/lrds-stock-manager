@@ -3,7 +3,7 @@ var path = require('path');
 var assign = require('object-assign');
 
 var defaultConfig = {
-    devtool: 'sourcemap'
+    
 };
 
 var frontendConfig = assign({}, defaultConfig, {
@@ -55,11 +55,11 @@ var serverConfig = assign({}, defaultConfig, {
     // abc -> require('abc')
     externals: /^[a-z\-0-9]+$/,
 
-    plugins: [
-        // enable source-map-support by installing at the head of every chunk
-        new webpack.BannerPlugin('require("source-map-support").install();',
-            {raw: true, entryOnly: false})
-    ],
+    // plugins: [
+    //     // enable source-map-support by installing at the head of every chunk
+    //     new webpack.BannerPlugin('require("source-map-support").install();',
+    //         {raw: true, entryOnly: false})
+    // ],
 
     module: {
         loaders: [

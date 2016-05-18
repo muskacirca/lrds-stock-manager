@@ -42,17 +42,20 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
 
     console.log("globalId of " + type + " : " + globalId);
     console.log("id of " + type + " : " + id);
+
     if (type === 'ItemType') {
         console.log("Im here getting ItemType");
         return _database2.default.models.item.findOne({ where: { id: id } });
-    } else if (type === "SubCategoryType") {
-        console.log("Im here getting SubCategoryType");
-        return (0, _ItemStore.getViewer)(id);
-    } else if (type === "DomainType") {
-        console.log("Im here getting Domain");
-        return (0, _ItemStore.getViewer)(id);
+    } else if (type === "EventType") {
+        console.log("Im here getting EventType");
+        return _database2.default.models.event.findOne({ where: { id: id } });
+    } else if (type === "ModelType") {
+        console.log("Im here getting ModelType");
+        _database2.default.models.modem.findOne({ where: { id: id } });
     } else if (type === "Viewer") {
         return _database2.default.models.user.findOne({ where: { id: id } });
+    } else {
+        console.log("I'm here getting " + type + " but was not present");
     }
     return null;
 }, function (obj) {
@@ -62,6 +65,15 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     if (obj.password != undefined) {
         console.log("getting by object ViewerType");
         return GraphQLViewer;
+    } else if (obj.reference != undefined) {
+        console.log("getting by object ItemType");
+        return GraphQLItemType;
+    } else if (obj.brand != undefined) {
+        console.log("getiing by object Modeltype");
+        return GraphQLModelType;
+    } else if (obj.startDate != undefined) {
+        console.log("getting by object EventType");
+        return EventType;
     }
 });
 
@@ -473,7 +485,6 @@ var GraphQLViewer = exports.GraphQLViewer = new _graphql.GraphQLObjectType({
 
                     var queryArgs = date != null ? { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } } : null;
 
-                    console.log("queryArgs : " + JSON.stringify(queryArgs));
                     return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
                 }
             },

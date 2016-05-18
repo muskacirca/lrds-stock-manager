@@ -24,7 +24,7 @@ import {
 
 import {
     getViewer,
-} from '../stores/ItemStore';
+} from '../stores/UserStore';
 
 
 export const AddModelMutation = new mutationWithClientMutationId({

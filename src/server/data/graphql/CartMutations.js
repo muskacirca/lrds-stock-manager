@@ -17,7 +17,7 @@ import {
 
 import {
     getViewer,
-} from '../stores/ItemStore';
+} from '../stores/UserStore';
 
 import {
     getCart,
@@ -86,7 +86,7 @@ export const EmptyCartMutation = new mutationWithClientMutationId({
     outputFields: {
         viewer: {
             type: GraphQLViewer,
-            resolve: () => getViewer
+            resolve: (args) => getViewer(args.viewerId)
         },
         cart: {
             type: GraphQLCartType,
