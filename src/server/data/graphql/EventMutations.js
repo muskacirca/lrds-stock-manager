@@ -9,6 +9,7 @@ import {
     mutationWithClientMutationId,
     cursorForObjectInConnection,
     connectionFromPromisedArray,
+    fromGlobalId
 } from 'graphql-relay'
 
 import Database from '../database'
@@ -18,18 +19,17 @@ import {
     EventsEdge,
     EventCommentEdge,
     GraphQLCartType,
-    GraphQLItemType,
-    EventCommentsConnection
+    EventType
 } from './Model'
 
 import {
     emptyCart,
-} from '../stores/ItemStore';
+} from '../stores/CartStore';
 
 
 import {
     getViewer,
-} from '../stores/CartStore';
+} from '../stores/ItemStore';
 
 
 export const AddEventMutation = new mutationWithClientMutationId({
@@ -106,30 +106,19 @@ export const AddEventCommentMutation = new mutationWithClientMutationId({
         eventId: {type: new GraphQLNonNull(GraphQLString)}
     },
     outputFields: {
-        comments: {
-            type: EventCommentsConnection,
-            resolve: (obj) => connectionFromPromisedArray(obj.event.getComments())
-        },
-        commentEdge: {
-            type: EventCommentEdge,
-            resolve: (obj) => {
-                return obj.event.getComments()
-                    .then(r => {
-                        var cursor = cursorForObjectInConnection(r, obj.comment);
-                        return {
-                            cursor: cursor,
-                            node: obj.comment
-                        }
-                    })
-            }
+        event: {
+            type: EventType,
+            resolve: (obj) => obj.event
         }
     },
     mutateAndGetPayload: ({text, author, eventId}) => {
 
-        return Database.models.event.findOne({where: {id: eventId}})
+        
+        return Database.models.event.findOne({where: {id: fromGlobalId(eventId).id}})
             .then(event => {
                 return event.createComment({text: text, author: author})
                     .then(c => {
+                        console.log("return of create comment " + JSON.stringify(c))
                         return {
                             event: event,
                             comment: c

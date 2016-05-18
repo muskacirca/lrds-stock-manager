@@ -35,6 +35,7 @@ class CommentComponent extends React.Component {
         e.preventDefault()
         var comment = this.refs.commentInputForm.value
         
+            console.log("adding comment : " + comment)
         if(comment) {
             this.refs.commentInputForm.value = ""
             this.props.handleCommentPublish(comment)

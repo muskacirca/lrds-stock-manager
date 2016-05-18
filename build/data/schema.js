@@ -7,7 +7,7 @@ exports.Schema = undefined;
 
 var _graphql = require('graphql');
 
-var _StockMutations = require('./graphql/StockMutations');
+var _StockMutations = require('./Stock/StockMutations');
 
 var _CartMutations = require('./graphql/CartMutations');
 
@@ -20,6 +20,7 @@ var Mutation = new _graphql.GraphQLObjectType({
     fields: {
         addModel: _StockMutations.AddModelMutation,
         addItem: _StockMutations.AddItemMutation,
+        addItemComment: _StockMutations.AddItemCommentMutation,
         addItemInCart: _CartMutations.AddItemInCartMutation,
         removeItemFromCart: _CartMutations.RemoveItemFromCartMutation,
         emptyCart: _CartMutations.EmptyCartMutation,

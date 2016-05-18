@@ -2,13 +2,13 @@ import Relay from 'react-relay';
 import moment from 'moment'
 import _ from 'lodash'
 
-class AddEventCommentMutation extends Relay.Mutation {
+class AddItemCommentMutation extends Relay.Mutation {
 
     static fragments = {
-        event: () => Relay.QL`
-          fragment on EventType {
+        item: () => Relay.QL`
+          fragment on ItemType {
             id
-            comments(first: 5) {
+            comments(first: 10) {
                edges {
                   node {
                     text
@@ -22,13 +22,13 @@ class AddEventCommentMutation extends Relay.Mutation {
     };
 
     getMutation() {
-        return Relay.QL`mutation{addEventComment}`
+        return Relay.QL`mutation{addItemComment}`
     }
 
     getFatQuery() {
         return Relay.QL`
-          fragment on AddEventCommentPayload {
-              event 
+          fragment on AddItemCommentPayload {
+              item 
           }
         `
     }
@@ -37,9 +37,9 @@ class AddEventCommentMutation extends Relay.Mutation {
             {
                 type: 'FIELDS_CHANGE',
                 fieldIDs: {
-                    event: this.props.event.id
+                    item: this.props.item.id
                 }
-           
+
             },
         ]
     }
@@ -47,25 +47,25 @@ class AddEventCommentMutation extends Relay.Mutation {
         return {
             text: this.props.text,
             author: this.props.author,
-            eventId: this.props.event.id
+            itemId: this.props.item.id
         };
     }
 
     getOptimisticResponse() {
-        var actualEvent = _.cloneDeep(this.props.event);
-        actualEvent.comments.edges.push({
+        var actualItem = _.cloneDeep(this.props.item);
+        actualItem.comments.edges.push({
             node: {
                 text: this.props.text,
                 author: this.props.author,
                 createdAt: moment()
             }
         });
-        
+
         return {
-            comments: actualEvent.comments,
-            id: this.props.event.id
+            comments: actualItem.comments,
+            id: this.props.item.id
         }
     }
 }
 
-export default AddEventCommentMutation
+export default AddItemCommentMutation

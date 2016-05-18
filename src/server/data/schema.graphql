@@ -6,8 +6,7 @@ input AddEventCommentInput {
 }
 
 type AddEventCommentPayload {
-  viewer: Viewer
-  commentEdge: EventCommentsTypeEdge
+  event: EventType
   clientMutationId: String!
 }
 
@@ -25,6 +24,18 @@ type AddEventPayload {
   viewer: Viewer
   cart: CartType
   eventEdge: EventTypeEdge
+  clientMutationId: String!
+}
+
+input AddItemCommentInput {
+  text: String!
+  author: String!
+  itemId: String!
+  clientMutationId: String!
+}
+
+type AddItemCommentPayload {
+  item: ItemType
   clientMutationId: String!
 }
 
@@ -202,6 +213,7 @@ type ModelTypeEdge {
 type Mutation {
   addModel(input: AddModelInput!): AddModelPayload
   addItem(input: AddItemInput!): AddItemPayload
+  addItemComment(input: AddItemCommentInput!): AddItemCommentPayload
   addItemInCart(input: AddItemInCartInput!): AddItemInCartPayload
   removeItemFromCart(input: RemoveItemFromCartInput!): RemoveItemFromCartPayload
   emptyCart(input: EmptyCartInput!): EmptyCartPayload

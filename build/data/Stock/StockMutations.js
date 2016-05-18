@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.AddItemMutation = exports.AddModelMutation = undefined;
+exports.AddItemCommentMutation = exports.AddItemMutation = exports.AddModelMutation = undefined;
 
 var _graphql = require('graphql');
 
@@ -13,7 +13,7 @@ var _database = require('../database');
 
 var _database2 = _interopRequireDefault(_database);
 
-var _Model = require('./Model');
+var _Model = require('../graphql/Model');
 
 var _ItemStore = require('../stores/ItemStore');
 
@@ -206,6 +206,39 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
                         });
                     });
                 });
+            });
+        });
+    }
+});
+
+var AddItemCommentMutation = exports.AddItemCommentMutation = new _graphqlRelay.mutationWithClientMutationId({
+    name: 'AddItemComment',
+    description: 'Function to add a comment to an item',
+    inputFields: {
+        text: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        author: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+        itemId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+    },
+    outputFields: {
+        item: {
+            type: _Model.GraphQLItemType,
+            resolve: function resolve(obj) {
+                return obj.item;
+            }
+        }
+    },
+    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
+        var text = _ref4.text;
+        var author = _ref4.author;
+        var itemId = _ref4.itemId;
+
+
+        return _database2.default.models.item.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(itemId).id } }).then(function (item) {
+            return item.createComment({ text: text, author: author }).then(function (c) {
+                return {
+                    item: item,
+                    comment: c
+                };
             });
         });
     }

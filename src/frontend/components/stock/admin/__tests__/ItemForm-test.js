@@ -99,7 +99,7 @@ describe('ItemForm', () => {
 
         var select = TestUtils.findRenderedDOMComponentWithTag(instance, 'select')
         TestUtils.Simulate.change(select, { target: { value: 'ok' } });
-        
+
         var select = TestUtils.findRenderedDOMComponentWithTag(instance, 'select')
         TestUtils.Simulate.change(select, { target: { value: 'ok' } });
         //

@@ -9,6 +9,7 @@ import {
     mutationWithClientMutationId,
     cursorForObjectInConnection,
     connectionFromPromisedArray,
+    fromGlobalId
 } from 'graphql-relay'
 
 import Database from '../database'
@@ -17,8 +18,9 @@ import {
     GraphQLViewer,
     GraphQLModelEdge,
     GraphQLItemEdge,
-    GraphQLCommentType
-} from './Model'
+    GraphQLCommentType,
+    GraphQLItemType
+} from '../graphql/Model'
 
 import {
     getViewer,
@@ -163,4 +165,37 @@ export const AddItemMutation = mutationWithClientMutationId({
 
             })
     }
-})
+});
+
+export const AddItemCommentMutation = new mutationWithClientMutationId({
+    name: 'AddItemComment',
+    description: 'Function to add a comment to an item',
+    inputFields: {
+        text: {type: new GraphQLNonNull(GraphQLString)},
+        author: {type: new GraphQLNonNull(GraphQLString)},
+        itemId: {type: new GraphQLNonNull(GraphQLString)}
+    },
+    outputFields: {
+        item: {
+            type: GraphQLItemType,
+            resolve: (obj) => obj.item
+        }
+    },
+    mutateAndGetPayload: ({text, author, itemId}) => {
+
+
+        return Database.models.item.findOne({where: {id: fromGlobalId(itemId).id}})
+            .then(item => {
+                return item.createComment({text: text, author: author})
+                    .then(c => {
+                        return {
+                            item: item,
+                            comment: c
+                        }
+                    })
+
+
+            })
+    }
+});
+

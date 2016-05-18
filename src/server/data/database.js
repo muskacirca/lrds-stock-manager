@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize'
 
 var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds"
-var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds"
-var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds"
+var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec"
+var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test"
 
 
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL, {
@@ -182,6 +182,8 @@ connection.sync({force: false})
 //        //    domain.find({where: {name: 'STUDIO'}}).on('success', function(domain){
 //        //        item.setDomains([domain]);
 //        //    });
+
+
 //        //});
 //
 //    //item.create({name: "Fireface UC", reference:'RMEUC01', description:"une carte son 8 piste"})

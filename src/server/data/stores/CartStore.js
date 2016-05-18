@@ -1,26 +1,6 @@
 import _ from 'lodash'
 
-export class Item extends Object {}
-export class Viewer extends Object {}
-export class Cart extends Object {}
-export class Category extends Object {}
-export class SubCategory extends Object {}
-
-const VIEWER_ID = 'me';
-
-var viewer = new Viewer();
-viewer.id = VIEWER_ID;
-
 var cartStore = {}
-
-const usersById = {
-    [VIEWER_ID]: viewer
-};
-
-export function initState(items) {
-    cartStore = items
-    return cartStore
-}
 
 export function getById(id) {
 
@@ -31,10 +11,6 @@ export function getById(id) {
     })
 
     return item[0]
-}
-
-export function getViewer() {
-   return usersById[VIEWER_ID]
 }
 
 export function isInitialized() {

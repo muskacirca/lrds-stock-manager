@@ -15,27 +15,20 @@ class EventDisplay extends React.Component {
        
     }
 
-    handleCommentPublish(message, eventId) {
-
-        var comment = {
-            text: message,
-            createdAt: moment(),
-            author: UserService.getLogin()
-        };
+    handleCommentPublish(message) {
         
-        var addItemMutation = new AddEventCommentMutation({
+        var addEventCommentMutation = new AddEventCommentMutation({
             text: message,
             author: UserService.getLogin(),
-            eventId: eventId,
+            event: this.props.viewer.event
         });
 
-        var onSuccess = (response) => {
-            console.log("Item comment added successfully !");
-        }
+        var onSuccess = (response) => console.log("Item comment added successfully !");
 
         var onFailure = (transaction) => console.log("An error occurred when adding new event comment");
 
-        Relay.Store.commitUpdate(addItemMutation, {onSuccess, onFailure})
+        console.log("before commit update")
+        Relay.Store.commitUpdate(addEventCommentMutation, {onSuccess, onFailure})
     }
 
     computeState(state) {
@@ -103,7 +96,7 @@ class EventDisplay extends React.Component {
                                     </div>
                                 </div>
 
-                                <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this, event.id)}
+                                <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this)}
                                                   comments={event.comments.edges} />
                             </div>
                         </div>

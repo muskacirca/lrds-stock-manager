@@ -15,9 +15,9 @@ var _database2 = _interopRequireDefault(_database);
 
 var _Model = require('./Model');
 
-var _ItemStore = require('../stores/ItemStore');
-
 var _CartStore = require('../stores/CartStore');
+
+var _ItemStore = require('../stores/ItemStore');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37,13 +37,13 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
         viewer: {
             type: _Model.GraphQLViewer,
             resolve: function resolve() {
-                return _CartStore.getViewer;
+                return _ItemStore.getViewer;
             }
         },
         cart: {
             type: _Model.GraphQLCartType,
             resolve: function resolve(args) {
-                return (0, _ItemStore.emptyCart)(args.userId);
+                return (0, _CartStore.emptyCart)(args.userId);
             }
         },
         eventEdge: {
@@ -54,7 +54,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
 
                 return _database2.default.models.event.findAll().then(function (events) {
 
-                    var eventToPass = undefined;
+                    var eventToPass = void 0;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;
@@ -127,22 +127,10 @@ var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRela
         eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
     },
     outputFields: {
-        viewer: {
-            type: _Model.GraphQLViewer,
-            resolve: function resolve(args) {
-                return _CartStore.getViewer;
-            }
-        },
-        commentEdge: {
-            type: _Model.EventCommentEdge,
+        event: {
+            type: _Model.EventType,
             resolve: function resolve(obj) {
-                return obj.event.getComments().then(function (r) {
-                    var cursor = (0, _graphqlRelay.cursorForObjectInConnection)(r, obj.comment);
-                    return {
-                        cursor: cursor,
-                        node: obj.comment
-                    };
-                });
+                return obj.event;
             }
         }
     },
@@ -152,8 +140,9 @@ var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRela
         var eventId = _ref3.eventId;
 
 
-        return _database2.default.models.event.findOne({ where: { id: eventId } }).then(function (event) {
+        return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {
             return event.createComment({ text: text, author: author }).then(function (c) {
+                console.log("return of create comment " + JSON.stringify(c));
                 return {
                     event: event,
                     comment: c

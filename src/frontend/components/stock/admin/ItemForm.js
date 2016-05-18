@@ -43,6 +43,8 @@ class ItemFormComponent extends React.Component {
 
         if(itemFeatures.modelName === "") return {brand: {}, domains: [], subCategories: []}
         var index = _.findIndex(this.props.viewer.models.edges, (o) => o.node.name === itemFeatures.modelName)
+        console.log("index" + index)
+        console.log("models" + index)
         var model = this.props.viewer.models.edges[index].node
 
         var newDomains = _.unionWith(model.domains, itemFeatures.domains, (a, b) => a === b)
@@ -76,7 +78,7 @@ class ItemFormComponent extends React.Component {
             domains: domainsToAdd,
             subCategories: subCategoriesToAdd,
             comments: commentsToAdd,
-            author:  this.state.itemFeatures.comments[0].author,
+            author:  UserService.getLogin,
             viewer: this.props.viewer
         });
 
