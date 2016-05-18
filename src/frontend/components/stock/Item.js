@@ -38,19 +38,36 @@ class ItemComponent extends React.Component {
                 </div>
     }
 
+    computeStateIcon(state) {
+
+        if(state == "1") {
+            return  <i className="fa fa-2x fa-thumbs-up green" />
+        } else if(state == "2") {
+            return  <i className="fa fa-2x fa-thumbs-up yellow" />
+        } else if(state == "3") {
+            return  <i className="fa fa-2x fa-thumbs-down orange" />
+        } else if(state == "4") {
+            return  <i className="fa fa-2x fa-thumbs-down red" />
+        }
+    }
+
+    renderHeaderContent(item) {
+        return  <div>{this.computeStateIcon(item.state.severity)}</div>
+    }
 
     render() {
 
         var item = this.props.viewer.item
         var title = this.renderPageTitle(item)
+        var headerContent = this.renderHeaderContent(item)
 
         return  <div>
-                    <FormHeader title={title} />
+                    <FormHeader title={title} content={headerContent}/>
                             
                     <div className="page-content">
                         <div className="row">
                             <div className="col-md-10 col-md-offset-1">
-                                <ItemDisplay item={item}/>
+                                <ItemDisplay item={item} showHeader={false} />
                                 <CommentComponent handleCommentPublish={this.handleCommentPublish.bind(this)}
                                                   comments={item.comments.edges} />
                             </div>

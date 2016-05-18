@@ -70121,35 +70121,37 @@
 	                "Choose a model or create one"
 	            );
 	
+	            var header = this.props.showHeader ? _react2.default.createElement(
+	                "div",
+	                { className: "panel-heading" },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "row" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "col-md-9" },
+	                        _react2.default.createElement(
+	                            "h4",
+	                            null,
+	                            title
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "col-md-3" },
+	                        stateIcon ? "state :" : "",
+	                        stateIcon
+	                    )
+	                )
+	            ) : null;
+	
 	            return _react2.default.createElement(
 	                "div",
 	                null,
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "panel panel-default" },
-	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "panel-heading" },
-	                        _react2.default.createElement(
-	                            "div",
-	                            { className: "row" },
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-9" },
-	                                _react2.default.createElement(
-	                                    "h4",
-	                                    null,
-	                                    title
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                "div",
-	                                { className: "col-md-3" },
-	                                stateIcon ? "state :" : "",
-	                                stateIcon
-	                            )
-	                        )
-	                    ),
+	                    header,
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "panel-body" },
@@ -70204,6 +70206,10 @@
 	}(_react2.default.Component);
 	
 	exports.default = ItemDisplay;
+	
+	
+	ItemDisplay.propTypes = { showHeader: _react2.default.PropTypes.boolean };
+	ItemDisplay.defaultProps = { showHeader: true };
 
 /***/ },
 /* 579 */
@@ -84129,16 +84135,40 @@
 	            );
 	        }
 	    }, {
+	        key: 'computeStateIcon',
+	        value: function computeStateIcon(state) {
+	
+	            if (state == "1") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-up green' });
+	            } else if (state == "2") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-up yellow' });
+	            } else if (state == "3") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-down orange' });
+	            } else if (state == "4") {
+	                return _react2.default.createElement('i', { className: 'fa fa-2x fa-thumbs-down red' });
+	            }
+	        }
+	    }, {
+	        key: 'renderHeaderContent',
+	        value: function renderHeaderContent(item) {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                this.computeStateIcon(item.state.severity)
+	            );
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	
 	            var item = this.props.viewer.item;
 	            var title = this.renderPageTitle(item);
+	            var headerContent = this.renderHeaderContent(item);
 	
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_FormHeader2.default, { title: title }),
+	                _react2.default.createElement(_FormHeader2.default, { title: title, content: headerContent }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'page-content' },
@@ -84148,7 +84178,7 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'col-md-10 col-md-offset-1' },
-	                            _react2.default.createElement(_ItemDisplay2.default, { item: item }),
+	                            _react2.default.createElement(_ItemDisplay2.default, { item: item, showHeader: false }),
 	                            _react2.default.createElement(_CommentComponent2.default, { handleCommentPublish: this.handleCommentPublish.bind(this),
 	                                comments: item.comments.edges })
 	                        )
@@ -84624,6 +84654,12 @@
 	                )
 	            ) : null;
 	
+	            var content = this.props.content ? _react2.default.createElement(
+	                'div',
+	                { className: 'sub-bar-component-centered col-md-1 col-sm-2 col-xs-1' },
+	                this.props.content
+	            ) : null;
+	
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'sub-bar row' },
@@ -84641,6 +84677,7 @@
 	                    { className: 'sub-bar-component-centered align-right col-md-3 col-sm-4 col-xs-1' },
 	                    _react2.default.createElement(_Alert2.default, { alert: this.props.alert })
 	                ),
+	                content,
 	                saveButton
 	            );
 	        }

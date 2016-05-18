@@ -45,19 +45,24 @@ class ItemDisplay extends React.Component {
             ? <strong>{item.model.brand.name + ' - ' + item.model.name}</strong>
             : <em>Choose a model or create one</em>
 
-        return  <div>
-                    <div className="panel panel-default">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-md-9">
-                                    <h4>{title}</h4>
-                                </div>
-                                <div className="col-md-3">
-                                    {stateIcon ? "state :" : ""}
-                                    {stateIcon}
-                                </div>
+
+        var header = this.props.showHeader
+                ?  <div className="panel-heading">
+                        <div className="row">
+                            <div className="col-md-9">
+                                <h4>{title}</h4>
+                            </div>
+                            <div className="col-md-3">
+                                {stateIcon ? "state :" : ""}
+                                {stateIcon}
                             </div>
                         </div>
+                    </div>
+            : null;
+
+        return  <div>
+                    <div className="panel panel-default">
+                        {header}
                         <div className="panel-body">
                             <div className="row">
                                 <div className="col-md-5">
@@ -80,3 +85,6 @@ class ItemDisplay extends React.Component {
 }
 
 export default ItemDisplay
+
+ItemDisplay.propTypes = { showHeader: React.PropTypes.boolean };
+ItemDisplay.defaultProps = { showHeader: true };
