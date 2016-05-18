@@ -17,7 +17,7 @@ var _Model = require('./Model');
 
 var _CartStore = require('../stores/CartStore');
 
-var _ItemStore = require('../stores/ItemStore');
+var _UserStore = require('../stores/UserStore');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,25 +36,24 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
     outputFields: {
         viewer: {
             type: _Model.GraphQLViewer,
-            resolve: function resolve() {
-                return _ItemStore.getViewer;
+            resolve: function resolve(obj) {
+                console.log("In EventMutation output field viewer : " + JSON.stringify(obj.viewerId));
+                return (0, _UserStore.getViewer)(obj.viewerId);
             }
         },
         cart: {
             type: _Model.GraphQLCartType,
-            resolve: function resolve(args) {
-                return (0, _CartStore.emptyCart)(args.userId);
+            resolve: function resolve(obj) {
+                return (0, _CartStore.emptyCart)(obj.viewerId);
             }
         },
         eventEdge: {
             type: _Model.EventsEdge,
-            resolve: function resolve(obj, _ref) {
-                var id = _ref.id;
-
+            resolve: function resolve(obj) {
 
                 return _database2.default.models.event.findAll().then(function (events) {
 
-                    var eventToPass = undefined;
+                    var eventToPass = void 0;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;
@@ -63,7 +62,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
                         for (var _iterator = events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                             var event = _step.value;
 
-                            if (event.id === obj.id) {
+                            if (event.id === obj.event.id) {
                                 eventToPass = event;
                             }
                         }
@@ -91,12 +90,13 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
             }
         }
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref2) {
-        var name = _ref2.name;
-        var startDate = _ref2.startDate;
-        var endDate = _ref2.endDate;
-        var description = _ref2.description;
-        var reservedItems = _ref2.reservedItems;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref) {
+        var name = _ref.name;
+        var startDate = _ref.startDate;
+        var endDate = _ref.endDate;
+        var description = _ref.description;
+        var reservedItems = _ref.reservedItems;
+        var userId = _ref.userId;
 
 
         var event = {
@@ -113,7 +113,10 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
                 });
             });
 
-            return event;
+            return {
+                viewerId: userId,
+                event: event
+            };
         });
     }
 });
@@ -134,10 +137,10 @@ var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRela
             }
         }
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
-        var text = _ref3.text;
-        var author = _ref3.author;
-        var eventId = _ref3.eventId;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref2) {
+        var text = _ref2.text;
+        var author = _ref2.author;
+        var eventId = _ref2.eventId;
 
 
         return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {
@@ -166,8 +169,8 @@ var ExportEventToPdfMutation = exports.ExportEventToPdfMutation = new _graphqlRe
             }
         }
     },
-    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
-        var eventId = _ref4.eventId;
+    mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
+        var eventId = _ref3.eventId;
 
 
         return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {});

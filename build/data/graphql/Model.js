@@ -17,7 +17,7 @@ var _database = require('../database');
 
 var _database2 = _interopRequireDefault(_database);
 
-var _ItemStore = require('../stores/ItemStore');
+var _UserStore = require('../stores/UserStore');
 
 var _CartStore = require('../stores/CartStore');
 
@@ -53,7 +53,7 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
         console.log("Im here getting ModelType");
         _database2.default.models.modem.findOne({ where: { id: id } });
     } else if (type === "Viewer") {
-        return _database2.default.models.user.findOne({ where: { id: id } });
+        return (0, _UserStore.getViewer)(id);
     } else {
         console.log("I'm here getting " + type + " but was not present");
     }
@@ -602,7 +602,11 @@ var GraphQLRoot = exports.GraphQLRoot = new _graphql.GraphQLObjectType({
             },
             resolve: function resolve(root, _ref10) {
                 var viewerId = _ref10.viewerId;
-                return _database2.default.models.user.findOne({ where: { id: viewerId } });
+
+                return _database2.default.models.user.findOne({ where: { id: viewerId } }).then(function (response) {
+                    (0, _UserStore.registerViewer)(response);
+                    return (0, _UserStore.getViewer)(response.id);
+                });
             }
         },
         node: nodeField

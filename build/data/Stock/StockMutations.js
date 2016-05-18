@@ -15,7 +15,7 @@ var _database2 = _interopRequireDefault(_database);
 
 var _Model = require('../graphql/Model');
 
-var _ItemStore = require('../stores/ItemStore');
+var _UserStore = require('../stores/UserStore');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34,7 +34,7 @@ var AddModelMutation = exports.AddModelMutation = new _graphqlRelay.mutationWith
         viewer: {
             type: _Model.GraphQLViewer,
             resolve: function resolve() {
-                return _ItemStore.getViewer;
+                return _UserStore.getViewer;
             }
         },
         modelEdge: {
@@ -119,7 +119,7 @@ var AddItemMutation = exports.AddItemMutation = (0, _graphqlRelay.mutationWithCl
         viewer: {
             type: _Model.GraphQLViewer,
             resolve: function resolve() {
-                return _ItemStore.getViewer;
+                return _UserStore.getViewer;
             }
         },
         itemEdge: {

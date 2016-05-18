@@ -29,7 +29,7 @@ import {
 
 import {
     getViewer,
-} from '../stores/ItemStore';
+} from '../stores/UserStore';
 
 
 export const AddEventMutation = new mutationWithClientMutationId({

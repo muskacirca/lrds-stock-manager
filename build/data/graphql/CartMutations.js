@@ -15,7 +15,7 @@ var _database2 = _interopRequireDefault(_database);
 
 var _Model = require('./Model');
 
-var _ItemStore = require('../stores/ItemStore');
+var _UserStore = require('../stores/UserStore');
 
 var _CartStore = require('../stores/CartStore');
 
@@ -32,7 +32,7 @@ var AddItemInCartMutation = exports.AddItemInCartMutation = new _graphqlRelay.mu
         viewer: {
             type: _Model.GraphQLViewer,
             resolve: function resolve() {
-                return _ItemStore.getViewer;
+                return _UserStore.getViewer;
             }
         },
         cart: {
@@ -64,7 +64,7 @@ var RemoveItemFromCartMutation = exports.RemoveItemFromCartMutation = new _graph
         viewer: {
             type: _Model.GraphQLViewer,
             resolve: function resolve() {
-                return _ItemStore.getViewer;
+                return _UserStore.getViewer;
             }
         },
         cart: {
@@ -92,8 +92,8 @@ var EmptyCartMutation = exports.EmptyCartMutation = new _graphqlRelay.mutationWi
     outputFields: {
         viewer: {
             type: _Model.GraphQLViewer,
-            resolve: function resolve() {
-                return _ItemStore.getViewer;
+            resolve: function resolve(args) {
+                return (0, _UserStore.getViewer)(args.viewerId);
             }
         },
         cart: {

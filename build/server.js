@@ -57,7 +57,7 @@ module.exports =
 
 	var _schema = __webpack_require__(3);
 
-	var _expressGraphql = __webpack_require__(16);
+	var _expressGraphql = __webpack_require__(17);
 
 	var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
 
@@ -65,15 +65,15 @@ module.exports =
 
 	var _database2 = _interopRequireDefault(_database);
 
-	var _jsonwebtoken = __webpack_require__(17);
+	var _jsonwebtoken = __webpack_require__(18);
 
 	var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
-	var _bodyParser = __webpack_require__(18);
+	var _bodyParser = __webpack_require__(19);
 
 	var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-	var _crypto = __webpack_require__(19);
+	var _crypto = __webpack_require__(20);
 
 	var _crypto2 = _interopRequireDefault(_crypto);
 
@@ -96,6 +96,7 @@ module.exports =
 
 	app.use('/style', _express2.default.static(_path2.default.resolve(__dirname, '../src/style')));
 	app.use('/utils', _express2.default.static(_path2.default.resolve(__dirname, '../src/utils')));
+	app.use('/template', _express2.default.static(_path2.default.resolve(__dirname, '../src/frontend/public/template')));
 
 	app.get('/bundle.js', function (req, res) {
 	    res.sendFile(_path2.default.resolve(__dirname, "../src/frontend/public/bundle.js"));
@@ -168,9 +169,9 @@ module.exports =
 
 	var _StockMutations = __webpack_require__(5);
 
-	var _CartMutations = __webpack_require__(14);
+	var _CartMutations = __webpack_require__(15);
 
-	var _EventMutations = __webpack_require__(15);
+	var _EventMutations = __webpack_require__(16);
 
 	var _Model = __webpack_require__(9);
 
@@ -179,10 +180,12 @@ module.exports =
 	    fields: {
 	        addModel: _StockMutations.AddModelMutation,
 	        addItem: _StockMutations.AddItemMutation,
+	        addItemComment: _StockMutations.AddItemCommentMutation,
 	        addItemInCart: _CartMutations.AddItemInCartMutation,
 	        removeItemFromCart: _CartMutations.RemoveItemFromCartMutation,
 	        emptyCart: _CartMutations.EmptyCartMutation,
-	        addEvent: _EventMutations.AddEventMutation
+	        addEvent: _EventMutations.AddEventMutation,
+	        addEventComment: _EventMutations.AddEventCommentMutation
 	    }
 	});
 
@@ -206,7 +209,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.AddItemMutation = exports.AddModelMutation = undefined;
+	exports.AddItemCommentMutation = exports.AddItemMutation = exports.AddModelMutation = undefined;
 
 	var _graphql = __webpack_require__(4);
 
@@ -218,7 +221,7 @@ module.exports =
 
 	var _Model = __webpack_require__(9);
 
-	var _UserStore = __webpack_require__(20);
+	var _UserStore = __webpack_require__(12);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -248,7 +251,7 @@ module.exports =
 
 	                return _database2.default.models.model.findAll().then(function (dataModels) {
 
-	                    var itemToPass = undefined;
+	                    var itemToPass = void 0;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -314,7 +317,9 @@ module.exports =
 	        modelName: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
 	        severity: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
 	        domains: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
-	        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) }
+	        subCategories: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+	        comments: { type: new _graphql.GraphQLList(_graphql.GraphQLString) },
+	        author: { type: _graphql.GraphQLString }
 	    },
 	    outputFields: {
 	        viewer: {
@@ -329,7 +334,7 @@ module.exports =
 
 	                return _database2.default.models.item.findAll().then(function (items) {
 
-	                    var itemToPass = undefined;
+	                    var itemToPass = void 0;
 	                    var _iteratorNormalCompletion2 = true;
 	                    var _didIteratorError2 = false;
 	                    var _iteratorError2 = undefined;
@@ -371,6 +376,8 @@ module.exports =
 	        var severity = _ref3.severity;
 	        var domains = _ref3.domains;
 	        var subCategories = _ref3.subCategories;
+	        var comments = _ref3.comments;
+	        var author = _ref3.author;
 
 
 	        return _database2.default.models.model.findOne({ where: { name: modelName } }).then(function (model) {
@@ -398,10 +405,46 @@ module.exports =
 	                    reference = reference + "-" + nextId;
 	                    return _database2.default.models.state.findOne({ where: { severity: severity } }).then(function (state) {
 	                        return model.createItem({ stateId: state.id, reference: reference }).then(function (item) {
+	                            comments.forEach(function (c) {
+	                                return item.createComment({ text: c, author: author });
+	                            });
 	                            return item;
 	                        });
 	                    });
 	                });
+	            });
+	        });
+	    }
+	});
+
+	var AddItemCommentMutation = exports.AddItemCommentMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'AddItemComment',
+	    description: 'Function to add a comment to an item',
+	    inputFields: {
+	        text: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        author: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        itemId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+	    },
+	    outputFields: {
+	        item: {
+	            type: _Model.GraphQLItemType,
+	            resolve: function resolve(obj) {
+	                return obj.item;
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref4) {
+	        var text = _ref4.text;
+	        var author = _ref4.author;
+	        var itemId = _ref4.itemId;
+
+
+	        return _database2.default.models.item.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(itemId).id } }).then(function (item) {
+	            return item.createComment({ text: text, author: author }).then(function (c) {
+	                return {
+	                    item: item,
+	                    comment: c
+	                };
 	            });
 	        });
 	    }
@@ -430,8 +473,8 @@ module.exports =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
-	var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds";
-	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds";
+	var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec";
+	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
 
 	var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
 	    pool: {
@@ -508,6 +551,11 @@ module.exports =
 	    text: {
 	        type: _sequelize2.default.STRING,
 	        allowNull: false
+	    },
+	    author: {
+
+	        type: _sequelize2.default.STRING,
+	        allowNull: false
 	    }
 	});
 
@@ -526,7 +574,8 @@ module.exports =
 
 	var eventComment = connection.define('eventComment', {
 
-	    text: { type: _sequelize2.default.STRING, allowNull: false }
+	    text: { type: _sequelize2.default.STRING, allowNull: false },
+	    author: { type: _sequelize2.default.STRING, allowNull: false }
 	});
 
 	event.hasMany(eventComment, { as: 'Comments' });
@@ -591,6 +640,7 @@ module.exports =
 	//        //    domain.find({where: {name: 'STUDIO'}}).on('success', function(domain){
 	//        //        item.setDomains([domain]);
 	//        //    });
+
 	//        //});
 	//
 	//    //item.create({name: "Fireface UC", reference:'RMEUC01', description:"une carte son 8 piste"})
@@ -613,7 +663,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
+	exports.GraphQLRoot = exports.GraphQLViewer = exports.EventsEdge = exports.EventsConnection = exports.GraphQLModelEdge = exports.ModelsConnection = exports.GraphQLItemEdge = exports.ItemsConnection = exports.UserType = exports.EventType = exports.GraphQLCartType = exports.GraphQLItemType = exports.EventCommentEdge = exports.EventCommentsConnection = exports.GraphQLStateType = exports.GraphQLCommentType = exports.GraphQLModelType = exports.GraphQLBrandType = exports.GraphQLSubCategoryType = exports.GraphQLCategoryType = exports.GraphQLDomainType = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -621,15 +671,17 @@ module.exports =
 
 	var _graphqlRelay = __webpack_require__(6);
 
+	var _EventFacade = __webpack_require__(10);
+
 	var _database = __webpack_require__(7);
 
 	var _database2 = _interopRequireDefault(_database);
 
-	var _UserStore = __webpack_require__(20);
+	var _UserStore = __webpack_require__(12);
 
-	var _CartStore = __webpack_require__(12);
+	var _CartStore = __webpack_require__(13);
 
-	var _moment = __webpack_require__(13);
+	var _moment = __webpack_require__(11);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
@@ -643,10 +695,10 @@ module.exports =
 	 */
 
 	var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
-	    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(globalId);
+	    var _fromGlobalId2 = (0, _graphqlRelay.fromGlobalId)(globalId);
 
-	    var id = _fromGlobalId.id;
-	    var type = _fromGlobalId.type;
+	    var id = _fromGlobalId2.id;
+	    var type = _fromGlobalId2.type;
 
 	    console.log("globalId of " + type + " : " + globalId);
 	    console.log("id of " + type + " : " + id);
@@ -788,6 +840,9 @@ module.exports =
 	        text: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
 	                return obj.text;
 	            } },
+	        author: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
+	                return obj.author;
+	            } },
 	        createdAt: { type: _graphql.GraphQLString, resolve: function resolve(obj) {
 	                return obj.createdAt;
 	            } },
@@ -821,14 +876,15 @@ module.exports =
 
 	var ItemCommentConnection = _connectionDefinition.connectionType;
 
-	var _connectionDefinition2 =
-	// ,edgeType: GraphQLSimTypesEdge,
-	(0, _graphqlRelay.connectionDefinitions)({
+	var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({
 	    name: 'EventCommentsType',
 	    nodeType: GraphQLCommentType
 	});
 
 	var EventCommentsConnection = _connectionDefinition2.connectionType;
+	var EventCommentEdge = _connectionDefinition2.edgeType;
+	exports.EventCommentsConnection = EventCommentsConnection;
+	exports.EventCommentEdge = EventCommentEdge;
 	var GraphQLItemType = exports.GraphQLItemType = new _graphql.GraphQLObjectType({
 	    name: 'ItemType',
 	    fields: {
@@ -854,7 +910,17 @@ module.exports =
 	        isInStock: {
 	            type: _graphql.GraphQLBoolean,
 	            resolve: function resolve(obj) {
-	                return obj.isInStock;
+
+	                return _database2.default.models.reservedItems.findAll({ where: { itemId: obj.id } }).then(function (result) {
+	                    var eventIds = result.map(function (r) {
+	                        return r.eventId;
+	                    });
+	                    if (eventIds.length > 0) {
+	                        return (0, _EventFacade.isItemInStock)(eventIds);
+	                    } else {
+	                        return true;
+	                    }
+	                });
 	            }
 	        },
 	        comments: {
@@ -1030,9 +1096,7 @@ module.exports =
 	            items: {
 	                type: ItemsConnection,
 	                args: _extends({
-	                    severity: {
-	                        type: _graphql.GraphQLString
-	                    }
+	                    severity: { type: _graphql.GraphQLString }
 	                }, _graphqlRelay.connectionArgs),
 	                resolve: function resolve(obj, _ref4) {
 	                    var severity = _ref4.severity;
@@ -1084,6 +1148,30 @@ module.exports =
 	                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
 	                }
 	            },
+	            event: {
+	                type: EventType,
+	                args: {
+	                    a: {
+	                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
+	                    }
+	                },
+	                resolve: function resolve(_, _ref7) {
+	                    var a = _ref7.a;
+
+	                    console.log("id from relay : " + a);
+
+	                    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(a);
+
+	                    var type = _fromGlobalId.type;
+	                    var id = _fromGlobalId.id;
+
+	                    console.log("retrieved database id : " + id + type);
+	                    return _database2.default.models.event.findOne({ where: { id: id } }).then(function (response) {
+	                        console.log("event : " + JSON.stringify(response));
+	                        return response;
+	                    });
+	                }
+	            },
 	            brands: {
 	                type: new _graphql.GraphQLList(GraphQLBrandType),
 	                resolve: function resolve() {
@@ -1095,8 +1183,8 @@ module.exports =
 	            models: {
 	                type: ModelsConnection,
 	                args: _extends({}, _graphqlRelay.connectionArgs),
-	                resolve: function resolve(_, _ref7) {
-	                    var args = _objectWithoutProperties(_ref7, []);
+	                resolve: function resolve(_, _ref8) {
+	                    var args = _objectWithoutProperties(_ref8, []);
 
 	                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.model.findAll(), args);
 	                }
@@ -1140,8 +1228,8 @@ module.exports =
 	                        type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
 	                    }
 	                },
-	                resolve: function resolve(functionToRetrievedViewerFromCache, _ref8) {
-	                    var itemReference = _ref8.itemReference;
+	                resolve: function resolve(functionToRetrievedViewerFromCache, _ref9) {
+	                    var itemReference = _ref9.itemReference;
 
 
 	                    var searchKey = itemReference + '%';
@@ -1172,8 +1260,8 @@ module.exports =
 	                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
 	                }
 	            },
-	            resolve: function resolve(root, _ref9) {
-	                var viewerId = _ref9.viewerId;
+	            resolve: function resolve(root, _ref10) {
+	                var viewerId = _ref10.viewerId;
 
 	                return _database2.default.models.user.findOne({ where: { id: viewerId } }).then(function (response) {
 	                    (0, _UserStore.registerViewer)(response);
@@ -1186,11 +1274,49 @@ module.exports =
 	});
 
 /***/ },
-/* 10 */,
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.isItemInStock = isItemInStock;
+
+	var _database = __webpack_require__(7);
+
+	var _database2 = _interopRequireDefault(_database);
+
+	var _moment = __webpack_require__(11);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function isItemInStock(eventIds) {
+
+	    var now = (0, _moment2.default)().format("YYYY-MM-DDTHH-mm-ss.SSSZ");
+	    var args = {
+	        where: {
+	            $and: [{ id: { $in: eventIds } }, { startDate: { $lte: now } }, { endDate: { $gte: now } }]
+	        },
+	        attributes: ['id']
+	    };
+
+	    return _database2.default.models.event.findAll(args).then(function (event) {
+	        if (event.length > 0) {
+	            return false;
+	        }
+	        return true;
+	    });
+	}
+
+/***/ },
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = require("lodash");
+	module.exports = require("moment");
 
 /***/ },
 /* 12 */
@@ -1201,18 +1327,13 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.SubCategory = exports.Category = exports.Cart = exports.Viewer = exports.Item = undefined;
-	exports.initState = initState;
-	exports.getById = getById;
-	exports.isInitialized = isInitialized;
-	exports.getCart = getCart;
-	exports.pushItemInCart = pushItemInCart;
-	exports.removeItemFromCart = removeItemFromCart;
-	exports.emptyCart = emptyCart;
+	exports.Viewer = undefined;
+	exports.registerViewer = registerViewer;
+	exports.getViewer = getViewer;
 
-	var _lodash = __webpack_require__(11);
+	var _database = __webpack_require__(7);
 
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _database2 = _interopRequireDefault(_database);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1224,20 +1345,8 @@ module.exports =
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Item = exports.Item = function (_Object) {
-	    _inherits(Item, _Object);
-
-	    function Item() {
-	        _classCallCheck(this, Item);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Item).apply(this, arguments));
-	    }
-
-	    return Item;
-	}(Object);
-
-	var Viewer = exports.Viewer = function (_Object2) {
-	    _inherits(Viewer, _Object2);
+	var Viewer = exports.Viewer = function (_Object) {
+	    _inherits(Viewer, _Object);
 
 	    function Viewer() {
 	        _classCallCheck(this, Viewer);
@@ -1248,55 +1357,53 @@ module.exports =
 	    return Viewer;
 	}(Object);
 
-	var Cart = exports.Cart = function (_Object3) {
-	    _inherits(Cart, _Object3);
-
-	    function Cart() {
-	        _classCallCheck(this, Cart);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Cart).apply(this, arguments));
-	    }
-
-	    return Cart;
-	}(Object);
-
-	var Category = exports.Category = function (_Object4) {
-	    _inherits(Category, _Object4);
-
-	    function Category() {
-	        _classCallCheck(this, Category);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Category).apply(this, arguments));
-	    }
-
-	    return Category;
-	}(Object);
-
-	var SubCategory = exports.SubCategory = function (_Object5) {
-	    _inherits(SubCategory, _Object5);
-
-	    function SubCategory() {
-	        _classCallCheck(this, SubCategory);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SubCategory).apply(this, arguments));
-	    }
-
-	    return SubCategory;
-	}(Object);
-
 	var VIEWER_ID = 'me';
 
 	var viewer = new Viewer();
 	viewer.id = VIEWER_ID;
 
-	var cartStore = {};
+	var users = {};
 
 	var usersById = _defineProperty({}, VIEWER_ID, viewer);
 
-	function initState(items) {
-	    cartStore = items;
-	    return cartStore;
+	function registerViewer(viewer) {
+
+	    if (users[viewer.id] == undefined) {
+	        users[viewer.id] = viewer;
+	    }
 	}
+
+	function getViewer(viewerId) {
+
+	    console.log("getViewer with Id : " + viewerId);
+	    console.log("getViewer : " + JSON.stringify(users[viewerId]));
+
+	    return users[viewerId] == undefined ? _database2.default.models.user.findOne({ where: { id: viewerId } }) : users[viewerId];
+	}
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.getById = getById;
+	exports.isInitialized = isInitialized;
+	exports.getCart = getCart;
+	exports.pushItemInCart = pushItemInCart;
+	exports.removeItemFromCart = removeItemFromCart;
+	exports.emptyCart = emptyCart;
+
+	var _lodash = __webpack_require__(14);
+
+	var _lodash2 = _interopRequireDefault(_lodash);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var cartStore = {};
 
 	function getById(id) {
 
@@ -1356,13 +1463,13 @@ module.exports =
 	}
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
-	module.exports = require("moment");
+	module.exports = require("lodash");
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1382,9 +1489,9 @@ module.exports =
 
 	var _Model = __webpack_require__(9);
 
-	var _UserStore = __webpack_require__(20);
+	var _UserStore = __webpack_require__(12);
 
-	var _CartStore = __webpack_require__(12);
+	var _CartStore = __webpack_require__(13);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1479,7 +1586,7 @@ module.exports =
 	});
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1487,7 +1594,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.AddEventMutation = undefined;
+	exports.ExportEventToPdfMutation = exports.AddEventCommentMutation = exports.AddEventMutation = undefined;
 
 	var _graphql = __webpack_require__(4);
 
@@ -1499,9 +1606,9 @@ module.exports =
 
 	var _Model = __webpack_require__(9);
 
-	var _CartStore = __webpack_require__(12);
+	var _CartStore = __webpack_require__(13);
 
-	var _UserStore = __webpack_require__(20);
+	var _UserStore = __webpack_require__(12);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1537,7 +1644,7 @@ module.exports =
 
 	                return _database2.default.models.event.findAll().then(function (events) {
 
-	                    var eventToPass = undefined;
+	                    var eventToPass = void 0;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -1605,92 +1712,85 @@ module.exports =
 	    }
 	});
 
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
+	var AddEventCommentMutation = exports.AddEventCommentMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'AddEventComment',
+	    description: 'Function to add a comment to an event',
+	    inputFields: {
+	        text: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        author: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+	        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+	    },
+	    outputFields: {
+	        event: {
+	            type: _Model.EventType,
+	            resolve: function resolve(obj) {
+	                return obj.event;
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref2) {
+	        var text = _ref2.text;
+	        var author = _ref2.author;
+	        var eventId = _ref2.eventId;
 
-	module.exports = require("express-graphql");
+
+	        return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {
+	            return event.createComment({ text: text, author: author }).then(function (c) {
+	                console.log("return of create comment " + JSON.stringify(c));
+	                return {
+	                    event: event,
+	                    comment: c
+	                };
+	            });
+	        });
+	    }
+	});
+
+	var ExportEventToPdfMutation = exports.ExportEventToPdfMutation = new _graphqlRelay.mutationWithClientMutationId({
+	    name: 'ExportEventToPdf',
+	    description: 'Export an event to pdf',
+	    inputFields: {
+	        eventId: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) }
+	    },
+	    outputFields: {
+	        output: {
+	            type: _graphql.GraphQLString,
+	            resolve: function resolve(obj) {
+	                return obj.event;
+	            }
+	        }
+	    },
+	    mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
+	        var eventId = _ref3.eventId;
+
+
+	        return _database2.default.models.event.findOne({ where: { id: (0, _graphqlRelay.fromGlobalId)(eventId).id } }).then(function (event) {});
+	    }
+	});
 
 /***/ },
 /* 17 */
 /***/ function(module, exports) {
 
-	module.exports = require("jsonwebtoken");
+	module.exports = require("express-graphql");
 
 /***/ },
 /* 18 */
 /***/ function(module, exports) {
 
-	module.exports = require("body-parser");
+	module.exports = require("jsonwebtoken");
 
 /***/ },
 /* 19 */
 /***/ function(module, exports) {
 
-	module.exports = require("crypto");
+	module.exports = require("body-parser");
 
 /***/ },
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Viewer = undefined;
-	exports.registerViewer = registerViewer;
-	exports.getViewer = getViewer;
-
-	var _database = __webpack_require__(7);
-
-	var _database2 = _interopRequireDefault(_database);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Viewer = exports.Viewer = function (_Object) {
-	    _inherits(Viewer, _Object);
-
-	    function Viewer() {
-	        _classCallCheck(this, Viewer);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Viewer).apply(this, arguments));
-	    }
-
-	    return Viewer;
-	}(Object);
-
-	var VIEWER_ID = 'me';
-
-	var viewer = new Viewer();
-	viewer.id = VIEWER_ID;
-
-	var users = {};
-
-	var usersById = _defineProperty({}, VIEWER_ID, viewer);
-
-	function registerViewer(viewer) {
-
-	    if (users[viewer.id] == undefined) {
-	        users[viewer.id] = viewer;
-	    }
-	}
-
-	function getViewer(viewerId) {
-
-	    console.log("getViewer with Id : " + viewerId);
-	    console.log("getViewer : " + JSON.stringify(users[viewerId]));
-
-	    return users[viewerId] == undefined ? _database2.default.models.user.findOne({ where: { id: viewerId } }) : users[viewerId];
-	}
+	module.exports = require("crypto");
 
 /***/ }
 /******/ ]);
