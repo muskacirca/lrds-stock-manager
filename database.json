@@ -8,5 +8,8 @@
     "schema": "lrds",
     "multipleStatements": true
   },
-  "prod": {"ENV": "CLEARDB_DATABASE_URL"}
+  "prod": {
+    "driver": "mysql",
+    "ENV": "CLEARDB_DATABASE_URL"
+  }
 }
