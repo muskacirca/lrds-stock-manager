@@ -53,7 +53,7 @@ var AddEventMutation = exports.AddEventMutation = new _graphqlRelay.mutationWith
 
                 return _database2.default.models.event.findAll().then(function (events) {
 
-                    var eventToPass = void 0;
+                    var eventToPass = undefined;
                     var _iteratorNormalCompletion = true;
                     var _didIteratorError = false;
                     var _iteratorError = undefined;

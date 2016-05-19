@@ -43,12 +43,12 @@ class StockNavigationBar extends React.Component {
 
             return states.map(state => {
 
-                return  <button key={"filter-buttons-" + state.name}
+                return  <div key={"filter-buttons-" + state.name}
                                className="pointer filter-button" type="button"
                                onClick={this.onSelectFilter.bind(this, state.severity)}>
                     
                             <i className={"fa fa fa-square " + state.name} />
-                        </button>
+                        </div>
             })
     }
 
@@ -70,10 +70,10 @@ class StockNavigationBar extends React.Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="navigation-sub-row col-md-6 col-sm-6 col-xs-4">
+                        <div className="navigation-sub-row col-md-6 col-sm-6 col-xs-6">
                            <div className="row">
                                <div className="col-lg-2 col-md-2 col-sm-2 mobile-hide"><strong>Filter:</strong></div>
-                               <div className="col-lg-4 col-md-6 col-sm-6 col-xs-8">
+                               <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                                    {filterByState}
                                    <buton key={"filter-buttons-clear"}
                                           className="pointer filter-button" type="button"
@@ -82,13 +82,13 @@ class StockNavigationBar extends React.Component {
                                        <i className="fa fa-times" aria-hidden="true" />
                                    </buton>
                                </div>
-                               <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                               <div className="col-lg-4 col-md-4 col-sm-4 mobile-hide">
                                    <input type="checkbox" id="inStockCheckBox" onClick={this.toggleInStockFilter.bind(this)} value="deuxieme_checkbox" />
                                    {' '}<label htmlFor="inStockCheckBox">In stock</label>
                                </div>
                            </div>
                         </div>
-                        <div className="navigation-sub-row col-md-6 col-sm-6 col-xs-8">
+                        <div className="navigation-sub-row col-md-6 col-sm-6 col-xs-6">
                             <div className="row">
                                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2"><strong>Tags:</strong></div>
                                 <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
