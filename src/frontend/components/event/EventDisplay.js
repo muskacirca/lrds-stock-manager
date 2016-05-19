@@ -1,13 +1,15 @@
 import React from 'react'
 import Relay from 'react-relay'
 import moment from 'moment'
-import jsPDF from 'jspdf'
 
 
 import PageHeader from '../utils/forms/FormHeader'
 
 import UserService from '../utils/AuthService'
 import CommentComponent from '../utils/forms/CommentComponent'
+import  {
+    exportToPdf
+} from '../utils/PDFGenerator'
 
 import AddEventCommentMutation from '../../mutations/AddEventCommentMutation'
 
@@ -72,11 +74,28 @@ class EventDisplay extends React.Component {
         return  <span>{"from " + startDate + " to " + endDate}</span>
     }
     
-    exportToPdf() {
-        var doc = new jsPDF();
-        doc.text(20, 20, this.props.viewer.event.name);
+    displayRentedItems(doc, items) {
 
-        doc.save('Test.pdf');
+        var marginLeft = 20
+        var reservedItemTitleHeigt = 90
+
+        doc.text(marginLeft, reservedItemTitleHeigt, "Reserved items")
+        doc.setLineWidth(0.5);
+        doc.line(marginLeft, reservedItemTitleHeigt + 2, 200, reservedItemTitleHeigt + 2);
+        
+        var reservedItemsHeigt = 100
+
+        items.forEach(item => {
+
+            doc.setFontSize(14)
+            doc.text(marginLeft, reservedItemsHeigt, item.node.model.brand.name + " - " + item.node.model.name);
+            reservedItemsHeigt += 5
+        })
+    }
+    
+    
+    exportToPdf() {
+        exportToPdf(this.props.viewer.event)
     }
 
     renderHeaderToolBar() {

@@ -251,7 +251,7 @@ module.exports =
 
 	                return _database2.default.models.model.findAll().then(function (dataModels) {
 
-	                    var itemToPass = undefined;
+	                    var itemToPass = void 0;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
@@ -334,7 +334,7 @@ module.exports =
 
 	                return _database2.default.models.item.findAll().then(function (items) {
 
-	                    var itemToPass = undefined;
+	                    var itemToPass = void 0;
 	                    var _iteratorNormalCompletion2 = true;
 	                    var _didIteratorError2 = false;
 	                    var _iteratorError2 = undefined;
@@ -473,8 +473,8 @@ module.exports =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
-	var mysql_user = process.env.CLEARDB_DATABASE_USER || "lrds";
-	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "lrds";
+	var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec";
+	var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
 
 	var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
 	    pool: {
@@ -1644,7 +1644,7 @@ module.exports =
 
 	                return _database2.default.models.event.findAll().then(function (events) {
 
-	                    var eventToPass = undefined;
+	                    var eventToPass = void 0;
 	                    var _iteratorNormalCompletion = true;
 	                    var _didIteratorError = false;
 	                    var _iteratorError = undefined;
