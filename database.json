@@ -14,6 +14,5 @@
     "user": {"ENV": "CLEARDB_DATABASE_USER"},
     "password": {"ENV": "CLEARDB_DATABASE_PASS"},
     "database": {"ENV": "CLEARDB_DATABASE_SCHEMA"},
-    "schema": "lrds"
   }
 }
