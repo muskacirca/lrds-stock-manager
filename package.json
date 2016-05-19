@@ -9,8 +9,8 @@
     "start": "node build/server.js",
     "update-schema": "babel-node src/tools/updateSchema.js",
     "test": "jest",
-    "update-db-dev": "./node_modules/db-migrate/bin.db-migrate up --config database.json -e dev",
-    "update-db-prod": "./node_modules/db-migrate/bin.db-migrate up --config database.json -e prod"
+    "update-db-dev": "./node_modules/db-migrate/bin/db-migrate up --config database.json -e dev",
+    "update-db-prod": "./node_modules/db-migrate/bin/db-migrate up --config database.json -e prod"
   },
   "author": "muskacirca",
   "license": "ISC",
