@@ -474,6 +474,7 @@ module.exports =
 
 	console.log("process.env.PROD_SCHEMA: " + process.env.PROD_SCHEMA);
 	console.log("process.env.PROD_USER: " + process.env.PROD_USER);
+	console.log("process.env.PROD_PASS: " + process.env.PROD_PASS);
 
 	var mysql_schema = process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
 	var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "root";
