@@ -10,9 +10,12 @@ var _sequelize2 = _interopRequireDefault(_sequelize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
-var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec";
-var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test";
+console.log("process.env.PROD_SCHEMA: " + process.env.PROD_SCHEMA);
+console.log("process.env.PROD_USER: " + process.env.PROD_USER);
+
+var mysql_schema = process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
+var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "root";
+var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "root";
 
 var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize2.default(process.env.CLEARDB_DATABASE_URL, {
     pool: {
