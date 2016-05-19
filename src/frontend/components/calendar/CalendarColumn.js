@@ -36,9 +36,10 @@ class CalendarColumn extends React.Component {
                         {dayNumber}
                     </div>
                     <div className="calendar-days-content">
-                       <ul>
-                           {events}
-                       </ul>
+                        <ul className="mobile-hide">{events}</ul>
+                        <div className="hidden-md hidden-sm hidden-lg">
+                            <span className="badge">{events.length > 0 ? events.length : null}</span>
+                        </div>
                     </div>
                 </div>
     }
