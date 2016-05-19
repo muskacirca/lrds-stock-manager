@@ -43,21 +43,21 @@ class StockNavigationBar extends React.Component {
 
             return states.map(state => {
 
-                return  <buton key={"filter-buttons-" + state.name}
+                return  <button key={"filter-buttons-" + state.name}
                                className="pointer filter-button" type="button"
                                onClick={this.onSelectFilter.bind(this, state.severity)}>
                     
                             <i className={"fa fa fa-square " + state.name} />
-                        </buton>
+                        </button>
             })
     }
 
 
     render() {
 
-        var filterByState = this.renderFilterByState()
+        let filterByState = this.renderFilterByState()
 
-        var tagRow = this.props.tags.map(function(element, key) {
+        let tagRow = this.props.tags.map(function(element, key) {
             return <li key={key} className="tag" onClick={this.onCLickTag.bind(this, element)}>{element}</li>
         }.bind(this))
 
