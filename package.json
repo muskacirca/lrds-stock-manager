@@ -48,6 +48,7 @@
     "jsonwebtoken": "^5.7.0",
     "jspdf": "git://github.com/pavestru/jsPDF.git#v0.9.1",
     "jwt-decode": "^2.0.1",
+    "lodash": "^4.12.0",
     "mysql": "^2.10.2",
     "react": "^0.14.7",
     "react-autosuggest": "^3.5.0",
