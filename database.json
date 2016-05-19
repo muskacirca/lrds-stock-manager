@@ -7,5 +7,6 @@
     "database": "lrds",
     "schema": "lrds",
     "multipleStatements": true
-  }
+  },
+  "prod": {"ENV": "CLEARDB_DATABASE_URL"}
 }

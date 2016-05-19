@@ -1,1 +1,1 @@
-web: npm run update-db && node build/server.js
+web: npm run update-db-prod && node build/server.js
