@@ -70,6 +70,25 @@
   margin-right: 0px !important;
   margin-left: 0px !important; }
 
+.calendar-event-count-wrapper {
+  position: absolute;
+  min-height: 75px; }
+
+.calendar-event-count {
+  position: absolute;
+  bottom: 0;
+  padding: 0.5em; }
+
+.calendar-event-plus-wrapper {
+  position: relative; }
+
+.calendar-event-plus {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  /* left: 15em; */
+  padding: 0.5em; }
+
 /*
   END OF CALENDAR
 */
