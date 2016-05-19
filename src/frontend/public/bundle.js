@@ -96109,6 +96109,11 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var marginLeft = 20;
+	var marginTop = 20;
+	var marginBottom = 280;
+
+	var pageLength = 190;
+
 	var reservedItemTitleHeigt = 90;
 	var reservedItemsHeight = 100;
 
@@ -96116,7 +96121,7 @@
 
 	    doc.text(marginLeft, reservedItemTitleHeigt, "Reserved items");
 	    doc.setLineWidth(0.5);
-	    doc.line(marginLeft, reservedItemTitleHeigt + 2, 200, reservedItemTitleHeigt + 2);
+	    doc.line(marginLeft, reservedItemTitleHeigt + 2, pageLength, reservedItemTitleHeigt + 2);
 
 	    var height = reservedItemsHeight;
 
@@ -96127,19 +96132,48 @@
 	    });
 	}
 
-	function renderHeader(doc, event) {
-	    doc.text(20, 20, event.name);
+	function toDataUrl(url, callback) {
+	    var xhr = new XMLHttpRequest();
+	    xhr.responseType = 'blob';
+	    xhr.onload = function () {
+	        var reader = new FileReader();
+	        reader.onloadend = function () {
+	            callback(reader.result);
+	        };
+	        reader.readAsDataURL(xhr.response);
+	    };
+	    xhr.open('GET', url);
+	    xhr.send();
+	}
+
+	function renderHeader(doc, event, image) {
+
+	    doc.addImage(image, 'JPEG', 5, 5, 37.5, 29.5);
+
+	    doc.setFontSize(40);
+	    doc.text(marginLeft + 27.5, marginTop, event.name);
+	}
+
+	function renderFooter(doc, event) {
+	    doc.text(marginLeft, marginBottom - 10, "Fait à .................. le ....................");
+	    doc.setLineWidth(0.5);
+	    doc.line(marginLeft, marginBottom, pageLength, marginBottom);
 	}
 
 	function exportToPdf(event) {
 
 	    var doc = new _jspdf2.default();
 
-	    renderHeader(doc, event);
+	    toDataUrl('/style/images/lrds-logo-300px.jpg', function (image) {
 
-	    displayRentedItems(doc, event.reservedItems.edges);
+	        renderHeader(doc, event, image);
 
-	    doc.save(event.name + '.pdf');
+	        displayRentedItems(doc, event.reservedItems.edges);
+
+	        renderFooter(doc, event);
+
+	        doc.save(event.name + '.pdf');
+	    });
 	}
 
 /***/ }
