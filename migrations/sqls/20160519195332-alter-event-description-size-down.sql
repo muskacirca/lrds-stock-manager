@@ -1,0 +1,1 @@
+ALTER TABLE events MODIFY description VARCHAR(255);
