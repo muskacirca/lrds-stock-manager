@@ -9,6 +9,15 @@
     "multipleStatements": true
   },
   "prod": {
+    "host": "localhost",
+    "driver": "mysql",
+    "user": "root",
+    "password": "root",
+    "database": "lrds",
+    "schema": "lrds",
+    "multipleStatements": true
+  },
+  "heroku": {
     "driver": "mysql",
     "host": {"ENV": "CLEARDB_DATABASE_HOST"},
     "user": {"ENV": "CLEARDB_DATABASE_USER"},
