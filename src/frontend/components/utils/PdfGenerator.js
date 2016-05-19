@@ -11,6 +11,7 @@ const reservedItemsHeight = 100;
 
 function displayRentedItems(doc, items) {
 
+    doc.setFontSize(25)
     doc.text(marginLeft, reservedItemTitleHeigt, "Reserved items");
     doc.setLineWidth(0.5);
     doc.line(marginLeft, reservedItemTitleHeigt + 2, pageLength, reservedItemTitleHeigt + 2);
@@ -50,6 +51,7 @@ function renderHeader(doc, event, image) {
 }
 
 function renderFooter(doc, event) {
+    doc.setFontSize(14)
     doc.text(marginLeft, marginBottom - 10, "Fait à .................. le ....................");
     doc.setLineWidth(0.5);
     doc.line(marginLeft, marginBottom, pageLength, marginBottom);
