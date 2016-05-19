@@ -1,4 +1,4 @@
 /* Replace with your SQL commands */
 
-UPDATE lrds.eventComments SET author = 'lrds';
-UPDATE lrds.itemComments SET author = 'lrds';
+UPDATE eventComments SET author = 'lrds';
+UPDATE itemComments SET author = 'lrds';
