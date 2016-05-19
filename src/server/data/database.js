@@ -1,8 +1,11 @@
 import Sequelize from 'sequelize'
 
-var mysql_schema = process.env.CLEARDB_DATABASE_SCHEMA || "lrds"
-var mysql_user = process.env.CLEARDB_DATABASE_USER || "greec"
-var mysql_pass = process.env.CLEARDB_DATABASE_PASS || "test"
+console.log("process.env.PROD_SCHEMA: " + process.env.PROD_SCHEMA)
+console.log("process.env.PROD_USER: " + process.env.PROD_USER)
+
+var mysql_schema =  process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "lrds"
+var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "greec"
+var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "test"
 
 
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL, {
