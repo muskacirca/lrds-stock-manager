@@ -162,7 +162,7 @@ connection.define('user', {
     enabled: _sequelize2.default.BOOLEAN
 }, { timestamps: false, tableName: 'users', freezeTableName: true });
 
-connection.sync({ force: true });
+connection.sync({ force: false });
 //    .then(() => {
 //    var studio = domain.create({name: 'STUDIO'})
 //    var scene = domain.create({name: 'SCENE'})
