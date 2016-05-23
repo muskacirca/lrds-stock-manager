@@ -489,7 +489,7 @@ module.exports =
 	        min: 1,
 	        idle: 10000
 	    }
-	}) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: "192.168.99.100",
+	}) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: mysql_url,
 	    logging: function logging(param) {
 	        param.indexOf("Executing (default):") !== -1 ? false : true;
 	    } });

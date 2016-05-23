@@ -17,7 +17,7 @@ const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequeliz
         idle: 10000
     },
 })
-    :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: "192.168.99.100",
+    :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: mysql_url,
         logging: (param) => {param.indexOf("Executing (default):") !== -1 ? false : true}})
 
 
