@@ -8,7 +8,7 @@ var mysql_schema =  process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHE
 var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "root"
 var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "root"
 
-
+console.log("database url " + process.env.CLEARDB_DATABASE_URL)
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL, {
     pool: {
         max: 5,
