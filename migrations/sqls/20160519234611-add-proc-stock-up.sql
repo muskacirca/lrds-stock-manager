@@ -159,5 +159,3 @@ CREATE PROCEDURE add_state(
     INSERT INTO states (name, severity) VALUES(name, severity);
 
   END //
-
-DELIMITER ;
