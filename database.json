@@ -17,6 +17,15 @@
     "schema": "lrds",
     "multipleStatements": true
   },
+  "docker": {
+    "host": "192.168.99.100",
+    "driver": "mysql",
+    "user": "root",
+    "password": "root",
+    "database": "lrds",
+    "schema": "lrds",
+    "multipleStatements": true
+  },
   "heroku": {
     "driver": "mysql",
     "host": {"ENV": "CLEARDB_DATABASE_HOST"},
