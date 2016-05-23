@@ -1,14 +1,15 @@
 import Sequelize from 'sequelize'
 
+console.log("process.env.PROD_URL: " + process.env.PROD_URL)
 console.log("process.env.PROD_SCHEMA: " + process.env.PROD_SCHEMA)
 console.log("process.env.PROD_USER: " + process.env.PROD_USER)
 console.log("process.env.PROD_PASS: " + process.env.PROD_PASS)
 
+var mysql_url =  process.env.PROD_URL || "localhost"
 var mysql_schema =  process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "lrds"
 var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "root"
 var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "root"
 
-console.log("database url " + process.env.CLEARDB_DATABASE_URL)
 const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequelize(process.env.CLEARDB_DATABASE_URL, {
     pool: {
         max: 5,
@@ -16,7 +17,7 @@ const connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new Sequeliz
         idle: 10000
     },
 })
-    :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: "localhost",
+    :  new Sequelize(mysql_schema, mysql_user, mysql_pass, {dialect: "mysql", host: mysql_url,
         logging: (param) => {param.indexOf("Executing (default):") !== -1 ? false : true}})
 
 
