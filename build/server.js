@@ -140,6 +140,7 @@ module.exports =
 	app.listen(server_port, function (err) {
 	    if (err) return console.log(err);
 	    console.log('Server is now running on port ' + server_port);
+	    console.log("process.env.PROD_URL: " + process.env.PROD_URL);
 	});
 
 /***/ },
