@@ -10,10 +10,12 @@ var _sequelize2 = _interopRequireDefault(_sequelize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+console.log("process.env.PROD_URL: " + process.env.PROD_URL);
 console.log("process.env.PROD_SCHEMA: " + process.env.PROD_SCHEMA);
 console.log("process.env.PROD_USER: " + process.env.PROD_USER);
 console.log("process.env.PROD_PASS: " + process.env.PROD_PASS);
 
+var mysql_url = process.env.PROD_URL || "localhost";
 var mysql_schema = process.env.PROD_SCHEMA || process.env.CLEARDB_DATABASE_SCHEMA || "lrds";
 var mysql_user = process.env.PROD_USER || process.env.CLEARDB_DATABASE_USER || "root";
 var mysql_pass = process.env.PROD_PASS || process.env.CLEARDB_DATABASE_PASS || "root";
@@ -24,7 +26,7 @@ var connection = process.env.CLEARDB_DATABASE_URL !== undefined ? new _sequelize
         min: 1,
         idle: 10000
     }
-}) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: "localhost",
+}) : new _sequelize2.default(mysql_schema, mysql_user, mysql_pass, { dialect: "mysql", host: "192.168.99.100",
     logging: function logging(param) {
         param.indexOf("Executing (default):") !== -1 ? false : true;
     } });
