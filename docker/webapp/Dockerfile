@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM debian:jessie
 
 ############################# INSTALL GIT #############################
 
@@ -32,7 +32,6 @@ WORKDIR /opt/lrds-stock-manager
 RUN npm install lodash
 RUN npm install -g db-migrate
 RUN npm install -g db-migrate-mysql
-RUN db-migrate up --config database.json -e docker
 RUN npm install
 
 # Bundle app source
@@ -41,4 +40,4 @@ COPY . /opt/lrds-stock-manager
 EXPOSE 8080
 
 WORKDIR /opt/lrds-stock-manager
-CMD [ "npm", "start" ]
+CMD db-migrate up --config database.json -e docker && npm start
