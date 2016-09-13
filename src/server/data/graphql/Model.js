@@ -55,6 +55,7 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         } else if(type === "ModelType") {
             Database.models.model.findOne({where : {id: id}})
         } else if (type === "Viewer") {
+
             return getViewer(id)
         } else {
             console.log("I'm here getting " + type + " but was not present")
@@ -392,10 +393,10 @@ export var GraphQLViewer = new GraphQLObjectType({
             },
             resolve: (obj, {date, ...args}) => {
 
-                var date = moment(date, "YYYY-MM-DD")
+                let dateNow = moment(date, "YYYY-MM-DD");
 
-                var beginOfMonth = moment(date.format("YYYY-MM") + "-01", "YYYY-MM-DD").format()
-                var endOfMonth = moment(date.format("YYYY-MM") + "-" + date.daysInMonth(), "YYYY-MM-DD").format()
+                let beginOfMonth = moment(dateNow.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();
+                let endOfMonth = moment(dateNow.format("YYYY-MM") + "-" + dateNow.daysInMonth(), "YYYY-MM-DD").format();
 
                 var queryArgs = date != null
                     ? {where: {startDate: {gte: beginOfMonth, $lte: endOfMonth}}}
@@ -456,9 +457,8 @@ export var GraphQLViewer = new GraphQLObjectType({
                 }
             },
             resolve: (functionToRetrievedViewerFromCache, {itemReference}) => {
-
-
-                var searchKey = itemReference + '%'
+                
+                let searchKey = itemReference + '%'
                 return Database.models.item.count({where: {reference: {$like: searchKey}}}).then(response => {
                     return response + 1
                 })

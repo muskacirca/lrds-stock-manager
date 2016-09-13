@@ -75,7 +75,7 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _history = __webpack_require__(939);
+	var _history = __webpack_require__(963);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56393,15 +56393,15 @@
 
 	var _event2 = _interopRequireDefault(_event);
 
-	var _EventDisplay = __webpack_require__(917);
+	var _EventDisplay = __webpack_require__(944);
 
 	var _EventDisplay2 = _interopRequireDefault(_EventDisplay);
 
-	var _EventAdmin = __webpack_require__(925);
+	var _EventAdmin = __webpack_require__(952);
 
 	var _EventAdmin2 = _interopRequireDefault(_EventAdmin);
 
-	var _login = __webpack_require__(937);
+	var _login = __webpack_require__(961);
 
 	var _login2 = _interopRequireDefault(_login);
 
@@ -75861,13 +75861,6 @@
 	            return function (RQL_0) {
 	                return {
 	                    children: [{
-	                        fieldName: 'id',
-	                        kind: 'Field',
-	                        metadata: {
-	                            isRequisite: true
-	                        },
-	                        type: 'ID'
-	                    }, {
 	                        children: [].concat.apply([], [{
 	                            fieldName: 'id',
 	                            kind: 'Field',
@@ -76205,6 +76198,14 @@
 	                            isConnection: true
 	                        },
 	                        type: 'ItemTypeConnection'
+	                    }, {
+	                        fieldName: 'id',
+	                        kind: 'Field',
+	                        metadata: {
+	                            isGenerated: true,
+	                            isRequisite: true
+	                        },
+	                        type: 'ID'
 	                    }],
 	                    id: _reactRelay2.default.QL.__id(),
 	                    kind: 'Fragment',
@@ -97200,7 +97201,7 @@
 
 	var _Calendar2 = _interopRequireDefault(_Calendar);
 
-	var _CalendarHeader = __webpack_require__(916);
+	var _CalendarHeader = __webpack_require__(943);
 
 	var _CalendarHeader2 = _interopRequireDefault(_CalendarHeader);
 
@@ -97221,7 +97222,8 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventBox).call(this, props));
 
 	        _this.state = {
-	            defaultDate: (0, _moment2.default)()
+	            defaultDate: (0, _moment2.default)(),
+	            calendarDisplayType: "month"
 	        };
 	        return _this;
 	    }
@@ -97231,7 +97233,9 @@
 	        value: function increaseCalendar() {
 	            var _this2 = this;
 
-	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).add(1, 'M');
+	            var unit = this.state.calendarDisplayType == "month" ? "M" : "w";
+	            console.log("unit : " + JSON.stringify(unit));
+	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).add(1, unit);
 
 	            this.props.relay.setVariables({
 	                date: newDisplayDate.format("YYYY-MM-DD")
@@ -97250,7 +97254,8 @@
 	        value: function subtractCalendar() {
 	            var _this3 = this;
 
-	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).subtract(1, 'M');
+	            var unit = this.state.calendarDisplayType == "month" ? "M" : "w";
+	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).subtract(1, unit);
 
 	            this.props.relay.setVariables({
 	                date: newDisplayDate.format("YYYY-MM-DD")
@@ -97284,6 +97289,11 @@
 	            });
 	        }
 	    }, {
+	        key: 'onChangeDisplayType',
+	        value: function onChangeDisplayType(type) {
+	            this.setState({ calendarDisplayType: type });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
@@ -97296,8 +97306,12 @@
 	                _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
 	                    increaseCalendar: this.increaseCalendar.bind(this),
 	                    subtractCalendar: this.subtractCalendar.bind(this),
+	                    displayType: this.state.calendarDisplayType,
+	                    onChangeDisplayType: this.onChangeDisplayType.bind(this),
 	                    getNow: this.getNow.bind(this) }),
-	                _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: events })
+	                _react2.default.createElement(_Calendar2.default, { defaultDate: date,
+	                    events: events,
+	                    displayType: this.state.calendarDisplayType })
 	            );
 	        }
 	    }]);
@@ -97310,6 +97324,8 @@
 	    initialVariables: { date: null },
 
 	    prepareVariables: function prepareVariables(prevVariables) {
+
+	        console.log("prevVariables : " + JSON.stringify(prevVariables));
 
 	        var date = prevVariables.date == null ? (0, _moment2.default)().format("YYYY-MM-DD") : prevVariables.date;
 
@@ -97463,7 +97479,9 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _CalendarColumn = __webpack_require__(915);
+	var _DateUtils = __webpack_require__(915);
+
+	var _CalendarColumn = __webpack_require__(916);
 
 	var _CalendarColumn2 = _interopRequireDefault(_CalendarColumn);
 
@@ -97492,19 +97510,16 @@
 	    }
 
 	    _createClass(Calendar, [{
-	        key: 'getDayOfWeek',
-	        value: function getDayOfWeek() {
+	        key: 'getDaysOfWeek',
+	        value: function getDaysOfWeek() {
 	            return this.state.defaultDate.format("ddd");
 	        }
 	    }, {
-	        key: 'getFirstDayOfMonth',
-	        value: function getFirstDayOfMonth() {
+	        key: 'getFirstDayOfWeek',
+	        value: function getFirstDayOfWeek() {
 
-	            var year = (0, _moment2.default)(this.state.defaultDate).year();
-	            var month = (0, _moment2.default)(this.state.defaultDate).month();
-	            var startDate = (0, _moment2.default)([year, month]);
-
-	            return startDate.format("ddd");
+	            var day = this.state.defaultDate.format("e");
+	            return this.state.defaultDate.subtract(day, 'days');
 	        }
 	    }, {
 	        key: 'getDaysInMonth',
@@ -97515,6 +97530,36 @@
 	        key: 'renderCalendar',
 	        value: function renderCalendar(blankDays) {
 
+	            return this.props.displayType === "month" ? this.renderCalendarMonth(blankDays) : this.renderCalendarWeek();
+	        }
+	    }, {
+	        key: 'renderCalendarWeek',
+	        value: function renderCalendarWeek() {
+
+	            var firstDayOfWeek = this.getFirstDayOfWeek().format("D");
+
+	            var weekRow = [];
+	            for (var day = 0; day < 7; day++) {
+
+	                var eventsOfTheDay = this.findEventsByDay(this.props.events, firstDayOfWeek);
+
+	                weekRow.push(_react2.default.createElement(_CalendarColumn2.default, { defaultDate: this.state.defaultDate,
+	                    dayNumber: firstDayOfWeek,
+	                    events: eventsOfTheDay,
+	                    key: "calendar-days-" + firstDayOfWeek }));
+
+	                firstDayOfWeek++;
+	            }
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'calendar-week-row' },
+	                weekRow
+	            );
+	        }
+	    }, {
+	        key: 'renderCalendarMonth',
+	        value: function renderCalendarMonth(blankDays) {
 	            var dayNumber = 1;
 	            var calendar = [];
 
@@ -97560,7 +97605,7 @@
 	        value: function renderBlankDays() {
 	            var blankDays = [];
 	            var i = 0;
-	            while (this.getFirstDayOfMonth() != days_name[i]) {
+	            while ((0, _DateUtils.getFirstDayOfMonth)(this.state.defaultDate, "ddd") != days_name[i]) {
 	                blankDays[i] = _react2.default.createElement('div', { className: 'calendar-row-content calendar-blank-days', key: "calendar-blank-days-" + i });
 	                i++;
 	            }
@@ -97629,10 +97674,46 @@
 	    return Calendar;
 	}(_react2.default.Component);
 
+	Calendar.propTypes = {
+	    events: _react2.default.PropTypes.array,
+	    displayType: _react2.default.PropTypes.oneOf(['month', 'week'])
+	};
+
+	Calendar.defaultProps = {
+	    defaultDate: (0, _moment2.default)(),
+	    displayType: "month"
+	};
+
 	exports.default = Calendar;
 
 /***/ },
 /* 915 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.getFirstDayOfMonth = getFirstDayOfMonth;
+
+	var _moment = __webpack_require__(766);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function getFirstDayOfMonth(date, format) {
+
+	    var year = (0, _moment2.default)(date).year();
+	    var month = (0, _moment2.default)(date).month();
+	    var startDate = (0, _moment2.default)([year, month]);
+
+	    return format ? startDate.format(format) : startDate;
+	}
+
+/***/ },
+/* 916 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97651,9 +97732,15 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _lodash = __webpack_require__(750);
+	var _slice = __webpack_require__(917);
 
-	var _lodash2 = _interopRequireDefault(_lodash);
+	var _slice2 = _interopRequireDefault(_slice);
+
+	var _concat = __webpack_require__(931);
+
+	var _concat2 = _interopRequireDefault(_concat);
+
+	var _CalendarUtils = __webpack_require__(942);
 
 	var _reactRouter = __webpack_require__(664);
 
@@ -97679,7 +97766,7 @@
 	        value: function renderEventsList(events) {
 	            var _this2 = this;
 
-	            var slicedArray = _lodash2.default.slice(events.map(function (event, key) {
+	            var slicedArray = (0, _slice2.default)(events.map(function (event, key) {
 	                return _react2.default.createElement(
 	                    'li',
 	                    { key: "calendar-event-list-" + _this2.props.dayNumber + "-" + key },
@@ -97691,7 +97778,21 @@
 	                );
 	            }), 0, 3);
 
-	            return events.length > 3 ? _lodash2.default.concat(slicedArray, "...") : slicedArray;
+	            return events.length > 3 ? (0, _concat2.default)(slicedArray, "...") : slicedArray;
+	        }
+	    }, {
+	        key: 'renderOccupation',
+	        value: function renderOccupation(events) {
+
+	            var freeTime = "";
+	            if (events) {
+	                freeTime = (0, _CalendarUtils.computeFreeTime)((0, _moment2.default)(), events);
+	            }
+	            return [_react2.default.createElement(
+	                'div',
+	                { key: 'freetime-' },
+	                freeTime
+	            )];
 	        }
 	    }, {
 	        key: 'handleEventBadgeClick',
@@ -97765,7 +97866,975 @@
 	exports.default = CalendarColumn;
 
 /***/ },
-/* 916 */
+/* 917 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseSlice = __webpack_require__(918),
+	    isIterateeCall = __webpack_require__(919),
+	    toInteger = __webpack_require__(926);
+
+	/**
+	 * Creates a slice of `array` from `start` up to, but not including, `end`.
+	 *
+	 * **Note:** This method is used instead of
+	 * [`Array#slice`](https://mdn.io/Array/slice) to ensure dense arrays are
+	 * returned.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Array
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function slice(array, start, end) {
+	  var length = array ? array.length : 0;
+	  if (!length) {
+	    return [];
+	  }
+	  if (end && typeof end != 'number' && isIterateeCall(array, start, end)) {
+	    start = 0;
+	    end = length;
+	  }
+	  else {
+	    start = start == null ? 0 : toInteger(start);
+	    end = end === undefined ? length : toInteger(end);
+	  }
+	  return baseSlice(array, start, end);
+	}
+
+	module.exports = slice;
+
+
+/***/ },
+/* 918 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.slice` without an iteratee call guard.
+	 *
+	 * @private
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function baseSlice(array, start, end) {
+	  var index = -1,
+	      length = array.length;
+
+	  if (start < 0) {
+	    start = -start > length ? 0 : (length + start);
+	  }
+	  end = end > length ? length : end;
+	  if (end < 0) {
+	    end += length;
+	  }
+	  length = start > end ? 0 : ((end - start) >>> 0);
+	  start >>>= 0;
+
+	  var result = Array(length);
+	  while (++index < length) {
+	    result[index] = array[index + start];
+	  }
+	  return result;
+	}
+
+	module.exports = baseSlice;
+
+
+/***/ },
+/* 919 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var eq = __webpack_require__(920),
+	    isArrayLike = __webpack_require__(921),
+	    isIndex = __webpack_require__(925),
+	    isObject = __webpack_require__(923);
+
+	/**
+	 * Checks if the given arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+	 *  else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	        ? (isArrayLike(object) && isIndex(index, object.length))
+	        : (type == 'string' && index in object)
+	      ) {
+	    return eq(object[index], value);
+	  }
+	  return false;
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 920 */
+/***/ function(module, exports) {
+
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 * var other = { 'a': 1 };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
+	}
+
+	module.exports = eq;
+
+
+/***/ },
+/* 921 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isFunction = __webpack_require__(922),
+	    isLength = __webpack_require__(924);
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(value.length) && !isFunction(value);
+	}
+
+	module.exports = isArrayLike;
+
+
+/***/ },
+/* 922 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(923);
+
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	module.exports = isFunction;
+
+
+/***/ },
+/* 923 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isObject;
+
+
+/***/ },
+/* 924 */
+/***/ function(module, exports) {
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	module.exports = isLength;
+
+
+/***/ },
+/* 925 */
+/***/ function(module, exports) {
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return !!length &&
+	    (typeof value == 'number' || reIsUint.test(value)) &&
+	    (value > -1 && value % 1 == 0 && value < length);
+	}
+
+	module.exports = isIndex;
+
+
+/***/ },
+/* 926 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toFinite = __webpack_require__(927);
+
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted integer.
+	 * @example
+	 *
+	 * _.toInteger(3.2);
+	 * // => 3
+	 *
+	 * _.toInteger(Number.MIN_VALUE);
+	 * // => 0
+	 *
+	 * _.toInteger(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toInteger('3.2');
+	 * // => 3
+	 */
+	function toInteger(value) {
+	  var result = toFinite(value),
+	      remainder = result % 1;
+
+	  return result === result ? (remainder ? result - remainder : result) : 0;
+	}
+
+	module.exports = toInteger;
+
+
+/***/ },
+/* 927 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var toNumber = __webpack_require__(928);
+
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0,
+	    MAX_INTEGER = 1.7976931348623157e+308;
+
+	/**
+	 * Converts `value` to a finite number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.12.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted number.
+	 * @example
+	 *
+	 * _.toFinite(3.2);
+	 * // => 3.2
+	 *
+	 * _.toFinite(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toFinite(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toFinite('3.2');
+	 * // => 3.2
+	 */
+	function toFinite(value) {
+	  if (!value) {
+	    return value === 0 ? value : 0;
+	  }
+	  value = toNumber(value);
+	  if (value === INFINITY || value === -INFINITY) {
+	    var sign = (value < 0 ? -1 : 1);
+	    return sign * MAX_INTEGER;
+	  }
+	  return value === value ? value : 0;
+	}
+
+	module.exports = toFinite;
+
+
+/***/ },
+/* 928 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(923),
+	    isSymbol = __webpack_require__(929);
+
+	/** Used as references for various `Number` constants. */
+	var NAN = 0 / 0;
+
+	/** Used to match leading and trailing whitespace. */
+	var reTrim = /^\s+|\s+$/g;
+
+	/** Used to detect bad signed hexadecimal string values. */
+	var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+	/** Used to detect binary string values. */
+	var reIsBinary = /^0b[01]+$/i;
+
+	/** Used to detect octal string values. */
+	var reIsOctal = /^0o[0-7]+$/i;
+
+	/** Built-in method references without a dependency on `root`. */
+	var freeParseInt = parseInt;
+
+	/**
+	 * Converts `value` to a number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {number} Returns the number.
+	 * @example
+	 *
+	 * _.toNumber(3.2);
+	 * // => 3.2
+	 *
+	 * _.toNumber(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toNumber(Infinity);
+	 * // => Infinity
+	 *
+	 * _.toNumber('3.2');
+	 * // => 3.2
+	 */
+	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return NAN;
+	  }
+	  if (isObject(value)) {
+	    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+	    value = isObject(other) ? (other + '') : other;
+	  }
+	  if (typeof value != 'string') {
+	    return value === 0 ? value : +value;
+	  }
+	  value = value.replace(reTrim, '');
+	  var isBinary = reIsBinary.test(value);
+	  return (isBinary || reIsOctal.test(value))
+	    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+	    : (reIsBadHex.test(value) ? NAN : +value);
+	}
+
+	module.exports = toNumber;
+
+
+/***/ },
+/* 929 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObjectLike = __webpack_require__(930);
+
+	/** `Object#toString` result references. */
+	var symbolTag = '[object Symbol]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+
+	module.exports = isSymbol;
+
+
+/***/ },
+/* 930 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 931 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var arrayPush = __webpack_require__(932),
+	    baseFlatten = __webpack_require__(933),
+	    copyArray = __webpack_require__(941),
+	    isArray = __webpack_require__(940);
+
+	/**
+	 * Creates a new array concatenating `array` with any additional arrays
+	 * and/or values.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Array
+	 * @param {Array} array The array to concatenate.
+	 * @param {...*} [values] The values to concatenate.
+	 * @returns {Array} Returns the new concatenated array.
+	 * @example
+	 *
+	 * var array = [1];
+	 * var other = _.concat(array, 2, [3], [[4]]);
+	 *
+	 * console.log(other);
+	 * // => [1, 2, 3, [4]]
+	 *
+	 * console.log(array);
+	 * // => [1]
+	 */
+	function concat() {
+	  var length = arguments.length,
+	      args = Array(length ? length - 1 : 0),
+	      array = arguments[0],
+	      index = length;
+
+	  while (index--) {
+	    args[index - 1] = arguments[index];
+	  }
+	  return length
+	    ? arrayPush(isArray(array) ? copyArray(array) : [array], baseFlatten(args, 1))
+	    : [];
+	}
+
+	module.exports = concat;
+
+
+/***/ },
+/* 932 */
+/***/ function(module, exports) {
+
+	/**
+	 * Appends the elements of `values` to `array`.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {Array} values The values to append.
+	 * @returns {Array} Returns `array`.
+	 */
+	function arrayPush(array, values) {
+	  var index = -1,
+	      length = values.length,
+	      offset = array.length;
+
+	  while (++index < length) {
+	    array[offset + index] = values[index];
+	  }
+	  return array;
+	}
+
+	module.exports = arrayPush;
+
+
+/***/ },
+/* 933 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var arrayPush = __webpack_require__(932),
+	    isFlattenable = __webpack_require__(934);
+
+	/**
+	 * The base implementation of `_.flatten` with support for restricting flattening.
+	 *
+	 * @private
+	 * @param {Array} array The array to flatten.
+	 * @param {number} depth The maximum recursion depth.
+	 * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+	 * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
+	 * @param {Array} [result=[]] The initial result value.
+	 * @returns {Array} Returns the new flattened array.
+	 */
+	function baseFlatten(array, depth, predicate, isStrict, result) {
+	  var index = -1,
+	      length = array.length;
+
+	  predicate || (predicate = isFlattenable);
+	  result || (result = []);
+
+	  while (++index < length) {
+	    var value = array[index];
+	    if (depth > 0 && predicate(value)) {
+	      if (depth > 1) {
+	        // Recursively flatten arrays (susceptible to call stack limits).
+	        baseFlatten(value, depth - 1, predicate, isStrict, result);
+	      } else {
+	        arrayPush(result, value);
+	      }
+	    } else if (!isStrict) {
+	      result[result.length] = value;
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = baseFlatten;
+
+
+/***/ },
+/* 934 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(935),
+	    isArguments = __webpack_require__(938),
+	    isArray = __webpack_require__(940);
+
+	/** Built-in value references. */
+	var spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
+
+	/**
+	 * Checks if `value` is a flattenable `arguments` object or array.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
+	 */
+	function isFlattenable(value) {
+	  return isArray(value) || isArguments(value) ||
+	    !!(spreadableSymbol && value && value[spreadableSymbol]);
+	}
+
+	module.exports = isFlattenable;
+
+
+/***/ },
+/* 935 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(936);
+
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+
+	module.exports = Symbol;
+
+
+/***/ },
+/* 936 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var freeGlobal = __webpack_require__(937);
+
+	/** Detect free variable `self`. */
+	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+	/** Used as a reference to the global object. */
+	var root = freeGlobal || freeSelf || Function('return this')();
+
+	module.exports = root;
+
+
+/***/ },
+/* 937 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
+	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+	module.exports = freeGlobal;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 938 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLikeObject = __webpack_require__(939);
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	module.exports = isArguments;
+
+
+/***/ },
+/* 939 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(921),
+	    isObjectLike = __webpack_require__(930);
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	module.exports = isArrayLikeObject;
+
+
+/***/ },
+/* 940 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 941 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copies the values of `source` to `array`.
+	 *
+	 * @private
+	 * @param {Array} source The array to copy values from.
+	 * @param {Array} [array=[]] The array to copy values to.
+	 * @returns {Array} Returns `array`.
+	 */
+	function copyArray(source, array) {
+	  var index = -1,
+	      length = source.length;
+
+	  array || (array = Array(length));
+	  while (++index < length) {
+	    array[index] = source[index];
+	  }
+	  return array;
+	}
+
+	module.exports = copyArray;
+
+
+/***/ },
+/* 942 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.computeFreeTime = computeFreeTime;
+	exports.computeDuration = computeDuration;
+
+	var _moment = __webpack_require__(766);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var WORK_HOURS = 8 * 60;
+
+	function computeFreeTime(dateOfTheDay, events) {
+
+	    var remainingWorkHours = WORK_HOURS;
+	    events.forEach(function (event) {
+
+	        var startTime = event.node.startDate;
+	        var endTime = event.node.endDate;
+
+	        var duration = computeDuration(startTime, endTime);
+	        remainingWorkHours = remainingWorkHours - duration;
+	    });
+
+	    if (remainingWorkHours > 5 * 60) {
+	        return "";
+	    } else if (remainingWorkHours <= 0) {
+	        return "FULLY BOOKED";
+	    } else {
+	        return "please call";
+	    }
+	}
+
+	function computeDuration(start, end) {
+	    return (0, _moment2.default)(end).diff(start, "minutes");
+	}
+
+/***/ },
+/* 943 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97803,7 +98872,8 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CalendarHeader).call(this, props));
 
 	        _this.state = {
-	            defaultDate: (0, _moment2.default)(_this.props.defaultDate)
+	            defaultDate: (0, _moment2.default)(_this.props.defaultDate),
+	            displayType: _this.props.displayType
 	        };
 	        return _this;
 	    }
@@ -97826,7 +98896,21 @@
 	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(newprops) {
-	            this.setState({ defaultDate: (0, _moment2.default)(newprops.defaultDate) });
+
+	            if (JSON.stringify(this.state.defaultDate) != JSON.stringify(newprops.defaultDate) || this.state.displayType != newprops.displayType) {
+
+	                console.log("changging proops in calendar header");
+	                this.setState({
+	                    defaultDate: (0, _moment2.default)(newprops.defaultDate),
+	                    displayType: newprops.displayType
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'onChangeDisplayType',
+	        value: function onChangeDisplayType(type) {
+	            this.setState({ displayType: type });
+	            this.props.onChangeDisplayType(type);
 	        }
 	    }, {
 	        key: 'goToAddEventPage',
@@ -97837,70 +98921,89 @@
 	        key: 'render',
 	        value: function render() {
 
-	            var date = (0, _moment2.default)(this.state.defaultDate).format("MMMM YYYY");
+	            console.log("this.state.displaytype : " + JSON.stringify(this.state.displayType));
+
+	            var dateFormat = this.state.displayType == "month" ? "MMMM YYYY" : "wo";
+	            var date = (0, _moment2.default)(this.state.defaultDate).format(dateFormat);
+
+	            date = this.state.displayType === "month" ? date : date + " week of the year";
 
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'sub-bar row' },
+	                { className: '' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'col-md-6 col-md-offset-2 col-sm-6 col-xs-6' },
-	                    _react2.default.createElement(
-	                        'h2',
-	                        null,
-	                        date
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'mobile-hide center sub-bar-component-centered col-md-1 col-sm-2 col-xs-5' },
+	                    { className: 'sub-bar' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'btn-group', role: 'group' },
+	                        { className: 'col-md-5 col-md-offset-2 col-sm-6 col-xs-6' },
 	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/admin/event/create' },
+	                            'h3',
+	                            { className: 'calendar-title' },
+	                            date
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'mobile-hide center sub-bar-component-centered col-md-1 col-sm-2 col-xs-5' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { id: 'authorize-div', className: 'btn-group', role: 'group' },
 	                            _react2.default.createElement(
-	                                'button',
-	                                { type: 'button', className: 'btn btn-primary' },
-	                                'Add Event'
+	                                _reactRouter.Link,
+	                                { to: '/admin/event/create' },
+	                                _react2.default.createElement(
+	                                    'button',
+	                                    { type: 'button', className: 'btn btn-primary' },
+	                                    'Add Event'
+	                                )
 	                            )
 	                        )
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'center sub-bar-component-centered col-md-2 col-sm-3 col-xs-5' },
+	                    ),
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'btn-group', role: 'group' },
+	                        { className: 'center sub-bar-component-centered col-md-1 col-sm-3 col-xs-5' },
 	                        _react2.default.createElement(
-	                            'button',
-	                            { type: 'button', className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
-	                            _react2.default.createElement('i', { className: 'fa fa-chevron-left' })
-	                        ),
+	                            'div',
+	                            { className: 'btn-group', role: 'group' },
+	                            _react2.default.createElement(
+	                                'button',
+	                                { type: 'button', className: 'btn btn-default', onClick: this.onChangeDisplayType.bind(this, "week") },
+	                                _react2.default.createElement('i', { className: 'fa fa-calendar-o', 'aria-hidden': 'true' })
+	                            ),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { type: 'button', className: 'btn btn-default', onClick: this.onChangeDisplayType.bind(this, "month") },
+	                                _react2.default.createElement('i', { className: 'fa fa-calendar', 'aria-hidden': 'true' })
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'center sub-bar-component-centered col-md-2 col-sm-3 col-xs-5' },
 	                        _react2.default.createElement(
-	                            'button',
-	                            { type: 'button', className: 'btn btn-default', onClick: this.getNow.bind(this) },
-	                            'Today'
-	                        ),
-	                        _react2.default.createElement(
-	                            'button',
-	                            { type: 'button', className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
-	                            _react2.default.createElement('i', { className: 'fa fa-chevron-right' })
+	                            'div',
+	                            { className: 'btn-group', role: 'group' },
+	                            _react2.default.createElement(
+	                                'button',
+	                                { type: 'button', className: 'btn btn-default', onClick: this.subtractCalendar.bind(this) },
+	                                _react2.default.createElement('i', { className: 'fa fa-chevron-left', 'aria-hidden': 'true' })
+	                            ),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { type: 'button', className: 'btn btn-default', onClick: this.getNow.bind(this) },
+	                                'Today'
+	                            ),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { type: 'button', className: 'btn btn-default', onClick: this.increaseCalendar.bind(this) },
+	                                _react2.default.createElement('i', { className: 'fa fa-chevron-right', 'aria-hidden': 'true' })
+	                            )
 	                        )
 	                    )
 	                )
 	            );
 	        }
-
-	        // <div className="sub-bar-component-centered col-md-1 col-sm-2 col-xs-1">
-	        //
-	        // </div>
-	        // <div className="sub-bar-component-centered col-md-1 col-sm-2 col-xs-1">
-	        //
-	        //     </div>
-
 	    }]);
 
 	    return CalendarHeader;
@@ -97910,10 +99013,18 @@
 	    router: _react2.default.PropTypes.object.isRequired
 	};
 
+	CalendarHeader.propTypes = {
+	    displayType: _react2.default.PropTypes.oneOf(['month', 'week'])
+	};
+
+	CalendarHeader.defaultProps = {
+	    displayType: "month"
+	};
+
 	exports.default = CalendarHeader;
 
 /***/ },
-/* 917 */
+/* 944 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97948,9 +99059,9 @@
 
 	var _CommentComponent2 = _interopRequireDefault(_CommentComponent);
 
-	var _PDFGenerator = __webpack_require__(918);
+	var _PDFGenerator = __webpack_require__(945);
 
-	var _AddEventCommentMutation = __webpack_require__(924);
+	var _AddEventCommentMutation = __webpack_require__(951);
 
 	var _AddEventCommentMutation2 = _interopRequireDefault(_AddEventCommentMutation);
 
@@ -98500,7 +99611,7 @@
 	});
 
 /***/ },
-/* 918 */
+/* 945 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -98510,7 +99621,7 @@
 	});
 	exports.exportToPdf = exportToPdf;
 
-	var _jspdf = __webpack_require__(919);
+	var _jspdf = __webpack_require__(946);
 
 	var _jspdf2 = _interopRequireDefault(_jspdf);
 
@@ -98587,7 +99698,7 @@
 	}
 
 /***/ },
-/* 919 */
+/* 946 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;;(function(){
@@ -98734,7 +99845,7 @@
 	function Deflater(f){var b=new ZStream,k=Z_NO_FLUSH,g=new Uint8Array(512);"undefined"==typeof f&&(f=Z_DEFAULT_COMPRESSION);b.deflateInit(f);b.next_out=g;this.append=function(d,e){var f,a=[],p=0,j=0,m=0,u;if(d.length){b.next_in_index=0;b.next_in=d;b.avail_in=d.length;do{b.next_out_index=0;b.avail_out=512;f=b.deflate(k);if(f!=Z_OK)throw"deflating: "+b.msg;b.next_out_index&&(512==b.next_out_index?a.push(new Uint8Array(g)):a.push(new Uint8Array(g.subarray(0,b.next_out_index))));m+=b.next_out_index;e&&
 	(0<b.next_in_index&&b.next_in_index!=p)&&(e(b.next_in_index),p=b.next_in_index)}while(0<b.avail_in||0===b.avail_out);u=new Uint8Array(m);a.forEach(function(a){u.set(a,j);j+=a.length});return u}};this.flush=function(){var d,e=[],f=0,a=0,k;do{b.next_out_index=0;b.avail_out=512;d=b.deflate(Z_FINISH);if(d!=Z_STREAM_END&&d!=Z_OK)throw"deflating: "+b.msg;0<512-b.avail_out&&e.push(new Uint8Array(g.subarray(0,b.next_out_index)));a+=b.next_out_index}while(0<b.avail_in||0===b.avail_out);b.deflateEnd();k=new Uint8Array(a);
 	e.forEach(function(a){k.set(a,f);f+=a.length});return k}}
-	void function(f,b){ true?module.exports=b():"function"===typeof define?define(b):f.adler32cs=b()}(this,function(){var f="function"===typeof ArrayBuffer&&"function"===typeof Uint8Array,b=null,k;if(f){try{var g=__webpack_require__(920);"function"===typeof g.Buffer&&(b=g.Buffer)}catch(d){}k=function(a){return a instanceof ArrayBuffer||null!==b&&a instanceof b}}else k=function(){return!1};var e;e=null!==b?function(a){return(new b(a,"utf8")).toString("binary")}:function(a){return unescape(encodeURIComponent(a))};
+	void function(f,b){ true?module.exports=b():"function"===typeof define?define(b):f.adler32cs=b()}(this,function(){var f="function"===typeof ArrayBuffer&&"function"===typeof Uint8Array,b=null,k;if(f){try{var g=__webpack_require__(947);"function"===typeof g.Buffer&&(b=g.Buffer)}catch(d){}k=function(a){return a instanceof ArrayBuffer||null!==b&&a instanceof b}}else k=function(){return!1};var e;e=null!==b?function(a){return(new b(a,"utf8")).toString("binary")}:function(a){return unescape(encodeURIComponent(a))};
 	var h=function(a,b){for(var d=a&65535,e=a>>>16,f=0,g=b.length;f<g;f++)d=(d+(b.charCodeAt(f)&255))%65521,e=(e+d)%65521;return(e<<16|d)>>>0},a=function(a,b){for(var d=a&65535,e=a>>>16,f=0,g=b.length;f<g;f++)d=(d+b[f])%65521,e=(e+d)%65521;return(e<<16|d)>>>0},g={},p=function(a){if(!(this instanceof p))throw new TypeError("Constructor cannot called be as a function.");if(!isFinite(a=null==a?1:+a))throw Error("First arguments needs to be a finite number.");this.checksum=a>>>0},j=p.prototype={};j.constructor=
 	p;var m=function(a){if(!(this instanceof p))throw new TypeError("Constructor cannot called be as a function.");if(null==a)throw Error("First argument needs to be a string.");this.checksum=h(1,a.toString())};m.prototype=j;p.from=m;m=function(a){if(!(this instanceof p))throw new TypeError("Constructor cannot called be as a function.");if(null==a)throw Error("First argument needs to be a string.");a=e(a.toString());this.checksum=h(1,a)};m.prototype=j;p.fromUtf8=m;f&&(m=function(b){if(!(this instanceof
 	p))throw new TypeError("Constructor cannot called be as a function.");if(!k(b))throw Error("First argument needs to be ArrayBuffer.");b=new Uint8Array(b);return this.checksum=a(1,b)},m.prototype=j,p.fromBuffer=m);j.update=function(a){if(null==a)throw Error("First argument needs to be a string.");a=a.toString();return this.checksum=h(this.checksum,a)};j.updateUtf8=function(a){if(null==a)throw Error("First argument needs to be a string.");a=e(a.toString());return this.checksum=h(this.checksum,a)};f&&
@@ -98744,7 +99855,7 @@
 
 
 /***/ },
-/* 920 */
+/* 947 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -98757,9 +99868,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(921)
-	var ieee754 = __webpack_require__(922)
-	var isArray = __webpack_require__(923)
+	var base64 = __webpack_require__(948)
+	var ieee754 = __webpack_require__(949)
+	var isArray = __webpack_require__(950)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -100296,10 +101407,10 @@
 	  return i
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(920).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(947).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 921 */
+/* 948 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -100429,7 +101540,7 @@
 
 
 /***/ },
-/* 922 */
+/* 949 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -100519,7 +101630,7 @@
 
 
 /***/ },
-/* 923 */
+/* 950 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -100530,7 +101641,7 @@
 
 
 /***/ },
-/* 924 */
+/* 951 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -100795,7 +101906,7 @@
 	exports.default = AddEventCommentMutation;
 
 /***/ },
-/* 925 */
+/* 952 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -100816,7 +101927,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _reactDatetime = __webpack_require__(929);
+	var _reactDatetime = __webpack_require__(953);
 
 	var _reactDatetime2 = _interopRequireDefault(_reactDatetime);
 
@@ -100828,7 +101939,7 @@
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _AddEventMutation = __webpack_require__(936);
+	var _AddEventMutation = __webpack_require__(960);
 
 	var _AddEventMutation2 = _interopRequireDefault(_AddEventMutation);
 
@@ -101377,27 +102488,24 @@
 	});
 
 /***/ },
-/* 926 */,
-/* 927 */,
-/* 928 */,
-/* 929 */
+/* 953 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var assign = __webpack_require__(930),
+	var assign = __webpack_require__(954),
 		React = __webpack_require__(2),
-		DaysView = __webpack_require__(931),
-		MonthsView = __webpack_require__(932),
-		YearsView = __webpack_require__(933),
-		TimeView = __webpack_require__(934),
+		DaysView = __webpack_require__(955),
+		MonthsView = __webpack_require__(956),
+		YearsView = __webpack_require__(957),
+		TimeView = __webpack_require__(958),
 		moment = __webpack_require__(766)
 	;
 
 	var TYPES = React.PropTypes;
 	var Datetime = React.createClass({
 		mixins: [
-			__webpack_require__(935)
+			__webpack_require__(959)
 		],
 		viewComponents: {
 			days: DaysView,
@@ -101787,7 +102895,7 @@
 
 
 /***/ },
-/* 930 */
+/* 954 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -101832,7 +102940,7 @@
 
 
 /***/ },
-/* 931 */
+/* 955 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -101974,7 +103082,7 @@
 
 
 /***/ },
-/* 932 */
+/* 956 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102051,7 +103159,7 @@
 
 
 /***/ },
-/* 933 */
+/* 957 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102124,13 +103232,13 @@
 
 
 /***/ },
-/* 934 */
+/* 958 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2),
-		assign = __webpack_require__(930);
+		assign = __webpack_require__(954);
 
 	var DOM = React.DOM;
 	var DateTimePickerTime = React.createClass({
@@ -102334,7 +103442,7 @@
 
 
 /***/ },
-/* 935 */
+/* 959 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102443,7 +103551,7 @@
 
 
 /***/ },
-/* 936 */
+/* 960 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102686,7 +103794,7 @@
 	exports.default = AddEventMutation;
 
 /***/ },
-/* 937 */
+/* 961 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102713,7 +103821,7 @@
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _Auth = __webpack_require__(938);
+	var _Auth = __webpack_require__(962);
 
 	var _Auth2 = _interopRequireDefault(_Auth);
 
@@ -102892,7 +104000,7 @@
 	exports.default = LoginBox;
 
 /***/ },
-/* 938 */
+/* 962 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -102948,7 +104056,7 @@
 	}
 
 /***/ },
-/* 939 */
+/* 963 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102989,7 +104097,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(940);
+	var _useBeforeUnload2 = __webpack_require__(964);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -103009,13 +104117,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(941);
+	var _enableBeforeUnload2 = __webpack_require__(965);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(942);
+	var _enableQueries2 = __webpack_require__(966);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -103024,7 +104132,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 940 */
+/* 964 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -103141,7 +104249,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 941 */
+/* 965 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103154,7 +104262,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(940);
+	var _useBeforeUnload = __webpack_require__(964);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -103162,7 +104270,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 942 */
+/* 966 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

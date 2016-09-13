@@ -1,6 +1,10 @@
 import React from 'react'
 import moment from 'moment';
 
+import {
+    getFirstDayOfMonth
+} from './utils/DateUtils'
+
 const days_name = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 import CalendarColumn from './CalendarColumn'
@@ -14,17 +18,14 @@ class Calendar extends React.Component {
         }
     }
 
-    getDayOfWeek() {
+    getDaysOfWeek() {
         return this.state.defaultDate.format("ddd");
     }
 
-    getFirstDayOfMonth() {
+    getFirstDayOfWeek() {
 
-        var year = moment(this.state.defaultDate).year();
-        var month = moment(this.state.defaultDate).month();
-        var startDate = moment([year, month]);
-
-        return startDate.format("ddd");
+        let day = this.state.defaultDate.format("e");
+        return  this.state.defaultDate.subtract(day, 'days');
     }
 
     getDaysInMonth() {
@@ -32,28 +33,55 @@ class Calendar extends React.Component {
     }
 
     renderCalendar(blankDays) {
+
+       return this.props.displayType === "month"
+        ? this.renderCalendarMonth(blankDays)
+           : this.renderCalendarWeek()
+    }
+    
+    renderCalendarWeek() {
         
+        let firstDayOfWeek = this.getFirstDayOfWeek().format("D");
+        
+        let weekRow = [];
+        for(let day=0; day<7; day++) {
+
+            let eventsOfTheDay = this.findEventsByDay(this.props.events, firstDayOfWeek);
+            
+            weekRow.push(<CalendarColumn defaultDate={this.state.defaultDate}
+                                         dayNumber={firstDayOfWeek}
+                                         events={eventsOfTheDay}
+                                         key={"calendar-days-" + firstDayOfWeek} />)
+            
+            firstDayOfWeek++
+        }
+
+        return <div className="calendar-week-row">{weekRow}</div>
+    }
+    
+    renderCalendarMonth(blankDays) {
         var dayNumber = 1;
         var calendar = [];
-        
+
         for(var c=0; c<6; c++) {
-            
+
             if(dayNumber > this.getDaysInMonth()) break;
-         
+
             var weekRow =  this.renderWeekRow(dayNumber, blankDays)
             calendar.push(<div className="calendar-month-row" key={"calendar-row-" + c}>{weekRow.html}</div>)
-            
+
             blankDays = [];
             dayNumber = weekRow.newDayNumber
         }
-        
+
         return calendar
     }
     
+
     fillWithBlankDays(aRowOfDays) {
-        
+
         while(aRowOfDays.length != 7) {
-            aRowOfDays.push(<div className="calendar-row-content calendar-blank-days" key={"calendar-blank-days-" + aRowOfDays.length}/>)
+            aRowOfDays.push(<div className="calendar-row-content calendar-blank-days" key={"calendar-blank-days-" + aRowOfDays.length}></div>)
         }
         return aRowOfDays
     }
@@ -65,24 +93,24 @@ class Calendar extends React.Component {
     }
 
     renderBlankDays() {
-        var blankDays = []
+        var blankDays = [];
         var i = 0;
-        while (this.getFirstDayOfMonth() != days_name[i]) {
-            blankDays[i] = <div className="calendar-row-content calendar-blank-days" key={"calendar-blank-days-" + i}/>
+        while (getFirstDayOfMonth(this.state.defaultDate, "ddd") != days_name[i]) {
+            blankDays[i] = <div className="calendar-row-content calendar-blank-days" key={"calendar-blank-days-" + i}></div>
             i++;
         }
-        
+
         return blankDays
     }
 
     findEventsByDay(events, dayNumber) {
-        
-        return events != undefined 
+
+        return events != undefined
             ?   events.filter(event => {
                     return moment(event.node.startDate).dates() == dayNumber
                 })
             : []
-        
+
     }
 
     renderWeekRow(initialDayNumber, blankDays) {
@@ -92,30 +120,30 @@ class Calendar extends React.Component {
 
         for(var c=counter ; c < 7; c++) {
             if(dayNumber > this.getDaysInMonth()) break;
-            
-            var eventsOfTheDay = this.findEventsByDay(this.props.events, dayNumber)
-            
-            blankDays.push(<CalendarColumn defaultDate={this.state.defaultDate} 
+
+            let eventsOfTheDay = this.findEventsByDay(this.props.events, dayNumber);
+
+            blankDays.push(<CalendarColumn defaultDate={this.state.defaultDate}
                                            dayNumber={dayNumber}
                                            events={eventsOfTheDay}
-                                           key={"calendar-days-" + dayNumber} />)
+                                           key={"calendar-days-" + dayNumber} />);
             dayNumber++
         }
-        
-        
+
+
 
         return {html: this.fillWithBlankDays(blankDays), newDayNumber: dayNumber}
     }
-    
+
     componentWillReceiveProps(newprops) {
         this.setState({defaultDate: newprops.defaultDate})
     }
 
     render() {
 
-        var calendarHeaderDays = this.renderCalendarHeader()
-        var blankDays = this.renderBlankDays()
-        var calendar = this.renderCalendar(blankDays)
+        var calendarHeaderDays = this.renderCalendarHeader();
+        var blankDays = this.renderBlankDays();
+        var calendar = this.renderCalendar(blankDays);
 
         return  <div>
                     <div className="calendar-month-view">
@@ -130,5 +158,15 @@ class Calendar extends React.Component {
 
 
 }
+
+Calendar.propTypes = {
+    events: React.PropTypes.array,
+    displayType:  React.PropTypes.oneOf(['month', 'week'])
+};
+
+Calendar.defaultProps = { 
+    defaultDate: moment(),
+    displayType: "month"
+};
 
 export default Calendar

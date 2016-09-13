@@ -1,0 +1,129 @@
+/*
+  CALENDAR
+*/
+
+.calendar-title {
+  padding-left: 2em;
+}
+
+.calendar-month-header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.calendar-month-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.calendar-row-content {
+  flex: 1;
+}
+
+.calendar-days-content {
+  min-height: 135px;
+
+  li {
+
+    list-style-type: none;
+
+  }
+
+  ul {
+    padding-left: 10px;
+  }
+}
+
+.center {
+  text-align: center;
+}
+
+.calendar-days-header,
+.calendar-blank-days,
+.calendar-days {
+  border: 1px solid #90A4AE;
+}
+
+.calendar-blank-days,
+.calendar-days {
+  height: 115px;
+}
+
+.calendar-days-tr-up {
+  padding-right: 5px;
+}
+
+.calendar-blank-days {
+
+}
+
+.calendar-days {
+
+}
+
+.calendar-days-header {
+  text-align: center;
+  font-size: medium;
+  padding: 5px;
+}
+
+.calendar-days-tr-up {
+  text-align: right
+}
+
+.calendar-days-tr-up {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.calendar-days-header {
+  //height: 2.5em;
+  //width: 10em;
+}
+
+.calendar-container .page-content {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.calendar-event-count-wrapper {
+  position: absolute;
+  min-height: 75px;
+}
+
+.calendar-event-count {
+  position: absolute;
+  bottom: 0;
+  padding: 0.5em;
+}
+
+.calendar-event-plus-wrapper {
+  position: relative;
+}
+
+.calendar-event-plus {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  /* left: 15em; */
+  padding: 0.5em;
+}
+
+/*
+  END OF CALENDAR
+*/
+
+/* WEEK VIEW */
+
+
+.calendar-week-row {
+  display: flex;
+  justify-content: space-around;
+
+  .calendar-blank-days,
+  .calendar-days {
+    height: auto;
+  }
+}
+
+

@@ -709,6 +709,7 @@ module.exports =
 	    } else if (type === "ModelType") {
 	        _database2.default.models.model.findOne({ where: { id: id } });
 	    } else if (type === "Viewer") {
+
 	        return (0, _UserStore.getViewer)(id);
 	    } else {
 	        console.log("I'm here getting " + type + " but was not present");
@@ -1128,10 +1129,10 @@ module.exports =
 
 	                    var args = _objectWithoutProperties(_ref6, ['date']);
 
-	                    var date = (0, _moment2.default)(date, "YYYY-MM-DD");
+	                    var dateNow = (0, _moment2.default)(date, "YYYY-MM-DD");
 
-	                    var beginOfMonth = (0, _moment2.default)(date.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();
-	                    var endOfMonth = (0, _moment2.default)(date.format("YYYY-MM") + "-" + date.daysInMonth(), "YYYY-MM-DD").format();
+	                    var beginOfMonth = (0, _moment2.default)(dateNow.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();
+	                    var endOfMonth = (0, _moment2.default)(dateNow.format("YYYY-MM") + "-" + dateNow.daysInMonth(), "YYYY-MM-DD").format();
 
 	                    var queryArgs = date != null ? { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } } : null;
 

@@ -1,0 +1,115 @@
+exports[`Calendar Display the default date in month view  1`] = `
+<div>
+  <div
+    className="calendar-month-view">
+    <div
+      className="calendar-row calendar-month-header">
+      <div
+        className="calendar-row-content calendar-days-header">
+        Mon
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Tue
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Wed
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Thu
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Fri
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Sat
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendar-month-row">
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+    </div>
+    <div
+      className="calendar-month-row" />
+    <div
+      className="calendar-month-row" />
+    <div
+      className="calendar-month-row" />
+    <div
+      className="calendar-month-row" />
+    <div
+      className="calendar-month-row">
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+      <div
+        className="calendar-row-content calendar-blank-days" />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Calendar Display the default date in week view 1`] = `
+<div>
+  <div
+    className="calendar-month-view">
+    <div
+      className="calendar-row calendar-month-header">
+      <div
+        className="calendar-row-content calendar-days-header">
+        Mon
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Tue
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Wed
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Thu
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Fri
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Sat
+      </div>
+      <div
+        className="calendar-row-content calendar-days-header">
+        Sun
+      </div>
+    </div>
+    <div
+      className="calendar-week-row" />
+  </div>
+</div>
+`;

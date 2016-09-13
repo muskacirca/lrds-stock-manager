@@ -22,7 +22,7 @@ class StockComponent extends React.Component {
             searchedText: "",
             tags: [],
             stateFilter: null,
-            filterByInStock: false 
+            filterByInStock: false
         }
     }
 
@@ -50,7 +50,7 @@ class StockComponent extends React.Component {
     }
 
     addItemToCart(reference) {
-        
+
         var addItemInCartMutation = new AddItemInCartMutation({
             viewerId: UserService.getUserId(),
             itemReference: reference,
@@ -82,7 +82,7 @@ class StockComponent extends React.Component {
                 return item.node.state.severity == severity
             })
         }
-        
+
         return items
     }
 
@@ -102,15 +102,15 @@ class StockComponent extends React.Component {
 
     render() {
 
-        var items = this.props.viewer.items.edges;
-        var filterText = this.state.searchedText.toLowerCase().replace(' ', "")
-        var filterTags = this.state.tags
-        var filterByState = this.state.stateFilter
-        
-        var inStockFilteredRows = this.filterByInStock(items)
-        var stateFilteredRow = this.filterByState(filterByState, inStockFilteredRows)
-        var tagFilteredData = filterByTag(filterTags, stateFilteredRow)
-        var filteredItems = filterByText(filterText, tagFilteredData)
+        let items = this.props.viewer.items.edges;
+        let filterText = this.state.searchedText.toLowerCase().replace(' ', "");
+        let filterTags = this.state.tags;
+        let filterByState = this.state.stateFilter;
+
+        let inStockFilteredRows = this.filterByInStock(items);
+        let stateFilteredRow = this.filterByState(filterByState, inStockFilteredRows);
+        let tagFilteredData = filterByTag(filterTags, stateFilteredRow);
+        let filteredItems = filterByText(filterText, tagFilteredData);
 
         return (
             <div>
@@ -128,7 +128,7 @@ class StockComponent extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-10 col-md-offset-1">
-                        <StockTable data={filteredItems} 
+                        <StockTable data={filteredItems}
                                     handleSelectRow={this.selectItem.bind(this)}
                                     handleAddItemToCart={this.addItemToCart.bind(this)} />
                     </div>
@@ -153,17 +153,16 @@ export default Relay.createContainer(StockComponent, {
         var severity = prevVariables.severity == null
             ? null
             : prevVariables.severity
-        
+
         return {
             ...prevVariables,
             severity: severity,
         };
     },
-    
+
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
-             id
              cart {
                 ${AddItemInCartMutation.getFragment('cart')}
              }
