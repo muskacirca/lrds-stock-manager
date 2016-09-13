@@ -65,13 +65,13 @@ class ItemFormComponent extends React.Component {
     }
 
     onFormSubmit(e) {
-        
+
         e.preventDefault()
-        
+
         var domainsToAdd = this.state.itemFeatures.domains.map(elt => elt.name)
         var subCategoriesToAdd = this.state.itemFeatures.subCategories.map(elt => elt.name)
         var commentsToAdd = this.state.itemFeatures.comments.map(elt => elt.text)
-        
+
         var addItemMutation = new AddItemMutation({
             modelName: this.state.itemFeatures.modelName,
             severity: this.state.itemFeatures.severity,
@@ -121,15 +121,15 @@ class ItemFormComponent extends React.Component {
     // FILTER //
     buildModelSuggestion(models) {
 
-        var suggestions = []
+        let suggestions = []
 
         models.edges.map(modelNode => {
 
-            var model = modelNode.node
+            let model = modelNode.node
 
-            var modelSuggestion = {name: model.name, section: model.brand.name}
+            let modelSuggestion = {name: model.name, section: model.brand.name}
 
-            var index = _.findIndex(suggestions, (o) => o.title == model.brand.name)
+            let index = _.findIndex(suggestions, (o) => o.title == model.brand.name)
             if(index === -1) {
                 suggestions.push({title: model.brand.name, suggestions: [modelSuggestion]})
             } else {
@@ -191,7 +191,7 @@ class ItemFormComponent extends React.Component {
         itemFeatures.domains.length == 0
             ? _.set(itemFeatures, "domains", [{name: suggestionValue}])
             : itemFeatures.domains.push({name: suggestionValue})
-        
+
         this.setState({itemFeatures: itemFeatures})
     }
 
@@ -220,7 +220,7 @@ class ItemFormComponent extends React.Component {
         itemFeatures.subCategories.length == 0
             ? _.set(itemFeatures, "subCategories", [{name: suggestionValue}])
             : itemFeatures.subCategories.push({name: suggestionValue})
-        
+
         this.setState({itemFeatures: itemFeatures})
     }
 
@@ -236,7 +236,7 @@ class ItemFormComponent extends React.Component {
     }
 
     handleCommentPublish(message) {
-        
+
         var comment = {
             text: message,
             createdAt: moment(),
@@ -247,7 +247,7 @@ class ItemFormComponent extends React.Component {
         itemFeatures.comments.length == 0
             ? _.set(itemFeatures, "comments", [comment])
             : itemFeatures.comments.push(comment);
-        
+
         this.setState({itemFeatures : itemFeatures})
     }
 
@@ -266,12 +266,12 @@ class ItemFormComponent extends React.Component {
         var stateList = this.renderStateList(this.props.viewer.states)
 
         var itemFormDisplay = this.state.itemFeatures.modelName !== ""
-            ? <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} /> 
+            ? <ItemFormDisplay item={{model: model, state: {severity: this.state.itemFeatures.severity}}} />
             : <ItemFormDisplay />
 
 
         return  <div className="form-horizontal">
-            
+
                     <FormHeader title="Create an item"
                                 alert={this.state.alert}
                                 onSave={this.onFormSubmit.bind(this)} />
@@ -282,7 +282,7 @@ class ItemFormComponent extends React.Component {
 
                                 <div className="col-md-6 col-sm-6 col-sm-push-6 col-md-push-6">
                                     {itemFormDisplay}
-                                    <CommentComponent comments={this.state.itemFeatures.comments} 
+                                    <CommentComponent comments={this.state.itemFeatures.comments}
                                                       handleCommentPublish={this.handleCommentPublish.bind(this)} />
                                 </div>
 
@@ -305,9 +305,9 @@ class ItemFormComponent extends React.Component {
                                         </a>
                                         <div className={"col-md-9" }>
                                             <div className={this.state.isModelFormOpened ? "" : " hide"}>
-                                                <ModelQuickForm viewer={this.props.viewer} 
+                                                <ModelQuickForm viewer={this.props.viewer}
                                                                 onAddNewModel={this.onAddNewModel.bind(this)} />
-                                        
+
                                             </div>
                                             <div className={!this.state.isModelFormOpened ? "" : " hide"}>...</div>
                                         </div>

@@ -70833,8 +70833,8 @@
 	        }
 	    }, {
 	        key: "onAddToCartClick",
-	        value: function onAddToCartClick() {
-	            this.props.handleAddItemToCart(this.props.item.reference);
+	        value: function onAddToCartClick(isInStock) {
+	            if (isInStock) this.props.handleAddItemToCart(this.props.item.reference);
 	        }
 	    }, {
 	        key: "render",
@@ -70843,6 +70843,7 @@
 	            var item = this.props.item;
 	            var isInStock = item.isInStock ? _react2.default.createElement("i", { className: "fa fa-check" }) : _react2.default.createElement("i", { className: "fa fa-times" });
 	            var state = this.computeState(item.state.severity);
+	            var actionIconClass = !item.isInStock ? "pointer-disabled" : "pointer";
 
 	            return _react2.default.createElement(
 	                "tr",
@@ -70880,7 +70881,7 @@
 	                        { className: "row" },
 	                        _react2.default.createElement(
 	                            "div",
-	                            { className: "pointer", onClick: this.onAddToCartClick.bind(this) },
+	                            { className: actionIconClass, onClick: this.onAddToCartClick.bind(this, item.isInStock) },
 	                            _react2.default.createElement("i", { className: "fa fa-cart-plus" })
 	                        )
 	                    )
@@ -94950,6 +94951,10 @@
 
 	var _FormHeader2 = _interopRequireDefault(_FormHeader);
 
+	var _AutosuggestWrapper = __webpack_require__(705);
+
+	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
+
 	var _AddEventMutation = __webpack_require__(749);
 
 	var _AddEventMutation2 = _interopRequireDefault(_AddEventMutation);
@@ -95061,10 +95066,39 @@
 	            });
 	        }
 	    }, {
+	        key: 'buildItemsSuggestion',
+	        value: function buildItemsSuggestion(items) {
+	            return items.map(function (item) {
+	                return { name: item.node.reference };
+	            });
+	        }
+	    }, {
+	        key: 'itemSuggestionFilter',
+	        value: function itemSuggestionFilter(value, suggestions) {
+	            var inputValue = value.trim().toLowerCase();
+
+	            return suggestions.filter(function (suggest) {
+	                return suggest.name.toLowerCase().indexOf(inputValue) != -1;
+	            });
+	        }
+	    }, {
+	        key: 'onItemSuggestionSelected',
+	        value: function onItemSuggestionSelected(event, _ref) {
+	            var suggestion = _ref.suggestion;
+	            var suggestionValue = _ref.suggestionValue;
+	            var method = _ref.method;
+
+	            var reservedItems = this.state.selectedItems;
+	            reservedItems.push({ reference: suggestionValue });
+	            this.setState({ selectedItems: reservedItems });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 
 	            var reservedItems = this.renderReservedItems();
+
+	            var itemSuggestion = this.buildItemsSuggestion(this.props.viewer.items.edges);
 
 	            return _react2.default.createElement(
 	                'form',
@@ -95145,6 +95179,11 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-4' },
+	                        _react2.default.createElement(_AutosuggestWrapper2.default, {
+	                            inputText: 'Select an item ...', suggestions: itemSuggestion,
+	                            multiSection: false, suggestionFilter: this.itemSuggestionFilter.bind(this),
+	                            onSuggestionSelected: this.onItemSuggestionSelected.bind(this),
+	                            resetInputValue: true, ref: 'inputFormSearchDomain' }),
 	                        _react2.default.createElement(
 	                            'h5',
 	                            null,
@@ -95308,6 +95347,142 @@
 	                            isConnection: true
 	                        },
 	                        type: 'EventTypeConnection'
+	                    }, {
+	                        calls: [{
+	                            kind: 'Call',
+	                            metadata: {},
+	                            name: 'first',
+	                            value: {
+	                                kind: 'CallValue',
+	                                callValue: 100
+	                            }
+	                        }],
+	                        children: [{
+	                            children: [{
+	                                children: [{
+	                                    fieldName: 'reference',
+	                                    kind: 'Field',
+	                                    metadata: {},
+	                                    type: 'String'
+	                                }, {
+	                                    children: [{
+	                                        fieldName: 'name',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        fieldName: 'description',
+	                                        kind: 'Field',
+	                                        metadata: {},
+	                                        type: 'String'
+	                                    }, {
+	                                        children: [{
+	                                            fieldName: 'name',
+	                                            kind: 'Field',
+	                                            metadata: {},
+	                                            type: 'String'
+	                                        }, {
+	                                            fieldName: 'id',
+	                                            kind: 'Field',
+	                                            metadata: {
+	                                                isGenerated: true,
+	                                                isRequisite: true
+	                                            },
+	                                            type: 'ID'
+	                                        }],
+	                                        fieldName: 'brand',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            canHaveSubselections: true,
+	                                            inferredRootCallName: 'node',
+	                                            inferredPrimaryKey: 'id'
+	                                        },
+	                                        type: 'BrandType'
+	                                    }, {
+	                                        fieldName: 'id',
+	                                        kind: 'Field',
+	                                        metadata: {
+	                                            isGenerated: true,
+	                                            isRequisite: true
+	                                        },
+	                                        type: 'ID'
+	                                    }],
+	                                    fieldName: 'model',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        canHaveSubselections: true,
+	                                        inferredRootCallName: 'node',
+	                                        inferredPrimaryKey: 'id'
+	                                    },
+	                                    type: 'ModelType'
+	                                }, {
+	                                    fieldName: 'id',
+	                                    kind: 'Field',
+	                                    metadata: {
+	                                        isGenerated: true,
+	                                        isRequisite: true
+	                                    },
+	                                    type: 'ID'
+	                                }],
+	                                fieldName: 'node',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    canHaveSubselections: true,
+	                                    inferredRootCallName: 'node',
+	                                    inferredPrimaryKey: 'id',
+	                                    isRequisite: true
+	                                },
+	                                type: 'ItemType'
+	                            }, {
+	                                fieldName: 'cursor',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'String'
+	                            }],
+	                            fieldName: 'edges',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isPlural: true
+	                            },
+	                            type: 'ItemTypeEdge'
+	                        }, {
+	                            children: [{
+	                                fieldName: 'hasNextPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }, {
+	                                fieldName: 'hasPreviousPage',
+	                                kind: 'Field',
+	                                metadata: {
+	                                    isGenerated: true,
+	                                    isRequisite: true
+	                                },
+	                                type: 'Boolean'
+	                            }],
+	                            fieldName: 'pageInfo',
+	                            kind: 'Field',
+	                            metadata: {
+	                                canHaveSubselections: true,
+	                                isGenerated: true,
+	                                isRequisite: true
+	                            },
+	                            type: 'PageInfo'
+	                        }],
+	                        fieldName: 'items',
+	                        kind: 'Field',
+	                        metadata: {
+	                            canHaveSubselections: true,
+	                            isConnection: true
+	                        },
+	                        type: 'ItemTypeConnection'
 	                    }, {
 	                        fieldName: 'id',
 	                        kind: 'Field',

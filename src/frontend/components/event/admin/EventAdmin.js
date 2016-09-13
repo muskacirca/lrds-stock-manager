@@ -3,6 +3,7 @@ import Relay from 'react-relay'
 import DatePicker from 'react-datepicker'
 
 import FormHeader from '../../utils/forms/FormHeader'
+import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
 
 import AddEventMutation from '../../../mutations/AddEventMutation'
 import UserService from '../../utils/AuthService'
@@ -21,7 +22,7 @@ class EventAdmin extends React.Component {
 
     handleChange(fieldRef, date) {
 
-        
+
         if(fieldRef.indexOf("Start") != -1) {
             this.setState({startDate: date})
         } else {
@@ -47,7 +48,7 @@ class EventAdmin extends React.Component {
 
 
         var computedReservedItems = this.computeReservedItemds(this.state.selectedItems)
-        
+
         var addEventMutation = new AddEventMutation({
             viewer: this.props.viewer,
             userId: UserService.getUserId(),
@@ -64,37 +65,60 @@ class EventAdmin extends React.Component {
         }
 
         var onFailure = (transaction) => this.updateAlert("An error occurred when adding new event", "error");
-        
+
         Relay.Store.commitUpdate(addEventMutation, {onSuccess, onFailure})
     }
 
     computeReservedItemds(items)  {
         return items.map(item => item.reference)
     }
-    
+
     updateAlert(message, type) {
         var alert = {message: message, type: type}
         this.setState({alert: alert})
     }
-    
+
     renderReservedItems() {
         return this.state.selectedItems.map(item => {
             return <li className="list-group-item" key={"event-reserved-items-" + item.reference}>{item.reference}</li>
         })
     }
-    
+
+    buildItemsSuggestion(items) {
+        return items.map(item => {
+            return {name: item.node.reference}
+        })
+    }
+
+
+    itemSuggestionFilter(value, suggestions) {
+        const inputValue = value.trim().toLowerCase();
+
+        return suggestions.filter(suggest => {
+            return suggest.name.toLowerCase().indexOf(inputValue) != -1
+        })
+    }
+
+    onItemSuggestionSelected(event, { suggestion, suggestionValue, method }) {
+        let reservedItems = this.state.selectedItems;
+        reservedItems.push({reference: suggestionValue})
+        this.setState({selectedItems: reservedItems})
+    }
+
     render() {
-        
-        var reservedItems = this.renderReservedItems()
+
+        let reservedItems = this.renderReservedItems();
+
+        let itemSuggestion = this.buildItemsSuggestion(this.props.viewer.items.edges);
 
         return  <form className="form-horizontal" name="addNewEventForm">
-            
+
                     <FormHeader title="Create an event"
                                 alert={this.state.alert}
                                 onSave={this.onAddEvent.bind(this)} />
-            
+
                     <div className="page-content row">
-                        <div className="col-md-6 col-md-offset-1">                            
+                        <div className="col-md-6 col-md-offset-1">
                                 <div className="form-group">
                                     <label htmlFor="inputFormEventName" className="col-md-3 control-label">name</label>
                                     <div className="col-md-9">
@@ -130,6 +154,12 @@ class EventAdmin extends React.Component {
                                 </div>
                         </div>
                         <div className="col-md-4">
+                            <AutosuggestWrapper
+                                inputText="Select an item ..." suggestions={itemSuggestion}
+                                multiSection={false} suggestionFilter={this.itemSuggestionFilter.bind(this)}
+                                onSuggestionSelected={this.onItemSuggestionSelected.bind(this)}
+                                resetInputValue={true} ref="inputFormSearchDomain"/>
+
                             <h5>Selected items</h5>
                             <ul className="list-group">
                                 {reservedItems}
@@ -153,7 +183,7 @@ export default Relay.createContainer(EventAdmin, {
             viewerId: UserService.getUserId() + "",
         };
     },
-    
+
     fragments: {
         viewer: () => Relay.QL`
           fragment on Viewer {
@@ -169,6 +199,20 @@ export default Relay.createContainer(EventAdmin, {
                         name
                     }
                 } 
+            }
+            items(first: 100) {
+                edges {
+                    node {
+                        reference
+                        model {
+                            name
+                            description
+                            brand {
+                                name
+                            }
+                        } 
+                    }
+                }
             }
           }
         `

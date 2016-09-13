@@ -23,16 +23,18 @@ class StockTableRow extends React.Component {
         this.props.handleRowClick(this.props.item.reference)
     }
 
-    onAddToCartClick() {
-        this.props.handleAddItemToCart(this.props.item.reference)
+    onAddToCartClick(isInStock) {
+        if(isInStock) this.props.handleAddItemToCart(this.props.item.reference)
     }
 
     render() {
 
-        var item = this.props.item;
-        var isInStock = item.isInStock ? <i className="fa fa-check" /> : <i className="fa fa-times" />
-        var state = this.computeState(item.state.severity)
+        let item = this.props.item;
+        let isInStock = item.isInStock ? <i className="fa fa-check" /> : <i className="fa fa-times" />;
+        let state = this.computeState(item.state.severity);
+        let actionIconClass = !item.isInStock ? "pointer-disabled" : "pointer";
 
+        
         return  <tr>
                     <td className="pointer" onClick={this.handleRowClick.bind(this)}>{state}</td>
                     <td>{item.model.name}</td>
@@ -41,8 +43,8 @@ class StockTableRow extends React.Component {
                     <td>{isInStock}</td>
                     <td>
                         <div className="row">
-                            <div className="pointer" onClick={this.onAddToCartClick.bind(this)}>
-                                <i className="fa fa-cart-plus"></i>
+                            <div className={actionIconClass} onClick={this.onAddToCartClick.bind(this, item.isInStock)}>
+                                <i className="fa fa-cart-plus" />
                             </div>
                         </div>
 
