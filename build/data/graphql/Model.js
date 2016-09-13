@@ -40,18 +40,13 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     var id = _fromGlobalId2.id;
     var type = _fromGlobalId2.type;
 
-    console.log("globalId of " + type + " : " + globalId);
-    console.log("id of " + type + " : " + id);
-
+    console.log("retrieving " + type + " from graphql node interface");
     if (type === 'ItemType') {
-        console.log("Im here getting ItemType");
         return _database2.default.models.item.findOne({ where: { id: id } });
     } else if (type === "EventType") {
-        console.log("Im here getting EventType");
         return _database2.default.models.event.findOne({ where: { id: id } });
     } else if (type === "ModelType") {
-        console.log("Im here getting ModelType");
-        _database2.default.models.modem.findOne({ where: { id: id } });
+        _database2.default.models.model.findOne({ where: { id: id } });
     } else if (type === "Viewer") {
         return (0, _UserStore.getViewer)(id);
     } else {
@@ -59,20 +54,14 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
     }
     return null;
 }, function (obj) {
-
-    console.log("in interface obj: " + JSON.stringify(obj));
-
+    console.log("retrieving " + type + " from graphql node interface 2");
     if (obj.password != undefined) {
-        console.log("getting by object ViewerType");
         return GraphQLViewer;
     } else if (obj.reference != undefined) {
-        console.log("getting by object ItemType");
         return GraphQLItemType;
     } else if (obj.brand != undefined) {
-        console.log("getiing by object Modeltype");
         return GraphQLModelType;
     } else if (obj.startDate != undefined) {
-        console.log("getting by object EventType");
         return EventType;
     }
 });

@@ -26,9 +26,6 @@ function isItemInStock(eventIds) {
     };
 
     return _database2.default.models.event.findAll(args).then(function (event) {
-        if (event.length > 0) {
-            return false;
-        }
-        return true;
+        return event.length <= 0;
     });
 }

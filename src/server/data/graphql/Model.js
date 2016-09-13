@@ -47,18 +47,13 @@ import moment from 'moment'
 var { nodeInterface, nodeField } = nodeDefinitions(
     (globalId) => {
         let { id, type } = fromGlobalId(globalId);
-        console.log("globalId of " + type + " : " + globalId)
-        console.log("id of " + type + " : " + id)
-        
+        console.log("retrieving " + type + " from graphql node interface");
         if (type === 'ItemType') {
-            console.log("Im here getting ItemType")
             return Database.models.item.findOne({where: {id: id}});
         } else if(type === "EventType") {
-            console.log("Im here getting EventType")
             return Database.models.event.findOne({where: {id: id}})
         } else if(type === "ModelType") {
-            console.log("Im here getting ModelType")
-            Database.models.modem.findOne({where : {id: id}})
+            Database.models.model.findOne({where : {id: id}})
         } else if (type === "Viewer") {
             return getViewer(id)
         } else {
@@ -67,20 +62,14 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         return null;
     },
     (obj) => {
-
-        console.log("in interface obj: " + JSON.stringify(obj))
-
+        console.log("retrieving " + type + " from graphql node interface 2");
         if (obj.password != undefined) {
-            console.log("getting by object ViewerType")
             return GraphQLViewer
         } else if(obj.reference != undefined) {
-            console.log("getting by object ItemType")
             return GraphQLItemType
         } else if(obj.brand != undefined) {
-            console.log("getiing by object Modeltype")
             return GraphQLModelType
         } else if(obj.startDate != undefined) {
-            console.log("getting by object EventType") 
             return EventType
         }
     }
@@ -216,7 +205,7 @@ export var GraphQLItemType = new GraphQLObjectType({
                 
                 return Database.models.reservedItems.findAll({where: {itemId: obj.id}})
                     .then(result => {
-                        var eventIds = result.map(r => r.eventId)
+                        let eventIds = result.map(r => r.eventId)
                         if(eventIds.length > 0) {
                             return isItemInStock(eventIds)
                         } else {

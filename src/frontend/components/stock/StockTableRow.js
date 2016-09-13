@@ -33,7 +33,6 @@ class StockTableRow extends React.Component {
         let isInStock = item.isInStock ? <i className="fa fa-check" /> : <i className="fa fa-times" />;
         let state = this.computeState(item.state.severity);
         let actionIconClass = !item.isInStock ? "pointer-disabled" : "pointer";
-
         
         return  <tr>
                     <td className="pointer" onClick={this.handleRowClick.bind(this)}>{state}</td>

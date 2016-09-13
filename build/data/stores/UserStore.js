@@ -50,9 +50,5 @@ function registerViewer(viewer) {
 }
 
 function getViewer(viewerId) {
-
-    console.log("getViewer with Id : " + viewerId);
-    console.log("getViewer : " + JSON.stringify(users[viewerId]));
-
     return users[viewerId] == undefined ? _database2.default.models.user.findOne({ where: { id: viewerId } }) : users[viewerId];
 }

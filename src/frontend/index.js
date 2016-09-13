@@ -1,12 +1,20 @@
 import React from 'react'
+import Relay from 'react-relay'
 import ReactDOM from 'react-dom'
-import {RelayRouter} from 'react-router-relay'
+import useRelay from 'react-router-relay';
+import {
+    Router,
+    useRouterHistory,
+    applyRouterMiddleware
+} from 'react-router'
 
 import routes from './routes/routes'
 
-import { useRouterHistory } from 'react-router'
 import { createHashHistory } from 'history'
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false })
 
-ReactDOM.render(<RelayRouter history={appHistory} routes={routes} />, document.getElementById('app'))
+ReactDOM.render(<Router render={applyRouterMiddleware(useRelay)}
+                        history={appHistory}
+                        environment={Relay.Store}
+                        routes={routes} />, document.getElementById('app'))

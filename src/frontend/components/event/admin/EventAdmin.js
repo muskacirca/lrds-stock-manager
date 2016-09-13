@@ -2,6 +2,8 @@ import React from 'react'
 import Relay from 'react-relay'
 import DatePicker from 'react-datepicker'
 
+import SingleDatePickerWrapper from '../../utils/dates/SingleDatePickerWrapper'
+
 import FormHeader from '../../utils/forms/FormHeader'
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
 
@@ -147,6 +149,8 @@ class EventAdmin extends React.Component {
                                                     placeholder="end date"
                                                     dateFormat="DD/MM/YYYY" selected={this.state.endDate}
                                                     onChange={this.handleChange.bind(this, "inputFormEndDate")} />
+
+                                        <SingleDatePickerWrapper />
                                     </div>
                                 </div>
                                 <div className="form-group">

@@ -1,11 +1,10 @@
 import Database from '../database'
 import moment from 'moment'
 
-
 export function isItemInStock(eventIds) {
 
-    var now = moment().format("YYYY-MM-DDTHH-mm-ss.SSSZ");
-    var args = {
+    let now = moment().format("YYYY-MM-DDTHH-mm-ss.SSSZ");
+    let args = {
         where: {
             $and: [
                 {id: {$in: eventIds}},
@@ -15,12 +14,6 @@ export function isItemInStock(eventIds) {
         },
         attributes: ['id']
     }
-    
-    return Database.models.event.findAll(args)
-        .then(event => {
-            if(event.length > 0) {
-                return false
-            }
-            return true
-        });    
+
+    return Database.models.event.findAll(args).then(event => event.length <= 0);
 }
