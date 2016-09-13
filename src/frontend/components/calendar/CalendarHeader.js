@@ -31,7 +31,6 @@ class CalendarHeader extends React.Component {
         if(JSON.stringify(this.state.defaultDate) != JSON.stringify(newprops.defaultDate)
             || this.state.displayType != newprops.displayType) {
 
-            console.log("changging proops in calendar header");
             this.setState({
                 defaultDate: moment(newprops.defaultDate),
                 displayType: newprops.displayType
@@ -49,9 +48,6 @@ class CalendarHeader extends React.Component {
     }
 
     render() {
-
-        
-        console.log("this.state.displaytype : " + JSON.stringify(this.state.displayType));
         
         let dateFormat = this.state.displayType == "month" ? "MMMM YYYY" : "wo";
         let date = moment(this.state.defaultDate).format(dateFormat);

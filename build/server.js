@@ -716,7 +716,6 @@ module.exports =
 	    }
 	    return null;
 	}, function (obj) {
-	    console.log("retrieving " + type + " from graphql node interface 2");
 	    if (obj.password != undefined) {
 	        return GraphQLViewer;
 	    } else if (obj.reference != undefined) {
@@ -1247,14 +1246,13 @@ module.exports =
 	            type: GraphQLViewer,
 	            args: {
 	                viewerId: {
-	                    name: 'viewerId',
 	                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
 	                }
 	            },
 	            resolve: function resolve(root, _ref10) {
 	                var viewerId = _ref10.viewerId;
 
-	                return _database2.default.models.user.findOne({ where: { id: viewerId } }).then(function (response) {
+	                return _database2.default.models.user.findById(viewerId).then(function (response) {
 	                    (0, _UserStore.registerViewer)(response);
 	                    return (0, _UserStore.getViewer)(response.id);
 	                });

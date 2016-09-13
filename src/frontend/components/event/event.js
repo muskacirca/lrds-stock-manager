@@ -18,7 +18,6 @@ class EventBox extends React.Component {
     increaseCalendar() {
 
         let unit = this.state.calendarDisplayType == "month" ? "M" : "w";
-        console.log("unit : " + JSON.stringify(unit));
         const newDisplayDate = moment(this.state.defaultDate).add(1, unit);
 
         this.props.relay.setVariables({
@@ -91,9 +90,6 @@ export default Relay.createContainer(EventBox, {
     initialVariables: {date: null},
 
     prepareVariables: prevVariables => {
-
-        console.log("prevVariables : " + JSON.stringify(prevVariables));
-        
         
         let date = prevVariables.date == null
             ? moment().format("YYYY-MM-DD")

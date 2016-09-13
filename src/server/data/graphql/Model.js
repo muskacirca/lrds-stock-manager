@@ -63,7 +63,6 @@ var { nodeInterface, nodeField } = nodeDefinitions(
         return null;
     },
     (obj) => {
-        console.log("retrieving " + type + " from graphql node interface 2");
         if (obj.password != undefined) {
             return GraphQLViewer
         } else if(obj.reference != undefined) {
@@ -203,7 +202,7 @@ export var GraphQLItemType = new GraphQLObjectType({
         isInStock: {
             type: GraphQLBoolean,
             resolve: (obj) => {
-                
+
                 return Database.models.reservedItems.findAll({where: {itemId: obj.id}})
                     .then(result => {
                         let eventIds = result.map(r => r.eventId)
@@ -212,7 +211,7 @@ export var GraphQLItemType = new GraphQLObjectType({
                         } else {
                             return true
                         }
-                        
+
                     })
             }
         },
@@ -457,8 +456,8 @@ export var GraphQLViewer = new GraphQLObjectType({
                 }
             },
             resolve: (functionToRetrievedViewerFromCache, {itemReference}) => {
-                
-                let searchKey = itemReference + '%'
+
+                let searchKey = itemReference + '%';
                 return Database.models.item.count({where: {reference: {$like: searchKey}}}).then(response => {
                     return response + 1
                 })
@@ -479,12 +478,11 @@ export var GraphQLRoot = new GraphQLObjectType({
             type: GraphQLViewer,
             args: {
                 viewerId: {
-                    name: 'viewerId',
                     type: new GraphQLNonNull(GraphQLInt)
                 }
             },
             resolve: (root, {viewerId}) => {
-                return Database.models.user.findOne({where: {id: viewerId}})
+                return Database.models.user.findById(viewerId)
                     .then(response => {
                         registerViewer(response)
                         return getViewer(response.id)

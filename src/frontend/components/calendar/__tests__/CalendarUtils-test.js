@@ -12,12 +12,10 @@ describe('Calendar', () => {
 
         let events = [
             {
-                start: {dateTime: moment("2013-02-08 08:59:26.123")},
-                end: {dateTime: moment("2013-02-08 11:00:26.123")}
+                node: {startDate: moment("2013-02-08 08:59:26.123"), endDate: moment("2013-02-08 11:00:26.123")}
             },
             {
-                start: {dateTime: moment("2013-02-08 12:30:26.123")},
-                end: {dateTime: moment("2013-02-08 14:00:26.123")}
+                node: {startDate: moment("2013-02-08 12:30:26.123"), endDate: moment("2013-02-08 14:00:26.123")},
             }];
 
 
@@ -28,8 +26,7 @@ describe('Calendar', () => {
 
         let events = [
             {
-                start: {dateTime: moment("2013-02-08 08:59:26.123")},
-                end: {dateTime: moment("2013-02-08 19:00:26.123")}
+                node: {startDate: moment("2013-02-08 08:59:26.123"), endDate: moment("2013-02-08 19:00:26.123")},
             }
         ];
 
@@ -41,20 +38,16 @@ describe('Calendar', () => {
 
         let events = [
             {
-                start: {dateTime: moment("2013-02-08 08:00:26.123")},
-                end: {dateTime: moment("2013-02-08 09:00:26.123")}
+                node: {startDate: moment("2013-02-08 08:00:26.123"), endDate: moment("2013-02-08 09:00:26.123")},
             },
             {
-                start: {dateTime: moment("2013-02-08 09:59:26.123")},
-                end: {dateTime: moment("2013-02-08 13:00:26.123")}
+                node: {startDate: moment("2013-02-08 09:59:26.123"), endDate: moment("2013-02-08 13:00:26.123")},
             },
             {
-                start: {dateTime: moment("2013-02-08 13:10:26.123")},
-                end: {dateTime: moment("2013-02-08 19:00:26.123")}
+                node: {startDate: moment("2013-02-08 13:10:26.123"), endDate: moment("2013-02-08 19:00:26.123")},
             },
             {
-                start: {dateTime: moment("2013-02-08 19:59:26.123")},
-                end: {dateTime: moment("2013-02-08 22:00:26.123")}
+                node: {startDate: moment("2013-02-08 19:59:26.123"), endDate: moment("2013-02-08 22:00:26.123")},
             }
         ];
 
@@ -66,8 +59,7 @@ describe('Calendar', () => {
 
         let events = [
             {
-                start: {dateTime: moment("2013-02-08 08:59:26.123")},
-                end: {dateTime: moment("2013-02-08 11:00:26.123")}
+                node: {startDate: moment("2013-02-08 08:59:26.123"), endDate: moment("2013-02-08 11:00:26.123")},
             }];
 
 

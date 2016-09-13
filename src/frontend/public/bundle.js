@@ -97234,7 +97234,6 @@
 	            var _this2 = this;
 
 	            var unit = this.state.calendarDisplayType == "month" ? "M" : "w";
-	            console.log("unit : " + JSON.stringify(unit));
 	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).add(1, unit);
 
 	            this.props.relay.setVariables({
@@ -97324,8 +97323,6 @@
 	    initialVariables: { date: null },
 
 	    prepareVariables: function prepareVariables(prevVariables) {
-
-	        console.log("prevVariables : " + JSON.stringify(prevVariables));
 
 	        var date = prevVariables.date == null ? (0, _moment2.default)().format("YYYY-MM-DD") : prevVariables.date;
 
@@ -98899,7 +98896,6 @@
 
 	            if (JSON.stringify(this.state.defaultDate) != JSON.stringify(newprops.defaultDate) || this.state.displayType != newprops.displayType) {
 
-	                console.log("changging proops in calendar header");
 	                this.setState({
 	                    defaultDate: (0, _moment2.default)(newprops.defaultDate),
 	                    displayType: newprops.displayType
@@ -98920,8 +98916,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-
-	            console.log("this.state.displaytype : " + JSON.stringify(this.state.displayType));
 
 	            var dateFormat = this.state.displayType == "month" ? "MMMM YYYY" : "wo";
 	            var date = (0, _moment2.default)(this.state.defaultDate).format(dateFormat);
