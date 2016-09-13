@@ -392,14 +392,15 @@ export var GraphQLViewer = new GraphQLObjectType({
             },
             resolve: (obj, {date, ...args}) => {
 
+                
+                console.log("date : " + JSON.stringify(date));
+                
                 let dateNow = moment(date, "YYYY-MM-DD");
 
                 let beginOfMonth = moment(dateNow.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();
                 let endOfMonth = moment(dateNow.format("YYYY-MM") + "-" + dateNow.daysInMonth(), "YYYY-MM-DD").format();
 
-                var queryArgs = date != null
-                    ? {where: {startDate: {gte: beginOfMonth, $lte: endOfMonth}}}
-                    : null;
+                let queryArgs = {where: {startDate: {gte: beginOfMonth, $lte: endOfMonth}}}
 
                 return connectionFromPromisedArray(Database.models.event.findAll(queryArgs), args)
             }

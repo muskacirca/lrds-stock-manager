@@ -1128,12 +1128,14 @@ module.exports =
 
 	                    var args = _objectWithoutProperties(_ref6, ['date']);
 
+	                    console.log("date : " + JSON.stringify(date));
+
 	                    var dateNow = (0, _moment2.default)(date, "YYYY-MM-DD");
 
 	                    var beginOfMonth = (0, _moment2.default)(dateNow.format("YYYY-MM") + "-01", "YYYY-MM-DD").format();
 	                    var endOfMonth = (0, _moment2.default)(dateNow.format("YYYY-MM") + "-" + dateNow.daysInMonth(), "YYYY-MM-DD").format();
 
-	                    var queryArgs = date != null ? { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } } : null;
+	                    var queryArgs = { where: { startDate: { gte: beginOfMonth, $lte: endOfMonth } } };
 
 	                    return (0, _graphqlRelay.connectionFromPromisedArray)(_database2.default.models.event.findAll(queryArgs), args);
 	                }

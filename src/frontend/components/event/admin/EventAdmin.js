@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 
-import SingleDatePickerWrapper from 'react-datetime'
+import Datetime from 'react-datetime'
 
 import FormHeader from '../../utils/forms/FormHeader'
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
@@ -135,7 +135,7 @@ class EventAdmin extends React.Component {
                                 <div className="form-group">
                                     <label htmlFor="inputFormStartDate" className="col-md-3 control-label">Start date</label>
                                     <div className="col-md-9">
-                                        <SingleDatePickerWrapper
+                                        <Datetime
                                             placeholder="end date"
                                             onChange={this.handleChange.bind(this, "inputFormStartDate")}
                                         />
@@ -144,7 +144,7 @@ class EventAdmin extends React.Component {
                                 <div className="form-group">
                                     <label htmlFor="inputFormEndDate" className="col-md-3 control-label">End date</label>
                                     <div className="col-md-9">
-                                        <SingleDatePickerWrapper
+                                        <Datetime
                                             placeholder="end date"
                                             onChange={this.handleChange.bind(this, "inputFormEndDate")} 
                                         />
@@ -194,13 +194,6 @@ export default Relay.createContainer(EventAdmin, {
                 selectedItems {
                     reference
                 }
-            }
-            events(first: 100) {
-                edges {
-                    node {
-                        name
-                    }
-                } 
             }
             items(first: 100) {
                 edges {
