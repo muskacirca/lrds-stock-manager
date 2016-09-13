@@ -1,8 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
-import DatePicker from 'react-datepicker'
 
-import SingleDatePickerWrapper from '../../utils/dates/SingleDatePickerWrapper'
+import SingleDatePickerWrapper from 'react-datetime'
 
 import FormHeader from '../../utils/forms/FormHeader'
 import AutosuggestWrapper from '../../utils/AutosuggestWrapper'
@@ -136,21 +135,20 @@ class EventAdmin extends React.Component {
                                 <div className="form-group">
                                     <label htmlFor="inputFormStartDate" className="col-md-3 control-label">Start date</label>
                                     <div className="col-md-9">
-                                        <DatePicker id="inputFormStartDate" ref="inputFormStartDate" className="form-control"
-                                                    placeholder="start date"
-                                                    dateFormat="DD/MM/YYYY" selected={this.state.startDate}
-                                                    onChange={this.handleChange.bind(this, "inputFormStartDate")} />
+                                        <SingleDatePickerWrapper
+                                            placeholder="end date"
+                                            onChange={this.handleChange.bind(this, "inputFormStartDate")}
+                                        />
                                     </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="inputFormEndDate" className="col-md-3 control-label">End date</label>
                                     <div className="col-md-9">
-                                        <DatePicker id="inputFormEndDate" ref="inputFormEndDate" className="form-control"
-                                                    placeholder="end date"
-                                                    dateFormat="DD/MM/YYYY" selected={this.state.endDate}
-                                                    onChange={this.handleChange.bind(this, "inputFormEndDate")} />
+                                        <SingleDatePickerWrapper
+                                            placeholder="end date"
+                                            onChange={this.handleChange.bind(this, "inputFormEndDate")} 
+                                        />
 
-                                        <SingleDatePickerWrapper />
                                     </div>
                                 </div>
                                 <div className="form-group">

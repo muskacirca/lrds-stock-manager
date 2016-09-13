@@ -1,14 +1,15 @@
 import React from 'react'
 
-import SingleDatePicker from 'react-dates';
+import moment from 'moment'
+import DateTime from 'react-datetime';
 
 class SingleDatePickerWrapper extends React.Component {
-    
+
   constructor(props) {
     super(props);
-      
+
     this.state = {
-      focused: false,
+      open: false,
       date: null,
     };
 
@@ -17,25 +18,20 @@ class SingleDatePickerWrapper extends React.Component {
   }
 
   onDateChange(date) {
+    console.log("date : " + JSON.stringify(date));
     this.setState({ date });
   }
 
-  onFocusChange({ focused }) {
-    this.setState({ focused });
+  onFocusChange() {
+    console.log("focus changed");
+    this.setState({open: !this.state.open });
   }
 
   render() {
     const { focused, date } = this.state;
 
     return (
-      <SingleDatePicker
-        {...this.props}
-        id="date_input"
-        date={date}
-        focused={focused}
-        onDateChange={this.onDateChange}
-        onFocusChange={this.onFocusChange}
-      />
+      <DateTime />
     );
   }
 }
