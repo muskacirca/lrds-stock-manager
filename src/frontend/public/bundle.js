@@ -75,7 +75,7 @@
 
 	var _routes2 = _interopRequireDefault(_routes);
 
-	var _history = __webpack_require__(963);
+	var _history = __webpack_require__(969);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56393,15 +56393,15 @@
 
 	var _event2 = _interopRequireDefault(_event);
 
-	var _EventDisplay = __webpack_require__(944);
+	var _EventDisplay = __webpack_require__(950);
 
 	var _EventDisplay2 = _interopRequireDefault(_EventDisplay);
 
-	var _EventAdmin = __webpack_require__(952);
+	var _EventAdmin = __webpack_require__(958);
 
 	var _EventAdmin2 = _interopRequireDefault(_EventAdmin);
 
-	var _login = __webpack_require__(961);
+	var _login = __webpack_require__(967);
 
 	var _login2 = _interopRequireDefault(_login);
 
@@ -97197,13 +97197,9 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _Calendar = __webpack_require__(914);
+	var _CalendarWrapper = __webpack_require__(914);
 
-	var _Calendar2 = _interopRequireDefault(_Calendar);
-
-	var _CalendarHeader = __webpack_require__(943);
-
-	var _CalendarHeader2 = _interopRequireDefault(_CalendarHeader);
+	var _CalendarWrapper2 = _interopRequireDefault(_CalendarWrapper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -97229,68 +97225,20 @@
 	    }
 
 	    _createClass(EventBox, [{
-	        key: 'increaseCalendar',
-	        value: function increaseCalendar() {
+	        key: 'handleDateChange',
+	        value: function handleDateChange(displayDate) {
 	            var _this2 = this;
 
-	            var unit = this.state.calendarDisplayType == "month" ? "M" : "w";
-	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).add(1, unit);
-
 	            this.props.relay.setVariables({
-	                date: newDisplayDate.format("YYYY-MM-DD")
+	                date: displayDate.format("YYYY-MM-DD")
 	            }, function (_ref) {
 	                var ready = _ref.ready;
 	                var done = _ref.done;
 	                var error = _ref.error;
 	                var aborted = _ref.aborted;
 
-	                // console.log("isLoading: " + !ready && !(done || error || aborted));
-	                _this2.setState({ defaultDate: newDisplayDate });
+	                _this2.setState({ defaultDate: displayDate });
 	            });
-	        }
-	    }, {
-	        key: 'subtractCalendar',
-	        value: function subtractCalendar() {
-	            var _this3 = this;
-
-	            var unit = this.state.calendarDisplayType == "month" ? "M" : "w";
-	            var newDisplayDate = (0, _moment2.default)(this.state.defaultDate).subtract(1, unit);
-
-	            this.props.relay.setVariables({
-	                date: newDisplayDate.format("YYYY-MM-DD")
-	            }, function (_ref2) {
-	                var ready = _ref2.ready;
-	                var done = _ref2.done;
-	                var error = _ref2.error;
-	                var aborted = _ref2.aborted;
-
-	                // console.log("isLoading: " + !ready && !(done || error || aborted));
-	                _this3.setState({ defaultDate: newDisplayDate });
-	            });
-	        }
-	    }, {
-	        key: 'getNow',
-	        value: function getNow() {
-	            var _this4 = this;
-
-	            var now = (0, _moment2.default)();
-
-	            this.props.relay.setVariables({
-	                date: now.format("YYYY-MM-DD")
-	            }, function (_ref3) {
-	                var ready = _ref3.ready;
-	                var done = _ref3.done;
-	                var error = _ref3.error;
-	                var aborted = _ref3.aborted;
-
-	                // console.log("isLoading: " + !ready && !(done || error || aborted));
-	                _this4.setState({ defaultDate: now });
-	            });
-	        }
-	    }, {
-	        key: 'onChangeDisplayType',
-	        value: function onChangeDisplayType(type) {
-	            this.setState({ calendarDisplayType: type });
 	        }
 	    }, {
 	        key: 'render',
@@ -97299,19 +97247,11 @@
 	            var date = this.state.defaultDate;
 	            var events = this.props.viewer.events.edges;
 
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'calendar-container' },
-	                _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
-	                    increaseCalendar: this.increaseCalendar.bind(this),
-	                    subtractCalendar: this.subtractCalendar.bind(this),
-	                    displayType: this.state.calendarDisplayType,
-	                    onChangeDisplayType: this.onChangeDisplayType.bind(this),
-	                    getNow: this.getNow.bind(this) }),
-	                _react2.default.createElement(_Calendar2.default, { defaultDate: date,
-	                    events: events,
-	                    displayType: this.state.calendarDisplayType })
-	            );
+	            return _react2.default.createElement(_CalendarWrapper2.default, {
+	                defaultDate: date,
+	                events: events,
+	                handleDateChange: this.handleDateChange.bind(this)
+	            });
 	        }
 	    }]);
 
@@ -97476,9 +97416,143 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _DateUtils = __webpack_require__(915);
+	var _Calendar = __webpack_require__(915);
 
-	var _CalendarColumn = __webpack_require__(916);
+	var _Calendar2 = _interopRequireDefault(_Calendar);
+
+	var _CalendarHeader = __webpack_require__(945);
+
+	var _CalendarHeader2 = _interopRequireDefault(_CalendarHeader);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	__webpack_require__(946);
+
+	var CalendarWrapper = function (_React$Component) {
+	    _inherits(CalendarWrapper, _React$Component);
+
+	    function CalendarWrapper(props) {
+	        _classCallCheck(this, CalendarWrapper);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CalendarWrapper).call(this, props));
+
+	        _this.increaseCalendar = _this.increaseCalendar.bind(_this);
+	        _this.subtractCalendar = _this.subtractCalendar.bind(_this);
+	        _this.getNow = _this.getNow.bind(_this);
+
+	        _this.state = {
+	            displayDate: _this.props.defaultDate,
+	            displayType: "month"
+	        };
+	        return _this;
+	    }
+
+	    _createClass(CalendarWrapper, [{
+	        key: 'increaseCalendar',
+	        value: function increaseCalendar() {
+	            var _this2 = this;
+
+	            var unit = this.state.displayType === "month" ? "M" : "w";
+
+	            var newDisplayDate = (0, _moment2.default)(this.state.displayDate).add(1, unit);
+	            this.setState({ displayDate: newDisplayDate }, function () {
+	                _this2.props.handleDateChange(_this2.state.displayDate);
+	            });
+	        }
+	    }, {
+	        key: 'subtractCalendar',
+	        value: function subtractCalendar() {
+	            var _this3 = this;
+
+	            var unit = this.state.displayType === "month" ? "M" : "w";
+	            var newDisplayDate = (0, _moment2.default)(this.state.displayDate).subtract(1, unit);
+	            this.setState({ displayDate: newDisplayDate }, function () {
+	                _this3.props.handleDateChange(_this3.state.displayDate);
+	            });
+	        }
+	    }, {
+	        key: 'getNow',
+	        value: function getNow() {
+	            var _this4 = this;
+
+	            this.setState({ displayDate: (0, _moment2.default)() }, function () {
+	                _this4.props.handleDateChange(_this4.state.displayDate);
+	            });
+	        }
+	    }, {
+	        key: 'onChangeDisplayType',
+	        value: function onChangeDisplayType(type) {
+	            this.setState({ displayType: type });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            var date = this.state.displayDate;
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'calendar-container' },
+	                _react2.default.createElement(_CalendarHeader2.default, { defaultDate: date,
+	                    increaseCalendar: this.increaseCalendar.bind(this),
+	                    subtractCalendar: this.subtractCalendar.bind(this),
+	                    displayType: this.state.calendarDisplayType,
+	                    onChangeDisplayType: this.onChangeDisplayType.bind(this),
+	                    getNow: this.getNow.bind(this) }),
+	                _react2.default.createElement(_Calendar2.default, { defaultDate: date, events: this.props.events, displayType: this.state.displayType })
+	            );
+	        }
+	    }]);
+
+	    return CalendarWrapper;
+	}(_react2.default.Component);
+
+	CalendarWrapper.propTypes = {
+	    defaultDate: _react2.default.PropTypes.object,
+	    events: _react2.default.PropTypes.array.isRequired,
+	    handleDateChange: _react2.default.PropTypes.func.isRequired
+	};
+
+	CalendarWrapper.defaultProps = {
+	    defaultDate: (0, _moment2.default)(),
+	    events: []
+	};
+
+	exports.default = CalendarWrapper;
+
+/***/ },
+/* 915 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _moment = __webpack_require__(766);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _DateUtils = __webpack_require__(916);
+
+	var _classnames = __webpack_require__(917);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _CalendarColumn = __webpack_require__(918);
 
 	var _CalendarColumn2 = _interopRequireDefault(_CalendarColumn);
 
@@ -97490,7 +97564,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var days_name = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+	var DAYS_NAME = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 	var Calendar = function (_React$Component) {
 	    _inherits(Calendar, _React$Component);
@@ -97519,6 +97593,14 @@
 	            return this.state.defaultDate.subtract(day, 'days');
 	        }
 	    }, {
+	        key: 'getDayLabel',
+	        value: function getDayLabel(dayOfWeek) {
+
+	            var day = this.state.defaultDate.format("e");
+	            var firstDayOfWeek = this.state.defaultDate.subtract(day, 'days');
+	            return firstDayOfWeek.add(dayOfWeek, 'days');
+	        }
+	    }, {
 	        key: 'getDaysInMonth',
 	        value: function getDaysInMonth() {
 	            return this.state.defaultDate.daysInMonth();
@@ -97534,13 +97616,17 @@
 	        value: function renderCalendarWeek() {
 
 	            var firstDayOfWeek = this.getFirstDayOfWeek().format("D");
+	            var dayLabel = this.getFirstDayOfWeek().format("dddd");
 
 	            var weekRow = [];
 	            for (var day = 0; day < 7; day++) {
 
 	                var eventsOfTheDay = this.findEventsByDay(this.props.events, firstDayOfWeek);
+	                console.log("firstDayOfWeek : " + JSON.stringify(firstDayOfWeek));
+	                var _dayLabel = this.getDayLabel(day).format("dddd");
 
 	                weekRow.push(_react2.default.createElement(_CalendarColumn2.default, { defaultDate: this.state.defaultDate,
+	                    label: _dayLabel,
 	                    dayNumber: firstDayOfWeek,
 	                    events: eventsOfTheDay,
 	                    key: "calendar-days-" + firstDayOfWeek }));
@@ -97578,46 +97664,6 @@
 	            return calendar;
 	        }
 	    }, {
-	        key: 'fillWithBlankDays',
-	        value: function fillWithBlankDays(aRowOfDays) {
-
-	            while (aRowOfDays.length != 7) {
-	                aRowOfDays.push(_react2.default.createElement('div', { className: 'calendar-row-content calendar-blank-days', key: "calendar-blank-days-" + aRowOfDays.length }));
-	            }
-	            return aRowOfDays;
-	        }
-	    }, {
-	        key: 'renderCalendarHeader',
-	        value: function renderCalendarHeader() {
-	            return days_name.map(function (day) {
-	                return _react2.default.createElement(
-	                    'div',
-	                    { className: 'calendar-row-content calendar-days-header', key: "calendar-days-header-" + day },
-	                    day
-	                );
-	            });
-	        }
-	    }, {
-	        key: 'renderBlankDays',
-	        value: function renderBlankDays() {
-	            var blankDays = [];
-	            var i = 0;
-	            while ((0, _DateUtils.getFirstDayOfMonth)(this.state.defaultDate, "ddd") != days_name[i]) {
-	                blankDays[i] = _react2.default.createElement('div', { className: 'calendar-row-content calendar-blank-days', key: "calendar-blank-days-" + i });
-	                i++;
-	            }
-
-	            return blankDays;
-	        }
-	    }, {
-	        key: 'findEventsByDay',
-	        value: function findEventsByDay(events, dayNumber) {
-
-	            return events != undefined ? events.filter(function (event) {
-	                return (0, _moment2.default)(event.node.startDate).dates() == dayNumber;
-	            }) : [];
-	        }
-	    }, {
 	        key: 'renderWeekRow',
 	        value: function renderWeekRow(initialDayNumber, blankDays) {
 
@@ -97639,6 +97685,54 @@
 	            return { html: this.fillWithBlankDays(blankDays), newDayNumber: dayNumber };
 	        }
 	    }, {
+	        key: 'fillWithBlankDays',
+	        value: function fillWithBlankDays(aRowOfDays) {
+
+	            while (aRowOfDays.length != 7) {
+	                aRowOfDays.push(_react2.default.createElement('div', { className: 'calendar-row-content calendar-blank-days', key: "calendar-blank-days-" + aRowOfDays.length }));
+	            }
+	            return aRowOfDays;
+	        }
+	    }, {
+	        key: 'renderCalendarHeader',
+	        value: function renderCalendarHeader() {
+	            if (this.props.displayType == "month") {
+	                var days = DAYS_NAME.map(function (day) {
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: 'calendar-row-content calendar-days-header', key: "calendar-days-header-" + day },
+	                        day
+	                    );
+	                });
+
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'calendar-row calendar-month-header' },
+	                    days
+	                );
+	            }
+	        }
+	    }, {
+	        key: 'renderBlankDays',
+	        value: function renderBlankDays() {
+	            var blankDays = [];
+	            var i = 0;
+	            while ((0, _DateUtils.getFirstDayOfMonth)(this.state.defaultDate, "ddd") != DAYS_NAME[i]) {
+	                blankDays[i] = _react2.default.createElement('div', { className: 'calendar-row-content calendar-blank-days', key: "calendar-blank-days-" + i });
+	                i++;
+	            }
+
+	            return blankDays;
+	        }
+	    }, {
+	        key: 'findEventsByDay',
+	        value: function findEventsByDay(events, dayNumber) {
+
+	            return events != undefined ? events.filter(function (event) {
+	                return (0, _moment2.default)(event.node.startDate).dates() == dayNumber;
+	            }) : [];
+	        }
+	    }, {
 	        key: 'componentWillReceiveProps',
 	        value: function componentWillReceiveProps(newprops) {
 	            this.setState({ defaultDate: newprops.defaultDate });
@@ -97651,19 +97745,15 @@
 	            var blankDays = this.renderBlankDays();
 	            var calendar = this.renderCalendar(blankDays);
 
+	            console.log("this.props.displayType : " + JSON.stringify(this.props.displayType));
+
+	            var calendarClass = (0, _classnames2.default)({ "calendar-month-view": this.props.displayType == "month" }, { "calendar-week-view": this.props.displayType == "week" });
+
 	            return _react2.default.createElement(
 	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'calendar-month-view' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'calendar-row calendar-month-header' },
-	                        calendarHeaderDays
-	                    ),
-	                    calendar
-	                )
+	                { className: calendarClass },
+	                calendarHeaderDays,
+	                calendar
 	            );
 	        }
 	    }]);
@@ -97684,7 +97774,7 @@
 	exports.default = Calendar;
 
 /***/ },
-/* 915 */
+/* 916 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97710,7 +97800,61 @@
 	}
 
 /***/ },
-/* 916 */
+/* 917 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 918 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -97729,15 +97873,19 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _slice = __webpack_require__(917);
+	var _slice = __webpack_require__(919);
 
 	var _slice2 = _interopRequireDefault(_slice);
 
-	var _concat = __webpack_require__(931);
+	var _concat = __webpack_require__(933);
 
 	var _concat2 = _interopRequireDefault(_concat);
 
-	var _CalendarUtils = __webpack_require__(942);
+	var _classnames = __webpack_require__(917);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _CalendarUtils = __webpack_require__(944);
 
 	var _reactRouter = __webpack_require__(664);
 
@@ -97817,7 +97965,7 @@
 
 	            var events = this.renderEventsList(this.props.events);
 
-	            var className = dayNumber == now.date() && this.props.defaultDate.month() == now.month() && this.props.defaultDate.year() == now.year() ? "red" : "";
+	            var labelClass = (0, _classnames2.default)({ "calendar-days-tr-up": true }, { "red": dayNumber == now.date() && this.props.defaultDate.month() == now.month() && this.props.defaultDate.year() == now.year() });
 
 	            var moreButton = this.props.events.length > 3 ? this.renderMoreButton() : null;
 
@@ -97826,8 +97974,8 @@
 	                { className: 'calendar-row-content calendar-days' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: className + " calendar-days-tr-up" },
-	                    dayNumber
+	                    { className: labelClass },
+	                    this.props.label ? this.props.label + ' ' + dayNumber : dayNumber
 	                ),
 	                _react2.default.createElement(
 	                    'div',
@@ -97860,15 +98008,24 @@
 	    return CalendarColumn;
 	}(_react2.default.Component);
 
+	CalendarColumn.propTypes = {
+	    label: _react2.default.PropTypes.string,
+	    displayType: _react2.default.PropTypes.oneOf(['month', 'week'])
+	};
+
+	CalendarColumn.defaultProps = {
+	    displayType: "month"
+	};
+
 	exports.default = CalendarColumn;
 
 /***/ },
-/* 917 */
+/* 919 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseSlice = __webpack_require__(918),
-	    isIterateeCall = __webpack_require__(919),
-	    toInteger = __webpack_require__(926);
+	var baseSlice = __webpack_require__(920),
+	    isIterateeCall = __webpack_require__(921),
+	    toInteger = __webpack_require__(928);
 
 	/**
 	 * Creates a slice of `array` from `start` up to, but not including, `end`.
@@ -97906,7 +98063,7 @@
 
 
 /***/ },
-/* 918 */
+/* 920 */
 /***/ function(module, exports) {
 
 	/**
@@ -97943,13 +98100,13 @@
 
 
 /***/ },
-/* 919 */
+/* 921 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(920),
-	    isArrayLike = __webpack_require__(921),
-	    isIndex = __webpack_require__(925),
-	    isObject = __webpack_require__(923);
+	var eq = __webpack_require__(922),
+	    isArrayLike = __webpack_require__(923),
+	    isIndex = __webpack_require__(927),
+	    isObject = __webpack_require__(925);
 
 	/**
 	 * Checks if the given arguments are from an iteratee call.
@@ -97979,7 +98136,7 @@
 
 
 /***/ },
-/* 920 */
+/* 922 */
 /***/ function(module, exports) {
 
 	/**
@@ -98022,11 +98179,11 @@
 
 
 /***/ },
-/* 921 */
+/* 923 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(922),
-	    isLength = __webpack_require__(924);
+	var isFunction = __webpack_require__(924),
+	    isLength = __webpack_require__(926);
 
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -98061,10 +98218,10 @@
 
 
 /***/ },
-/* 922 */
+/* 924 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(923);
+	var isObject = __webpack_require__(925);
 
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
@@ -98108,7 +98265,7 @@
 
 
 /***/ },
-/* 923 */
+/* 925 */
 /***/ function(module, exports) {
 
 	/**
@@ -98145,7 +98302,7 @@
 
 
 /***/ },
-/* 924 */
+/* 926 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -98186,7 +98343,7 @@
 
 
 /***/ },
-/* 925 */
+/* 927 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -98214,10 +98371,10 @@
 
 
 /***/ },
-/* 926 */
+/* 928 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toFinite = __webpack_require__(927);
+	var toFinite = __webpack_require__(929);
 
 	/**
 	 * Converts `value` to an integer.
@@ -98256,10 +98413,10 @@
 
 
 /***/ },
-/* 927 */
+/* 929 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toNumber = __webpack_require__(928);
+	var toNumber = __webpack_require__(930);
 
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0,
@@ -98304,11 +98461,11 @@
 
 
 /***/ },
-/* 928 */
+/* 930 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(923),
-	    isSymbol = __webpack_require__(929);
+	var isObject = __webpack_require__(925),
+	    isSymbol = __webpack_require__(931);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -98376,10 +98533,10 @@
 
 
 /***/ },
-/* 929 */
+/* 931 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(930);
+	var isObjectLike = __webpack_require__(932);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -98420,7 +98577,7 @@
 
 
 /***/ },
-/* 930 */
+/* 932 */
 /***/ function(module, exports) {
 
 	/**
@@ -98455,13 +98612,13 @@
 
 
 /***/ },
-/* 931 */
+/* 933 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayPush = __webpack_require__(932),
-	    baseFlatten = __webpack_require__(933),
-	    copyArray = __webpack_require__(941),
-	    isArray = __webpack_require__(940);
+	var arrayPush = __webpack_require__(934),
+	    baseFlatten = __webpack_require__(935),
+	    copyArray = __webpack_require__(943),
+	    isArray = __webpack_require__(942);
 
 	/**
 	 * Creates a new array concatenating `array` with any additional arrays
@@ -98503,7 +98660,7 @@
 
 
 /***/ },
-/* 932 */
+/* 934 */
 /***/ function(module, exports) {
 
 	/**
@@ -98529,11 +98686,11 @@
 
 
 /***/ },
-/* 933 */
+/* 935 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var arrayPush = __webpack_require__(932),
-	    isFlattenable = __webpack_require__(934);
+	var arrayPush = __webpack_require__(934),
+	    isFlattenable = __webpack_require__(936);
 
 	/**
 	 * The base implementation of `_.flatten` with support for restricting flattening.
@@ -98573,12 +98730,12 @@
 
 
 /***/ },
-/* 934 */
+/* 936 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(935),
-	    isArguments = __webpack_require__(938),
-	    isArray = __webpack_require__(940);
+	var Symbol = __webpack_require__(937),
+	    isArguments = __webpack_require__(940),
+	    isArray = __webpack_require__(942);
 
 	/** Built-in value references. */
 	var spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
@@ -98599,10 +98756,10 @@
 
 
 /***/ },
-/* 935 */
+/* 937 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(936);
+	var root = __webpack_require__(938);
 
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -98611,10 +98768,10 @@
 
 
 /***/ },
-/* 936 */
+/* 938 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(937);
+	var freeGlobal = __webpack_require__(939);
 
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -98626,7 +98783,7 @@
 
 
 /***/ },
-/* 937 */
+/* 939 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -98637,10 +98794,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 938 */
+/* 940 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLikeObject = __webpack_require__(939);
+	var isArrayLikeObject = __webpack_require__(941);
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -98689,11 +98846,11 @@
 
 
 /***/ },
-/* 939 */
+/* 941 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(921),
-	    isObjectLike = __webpack_require__(930);
+	var isArrayLike = __webpack_require__(923),
+	    isObjectLike = __webpack_require__(932);
 
 	/**
 	 * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -98728,7 +98885,7 @@
 
 
 /***/ },
-/* 940 */
+/* 942 */
 /***/ function(module, exports) {
 
 	/**
@@ -98760,7 +98917,7 @@
 
 
 /***/ },
-/* 941 */
+/* 943 */
 /***/ function(module, exports) {
 
 	/**
@@ -98786,7 +98943,7 @@
 
 
 /***/ },
-/* 942 */
+/* 944 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -98831,7 +98988,7 @@
 	}
 
 /***/ },
-/* 943 */
+/* 945 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -99018,7 +99175,355 @@
 	exports.default = CalendarHeader;
 
 /***/ },
-/* 944 */
+/* 946 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(947);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(949)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../../node_modules/css-loader/index.js!./../../../../../node_modules/sass-loader/index.js!./calendar-style.scss", function() {
+				var newContent = require("!!./../../../../../node_modules/css-loader/index.js!./../../../../../node_modules/sass-loader/index.js!./calendar-style.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 947 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(948)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*\n  CALENDAR\n*/\n.calendar-title {\n  padding-left: 2em; }\n\n.calendar-month-header {\n  display: flex;\n  justify-content: space-around; }\n\n.calendar-month-row {\n  display: flex;\n  justify-content: space-around; }\n\n.calendar-row-content {\n  flex: 1; }\n\n.calendar-days-content {\n  min-height: 135px; }\n  .calendar-days-content li {\n    list-style-type: none; }\n  .calendar-days-content ul {\n    padding-left: 10px; }\n\n.center {\n  text-align: center; }\n\n.calendar-days-header,\n.calendar-blank-days,\n.calendar-days {\n  border: 1px solid #90A4AE; }\n\n.calendar-blank-days,\n.calendar-days {\n  height: 115px; }\n\n.calendar-days-tr-up {\n  padding-right: 5px; }\n\n.calendar-days-header {\n  text-align: center;\n  font-size: medium;\n  padding: 5px; }\n\n.calendar-days-tr-up {\n  font-weight: bold;\n  font-size: 1.5em; }\n\n.calendar-container .page-content {\n  margin-right: 0px !important;\n  margin-left: 0px !important; }\n\n.calendar-event-count-wrapper {\n  position: absolute;\n  min-height: 75px; }\n\n.calendar-event-count {\n  position: absolute;\n  bottom: 0;\n  padding: 0.5em; }\n\n.calendar-event-plus-wrapper {\n  position: relative; }\n\n.calendar-event-plus {\n  position: absolute;\n  bottom: 0;\n  right: 0;\n  /* left: 15em; */\n  padding: 0.5em; }\n\n.calendar-month-view .calendar-days-tr-up {\n  text-align: right; }\n\n.calendar-month-view .calendar-week-row {\n  display: flex;\n  justify-content: space-around; }\n  .calendar-month-view .calendar-week-row .calendar-blank-days,\n  .calendar-month-view .calendar-week-row .calendar-days {\n    height: auto; }\n\n/*\n  END OF CALENDAR\n*/\n/* WEEK VIEW */\n.calendar-week-view {\n  display: flex; }\n  .calendar-week-view .calendar-days-tr-up {\n    text-align: left; }\n  .calendar-week-view .calendar-week-row {\n    flex: 1; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 948 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 949 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 950 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -99053,9 +99558,9 @@
 
 	var _CommentComponent2 = _interopRequireDefault(_CommentComponent);
 
-	var _PDFGenerator = __webpack_require__(945);
+	var _PDFGenerator = __webpack_require__(951);
 
-	var _AddEventCommentMutation = __webpack_require__(951);
+	var _AddEventCommentMutation = __webpack_require__(957);
 
 	var _AddEventCommentMutation2 = _interopRequireDefault(_AddEventCommentMutation);
 
@@ -99605,7 +100110,7 @@
 	});
 
 /***/ },
-/* 945 */
+/* 951 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -99615,7 +100120,7 @@
 	});
 	exports.exportToPdf = exportToPdf;
 
-	var _jspdf = __webpack_require__(946);
+	var _jspdf = __webpack_require__(952);
 
 	var _jspdf2 = _interopRequireDefault(_jspdf);
 
@@ -99692,7 +100197,7 @@
 	}
 
 /***/ },
-/* 946 */
+/* 952 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;;(function(){
@@ -99839,7 +100344,7 @@
 	function Deflater(f){var b=new ZStream,k=Z_NO_FLUSH,g=new Uint8Array(512);"undefined"==typeof f&&(f=Z_DEFAULT_COMPRESSION);b.deflateInit(f);b.next_out=g;this.append=function(d,e){var f,a=[],p=0,j=0,m=0,u;if(d.length){b.next_in_index=0;b.next_in=d;b.avail_in=d.length;do{b.next_out_index=0;b.avail_out=512;f=b.deflate(k);if(f!=Z_OK)throw"deflating: "+b.msg;b.next_out_index&&(512==b.next_out_index?a.push(new Uint8Array(g)):a.push(new Uint8Array(g.subarray(0,b.next_out_index))));m+=b.next_out_index;e&&
 	(0<b.next_in_index&&b.next_in_index!=p)&&(e(b.next_in_index),p=b.next_in_index)}while(0<b.avail_in||0===b.avail_out);u=new Uint8Array(m);a.forEach(function(a){u.set(a,j);j+=a.length});return u}};this.flush=function(){var d,e=[],f=0,a=0,k;do{b.next_out_index=0;b.avail_out=512;d=b.deflate(Z_FINISH);if(d!=Z_STREAM_END&&d!=Z_OK)throw"deflating: "+b.msg;0<512-b.avail_out&&e.push(new Uint8Array(g.subarray(0,b.next_out_index)));a+=b.next_out_index}while(0<b.avail_in||0===b.avail_out);b.deflateEnd();k=new Uint8Array(a);
 	e.forEach(function(a){k.set(a,f);f+=a.length});return k}}
-	void function(f,b){ true?module.exports=b():"function"===typeof define?define(b):f.adler32cs=b()}(this,function(){var f="function"===typeof ArrayBuffer&&"function"===typeof Uint8Array,b=null,k;if(f){try{var g=__webpack_require__(947);"function"===typeof g.Buffer&&(b=g.Buffer)}catch(d){}k=function(a){return a instanceof ArrayBuffer||null!==b&&a instanceof b}}else k=function(){return!1};var e;e=null!==b?function(a){return(new b(a,"utf8")).toString("binary")}:function(a){return unescape(encodeURIComponent(a))};
+	void function(f,b){ true?module.exports=b():"function"===typeof define?define(b):f.adler32cs=b()}(this,function(){var f="function"===typeof ArrayBuffer&&"function"===typeof Uint8Array,b=null,k;if(f){try{var g=__webpack_require__(953);"function"===typeof g.Buffer&&(b=g.Buffer)}catch(d){}k=function(a){return a instanceof ArrayBuffer||null!==b&&a instanceof b}}else k=function(){return!1};var e;e=null!==b?function(a){return(new b(a,"utf8")).toString("binary")}:function(a){return unescape(encodeURIComponent(a))};
 	var h=function(a,b){for(var d=a&65535,e=a>>>16,f=0,g=b.length;f<g;f++)d=(d+(b.charCodeAt(f)&255))%65521,e=(e+d)%65521;return(e<<16|d)>>>0},a=function(a,b){for(var d=a&65535,e=a>>>16,f=0,g=b.length;f<g;f++)d=(d+b[f])%65521,e=(e+d)%65521;return(e<<16|d)>>>0},g={},p=function(a){if(!(this instanceof p))throw new TypeError("Constructor cannot called be as a function.");if(!isFinite(a=null==a?1:+a))throw Error("First arguments needs to be a finite number.");this.checksum=a>>>0},j=p.prototype={};j.constructor=
 	p;var m=function(a){if(!(this instanceof p))throw new TypeError("Constructor cannot called be as a function.");if(null==a)throw Error("First argument needs to be a string.");this.checksum=h(1,a.toString())};m.prototype=j;p.from=m;m=function(a){if(!(this instanceof p))throw new TypeError("Constructor cannot called be as a function.");if(null==a)throw Error("First argument needs to be a string.");a=e(a.toString());this.checksum=h(1,a)};m.prototype=j;p.fromUtf8=m;f&&(m=function(b){if(!(this instanceof
 	p))throw new TypeError("Constructor cannot called be as a function.");if(!k(b))throw Error("First argument needs to be ArrayBuffer.");b=new Uint8Array(b);return this.checksum=a(1,b)},m.prototype=j,p.fromBuffer=m);j.update=function(a){if(null==a)throw Error("First argument needs to be a string.");a=a.toString();return this.checksum=h(this.checksum,a)};j.updateUtf8=function(a){if(null==a)throw Error("First argument needs to be a string.");a=e(a.toString());return this.checksum=h(this.checksum,a)};f&&
@@ -99849,7 +100354,7 @@
 
 
 /***/ },
-/* 947 */
+/* 953 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -99862,9 +100367,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(948)
-	var ieee754 = __webpack_require__(949)
-	var isArray = __webpack_require__(950)
+	var base64 = __webpack_require__(954)
+	var ieee754 = __webpack_require__(955)
+	var isArray = __webpack_require__(956)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -101401,10 +101906,10 @@
 	  return i
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(947).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(953).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 948 */
+/* 954 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -101534,7 +102039,7 @@
 
 
 /***/ },
-/* 949 */
+/* 955 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -101624,7 +102129,7 @@
 
 
 /***/ },
-/* 950 */
+/* 956 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -101635,7 +102140,7 @@
 
 
 /***/ },
-/* 951 */
+/* 957 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -101900,7 +102405,7 @@
 	exports.default = AddEventCommentMutation;
 
 /***/ },
-/* 952 */
+/* 958 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -101921,7 +102426,7 @@
 
 	var _reactRelay2 = _interopRequireDefault(_reactRelay);
 
-	var _reactDatetime = __webpack_require__(953);
+	var _reactDatetime = __webpack_require__(959);
 
 	var _reactDatetime2 = _interopRequireDefault(_reactDatetime);
 
@@ -101933,7 +102438,7 @@
 
 	var _AutosuggestWrapper2 = _interopRequireDefault(_AutosuggestWrapper);
 
-	var _AddEventMutation = __webpack_require__(960);
+	var _AddEventMutation = __webpack_require__(966);
 
 	var _AddEventMutation2 = _interopRequireDefault(_AddEventMutation);
 
@@ -102397,24 +102902,24 @@
 	});
 
 /***/ },
-/* 953 */
+/* 959 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var assign = __webpack_require__(954),
+	var assign = __webpack_require__(960),
 		React = __webpack_require__(2),
-		DaysView = __webpack_require__(955),
-		MonthsView = __webpack_require__(956),
-		YearsView = __webpack_require__(957),
-		TimeView = __webpack_require__(958),
+		DaysView = __webpack_require__(961),
+		MonthsView = __webpack_require__(962),
+		YearsView = __webpack_require__(963),
+		TimeView = __webpack_require__(964),
 		moment = __webpack_require__(766)
 	;
 
 	var TYPES = React.PropTypes;
 	var Datetime = React.createClass({
 		mixins: [
-			__webpack_require__(959)
+			__webpack_require__(965)
 		],
 		viewComponents: {
 			days: DaysView,
@@ -102804,7 +103309,7 @@
 
 
 /***/ },
-/* 954 */
+/* 960 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -102849,7 +103354,7 @@
 
 
 /***/ },
-/* 955 */
+/* 961 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -102991,7 +103496,7 @@
 
 
 /***/ },
-/* 956 */
+/* 962 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103068,7 +103573,7 @@
 
 
 /***/ },
-/* 957 */
+/* 963 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103141,13 +103646,13 @@
 
 
 /***/ },
-/* 958 */
+/* 964 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(2),
-		assign = __webpack_require__(954);
+		assign = __webpack_require__(960);
 
 	var DOM = React.DOM;
 	var DateTimePickerTime = React.createClass({
@@ -103351,7 +103856,7 @@
 
 
 /***/ },
-/* 959 */
+/* 965 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103460,7 +103965,7 @@
 
 
 /***/ },
-/* 960 */
+/* 966 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103703,7 +104208,7 @@
 	exports.default = AddEventMutation;
 
 /***/ },
-/* 961 */
+/* 967 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -103730,7 +104235,7 @@
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _Auth = __webpack_require__(962);
+	var _Auth = __webpack_require__(968);
 
 	var _Auth2 = _interopRequireDefault(_Auth);
 
@@ -103909,7 +104414,7 @@
 	exports.default = LoginBox;
 
 /***/ },
-/* 962 */
+/* 968 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -103965,7 +104470,7 @@
 	}
 
 /***/ },
-/* 963 */
+/* 969 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -104006,7 +104511,7 @@
 
 	exports.useBasename = _useBasename3['default'];
 
-	var _useBeforeUnload2 = __webpack_require__(964);
+	var _useBeforeUnload2 = __webpack_require__(970);
 
 	var _useBeforeUnload3 = _interopRequireDefault(_useBeforeUnload2);
 
@@ -104026,13 +104531,13 @@
 
 	// deprecated
 
-	var _enableBeforeUnload2 = __webpack_require__(965);
+	var _enableBeforeUnload2 = __webpack_require__(971);
 
 	var _enableBeforeUnload3 = _interopRequireDefault(_enableBeforeUnload2);
 
 	exports.enableBeforeUnload = _enableBeforeUnload3['default'];
 
-	var _enableQueries2 = __webpack_require__(966);
+	var _enableQueries2 = __webpack_require__(972);
 
 	var _enableQueries3 = _interopRequireDefault(_enableQueries2);
 
@@ -104041,7 +104546,7 @@
 	exports.createLocation = createLocation;
 
 /***/ },
-/* 964 */
+/* 970 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -104158,7 +104663,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 965 */
+/* 971 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -104171,7 +104676,7 @@
 
 	var _deprecate2 = _interopRequireDefault(_deprecate);
 
-	var _useBeforeUnload = __webpack_require__(964);
+	var _useBeforeUnload = __webpack_require__(970);
 
 	var _useBeforeUnload2 = _interopRequireDefault(_useBeforeUnload);
 
@@ -104179,7 +104684,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 966 */
+/* 972 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

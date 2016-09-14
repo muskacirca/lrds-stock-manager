@@ -2,8 +2,7 @@ import React from 'react'
 import Relay from 'react-relay'
 import moment from 'moment'
 
-import Calendar from './../calendar/Calendar'
-import CalendarHeader from './../calendar/CalendarHeader'
+import CalendarWrapper from './../calendar/CalendarWrapper'
 
 class EventBox extends React.Component {
 
@@ -14,75 +13,26 @@ class EventBox extends React.Component {
             calendarDisplayType: "month"
         }
     }
-
-    increaseCalendar() {
-
-        let unit = this.state.calendarDisplayType == "month" ? "M" : "w";
-        const newDisplayDate = moment(this.state.defaultDate).add(1, unit);
-
+    
+    handleDateChange(displayDate) {
         this.props.relay.setVariables({
-            date: newDisplayDate.format("YYYY-MM-DD")
+            date: displayDate.format("YYYY-MM-DD")
         }, ({ready, done, error, aborted}) => {
-            // console.log("isLoading: " + !ready && !(done || error || aborted));
-            this.setState({defaultDate: newDisplayDate})
-        });
-
-
-    }
-
-    subtractCalendar() {
-
-        let unit = this.state.calendarDisplayType == "month" ? "M" : "w";
-        const newDisplayDate = moment(this.state.defaultDate).subtract(1, unit);
-
-        this.props.relay.setVariables({
-            date: newDisplayDate.format("YYYY-MM-DD")
-        }, ({ready, done, error, aborted}) => {
-            // console.log("isLoading: " + !ready && !(done || error || aborted));
-            this.setState({defaultDate: newDisplayDate})
-        });
-
-
-    }
-
-    getNow() {
-        let now = moment()
-
-        this.props.relay.setVariables({
-            date: now.format("YYYY-MM-DD")
-        }, ({ready, done, error, aborted}) => {
-            // console.log("isLoading: " + !ready && !(done || error || aborted));
-            this.setState({defaultDate: now})
+            this.setState({defaultDate: displayDate})
         });
     }
-
-    onChangeDisplayType(type) {
-        this.setState({calendarDisplayType: type})
-    }
-
+    
     render() {
 
         let date = this.state.defaultDate;
         let events = this.props.viewer.events.edges;
 
-        return  <div className="calendar-container">
-
-                    <CalendarHeader defaultDate={date}
-                                    increaseCalendar={this.increaseCalendar.bind(this)}
-                                    subtractCalendar={this.subtractCalendar.bind(this)}
-                                    displayType={this.state.calendarDisplayType}
-                                    onChangeDisplayType={this.onChangeDisplayType.bind(this)}
-                                    getNow={this.getNow.bind(this)} />
-
-
-                    <Calendar defaultDate={date}
-                              events={events}
-                              displayType={this.state.calendarDisplayType} />
-
-                </div>
+        return  <CalendarWrapper 
+                    defaultDate={date}
+                    events={events}
+                    handleDateChange={this.handleDateChange.bind(this)}
+                 />
     }
-
-
 }
 
 export default Relay.createContainer(EventBox, {

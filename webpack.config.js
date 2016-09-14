@@ -28,6 +28,10 @@ var frontendConfig = assign({}, defaultConfig, {
             {
                 test: /\.json$/,
                 loader: 'json'
+            },
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
             }
         ]
     }

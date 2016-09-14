@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import slice from 'lodash/slice'
 import concat from 'lodash/concat'
+import classnames from 'classnames'
 
 import {
     computeFreeTime
@@ -54,18 +55,20 @@ class CalendarColumn extends React.Component {
 
         let dayNumber = this.props.dayNumber;
         let now = moment();
-
+        
         let events = this.renderEventsList(this.props.events);
+        
+        let labelClass = classnames({"calendar-days-tr-up": true}, 
+                                    {"red": dayNumber == now.date()
+                                                && this.props.defaultDate.month() == now.month()
+                                                && this.props.defaultDate.year() == now.year()});
 
-        let className = dayNumber == now.date()
-                        && this.props.defaultDate.month() == now.month()
-                        && this.props.defaultDate.year() == now.year() ? "red" :  "";
 
         let moreButton = this.props.events.length > 3 ? this.renderMoreButton() : null;
 
         return  <div className="calendar-row-content calendar-days">
-                    <div className={className + " calendar-days-tr-up"}>
-                        {dayNumber}
+                    <div className={labelClass}>
+                        {this.props.label ? this.props.label + ' ' + dayNumber : dayNumber}
                     </div>
                     <div className="calendar-days-content">
 
@@ -83,5 +86,14 @@ class CalendarColumn extends React.Component {
 
 
 }
+
+CalendarColumn.propTypes = {
+    label: React.PropTypes.string,
+    displayType:  React.PropTypes.oneOf(['month', 'week'])
+};
+
+CalendarColumn.defaultProps = {
+    displayType: "month"
+};
 
 export default CalendarColumn

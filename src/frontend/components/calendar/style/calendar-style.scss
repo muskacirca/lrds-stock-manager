@@ -68,10 +68,6 @@
 }
 
 .calendar-days-tr-up {
-  text-align: right
-}
-
-.calendar-days-tr-up {
   font-weight: bold;
   font-size: 1.5em;
 }
@@ -109,6 +105,24 @@
   padding: 0.5em;
 }
 
+
+.calendar-month-view {
+
+  .calendar-days-tr-up {
+    text-align: right
+  }
+
+  .calendar-week-row {
+    display: flex;
+    justify-content: space-around;
+
+    .calendar-blank-days,
+    .calendar-days {
+      height: auto;
+    }
+  }
+}
+
 /*
   END OF CALENDAR
 */
@@ -116,14 +130,20 @@
 /* WEEK VIEW */
 
 
-.calendar-week-row {
-  display: flex;
-  justify-content: space-around;
+.calendar-week-view {
 
-  .calendar-blank-days,
-  .calendar-days {
-    height: auto;
+  display: flex;
+
+  .calendar-days-tr-up {
+    text-align: left
+  }
+
+  .calendar-week-row {
+    flex: 1;
   }
 }
+
+
+
 
 
